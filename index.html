@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#000000">
+  <meta name="google-signin-client_id" content="588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+
+  <title>Where M I</title>
+
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+
+  <link rel="stylesheet" href="master.css">
+</head>
+
+<body class="mdc-typography">
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+
+
+  <!--*********************
+*      Main drawer
+**********************-->
+  <aside class="mainDrawer mdc-drawer mdc-drawer--modal" id="menu_drawer">
+    <div class="mdc-drawer__header">
+      <h3 class="mdc-drawer__title">WHERE-M-I</h3>
+    </div>
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list" id="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
+          <span class="mdc-list-item__text">Map</span>
+        </a>
+        <a class="mdc-list-item" href="#" id="searchButton">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">search</i>
+          <span class="mdc-list-item__text">Search</span>
+        </a>
+        <a class="mdc-list-item" href="#" onclick="openCharts()">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bar_chart</i>
+          <span class="mdc-list-item__text">Charts</span>
+        </a>
+        <hr class="mdc-list-divider">
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">build</i>
+          <span class="mdc-list-item__text">Editor</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
+          <span class="mdc-list-item__text">I tuoi Luoghi</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">videocam</i>
+          <span class="mdc-list-item__text">Le tue clip</span>
+        </a>
+        <hr class="mdc-list-divider">
+        <a class="mdc-list-item" href="#" onclick="openHow()">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">emoji_objects</i>
+          <span class="mdc-list-item__text">How it works</span>
+        </a>
+        <a class="mdc-list-item" href="#" onclick="openAbout()">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">emoji_people</i>
+          <span class="mdc-list-item__text">About Us</span>
+        </a>
+        <hr class="mdc-list-divider">
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings_applications</i>
+          <span class="mdc-list-item__text">Impostazioni</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+  <div class="mdc-drawer-scrim" id="scrim"></div>
+  <!--main drawer-->
+
+
+  <!--*********************
+    *      pages drawer
+    **********************-->
+  <aside class="mdc-drawer mdc-drawer--modal" id="content_drawer">
+    <div class="mdc-drawer__header">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" id="content_menu">menu</button>
+          <span class="mdc-top-app-bar__title" id="content_title"></span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+          <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download" id="content_clear">clear</button>
+        </section>
+      </div>
+    </div>
+    <div class="mdc-drawer__content" id="content_content">
+
+    </div>
+  </aside>
+
+  <!--*********************
+  *      Home dialog
+  **********************-->
+  <div class="homeDialog mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="Home Page" aria-describedby="my-dialog-content" id="content_dialog">
+    <div class="mdc-dialog__container">
+      <div class="mdc-dialog__surface home">
+        <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+        <h2 class="mdc-dialog__title" id="my-dialog-title"> Welcome to "Where-M-I?"</h2>
+        <div class="mdc-dialog__content" id="my-dialog-content">
+          <img src="content/confusedTravolta.svg" alt="img" id="trav">
+        </div>
+        <footer class="mdc-dialog__actions">
+          <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+            <span class="mdc-button__label">No</span>
+          </button>
+          <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+            <span class="mdc-button__label">Yes</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+  </div>
+
+  <div id="map" class="main-content"></div>
+
+  <!-- Model -->
+  <script src="model/IconButtonToggle.js"></script>
+  <script src="model/IconButton.js"></script>
+  <script src="model/Chip.js"></script>
+  <script src="model/ChipSet.js"></script>
+  <script src="model/Tab.js"></script>
+  <script src="model/TabBar.js"></script>
+  <script src="model/List.js"></script>
+  <script src="model/AboutCard.js"></script>
+
+  <!-- Controller -->
+  <script src="controller/events.js"></script>
+
+  <!-- View -->
+  <script src="https://apis.google.com/js/api:client.js"></script>
+  <script src="view/map/controls.js"></script>
+  <script src="view/charts.js"></script>
+  <script src="view/about.js"></script>
+  <script src="view/menu_drawer.js"></script>
+  <script src="view/page_drawer.js"></script>
+  <script src="view/how.js"></script>
+  <script src="view/categories.js"></script>
+
+  <script src="controller/init.js"></script>
+
+  <!-- Google Maps Initialize -->
+  <script src="view/map/map.js"></script>
+
+  <!-- CDN -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU&callback=initMap" async defer></script>
+
+</body>
+
+</html>

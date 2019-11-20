@@ -1,0 +1,39 @@
+
+/* Always set the map height explicitly to define the size of the div
+* element that contains the map. */
+/* Optional: Makes the sample page fill the window. */
+#map {
+  position: fixed;
+  height: 100%;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.mdc-drawer__title{
+  text-align: center;
+}
+
+#content_drawer {
+  z-index: 4;
+}
+
+@media only screen and (max-width: 480px) {
+    #content_drawer {
+    width: 100%;
+    }
+}
+
+@media all and (min-width:481px) {
+    #content_drawer {
+    width: 480px;
+    }
+    .aboutCard {
+      width: 50%;
+      float: left;
+    }
+}

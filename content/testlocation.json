@@ -1,0 +1,47 @@
+[{
+    "pc": "8FPHF8VV+5G",
+    "name": "Museo Civico Archeologico",
+    "description": "Ospitato in un palazzo del 1400, questo museo archeologico custodisc manufatti egizi, romani ed etruschi.",
+    "category": "Museo",
+    "rating": 4.5
+  },{
+    "pc": "8FPHF8WR+HR",
+    "name": "Museo Civico Medioevale",
+    "description": "Museo ospitato in un palazzo del XV secolo con collezioni di bronzi, armature e libri liturgici medievali.",
+    "category": "Museo",
+    "rating": 4.4
+  },{
+    "pc": "8FPHG83P+3V",
+    "name": "MAMbo - Museo d'Arte Moderna di Bologna",
+    "description": "Museo d'arte con collezione permanente dal 1945 ad oggi, oltre a mostre temporanee di arte contemporanea.",
+    "category": "Museo",
+    "rating": 4.3
+  },{
+    "pc": "8FPHF8QV+XF",
+    "name": "La statua di San Domenico",
+    "description": "",
+    "category": "Scultura",
+    "rating": 4
+  },{
+    "pc": "8FPHG83W+C6",
+    "name": "Fontana della Ninfa",
+    "description": "",
+    "category": "Scultura",
+    "rating": 5
+  },{
+    "pc": "8FPHF8RV+Q9",
+    "name": "Biblioteca comunale dell'Archiginnasio",
+    "description": "Biblioteca e teatro anatomico in edificio del XVI secolo con affreschi e stemmi araldici.",
+    "category": "Biblioteca",
+    "rating": 4.7
+  },{
+    "pc": "8FPHF8VR+VP",
+    "name": "Biblioteca Salaborsa",
+    "description": "",
+    "rating": 4.6
+  },{
+    "pc": "8FPHF9W2+JM",
+    "name": "Biblioteca Giuridica Antonio Cicu",
+    "description": "",
+    "rating": 3.9
+  }]
