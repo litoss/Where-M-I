@@ -1,5 +1,5 @@
-const howDialog = new mdc.dialog.MDCDialog(document.getElementById('content_dialog'));
-
 function openHow() {
-  howDialog.open();
+  var howDialog = new Dialog();
+  document.getElementById('map').appendChild(howDialog.root_);
+  howDialog.open(howDialog);
 }

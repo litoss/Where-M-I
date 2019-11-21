@@ -4,14 +4,15 @@ class AboutCard{
         card.className = 'mdc-card aboutCard';
         card.innerHTML =
         '<div class="mdc-card__primary-action ">' +
-          '<div class="mdc-card__media mdc-card__media--16-9 " style="background-image: url(&quot;' + img + '&quot;);"></div>' +
           '<div class="mdc-card__primary"> ' +
+            '<img class="aboutImg" src=" ' + img + ' " alt="'+ name + 'Img">' +
             '<h2 class="mdc-typography mdc-typography--headline6">' + name + ' </h2> ' +
             '<h3 class="mdc-typography mdc-typography--overline">Dummy Text</h3>' +
             '<div class="mdc-card__actions">' +
               '<div class="mdc-card__action-icons">' +
-                '<button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Share">share</button>' +
-                '<button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>' +
+                '<button class="mdc-icon-button" title="GitHub"><i class="fab fa-github "></i></button>' +
+                '<button class="mdc-icon-button" title="Facebook"><i class="fab fa-facebook "></i></button>' +
+                '<button class="mdc-icon-button" title="Instagram"><i class="fab fa-instagram "></i></button>'  +
               '</div>' +
             '</div>' +
           '</div>' +

@@ -10,12 +10,12 @@
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="master.css">
 
   <title>Where M I</title>
 
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-
-  <link rel="stylesheet" href="master.css">
+  <script src="https://kit.fontawesome.com/d7f0d59dc2.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="mdc-typography">
@@ -97,34 +97,10 @@
     </div>
   </aside>
 
-  <!--*********************
-  *      Home dialog
-  **********************-->
-  <div class="homeDialog mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="Home Page" aria-describedby="my-dialog-content" id="content_dialog">
-    <div class="mdc-dialog__container">
-      <div class="mdc-dialog__surface home">
-        <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-        <h2 class="mdc-dialog__title" id="my-dialog-title"> Welcome to "Where-M-I?"</h2>
-        <div class="mdc-dialog__content" id="my-dialog-content">
-          <img src="content/confusedTravolta.svg" alt="img" id="trav">
-        </div>
-        <footer class="mdc-dialog__actions">
-          <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-            <span class="mdc-button__label">No</span>
-          </button>
-          <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
-            <span class="mdc-button__label">Yes</span>
-          </button>
-        </footer>
-      </div>
-    </div>
-    <div class="mdc-dialog__scrim"></div>
-  </div>
-
   <div id="map" class="main-content"></div>
 
   <script src="variables.js"></script>
-  
+
   <!-- Model -->
   <script src="model/IconButtonToggle.js"></script>
   <script src="model/IconButton.js"></script>
@@ -134,6 +110,7 @@
   <script src="model/TabBar.js"></script>
   <script src="model/List.js"></script>
   <script src="model/AboutCard.js"></script>
+  <script src="model/Dialog.js"></script>
 
   <!-- Controller -->
   <script src="controller/events.js"></script>
