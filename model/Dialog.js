@@ -1,5 +1,5 @@
 class Dialog extends mdc.dialog.MDCDialog{
-  constructor() {
+  constructor(mainContent, footerContent) {
     var item = document.createElement('div');
     item.className = "mdc-dialog";
     var container = document.createElement('div');
@@ -13,6 +13,8 @@ class Dialog extends mdc.dialog.MDCDialog{
     var scrim = document.createElement('div');
     scrim.className = "mdc-dialog__scrim";
 
+    footer.appendChild(footerContent.root_);
+    content.appendChild(mainContent);
     surface.appendChild(content);
     surface.appendChild(footer);
     container.appendChild(surface);
