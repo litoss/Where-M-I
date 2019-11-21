@@ -1,21 +1,21 @@
 var content = [
   { id:"none", name:"Nessuna"},
-  { id:"nat", name:"Natura"},
-  { id:"art", name:"Arte"},
-  { id:"his", name:"Storia"},
+  { id:"nat", name:"Nature"},
+  { id:"art", name:"Art"},
+  { id:"his", name:"History"},
   { id:"flk", name:"Folklore"},
-  { id:"mod", name:"Cultura moderna"},
-  { id:"rel", name:"Religione"},
-  { id:"cui", name:"Cucina e Drink"},
+  { id:"mod", name:"Modern culture"},
+  { id:"rel", name:"Religion"},
+  { id:"cui", name:"Food & Drink"},
   { id:"spo", name:"Sport"},
-  { id:"mus", name:"Musica"},
+  { id:"mus", name:"Music"},
   { id:"mov", name:"Film"},
-  { id:"fas", name:"Moda"},
+  { id:"fas", name:"Fashion"},
   { id:"shp", name:"Shopping"},
-  { id:"tec", name:"Tecnologia"},
-  { id:"pop", name:"Cult. pop. e gossip"},
+  { id:"tec", name:"Tech"},
+  { id:"pop", name:"Pop culture & gossip"},
   { id:"prs", name:"Nessuna"}, //nome errato
-  { id:"none", name:"Esperienze personali"},
+  { id:"none", name:"Personal experiences"},
   { id:"oth", name:"Altro"}
 ];
 
