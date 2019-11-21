@@ -1,5 +1,5 @@
 var content = [
-  { id:"none", name:"Nessuna"},
+  { id:"none", name:"None"},
   { id:"nat", name:"Nature"},
   { id:"art", name:"Art"},
   { id:"his", name:"History"},
