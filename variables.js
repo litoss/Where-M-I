@@ -20,15 +20,15 @@ var content = [
 ];
 
 var audience = [
-  { id:"gen", name:"Pubblico Generico"},
-  { id:"pre", name:"Pre-Scuola"},
-  { id:"elm", name:"Scuola Primaria"},
-  { id:"mid", name:"Scuola Media"},
-  { id:"scl", name:"Specialisti del Settore"},
+  { id:"gen", name:"Generic"},
+  { id:"pre", name:"Pre-School"},
+  { id:"elm", name:"Primary School"},
+  { id:"mid", name:"Secondary School"},
+  { id:"scl", name:"Sector Specialists"},
 ];
 
 var classifiche = [
-  { icon: "queue_music", name: "Clip"},
+  { icon: "queue_music", name: "Clips"},
   { icon: "person", name: "Vloggers"},
-  { icon: "navigation", name: "Percorsi"}
+  { icon: "navigation", name: "Paths"}
 ];
