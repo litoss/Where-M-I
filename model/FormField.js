@@ -1,16 +1,17 @@
 class FormField extends mdc.formField.MDCFormField{
-    constructor(element, label) {
+    constructor(element, lab) {
         var item = document.createElement('div');
         item.className = "mdc-form-field";
-        item.appendChild(element);
+        item.appendChild(element.root_);
 
         var label = document.createElement('label');
         label.setAttribute('for', element.id);
-        label.innerHTML = label;
+        label.innerHTML = lab;
 
         item.appendChild(label);
 
-        this.input = element;
         super(item);
+        this.input = element;
+
     }
 }

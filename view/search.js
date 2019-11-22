@@ -1,10 +1,10 @@
-var search = document.createElement('div');
-search.className = "mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon";
-search.index = 1;
-search.style['margin'] = '10px';
-search.innerHTML = '<i class="material-icons mdc-text-field__icon">search</i><input class="mdc-text-field__input" id="text-field-hero-input"><label for="text-field-hero-input" class="mdc-floating-label">Cerca</label>';
-search.addEventListener('click', () => {
+function openSearch(){
+  document.getElementById('content_title').innerHTML = 'Search';
+  document.getElementById('content_content').innerHTML= '';
 
-});
+  var search = new FormField( new IconButton("search"), "search");
+  document.getElementById('content_content').appendChild(search.root_);
 
-const textField = mdc.textField.MDCTextField.attachTo(search);
+  mainDrawer.open = false;
+  pageDrawer.open = true;
+}
