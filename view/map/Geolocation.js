@@ -1,25 +1,22 @@
-class Geolocation extends IconButton{
+class Geolocation extends IconButtonToggle{
   constructor(){
-    super('my_location');
+    super('my_location','location_disabled');
     this.unbounded = true;
-    this.listen('click', () => {
-      var geolocator = navigator.geolocation.watchPosition(this.showPosition);
+    this.listen('MDCIconButtonToggle:change', (event) => {
+      if(event.detail.isOn) this.watch();
+      else this.clear();
     });
   }
 
-  showPosition(position){
-    if(!marker){
-      marker = new PositionMarker(position);
-      map.setZoom(parseInt(Math.log2(591657550.5 / (position.coords.accuracy * 45))) + 1);
-      map.setCenter(marker.getPosition());
-    }else{
-      marker.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
-      marker.setMap(map);
-    }
+  watch(){
+    this.geolocator = navigator.geolocation.watchPosition(showPosition);
   }
 
-  clearPosition(){
-    navigator.geolocation.clearWatch(geolocator);
-    marker.setMap(null);
+  clear(){
+    navigator.geolocation.clearWatch(this.geolocator);
+    this.geolocator = null;
+    positionMarker.removePosition();
   }
+
+
 }

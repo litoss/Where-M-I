@@ -8,3 +8,15 @@ window.addEventListener("resize", function() {
     mainDrawer.open = false;
   }
 });
+
+function showPosition(position){
+  if(position.coords.accuracy < 100){
+    positionMarker.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
+    positionMarker.setAccuracy(position.coords.accuracy);
+
+  }else{
+    map.geolocatorButton.clear();
+    map.geolocatorButton.on = false;
+    //Popup di errore
+  }
+}

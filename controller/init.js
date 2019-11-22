@@ -4,5 +4,6 @@ if (window.innerWidth > 767){
   mainDrawer.open = true;
 }
 
+var positionMarker = new PositionMarker();
+var placeMarker = new PlaceMarker();
 var map = new Mappa();
-var marker;

@@ -16,15 +16,25 @@ class Mappa extends google.maps.Map{
       }]
     });
 
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new ZoomLess().root_);
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new ZoomPlus().root_);
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new Geolocation().root_);
-    this.controls[google.maps.ControlPosition.TOP_LEFT].push(new Menu().root_);
+    this.zoomLessButton = new ZoomLess();
+    this.zoomPlusButton = new ZoomPlus();
+    this.geolocatorButton = new Geolocation();
+    this.menuButton = new Menu();
+
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomLessButton.root_);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomPlusButton.root_);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocatorButton.root_);
+    this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.menuButton.root_);
     this.controls[google.maps.ControlPosition.TOP_RIGHT].push(login.root_);
 
-    this.addListener('dblclick', function(e) {
-      marker.setMap(null);
-      marker = new MarkerNoArea(e.latLng);
+    this.addListener('click', function(e) {
+      if(placeMarker.getMap()) placeMarker.setMap(null);
+      else{
+        placeMarker.setMap(map);
+        placeMarker.setPosition(e.latLng);
+        var info = new InfoFinestra();
+        info.open(map, placeMarker);
+      }
     });
   }
 }
