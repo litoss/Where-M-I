@@ -18,7 +18,7 @@ const mimetypes = {
 };
 
 var portname = '127.0.0.1';
-var port = '8000';
+var port = '80';
 
 http.createServer((req, res) => {
     var myuri = url.parse(req.url).pathname;

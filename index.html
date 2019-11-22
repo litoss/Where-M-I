@@ -21,7 +21,6 @@
 <body class="mdc-typography">
   <noscript>You need to enable JavaScript to run this app.</noscript>
 
-
   <!--*********************
 *      Main drawer
 **********************-->
@@ -31,6 +30,7 @@
     </div>
     <div class="mdc-drawer__content">
       <nav class="mdc-list" id="mdc-list">
+        <h6 class="mdc-list-group__subheader">Browser</h6>
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
           <span class="mdc-list-item__text">Map</span>
@@ -44,10 +44,7 @@
           <span class="mdc-list-item__text">Charts</span>
         </a>
         <hr class="mdc-list-divider">
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">build</i>
-          <span class="mdc-list-item__text">Editor</span>
-        </a>
+        <h6 class="mdc-list-group__subheader">Editor</h6>
         <a class="mdc-list-item" href="#">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
           <span class="mdc-list-item__text">I tuoi Luoghi</span>
@@ -104,6 +101,7 @@
   <!-- Model -->
   <script src="model/IconButtonToggle.js"></script>
   <script src="model/IconButton.js"></script>
+  <script src="model/ImageButton.js"></script>
   <script src="model/FontAwesomeButton.js"></script>
   <script src="model/Chip.js"></script>
   <script src="model/ChipSet.js"></script>
@@ -129,6 +127,7 @@
   <script src="controller/init.js"></script>
 
   <!-- Google Maps Initialize -->
+  <script src="view/map/login.js"></script>
   <script src="view/map/map.js"></script>
 
   <!-- CDN -->
