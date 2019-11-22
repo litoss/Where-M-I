@@ -1,5 +1,6 @@
-class Marker extends google.maps.Marker{
+class PositionMarker extends google.maps.Marker{
   constructor(position){
+
     super({
       position: {lat: position.coords.latitude, lng: position.coords.longitude},
       map: map,

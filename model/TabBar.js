@@ -1,5 +1,5 @@
 class TabBar extends mdc.tabBar.MDCTabBar{
-    constructor(elements) {
+    constructor(icons, names) {
         var item = document.createElement('div');
         item.className = "mdc-tab-bar";
         var scroller = document.createElement('div');
@@ -9,7 +9,7 @@ class TabBar extends mdc.tabBar.MDCTabBar{
         var cont = document.createElement('div');
         cont.className = "mdc-tab-scroller__scroll-content";
 
-        for(var i in elements) cont.appendChild(new Tab(elements[i]).root_);
+        for(var i in icons) cont.appendChild(new Tab(icons[i], names[i]).root_);
 
         area.appendChild(cont);
         scroller.appendChild(area);

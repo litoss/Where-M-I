@@ -14,7 +14,9 @@ const mimetypes = {
     'ico': 'image/x-icon',
     'gif': 'image/gif',
     'mp3': 'audio/mpeg',
-    'json':'application/json'
+    'json':'application/json',
+    'ttf': 'font/ttf',
+    'woff': 'font/woff'
 };
 
 var portname = '127.0.0.1';

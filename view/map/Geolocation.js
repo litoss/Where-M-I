@@ -9,7 +9,7 @@ class Geolocation extends IconButton{
 
   showPosition(position){
     if(!marker){
-      marker = new Marker(position);
+      marker = new PositionMarker(position);
       map.setZoom(parseInt(Math.log2(591657550.5 / (position.coords.accuracy * 45))) + 1);
       map.setCenter(marker.getPosition());
     }else{
