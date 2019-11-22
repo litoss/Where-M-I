@@ -23,7 +23,7 @@ function initMap() {
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(less.root_);
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(more.root_);
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(geolocation.root_);
-  //map.controls[google.maps.ControlPosition.TOP_RIGHT].push(login);
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(login.root_);
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(menu.root_);
   //map.controls[google.maps.ControlPosition.TOP_LEFT].push(search);
   //map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(card);
