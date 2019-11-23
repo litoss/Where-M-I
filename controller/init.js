@@ -4,6 +4,7 @@ if (window.innerWidth > 767){
   mainDrawer.open = true;
 }
 
+var googleUser = {};
 var positionMarker = new PositionMarker();
 var placeMarker = new PlaceMarker();
 var map = new Mappa();

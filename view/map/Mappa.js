@@ -20,12 +20,13 @@ class Mappa extends google.maps.Map{
     this.zoomPlusButton = new ZoomPlus();
     this.geolocatorButton = new Geolocation();
     this.menuButton = new Menu();
+    this.login = new Login();
 
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomLessButton.root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomPlusButton.root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocatorButton.root_);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.menuButton.root_);
-    this.controls[google.maps.ControlPosition.TOP_RIGHT].push(login.root_);
+    this.controls[google.maps.ControlPosition.TOP_RIGHT].push(this.login);
 
     this.addListener('click', function(e) {
       if(placeMarker.getMap()) placeMarker.setMap(null);

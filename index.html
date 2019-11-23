@@ -9,13 +9,14 @@
   <meta name="google-signin-client_id" content="588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   <link rel="stylesheet" href="master.css">
+  <link rel="preconnect" href="https://maps.gstatic.com">
 
   <title>Where M I</title>
 
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-  <script src="https://kit.fontawesome.com/d7f0d59dc2.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/d7f0d59dc2.js" crossorigin="anonymous" async defer></script>
 </head>
 
 <body class="mdc-typography">
@@ -26,7 +27,7 @@
 **********************-->
   <aside class="mainDrawer mdc-drawer mdc-drawer--modal" id="menu_drawer">
     <div class="mdc-drawer__header">
-      <h3 class="mdc-drawer__title">WHERE-M-I</h3>
+      <h3 class="mdc-drawer__title">Where M I</h3>
     </div>
     <div class="mdc-drawer__content">
       <nav class="mdc-list" id="mdc-list">
@@ -77,7 +78,7 @@
     *      pages drawer
     **********************-->
   <aside class="mdc-drawer mdc-drawer--modal" id="content_drawer">
-    <div class="mdc-drawer__header">
+    <header class="mdc-top-app-bar mdc-top-app-bar--relative" id="content_header">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
           <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" id="content_menu">menu</button>
@@ -87,7 +88,7 @@
           <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download" id="content_clear">clear</button>
         </section>
       </div>
-    </div>
+    </header>
     <div class="mdc-drawer__content" id="content_content">
 
     </div>
@@ -100,14 +101,14 @@
   <!-- Model -->
   <script src="model/IconButtonToggle.js"></script>
   <script src="model/IconButton.js"></script>
-  <script src="model/ImageButton.js"></script>
+  <script src="model/Menus.js"></script>
   <script src="model/FontAwesomeButton.js"></script>
   <script src="model/Chip.js"></script>
   <script src="model/ChipSet.js"></script>
   <script src="model/Tab.js"></script>
   <script src="model/TabBar.js"></script>
   <script src="model/List.js"></script>
-  <script src="model/Card.js"></script>
+  <script src="model/CardTemp.js"></script>
   <script src="model/Dialog.js"></script>
 
   <!-- Controller -->
@@ -125,9 +126,8 @@
   <script src="view/settings.js"></script>
 
   <!-- Google Maps Initialize -->
-  <script src="view/map/login.js"></script>
+  <script src="view/map/Login.js"></script>
   <script src="view/map/Menu.js"></script>
-  <script src="view/map/login.js"></script>
   <script src="view/map/ZoomLess.js"></script>
   <script src="view/map/ZoomPlus.js"></script>
   <script src="view/map/Geolocation.js"></script>
