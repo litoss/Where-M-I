@@ -14,10 +14,6 @@ body {
   padding: 0;
 }
 
-#content_header{
-  position:relative;
-}
-
 #content_drawer {
   z-index: 4;
 }
@@ -26,11 +22,15 @@ body {
     #content_drawer {
     width: 100%;
     }
+
 }
 
 @media all and (min-width:481px) {
     #content_drawer {
     width: 480px;
+    }
+    #content_header{
+      width: 480px;
     }
     .aboutCard {
       width: 50%;
@@ -44,7 +44,15 @@ body {
 }
 
 .about-card{
-  padding:20px;
+  margin:20px;
+}
+
+.mdc-top-app-bar--relative{
+  position:relative;
+}
+
+.mdc-image__circular{
+  border-radius: 50%;
 }
 
 .about-card .mdc-card__media:first-child{
@@ -52,7 +60,6 @@ body {
   min-height: 110px;
   max-width: 110px;
   max-height: 110px;
-  border-radius: 50%;
   float: left;
   margin: 20px;
 }

@@ -1,8 +1,7 @@
 class CardTemp{
-  constructor(titleText, subtitleText, secondaryText, img, actionsButtons, actionsIcons) {
+  constructor(titleText, subtitleText, secondaryText, img, actionsButtons, actionsIcons, options) {
     var card = document.createElement('div');
-    card.className = "mdc-card mdc-card--outlined";
-    card.style.margin = '20px';
+    card.className = "mdc-card mdc-card--outlined " + options;
 
     var primaryAction = document.createElement('div');
     primaryAction.className = "mdc-card__primary-action";

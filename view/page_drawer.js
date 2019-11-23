@@ -8,8 +8,8 @@ elem.forEach( function (element) {
     mainDrawer.open = false;
     pageDrawer.open = true;
   })
-})
-*/
+})*/
+
 document.getElementById('content_menu').addEventListener("click", () => {
   mainDrawer.open = true;
   pageDrawer.open = false;

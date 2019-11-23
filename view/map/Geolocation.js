@@ -1,6 +1,7 @@
 class Geolocation extends IconButtonToggle{
   constructor(){
-    super('my_location','location_disabled');
+    super('my_location','location_disabled','mdc-button--raised');
+
     this.unbounded = true;
     this.listen('MDCIconButtonToggle:change', (event) => {
       if(event.detail.isOn) this.watch();
@@ -17,6 +18,4 @@ class Geolocation extends IconButtonToggle{
     this.geolocator = null;
     positionMarker.removePosition();
   }
-
-
 }

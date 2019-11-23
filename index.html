@@ -25,10 +25,19 @@
   <!--*********************
 *      Main drawer
 **********************-->
-  <aside class="mainDrawer mdc-drawer mdc-drawer--modal" id="menu_drawer">
-    <div class="mdc-drawer__header">
-      <h3 class="mdc-drawer__title">Where M I</h3>
+
+  <!--  <header class="mdc-top-app-bar" id="app-bar">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
+        <span class="mdc-top-app-bar__title">Where M I</span>
+      </section>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+        <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Login">bookmark</button>
+      </section>
     </div>
+  </header>-->
+  <aside class="mainDrawer mdc-drawer mdc-drawer--modal" id="menu_drawer">
     <div class="mdc-drawer__content">
       <nav class="mdc-list" id="mdc-list">
         <h6 class="mdc-list-group__subheader">Browser</h6>
@@ -36,11 +45,11 @@
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
           <span class="mdc-list-item__text">Map</span>
         </a>
-        <a class="mdc-list-item" href="#" id="searchButton">
+        <a class="mdc-list-item" onclick="openSearch()">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">search</i>
           <span class="mdc-list-item__text">Search</span>
         </a>
-        <a class="mdc-list-item" href="#" onclick="openCharts()">
+        <a class="mdc-list-item" onclick="openCharts()">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bar_chart</i>
           <span class="mdc-list-item__text">Charts</span>
         </a>
@@ -96,6 +105,9 @@
 
   <div id="map" class="main-content"></div>
 
+  <script>
+
+  </script>
   <script src="variables.js"></script>
   <script src="https://apis.google.com/js/platform.js"></script>
 
@@ -111,6 +123,8 @@
   <script src="model/List.js"></script>
   <script src="model/CardTemp.js"></script>
   <script src="model/Dialog.js"></script>
+  <script src="model/TextField.js"></script>
+  <script src="model/ImageButton.js"></script>
 
   <!-- Controller -->
   <script src="controller/events.js"></script>
@@ -124,6 +138,7 @@
   <script src="view/page_drawer.js"></script>
   <script src="view/how.js"></script>
   <script src="view/settings.js"></script>
+  <script src="view/search.js"></script>
 
   <!-- Google Maps Initialize -->
   <script src="view/map/Login.js"></script>

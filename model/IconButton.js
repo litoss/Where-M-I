@@ -1,7 +1,7 @@
 class IconButton extends mdc.iconButton.MDCIconButtonToggle{
-    constructor(icon) {
+    constructor(icon, options) {
         var item = document.createElement('button');
-        item.className = "mdc-icon-button mdc-button--raised material-icons";
+        item.className = "mdc-icon-button material-icons " + options;
         item.innerHTML = icon;
 
         super(item);
