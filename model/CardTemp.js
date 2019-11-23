@@ -1,21 +1,21 @@
 class CardTemp{
   constructor(titleText, subtitleText, secondaryText, img, actionsButtons, actionsIcons) {
     var card = document.createElement('div');
-    card.className = "mdc-card mdc-card--outlined demo-card demo-ui-control";
+    card.className = "mdc-card mdc-card--outlined";
     card.style.margin = '20px';
 
     var primaryAction = document.createElement('div');
-    primaryAction.className = "mdc-card__primary-action demo-card__primary-action";
+    primaryAction.className = "mdc-card__primary-action";
     primaryAction.setAttribute('tabindex','0');
     card.appendChild(primaryAction);
 
     var media = document.createElement('div');
-    media.className = "demo-card__media mdc-card__media";
+    media.className = "mdc-card__media";
     media.style.backgroundImage = "url('" + img + "')";
     primaryAction.appendChild(media);
 
     var primary = document.createElement('div');
-    primary.className = "demo-card__primary";
+    primary.className = "mdc-card__primary";
     primaryAction.appendChild(primary);
 
     var title = document.createElement('h2');
@@ -25,14 +25,14 @@ class CardTemp{
 
     if(subtitleText){
       var subtitle = document.createElement('h3');
-      subtitle.className = "demo-card__subtitle mdc-typography mdc-typography--subtitle2";
+      subtitle.className = "mdc-typography mdc-typography--subtitle2";
       subtitle.appendChild(document.createTextNode(subtitleText));
       primary.appendChild(subtitle);
     }
 
     if(secondaryText){
       var secondary = document.createElement('div');
-      secondary.className = "demo-card__secondary mdc-typography mdc-typography--body2";
+      secondary.className = "mdc-typography mdc-typography--body2";
       secondary.appendChild(document.createTextNode(secondaryText));
       primary.appendChild(secondary);
     }

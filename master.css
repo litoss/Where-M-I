@@ -43,7 +43,11 @@ body {
   border-radius: 50px;
 }
 
-.mdc-card__media:first-child{
+.about-card{
+  padding:20px;
+}
+
+.about-card .mdc-card__media:first-child{
   min-width: 110px;
   min-height: 110px;
   max-width: 110px;
@@ -53,13 +57,14 @@ body {
   margin: 20px;
 }
 
-.demo-ui-control .demo-card__primary-action {
+.about-card .mdc-card__primary-action {
     height: 180px;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: row;
     flex-direction: row;
 }
-.demo-card__primary {
+
+.about-card .mdc-card__primary{
     padding: 1rem;
 }

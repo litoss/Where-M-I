@@ -12,12 +12,22 @@ function openAbout() {
 
     switch (event.detail.index) {
       case 0: var team = [simone, carlos, stefano, vincenzo];
-        for (var i in team) div.appendChild(new CardTemp(team[i].title, null, team[i].description, team[i].media, null, team[i].contacts));
+        for (var i in team){
+          var card = new CardTemp(team[i].title, null, team[i].description, team[i].media, null, team[i].contacts);
+          card.className += ' about-card';
+          div.appendChild(card);
+        }
         break;
-      case 1: for(var i in technologies) div.appendChild(new CardTemp(technologies[i].title, null, null, technologies[i].media, null, null));
+      case 1:
+        for(var i in technologies){
+          var card = new CardTemp(technologies[i].title, null, null, technologies[i].media, null, null);
+          card.className += ' about-card';
+          div.appendChild(card);
+        }
         break;
     }
-  })
+  });
+
   aboutBar.activateTab(0);
 
   document.getElementById('content_content').appendChild(aboutBar.root_);
