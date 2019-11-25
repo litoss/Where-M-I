@@ -29,6 +29,7 @@ class Mappa extends google.maps.Map{
         placeMarker.setMap(map);
         var info = new InfoFinestra();
         info.open(map, placeMarker);
+        pagePlaces();
       }
     });
   }
