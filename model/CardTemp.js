@@ -1,5 +1,5 @@
 class CardTemp{
-  constructor(titleText, subtitleText, secondaryText, img, actionsButtons, actionsIcons, options) {
+  constructor(titleText, subtitleText, secondaryText, img, actionButtons, actionIcons, options) {
     var card = document.createElement('div');
     card.className = "mdc-card mdc-card--outlined " + options;
 
@@ -36,32 +36,25 @@ class CardTemp{
       primary.appendChild(secondary);
     }
 
-    if(actionsButtons || actionsIcons){
+    if(actionButtons || actionIcons){
       var actions = document.createElement('div');
       actions.className = "mdc-card__actions";
       card.appendChild(actions);
     }
 
-    if(actionsButtons){
-      var actionsCardButtons = document.createElement('div');
-      actionsCardButtons.className = "mdc-card__action-buttons";
-      for(var i in actionsButtons){
-        var button = new FontAwesomeButton(actionsButtons[i].url, actionsButtons[i].name);
-        button.className += " mdc-card__action mdc-card__action--button";
-        actionsCardButtons.appendChild(button);
-      }
-      actions.appendChild(actionsCardButtons);
+    if(actionButtons){
+      actions.appendChild(actionButtons);
     }
 
-    if(actionsIcons){
-      var actionsCardIcons = document.createElement('div');
-      actionsCardIcons.className = "mdc-card__action-icons";
-      for(var i in actionsIcons){
-        var button = new FontAwesomeButton(actionsIcons[i].url, actionsIcons[i].icon);
+    if(actionIcons){
+      var actionCardIcons = document.createElement('div');
+      actionCardIcons.className = "mdc-card__action-icons";
+      for(var i in actionIcons){
+        var button = new FontAwesomeButton(actionIcons[i].url, actionIcons[i].icon);
         button.className += " mdc-card__action mdc-card__action--icon--unbounded";
-        actionsCardIcons.appendChild(button);
+        actionCardIcons.appendChild(button);
       }
-      actions.appendChild(actionsCardIcons);
+      actions.appendChild(actionCardIcons);
     }
 
     return card;
