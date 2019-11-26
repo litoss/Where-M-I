@@ -1,5 +1,5 @@
 class CardTemp{
-  constructor(titleText, subtitleText, secondaryText, img, actionsButtons, actionsIcons, options) {
+  constructor(titleText, subtitleText, secondaryText, img, actionButtons, actionIcons, options) {
     var card = document.createElement('div');
     card.className = "mdc-card mdc-card--outlined " + options;
 
@@ -36,12 +36,13 @@ class CardTemp{
       primary.appendChild(secondary);
     }
 
-    if(actionsButtons || actionsIcons){
+    if(actionButtons || actionIcons){
       var actions = document.createElement('div');
       actions.className = "mdc-card__actions";
       card.appendChild(actions);
     }
 
+<<<<<<< HEAD
     if(actionsButtons){
       var actionsCardButtons = document.createElement('div');
       actionsCardButtons.className = "mdc-card__action-buttons";
@@ -59,8 +60,21 @@ class CardTemp{
         actionsIcons[i].className += " mdc-card__action mdc-card__action--icon--unbounded";
         console.log(actionsIcons[i]);
         actionsCardIcons.appendChild(actionsIcons[i]);
+=======
+    if(actionButtons){
+      actions.appendChild(actionButtons);
+    }
+
+    if(actionIcons){
+      var actionCardIcons = document.createElement('div');
+      actionCardIcons.className = "mdc-card__action-icons";
+      for(var i in actionIcons){
+        var button = new FontAwesomeButton(actionIcons[i].url, actionIcons[i].icon);
+        button.className += " mdc-card__action mdc-card__action--icon--unbounded";
+        actionCardIcons.appendChild(button);
+>>>>>>> 1a77692b436e7e6aed054914fed1b166d4ceea81
       }
-      actions.appendChild(actionsCardIcons);
+      actions.appendChild(actionCardIcons);
     }
 
     console.log(card);

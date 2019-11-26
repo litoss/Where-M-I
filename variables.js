@@ -44,7 +44,8 @@ var technologies = [
   {media: "https://powerforallats.com/wp-content/uploads/2016/03/js-logo.png", title: "JavaScript"},
   {media: "https://pbs.twimg.com/profile_images/925576484122779648/ucVTUoPg_400x400.jpg", title: "Material.io"},
   {media: "https://upload.wikimedia.org/wikipedia/commons/4/48/GoogleMaps_logo.svg", title: "Google Maps"},
-  {media: "https://ortlerskytrails.it/wp-content/uploads/2019/03/Youtube-logo-square.png", title: "YouTube"}
+  {media: "https://ortlerskytrails.it/wp-content/uploads/2019/03/Youtube-logo-square.png", title: "YouTube"},
+  {media: "https://pbs.twimg.com/profile_images/721301450962432000/L9ehCZfC_400x400.jpg", title: "Dbpedia"}
 ];
 
 var simone = {

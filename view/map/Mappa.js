@@ -23,7 +23,10 @@ class Mappa extends google.maps.Map{
     //this.controls[google.maps.ControlPosition.TOP_RIGHT].push(this.login);
     this.infoWindow = new UnknownPlaceWindow();
     this.addListener('click', function(e) {
-      if(placeMarker.getMap()) placeMarker.setMap(null);
+      if(placeMarker.getMap()){
+        placeMarker.setMap(null);
+        pageDrawer.open = false;
+      }
       else{
         placeMarker.setPosition(e.latLng);
         placeMarker.setMap(map);
