@@ -1,4 +1,4 @@
-var approx= 0.1;
+var approx= 0.001;
 var queryUrl;
 
 function setQuery(approx){
@@ -16,15 +16,15 @@ function setQuery(approx){
   "  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>",
   "  SELECT  DISTINCT ?name ?lat ?long ?abstract ?img",
   "    where {",
-  "       ?place foaf:name ?name .",
+  "       ?place rdfs:label ?name .",
+  "       FILTER (lang(?name) = 'en')",
   "       ?place dbo:thumbnail ?img.",
-  "       ?place rdf:type dbo:Place . ",
   "       ?place geo:lat ?lat . ",
   "       ?place geo:long ?long . ",
   "       ?place dbo:abstract ?abstract.",
   "       FILTER (?lat > " + (lat - approx)+ " && ?lat < "+ (lat + approx) +")",
   "       FILTER (?long > "+ (long - approx) + " && ?long <"+ (long + approx) +") ",
-  "       FILTER (lang(?abstract) = 'it')",
+  "       FILTER (lang(?abstract) = 'en')",
   "     }",
   " limit 50"
   ].join(" ");
