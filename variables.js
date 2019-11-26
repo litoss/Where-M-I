@@ -89,5 +89,10 @@ var simone = {
    contacts: [{url:"https://www.facebook.com/vincenzo.armandi.5", icon:"fas fa-directions"}]
  }
 
+ var yourPlace = {
+   title: "Tu sei qui",
+   description: "Premi il pulsante 'cerca nei dintorni' per cercare locazioni" 
+ }
+
   var example = [];
   for(var i=0;i<10;i++) example.push({primary: "Ciccio Pasticcio", secondary: "2225 Contributi"});

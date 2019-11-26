@@ -1,7 +1,7 @@
 class TextField extends mdc.textField.MDCTextField{
     constructor(placeholder, icon) {
         var div = document.createElement('div');
-        div.className = "mdc-text-field text-field mdc-text-field--outlined mdc-text-field--no-label mdc-text-field--with-trailing-icon";
+        div.className = "mdc-text-field text-field mdc-text-field--outlined mdc-text-field--no-label";
 
         var input = document.createElement('input');
         input.className = "mdc-text-field__input";
@@ -10,12 +10,7 @@ class TextField extends mdc.textField.MDCTextField{
         input.setAttribute('aria-describedby','text-field-outlined-no-label');
         input.setAttribute('placeholder',placeholder);
         div.appendChild(input);
-
-        var i = document.createElement('i');
-        i.className = 'material-icons mdc-text-field__icon';
-        i.appendChild(document.createTextNode(icon));
-        div.appendChild(i);
-
+        
         var outline = document.createElement('div');
         outline.className = 'mdc-notched-outline mdc-notched-outline--no-label';
         div.appendChild(outline);

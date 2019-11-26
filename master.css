@@ -58,8 +58,7 @@ body {
 .about-card .mdc-card__media:first-child{
   min-width: 110px;
   min-height: 110px;
-  max-width: 110px;
-  max-height: 110px;
+
   float: left;
   margin: 20px;
 }

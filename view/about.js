@@ -11,18 +11,17 @@ function openAbout() {
     div.innerHTML = '';
 
     switch (event.detail.index) {
-      case 0: var team = [simone, carlos, stefano, vincenzo];
+      case 0:
+        var team = [simone, carlos, stefano, vincenzo];
         for (var i in team){
-          var card = new CardTemp(team[i].title, null, team[i].description, team[i].media, null, team[i].contacts);
-          card.className += ' about-card';
-          div.appendChild(card);
+          var actionsIcons = [];
+          for(var j in team[i].contacts) actionsIcons.push(new FontAwesomeButton(team[i].contacts[j].url, team[i].contacts[j].icon));
+          div.appendChild(new CardTemp(team[i].title, null, team[i].description, team[i].media, null, actionsIcons, 'about-card'));
         }
         break;
       case 1:
         for(var i in technologies){
-          var card = new CardTemp(technologies[i].title, null, null, technologies[i].media, null, null);
-          card.className += ' about-card';
-          div.appendChild(card);
+          div.appendChild(new CardTemp(technologies[i].title, null, null, technologies[i].media, null, null, 'about-card'));
         }
         break;
     }

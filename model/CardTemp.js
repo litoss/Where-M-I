@@ -46,9 +46,8 @@ class CardTemp{
       var actionsCardButtons = document.createElement('div');
       actionsCardButtons.className = "mdc-card__action-buttons";
       for(var i in actionsButtons){
-        var button = new FontAwesomeButton(actionsButtons[i].url, actionsButtons[i].name);
-        button.className += " mdc-card__action mdc-card__action--button";
-        actionsCardButtons.appendChild(button);
+        actionsButtons[i].root_.className += " mdc-card__action mdc-card__action--button";
+        actionsCardButtons.appendChild(actionsButtons[i].root_);
       }
       actions.appendChild(actionsCardButtons);
     }
@@ -57,13 +56,14 @@ class CardTemp{
       var actionsCardIcons = document.createElement('div');
       actionsCardIcons.className = "mdc-card__action-icons";
       for(var i in actionsIcons){
-        var button = new FontAwesomeButton(actionsIcons[i].url, actionsIcons[i].icon);
-        button.className += " mdc-card__action mdc-card__action--icon--unbounded";
-        actionsCardIcons.appendChild(button);
+        actionsIcons[i].className += " mdc-card__action mdc-card__action--icon--unbounded";
+        console.log(actionsIcons[i]);
+        actionsCardIcons.appendChild(actionsIcons[i]);
       }
       actions.appendChild(actionsCardIcons);
     }
 
+    console.log(card);
     return card;
   }
 }

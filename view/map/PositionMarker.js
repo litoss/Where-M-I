@@ -16,7 +16,11 @@ class PositionMarker{
       strokeOpacity: 0.25
     });
 
+    this.infoWindow = new YourPosition();
     this.point.bindTo("position", this.circle, "center");
+    this.point.addListener("click", () => {
+      this.infoWindow.open(map,this.point);
+    })
   }
 
   setAccuracy(accuracy){

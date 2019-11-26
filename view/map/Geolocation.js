@@ -4,13 +4,22 @@ class Geolocation extends IconButtonToggle{
 
     this.unbounded = true;
     this.listen('MDCIconButtonToggle:change', (event) => {
-      if(event.detail.isOn) this.watch();
+      if(event.detail.isOn) this.geolocator = navigator.geolocation.watchPosition(this.watch, this.error, {enableHighAccuracy: true,timeout: 5000,maximumAge: 0});
       else this.clear();
     });
   }
 
-  watch(){
-    this.geolocator = navigator.geolocation.watchPosition(showPosition);
+  watch(position){
+    console.log("bau");
+    if(position.coords.accuracy > 100){
+      positionMarker.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
+      positionMarker.setAccuracy(position.coords.accuracy);
+
+    }else{
+      clear();
+      this.on = false;
+      //Popup di errore
+    }
   }
 
   clear(){
@@ -18,4 +27,9 @@ class Geolocation extends IconButtonToggle{
     this.geolocator = null;
     positionMarker.removePosition();
   }
+
+  error(err) {
+    console.warn('ERROR(' + err.code + '): ' + err.message);
+  }
+
 }

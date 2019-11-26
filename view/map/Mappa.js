@@ -21,14 +21,13 @@ class Mappa extends google.maps.Map{
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(geolocatorButton.root_);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(menuButton.root_);
     //this.controls[google.maps.ControlPosition.TOP_RIGHT].push(this.login);
-
+    this.infoWindow = new UnknownPlaceWindow();
     this.addListener('click', function(e) {
       if(placeMarker.getMap()) placeMarker.setMap(null);
       else{
         placeMarker.setPosition(e.latLng);
         placeMarker.setMap(map);
-        var info = new InfoFinestra();
-        info.open(map, placeMarker);
+        this.infoWindow.open(map, placeMarker);
       }
     });
   }
