@@ -42,6 +42,7 @@ function selectPlace() {
   fetch(queryUrl).then(function(response){
     return response.json();
   }).then(function(jsonResponse){
+    console.log(jsonResponse.results.bindings);
     for(var i in jsonResponse.results.bindings){
       var title = jsonResponse.results.bindings[i].name.value;
       var descr = jsonResponse.results.bindings[i].abstract.value;
@@ -50,7 +51,7 @@ function selectPlace() {
       button.addEventListener("click", function(){
 
       });
-      var placeCard = new CardTemp(title,null,descr,img,button);
+      var placeCard = new CardTemp(title,null,descr,img,[button]);
       placeCard.className += ' about-card';
       div.appendChild(placeCard);
     }

@@ -42,37 +42,23 @@ class CardTemp{
       card.appendChild(actions);
     }
 
-<<<<<<< HEAD
-    if(actionsButtons){
-      var actionsCardButtons = document.createElement('div');
-      actionsCardButtons.className = "mdc-card__action-buttons";
-      for(var i in actionsButtons){
-        actionsButtons[i].root_.className += " mdc-card__action mdc-card__action--button";
-        actionsCardButtons.appendChild(actionsButtons[i].root_);
-      }
-      actions.appendChild(actionsCardButtons);
-    }
-
-    if(actionsIcons){
-      var actionsCardIcons = document.createElement('div');
-      actionsCardIcons.className = "mdc-card__action-icons";
-      for(var i in actionsIcons){
-        actionsIcons[i].className += " mdc-card__action mdc-card__action--icon--unbounded";
-        console.log(actionsIcons[i]);
-        actionsCardIcons.appendChild(actionsIcons[i]);
-=======
     if(actionButtons){
-      actions.appendChild(actionButtons);
+      var actionCardButtons = document.createElement('div');
+      actionCardButtons.className = "mdc-card__action-buttons";
+      for(var i in actionButtons){
+        console.log(actionButtons[i]);
+        actionButtons[i].className += " mdc-card__action mdc-card__action--button";
+        actionCardButtons.appendChild(actionButtons[i]);
+      }
+      actions.appendChild(actionCardButtons);
     }
 
     if(actionIcons){
       var actionCardIcons = document.createElement('div');
       actionCardIcons.className = "mdc-card__action-icons";
       for(var i in actionIcons){
-        var button = new FontAwesomeButton(actionIcons[i].url, actionIcons[i].icon);
-        button.className += " mdc-card__action mdc-card__action--icon--unbounded";
-        actionCardIcons.appendChild(button);
->>>>>>> 1a77692b436e7e6aed054914fed1b166d4ceea81
+        actionIcons[i].className += " mdc-card__action mdc-card__action--icon--unbounded";
+        actionCardIcons.appendChild(actionIcons[i]);
       }
       actions.appendChild(actionCardIcons);
     }
