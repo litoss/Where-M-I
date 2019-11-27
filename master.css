@@ -32,18 +32,9 @@ body {
     #content_header{
       width: 480px;
     }
-    .aboutCard {
-      width: 50%;
-      float: left;
-    }
 }
 
-.aboutImg {
-  width: 100%;
-  border-radius: 50px;
-}
-
-.about-card{
+.about-card, .place-card{
   margin:20px;
 }
 
@@ -51,16 +42,12 @@ body {
   position:relative;
 }
 
-.mdc-image__circular{
-  border-radius: 50%;
-}
-
 .about-card .mdc-card__media:first-child{
   min-width: 110px;
   min-height: 110px;
 
   float: left;
-  margin: 20px;
+  margin: 10px;
 }
 
 .about-card .mdc-card__primary-action {
@@ -71,6 +58,10 @@ body {
     flex-direction: row;
 }
 
+
 .about-card .mdc-card__primary{
     padding: 1rem;
+}
+.notListedPlace {
+  padding: 1rem;
 }

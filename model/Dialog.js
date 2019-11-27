@@ -13,7 +13,7 @@ class Dialog extends mdc.dialog.MDCDialog{
     var scrim = document.createElement('div');
     scrim.className = "mdc-dialog__scrim";
 
-    footer.appendChild(footerContent.root_);
+    footer.appendChild(footerContent);
     content.appendChild(mainContent);
     surface.appendChild(content);
     surface.appendChild(footer);

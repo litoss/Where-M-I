@@ -86,13 +86,12 @@ var simone = {
  var luogoSconosciuto = {
    media: "content/no_street.png",
    title: "Località Sconosciuta",
-   description: "Questa è una località non ancora inserita su Where-M-I!",
-   contacts: [{url:"https://www.facebook.com/vincenzo.armandi.5", icon:"fas fa-directions"}]
+   description: "Questa è una località non ancora inserita su Where-M-I!"
  }
 
  var yourPlace = {
    title: "Tu sei qui",
-   description: "Premi il pulsante 'cerca nei dintorni' per cercare locazioni" 
+   description: "Premi il pulsante 'cerca nei dintorni' per cercare locazioni"
  }
 
   var example = [];

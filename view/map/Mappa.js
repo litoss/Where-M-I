@@ -6,7 +6,7 @@ class Mappa extends google.maps.Map{
         lat: 44.2938,
         lng: 11.2034
       },
-      zoom: 15,
+      zoom: 10,
       disableDefaultUI: true,
       styles: [{
         "featureType": "poi",

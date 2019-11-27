@@ -21,7 +21,7 @@ function setQuery(approx){
   "       ?place dbo:thumbnail ?img.",
   "       ?place geo:lat ?lat . ",
   "       ?place geo:long ?long . ",
-  "       ?place dbo:abstract ?abstract.",
+  "       OPTIONAL {?place dbo:abstract ?abstract.}",
   "       FILTER (?lat > " + (lat - approx)+ " && ?lat < "+ (lat + approx) +")",
   "       FILTER (?long > "+ (long - approx) + " && ?long <"+ (long + approx) +") ",
   "       FILTER (lang(?abstract) = 'en')",
@@ -30,32 +30,4 @@ function setQuery(approx){
   ].join(" ");
 
   queryUrl = url+"?query="+ encodeURIComponent(queryPlaces) +"&format=json";
-}
-
-function selectPlace() {
-
-  document.getElementById('content_content').innerHTML = '';
-  document.getElementById('content_title').innerHTML = 'Select your Place';
-  var div = document.createElement("div");
-  document.getElementById('content_content').appendChild(div);
-  setQuery(approx);
-  fetch(queryUrl).then(function(response){
-    return response.json();
-  }).then(function(jsonResponse){
-    console.log(jsonResponse.results.bindings);
-    for(var i in jsonResponse.results.bindings){
-      var title = jsonResponse.results.bindings[i].name.value;
-      var descr = jsonResponse.results.bindings[i].abstract.value;
-      var img = jsonResponse.results.bindings[i].img.value;
-      var button = new ActionButton('select');
-      button.addEventListener("click", function(){
-
-      });
-      var placeCard = new CardTemp(title,null,descr,img,[button]);
-      placeCard.className += ' about-card';
-      div.appendChild(placeCard);
-    }
-  })
-  mainDrawer.open = false;
-  pageDrawer.open = true;
 }

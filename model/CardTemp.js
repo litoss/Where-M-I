@@ -18,7 +18,7 @@ class CardTemp{
     primaryAction.appendChild(primary);
 
     var title = document.createElement('h2');
-    title.className = "demo-card__title mdc-typography mdc-typography--headline6";
+    title.className = "mdc-card__title mdc-typography mdc-typography--headline6";
     title.appendChild(document.createTextNode(titleText));
     primary.appendChild(title);
 
@@ -46,7 +46,6 @@ class CardTemp{
       var actionCardButtons = document.createElement('div');
       actionCardButtons.className = "mdc-card__action-buttons";
       for(var i in actionButtons){
-        console.log(actionButtons[i]);
         actionButtons[i].className += " mdc-card__action mdc-card__action--button";
         actionCardButtons.appendChild(actionButtons[i]);
       }
@@ -63,7 +62,6 @@ class CardTemp{
       actions.appendChild(actionCardIcons);
     }
 
-    console.log(card);
     return card;
   }
 }
