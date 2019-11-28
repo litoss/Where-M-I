@@ -1,4 +1,4 @@
-class ChipButton extends mdc.ripple.MDCRipple {
+class ChipButton extends mdc.chips.MDCChip{
   constructor(name, trailing, leading) {
 
     var chip = document.createElement('div');
@@ -31,7 +31,7 @@ class ChipButton extends mdc.ripple.MDCRipple {
 
     super(chip);
     this.chipText = chipText;
-    this.chipIconLeading
+    this.chipIconLeading = chipIconLeading;
     this.chipIconTrailing = chipIconTrailing;
   }
 

@@ -3,10 +3,10 @@ class Mappa extends google.maps.Map{
 
     super(document.getElementById('map'), {
       center: {
-        lat: 44.2938,
-        lng: 11.2034
+        lat: 44.494201,
+        lng: 11.346477
       },
-      zoom: 10,
+      zoom: 15,
       disableDefaultUI: true,
       styles: [{
         "featureType": "poi",
