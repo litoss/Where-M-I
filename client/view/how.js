@@ -4,4 +4,8 @@ function openHow() {
 
   document.getElementById('map').appendChild(howDialog.root_);
   howDialog.open();
+
+  howDialog.listen('MDCDialog:closing', function() {
+  document.getElementById('map').removeChild(dialog.root_);
+  });
 }
