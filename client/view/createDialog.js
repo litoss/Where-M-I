@@ -3,32 +3,36 @@ function createDialog(card){
 
   var lat = placeMarker.getPosition().lat();
   var long =placeMarker.getPosition().lng();
+  var exampleCard;
 
-  if (card == null) card = new CardTemp(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media);
-  card.className += " about-card";
-  card.id = "place-card";
-  content.appendChild(card);
+  if (card == null)  exampleCard = new CardTemp(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media);
+  else exampleCard = card;
+  exampleCard.className += " about-card";
+  exampleCard.id = "place-card";
+  content.appendChild(exampleCard);
 
-  var addName = document.createElement("div");
-  var name = new TextField("Name","add");
-  var submit = new IconButton("add");
-  submit.root_.addEventListener("click", function(){
-    document.getElementById("place-card").querySelector(".mdc-card__title").innerHTML= name.value;
-  })
-  addName.appendChild(name.root_);
-  addName.appendChild(submit.root_);
-  content.appendChild(addName);
+  if (card == null){
+    var addName = document.createElement("div");
+    var name = new TextField("Name","add");
+    var submit = new IconButton("add");
+    submit.root_.addEventListener("click", function(){
+      document.getElementById("place-card").querySelector(".mdc-card__title").innerHTML= name.value;
+    })
+    addName.appendChild(name.root_);
+    addName.appendChild(submit.root_);
+    content.appendChild(addName);
 
-  var addDescr = document.createElement("div");
-  var descr = new TextField("Description","add");
-  var submit = new IconButton("add");
-  submit.root_.addEventListener("click", function(){
-    document.getElementById("place-card").querySelector(".mdc-typography--body2").innerHTML= descr.value;
-  })
-  addDescr.appendChild(descr.root_);
-  addDescr.appendChild(submit.root_);
-  content.appendChild(addDescr);
-
+    var addDescr = document.createElement("div");
+    var descr = new TextField("Description","add");
+    var submit = new IconButton("add");
+    submit.root_.addEventListener("click", function(){
+      document.getElementById("place-card").querySelector(".mdc-typography--body2").innerHTML= descr.value;
+    })
+    addDescr.appendChild(descr.root_);
+    addDescr.appendChild(submit.root_);
+    content.appendChild(addDescr);
+  }
+  
   var addCat = document.createElement("div");
   var cat = new TextField("Category","add");
   var submit = new IconButton("add");
@@ -48,15 +52,9 @@ function createDialog(card){
   content.appendChild(addOpHo);
 
   var addImage = document.createElement("div");
-  var input = document.createElement('input');
+  var input = document.createElement("input");
   input.type = 'file';
   input.id = 'file';
-  addImage.appendChild(input);
-  var submit = new IconButton("add");
-  submit.root_.addEventListener("click", function(){
-
-  })
-  addImage.appendChild(submit.root_);
   content.appendChild(addImage);
 
   var footer = document.createElement('div');
