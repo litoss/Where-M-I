@@ -11,17 +11,23 @@ function openSearch(){
   var toolbar = document.createElement('div');
   toolbar.className = "mdc-menu-surface--anchor";
 
-  var categoriesButton = new ChipButton('categorie');
-  toolbar.appendChild(categoriesButton);
+  var categoriesButton = new ChipButton('categorie', 'keyboard_arrow_down');
+
+  toolbar.appendChild(categoriesButton.root_);
 
   elements = [];
   for(var i in content) elements.push(new ElementList(content[i].name));
-  var categoriesMenu = new Menus(new List(elements));
+  var list = new List(elements);
+  var categoriesMenu = new Menus(list.root_);
   toolbar.appendChild(categoriesMenu.root_);
-  categoriesButton.addEventListener("click", () => {
+
+  categoriesButton.listen("click", () => {
     categoriesMenu.open = true;
   })
-
+  list.listen('MDCList:action', (event) => {
+    categoriesButton.setName(content[event.detail.index].name);
+    categoriesButton.selected = true;
+  });
 
   document.getElementById('content_content').appendChild(toolbar);
   mainDrawer.open = false;

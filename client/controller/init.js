@@ -9,7 +9,6 @@ var zoomLessButton = new ZoomLess();
 var zoomPlusButton = new ZoomPlus();
 var geolocatorButton = new Geolocation();
 var menuButton = new Menu();
-var login = new Login();
 var positionMarker = new PositionMarker();
 var placeMarker = new PlaceMarker();
 

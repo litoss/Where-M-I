@@ -29,33 +29,28 @@ class Menu extends mdc.topAppBar.MDCTopAppBar{
     div.appendChild(end);
 
     var icon = new ImageButton('content/photo.png');
-    icon.root_.className += " mdc-top-app-bar__navigation-icon";
+    icon.root_.className += "mdc-top-app-bar__navigation-icon";
     end.appendChild(icon.root_);
-    
+
     super(header);
-
-    gapi.signin2.render(icon, {
-      'scope': 'profile email',
-      'width': 150,
-      'height': 48,
-      'theme': 'dark',
-      'onsuccess': this.onSuccess,
-      'onfailure': this.onFailure
-    });
-
-
     this.title = title;
     this.end = end;
+
+    gapi.load('auth2', () => {
+      var auth2 = gapi.auth2.init({
+        client_id: '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+      });
+
+      auth2.attachClickHandler(icon.root_, {}, (googleUser) => {
+        icon.setImage(googleUser.getBasicProfile().getImageUrl());
+      }, (error) => {
+        console.log(error);
+      });
+    });
 
     this.listen('MDCTopAppBar:nav', () => {
       mainDrawer.open = !mainDrawer.open;
     });
-  }
-
-  onSuccess(googleUser) {
-    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-  }
-  onFailure(error) {
-    console.log(error);
   }
 }

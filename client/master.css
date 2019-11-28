@@ -42,10 +42,13 @@ body {
   position:relative;
 }
 
+.mdc-image__circular{
+  border-radius: 50%;
+}
+
 .about-card .mdc-card__media:first-child{
   min-width: 110px;
   min-height: 110px;
-
   float: left;
   margin: 10px;
 }
@@ -57,7 +60,6 @@ body {
     -ms-flex-direction: row;
     flex-direction: row;
 }
-
 
 .about-card .mdc-card__primary{
     padding: 1rem;
