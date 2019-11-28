@@ -95,4 +95,4 @@ var simone = {
  }
 
   var example = [];
-  for(var i=0;i<10;i++) example.push({primary: "Ciccio Pasticcio", secondary: "2225 Contributi"});
+  for(var i=0;i<10;i++) example.push({primaryText: "Ciccio Pasticcio", secondaryText: "2225 Contributi"});

@@ -14,7 +14,9 @@ function openSearch(){
   var categoriesButton = new ChipButton('categorie');
   toolbar.appendChild(categoriesButton);
 
-  var categoriesMenu = new Menus(content.map(o => o['name']));
+  elements = [];
+  for(var i in content) elements.push(new ElementList(content[i].name));
+  var categoriesMenu = new Menus(new List(elements));
   toolbar.appendChild(categoriesMenu.root_);
   categoriesButton.addEventListener("click", () => {
     categoriesMenu.open = true;
