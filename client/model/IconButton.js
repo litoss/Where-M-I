@@ -6,5 +6,6 @@ class IconButton extends mdc.ripple.MDCRipple{
         item.innerHTML = icon;
 
         super(item);
+        this.unbounded = true;
     }
 }

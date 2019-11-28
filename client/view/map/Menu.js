@@ -16,7 +16,7 @@ class Menu extends mdc.topAppBar.MDCTopAppBar{
     div.appendChild(start);
 
     var menu = new IconButton('menu');
-    menu.root_.className += "material-icons mdc-top-app-bar__navigation-icon mdc-icon-button";
+    menu.root_.className += " mdc-top-app-bar__navigation-icon";
     start.appendChild(menu.root_);
 
     var title = document.createElement('span');
@@ -31,8 +31,18 @@ class Menu extends mdc.topAppBar.MDCTopAppBar{
     var icon = new ImageButton('content/photo.png');
     icon.root_.className += " mdc-top-app-bar__navigation-icon";
     end.appendChild(icon.root_);
-
+    
     super(header);
+
+    gapi.signin2.render(icon, {
+      'scope': 'profile email',
+      'width': 150,
+      'height': 48,
+      'theme': 'dark',
+      'onsuccess': this.onSuccess,
+      'onfailure': this.onFailure
+    });
+
 
     this.title = title;
     this.end = end;
@@ -40,5 +50,12 @@ class Menu extends mdc.topAppBar.MDCTopAppBar{
     this.listen('MDCTopAppBar:nav', () => {
       mainDrawer.open = !mainDrawer.open;
     });
+  }
+
+  onSuccess(googleUser) {
+    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+  }
+  onFailure(error) {
+    console.log(error);
   }
 }

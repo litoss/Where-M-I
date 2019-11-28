@@ -10,20 +10,18 @@ function selectPlace() {
     return response.json();
   }).then(function(jsonResponse){
     for(var i in jsonResponse.results.bindings){
-      var title = jsonResponse.results.bindings[i].name.value;
-      var descr = jsonResponse.results.bindings[i].abstract.value;
-      var img = jsonResponse.results.bindings[i].img.value;
 
       var button = new ActionButton('select');
-      button.addEventListener("click", () => {
+      button.id = i;
+      button.addEventListener("click", (event) => {
 
         var form = new FormData();
         form.append('OLC', OpenLocationCode.encode(placeMarker.getPosition().lat(), placeMarker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_EXTRA));
         form.append('user', googleUser.ID);
-        form.append('name', title);
+        form.append('name', jsonResponse.results.bindings[event.srcElement.id].name.value);
         //form.append('category', ?)
         //form.append('orario', ?);
-        form.append('descrizione', descr);
+        form.append('descrizione', jsonResponse.results.bindings[event.srcElement.id].abstract.value);
 
         xhr = new XMLHttpRequest();
         xhr.open('POST', '/new_place');
@@ -37,8 +35,6 @@ function selectPlace() {
                 alert('Request failed.  Returned status of ' + xhr.status);
             }
         };
-        console.log(JSON.stringify(form));
-
 
         var object = {};
         form.forEach(function(value, key){
@@ -48,7 +44,7 @@ function selectPlace() {
         xhr.send(JSON.stringify(object));
       });
 
-      var placeCard = new CardTemp(title,null,descr,img,[button]);
+      var placeCard = new CardTemp(jsonResponse.results.bindings[i].name.value,null,jsonResponse.results.bindings[i].abstract.value,jsonResponse.results.bindings[i].img.value,[button]);
       placeCard.className += ' about-card';
       div.appendChild(placeCard);
     }
