@@ -1,0 +1,69 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"></meta>
+    <title>MongoTest</title>
+    <script src="jquery.min.js"> </script>
+    <script src="client.js"> </script>
+<style>
+    div{ 
+        width:100%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-right: 1px;
+        padding-left: 20px;
+        background: rgb(141, 139, 139);
+    }
+    .buttons{
+        text-align: center;
+        margin-left: 80px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+    .text_box{
+
+        
+        padding: 12px 220px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        height: 40px;
+    }
+</style> 
+    
+    
+</head>
+
+
+
+<body>
+    <h1 class="title">
+        Test inserimento dati nel database Mongo:
+    </h1>
+
+    OLC: <input class="text_box" type="text" id="OLC_box" placeholder="Insert data into MongoDB" ><br>
+    NAME: <input class="text_box" type="text" id="name_box"><br>
+    <button class=buttons type="button" id="addMongo" >Add to the MongoDB</button><br>
+
+    <p>FIND</p>
+    OLC: <input class="text_box" type="text" id="find_olc_box" placeholder="OLC"><br>
+    user: <input class="text_box" type="text" id="find_user_box" placeholder="user"><br>
+    name: <input class="text_box" type="text" id="find_name_box" placeholder="name"><br>
+    category: <input class="text_box" type="text" id="find_category_box" placeholder="category"><br>
+    media rating: <input class="text_box" type="text" id="find_mrating_box" placeholder="media rating"><br><br>
+    <button type="button" id="find_button" >Find OLC</button><br><br><br>
+
+    <button type="button" id="categorie" >categorie json request</button><br><br><br>
+  
+
+    <button type="button" id="listMongo" onclick="listM()">list MongoDB</button>
+    <div id="testo"> </div>
+    
+
+    
+</body>
+</html>
