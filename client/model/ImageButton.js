@@ -1,4 +1,4 @@
-class ImageButton extends mdc.iconButton.MDCIconButtonToggle{
+class ImageButton extends mdc.ripple.MDCRipple{
   constructor(src, options){
     var button = document.createElement('button');
     button.className = "mdc-icon-button " + options;
