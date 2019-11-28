@@ -15,8 +15,37 @@ function selectPlace() {
       var img = jsonResponse.results.bindings[i].img.value;
 
       var button = new ActionButton('select');
-      button.addEventListener("click", function(){
+      button.addEventListener("click", () => {
 
+        var form = new FormData();
+        form.append('OLC', OpenLocationCode.encode(placeMarker.getPosition().lat(), placeMarker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_EXTRA));
+        form.append('user', googleUser.ID);
+        form.append('name', title);
+        //form.append('category', ?)
+        //form.append('orario', ?);
+        form.append('descrizione', descr);
+
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', '/new_place');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+          console.log(xhr.responseText);
+            if (xhr.status === 200) {
+                alert('Aggiunto con Successo!');
+            }
+            else if (xhr.status !== 200) {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        console.log(JSON.stringify(form));
+
+
+        var object = {};
+        form.forEach(function(value, key){
+            object[key] = value;
+        });
+
+        xhr.send(JSON.stringify(object));
       });
 
       var placeCard = new CardTemp(title,null,descr,img,[button]);
