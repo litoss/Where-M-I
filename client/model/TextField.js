@@ -10,7 +10,7 @@ class TextField extends mdc.textField.MDCTextField{
         input.setAttribute('aria-describedby','text-field-outlined-no-label');
         input.setAttribute('placeholder',placeholder);
         div.appendChild(input);
-        
+
         var outline = document.createElement('div');
         outline.className = 'mdc-notched-outline mdc-notched-outline--no-label';
         div.appendChild(outline);

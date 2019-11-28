@@ -19,6 +19,33 @@ function createDialog(card){
   addName.appendChild(submit.root_);
   content.appendChild(addName);
 
+  var addDescr = document.createElement("div");
+  var descr = new TextField("Description","add");
+  var submit = new IconButton("add");
+  submit.root_.addEventListener("click", function(){
+    document.getElementById("place-card").querySelector(".mdc-typography--body2").innerHTML= descr.value;
+  })
+  addDescr.appendChild(descr.root_);
+  addDescr.appendChild(submit.root_);
+  content.appendChild(addDescr);
+
+  var addCat = document.createElement("div");
+  var cat = new TextField("Category","add");
+  var submit = new IconButton("add");
+  submit.root_.addEventListener("click", function(){
+  })
+  addCat.appendChild(cat.root_);
+  addCat.appendChild(submit.root_);
+  content.appendChild(addCat);
+
+  var addOpHo = document.createElement("div");
+  var opHo = new TextField("Opening Hours","add");
+  var submit = new IconButton("add");
+  submit.root_.addEventListener("click", function(){
+  })
+  addOpHo.appendChild(opHo.root_);
+  addOpHo.appendChild(submit.root_);
+  content.appendChild(addOpHo);
 
   var addImage = document.createElement("div");
   var input = document.createElement('input');
@@ -42,7 +69,7 @@ function createDialog(card){
     form.append('name', document.getElementById("place-card").querySelector(".mdc-card__title").innerHTML);
     //form.append('category', ?)
     //form.append('orario', ?);
-    form.append('descrizione', document.getElementById("place-card").querySelector(".mdc-typography--body2").innerHTML);
+    form.append('description', document.getElementById("place-card").querySelector(".mdc-typography--body2").innerHTML);
 
     xhr = new XMLHttpRequest();
     xhr.open('POST', '/new_place');
@@ -67,7 +94,7 @@ function createDialog(card){
   footer.appendChild(button);
 
 
-  var dialog = new Dialog(content,footer);
+  var dialog = new Dialog(content,footer,"Add some informations.");
   document.getElementById('map').appendChild(dialog.root_);
   dialog.open();
 
