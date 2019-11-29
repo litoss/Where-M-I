@@ -4,7 +4,7 @@
   mainDrawer.open = true;
 }*/
 
-var googleUser = {};
+var profile = {};
 var zoomLessButton = new ZoomLess();
 var zoomPlusButton = new ZoomPlus();
 var geolocatorButton = new Geolocation();

@@ -1,8 +1,8 @@
 class Menus extends mdc.menu.MDCMenu{
-    constructor(list) {
+    constructor(obj) {
         var div = document.createElement('div');
         div.className = "mdc-menu mdc-menu-surface";
-        div.appendChild(list);
+        div.appendChild(obj);
         super(div);
     }
 }

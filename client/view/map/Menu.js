@@ -28,6 +28,7 @@ class Menu extends mdc.topAppBar.MDCTopAppBar{
     end.className = "mdc-top-app-bar__section mdc-top-app-bar__section--align-end";
     div.appendChild(end);
 
+
     var icon = new ImageButton('content/photo.png');
     icon.root_.className += "mdc-top-app-bar__navigation-icon";
     end.appendChild(icon.root_);
@@ -43,7 +44,8 @@ class Menu extends mdc.topAppBar.MDCTopAppBar{
       });
 
       auth2.attachClickHandler(icon.root_, {}, (googleUser) => {
-        icon.setImage(googleUser.getBasicProfile().getImageUrl());
+        profile = googleUser.getBasicProfile();
+        icon.setImage(profile.getImageUrl());
       }, (error) => {
         console.log(error);
       });

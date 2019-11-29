@@ -32,7 +32,7 @@ function createDialog(card){
     addDescr.appendChild(submit.root_);
     content.appendChild(addDescr);
   }
-  
+
   var addCat = document.createElement("div");
   var cat = new TextField("Category","add");
   var submit = new IconButton("add");
@@ -63,7 +63,7 @@ function createDialog(card){
 
     var form = new FormData();
     form.append('OLC', OpenLocationCode.encode(placeMarker.getPosition().lat(), placeMarker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_EXTRA));
-    form.append('user', googleUser.ID);
+    form.append('user', profile.getId());
     form.append('name', document.getElementById("place-card").querySelector(".mdc-card__title").innerHTML);
     //form.append('category', ?)
     //form.append('orario', ?);
