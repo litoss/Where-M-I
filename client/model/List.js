@@ -3,7 +3,6 @@ class List extends mdc.list.MDCList{
         var ul = document.createElement('ul');
         ul.className = "mdc-list ";
         if(options) ul.className += "mdc-list--two-line";
-        console.log(elements);
         for(var i in elements) ul.appendChild(elements[i]);
 
         super(ul);

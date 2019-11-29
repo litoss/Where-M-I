@@ -102,10 +102,10 @@ exports.find = async(olc, utente, nome, categoria, media_rating, orario) => { //
 
         var query = {
             $and:[
-                {OLC:{$regex:_olc}},
+              //  {OLC:{$regex:_olc}},
                 {user:{$regex:_utente, $options:'i'}},
-                {name:{$regex:_nome, $options:'i'}},
-                {category:{$regex:_categoria, $options:'i'}},
+              //  {name:{$regex:_nome, $options:'i'}},
+            //    {category:{$regex:_categoria, $options:'i'}},
                 //{m_rating:{$regex:media_rating}},
                 //{opening:{$regex:orario}}
             ]};/* $options:'i' serve ad annulare il Case Sensitive del regex */

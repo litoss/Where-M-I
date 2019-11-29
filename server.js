@@ -29,7 +29,6 @@ app.get("/categorie", function (req, res) { //richiesta del json con le categori
 
 
 app.post("/new_place", async (req, res) => { // aggiunta di un nuovo luogo
-        
     var loc_code = req.body.OLC; //codice location
     var utente = req.body.user; //nome utente che crea il luogo
     var loc_name = req.body.name; //nome del posto
@@ -37,12 +36,12 @@ app.post("/new_place", async (req, res) => { // aggiunta di un nuovo luogo
     var m_rating = '0' //req.body.media_rating; //media rating a zero alla creazione del luogo
     var orario = req.body.opening; // orari di apertura del luogo
     var descrizione = req.body.description; // descrizione del luogo
-    try {    
-        
+    try {
+
         let doc = await myModule.add_one(loc_code, utente, loc_name, loc_class, m_rating, orario, descrizione);
         console.log(doc);
         res.send(doc);
-        
+
     } catch (err) { //catch the error if the database isn't connected
         res.send(err);
     }
@@ -58,18 +57,18 @@ var v_tag = visit_tag;
 var comm = comment;
 
 
-try {    
-        
+try {
+
         let doc = await myModule.add_review(loc_code, utente, a_rating, p_rating, v_tag, comm);
         console.log(doc);
         res.send(doc);
-        
+
     } catch (err) { //catch the error if the database isn't connected
         res.send(err);
     }
 
 
-})
+});
 
 
 app.post("/find", async (req, res) => {
@@ -81,12 +80,13 @@ app.post("/find", async (req, res) => {
     var m_rating = req.body.media_rating;
     var orario = req.body.opening;
 
+    console.log(req);
     try{
 
             var doc = await myModule.find(loc_code, utente, loc_name, loc_class, m_rating, orario);
             console.log(doc)
             res.send(JSON.stringify(doc));
-    
+
     }
     catch(err){
         res.send(err);
@@ -95,7 +95,7 @@ app.post("/find", async (req, res) => {
 });
 
 app.get("/list_place", async (req, res) => {
-    
+
     try {
 
     let ret = await myModule.showdb();

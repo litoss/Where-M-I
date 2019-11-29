@@ -74,7 +74,7 @@ function createDialog(card){
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
       console.log(xhr.responseText);
-        if (xhr.status === 200) {
+        if (xhr.status === 200 && xhr.responseText.result.ok == 1) {
             alert('Aggiunto con Successo!');
         }
         else if (xhr.status !== 200) {

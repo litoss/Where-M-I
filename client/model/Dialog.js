@@ -29,5 +29,4 @@ class Dialog extends mdc.dialog.MDCDialog{
 
     super(item);
   }
-
 }
