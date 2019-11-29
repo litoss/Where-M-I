@@ -46,6 +46,10 @@ class Menu extends mdc.topAppBar.MDCTopAppBar{
       auth2.attachClickHandler(icon.root_, {}, (googleUser) => {
         profile = googleUser.getBasicProfile();
         icon.setImage(profile.getImageUrl());
+
+        var items = document.querySelectorAll('.mdc-list-item--disabled');
+        for(var i=0; i<3;i++) items[i].className="mdc-list-item";
+
       }, (error) => {
         console.log(error);
       });
