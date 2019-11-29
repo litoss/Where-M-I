@@ -25,6 +25,7 @@ function openPlaces(){
       object[key] = value;
   });
   xhr.send(JSON.stringify(object));
+  console.log("ciao");
 
   mainDrawer.open = false;
   pageDrawer.open = true;
