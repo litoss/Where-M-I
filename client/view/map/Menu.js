@@ -35,8 +35,12 @@ class Menu extends mdc.topAppBar.MDCTopAppBar{
 
     super(header);
     this.title = title;
-    this.end = end;
+    this.icon = icon;
 
+    this.icon.listen("click", () => {
+      loginDialog();
+    } )
+    /*
     gapi.load('auth2', () => {
       var auth2 = gapi.auth2.init({
         client_id: '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com',
@@ -54,6 +58,7 @@ class Menu extends mdc.topAppBar.MDCTopAppBar{
         console.log(error);
       });
     });
+    */
 
     this.listen('MDCTopAppBar:nav', () => {
       mainDrawer.open = !mainDrawer.open;
