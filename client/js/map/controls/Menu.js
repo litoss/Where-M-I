@@ -4,14 +4,22 @@ class Menu extends TopAppBar{
     var menu = new IconButton('menu');
     var icon = new ImageButton('content/photo.png');
 
-    super('Where M I', menu.root_, icon.root_, "mdc-top-app-bar--relative mdc-top-app-bar--dense");
+    var toolbar = document.createElement('div');
+    var card = new CardTemp("Guest",null,null,"content/photo.png");
+    card.className = "about-card";
+    var loginButton = document.createElement('div');
+    render(loginButton);
+    var menuList = new List([card,loginButton]);
+    var menus = new Menus(menuList.root_);
+    toolbar.appendChild(menus.root_);
+
+    super('Where M I', menu.root_, icon.root_, toolbar, "mdc-top-app-bar--relative mdc-top-app-bar--dense");
 
     this.icon = icon;
-    initLoginDialog();
-
+    this.menus = menus;
+    
     icon.listen('click', () => {
-      document.getElementById('map').appendChild(dialog.root_);
-      dialog.open();
+      menus.open= !menus.open;
     })
 
     this.listen('MDCTopAppBar:nav', () => {

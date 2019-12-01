@@ -1,5 +1,5 @@
 class TopAppBar extends mdc.topAppBar.MDCTopAppBar{
-    constructor(titleText, leftButton, rightButton, options){
+    constructor(titleText, leftButton, rightButton, login, options){
       var header = document.createElement('header');
       header.className = "mdc-top-app-bar";
       if(options) header.className += " " + options;
@@ -23,20 +23,25 @@ class TopAppBar extends mdc.topAppBar.MDCTopAppBar{
       start.appendChild(title);
 
       var end = document.createElement('section');
-      end.className = "mdc-top-app-bar__section mdc-top-app-bar__section--align-end";
+      end.className = "mdc-top-app-bar__section mdc-top-app-bar__section--align-end mdc-menu-surface--anchor";
       div.appendChild(end);
 
       rightButton.className += " mdc-top-app-bar__navigation-icon";
       end.appendChild(rightButton);
+      end.appendChild(login);
 
 
       super(header);
 
       this.title = title;
+      this.end = end;
     }
 
     setTitle(newTitle){
       this.title.innerHTML = newTitle;
     }
 
+    getTitle(){
+      return this.title;
+    }
 }
