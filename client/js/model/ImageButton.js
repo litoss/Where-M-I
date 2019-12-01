@@ -8,13 +8,14 @@ class ImageButton extends mdc.ripple.MDCRipple{
     img.className = "mdc-icon-button__icon mdc-image__circular";
     img.setAttribute('src', src);
     button.appendChild(img);
-    
+
     super(button);
     this.unbounded = true;
     this.img = img;
   }
 
   setImage(newSrc){
+    console.log(newSrc);
     this.img.setAttribute('src', newSrc);
   }
 }

@@ -1,8 +1,8 @@
 function createDialog(card){
   var content = document.createElement("div");
 
-  var lat = placeMarker.getPosition().lat();
-  var long =placeMarker.getPosition().lng();
+  var lat = map.unknownMarker.getPosition().lat();
+  var long = map.unknownMarker.getPosition().lng();
   var exampleCard;
 
   if (card == null)  exampleCard = new CardTemp(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media);

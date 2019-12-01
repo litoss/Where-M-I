@@ -10,7 +10,6 @@ class Geolocation extends IconButtonToggle{
   }
 
   watch(position){
-    console.log("bau");
     if(position.coords.accuracy > 100){
       positionMarker.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
       positionMarker.setAccuracy(position.coords.accuracy);

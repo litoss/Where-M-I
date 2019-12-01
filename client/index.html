@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <meta name="theme-color" content="#000000">
@@ -40,15 +39,15 @@
         </a>
         <hr class="mdc-list-divider">
         <h6 class="mdc-list-group__subheader">Editor</h6>
-        <a class="mdc-list-item mdc-list-item--disabled"  onclick="openPlaces()" >
+        <a class="mdc-list-item mdc-list-item--disabled" onclick="openPlaces()">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
           <span class="mdc-list-item__text">Your Places</span>
         </a>
-        <a class="mdc-list-item mdc-list-item--disabled"  href="#">
+        <a class="mdc-list-item mdc-list-item--disabled" href="#">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">videocam</i>
           <span class="mdc-list-item__text">Your Clips</span>
         </a>
-        <a class="mdc-list-item mdc-list-item--disabled"  href="#">
+        <a class="mdc-list-item mdc-list-item--disabled" href="#">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">directions</i>
           <span class="mdc-list-item__text">Your Paths</span>
         </a>
@@ -96,66 +95,64 @@
 
   <div id="map" class="main-content"></div>
 
-  <script>
-
-  </script>
   <script src="variables.js"></script>
   <script src="https://apis.google.com/js/platform.js"></script>
 
   <!-- Model -->
-  <script src="model/IconButtonToggle.js"></script>
-  <script src="model/IconButton.js"></script>
-  <script src="model/Menus.js"></script>
-  <script src="model/FontAwesomeButton.js"></script>
-  <script src="model/ChipButton.js"></script>
-  <script src="model/ChipSet.js"></script>
-  <script src="model/Tab.js"></script>
-  <script src="model/TabBar.js"></script>
-  <script src="model/List.js"></script>
-  <script src="model/CardTemp.js"></script>
-  <script src="model/Dialog.js"></script>
-  <script src="model/TextField.js"></script>
-  <script src="model/ImageButton.js"></script>
-  <script src="model/ActionButton.js"></script>
-  <script src="model/ElementList.js"></script>
+  <script src="js/model/IconButtonToggle.js"></script>
+  <script src="js/model/IconButton.js"></script>
+  <script src="js/model/Menus.js"></script>
+  <script src="js/model/FontAwesomeButton.js"></script>
+  <script src="js/model/ChipButton.js"></script>
+  <script src="js/model/ChipSet.js"></script>
+  <script src="js/model/Tab.js"></script>
+  <script src="js/model/TabBar.js"></script>
+  <script src="js/model/List.js"></script>
+  <script src="js/model/CardTemp.js"></script>
+  <script src="js/model/Dialog.js"></script>
+  <script src="js/model/TextField.js"></script>
+  <script src="js/model/ImageButton.js"></script>
+  <script src="js/model/ActionButton.js"></script>
+  <script src="js/model/ElementList.js"></script>
+  <script src="js/model/TopAppBar.js"></script>
 
 
   <!-- Controller -->
-  <script src="controller/events.js"></script>
-  <script src="controller/sparql.js"></script>
+  <script src="js/sparql.js"></script>
 
   <!-- View -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.3/openlocationcode.min.js"></script>
 
-  <script src="view/charts.js"></script>
-  <script src="view/about.js"></script>
-  <script src="view/menu_drawer.js"></script>
-  <script src="view/page_drawer.js"></script>
-  <script src="view/how.js"></script>
-  <script src="view/settings.js"></script>
-  <script src="view/search.js"></script>
-  <script src="view/yourPlaces.js"></script>
+  <script src="js/drawers/charts.js"></script>
+  <script src="js/drawers/about.js"></script>
+  <script src="js/drawers/menu_drawer.js"></script>
+  <script src="js/drawers/page_drawer.js"></script>
+  <script src="js/drawers/settings.js"></script>
+  <script src="js/drawers/search.js"></script>
+  <script src="js/drawers/yourPlaces.js"></script>
+  <script src="js/drawers/unknownPlaceDrawer.js"></script>
 
-  <script src="view/unknownPlaceDrawer.js"></script>
-  <script src="view/createDialog.js"></script>
-  <script src="view/loginDialog.js"></script>
+  <script src="js/dialogs/how.js"></script>
+  <script src="js/dialogs/createDialog.js"></script>
+  <script src="js/dialogs/loginDialog.js"></script>
 
 
 
   <!-- Google Maps Initialize -->
-  <script src="view/map/Menu.js"></script>
-  <script src="view/map/ZoomLess.js"></script>
-  <script src="view/map/ZoomPlus.js"></script>
-  <script src="view/map/Geolocation.js"></script>
-  <script src="view/map/PositionMarker.js"></script>
-  <script src="view/map/PlaceMarker.js"></script>
-  <script src="view/map/Mappa.js"></script>
-  <script src="view/map/UnknownPlaceWindow.js"></script>
-  <script src="view/map/PositionWindow.js"></script>
+  <script src="js/map/controls/Menu.js"></script>
+  <script src="js/map/controls/ZoomLess.js"></script>
+  <script src="js/map/controls/ZoomPlus.js"></script>
+  <script src="js/map/controls/Geolocation.js"></script>
+  <script src="js/map/markers/PositionMarker.js"></script>
+  <script src="js/map/markers/PlaceMarker.js"></script>
+  <script src="js/map/infowindows/PlaceWindow.js"></script>
+  <script src="js/map/infowindows/UnknownPlaceWindow.js"></script>
+  <script src="js/map/infowindows/PositionWindow.js"></script>
+  <script src="js/map/Mappa.js"></script>
 
   <!-- CDN -->
-  <script src="controller/init.js" async defer></script>
+  <script src="js/init.js" async defer></script>
 
 </body>
 
