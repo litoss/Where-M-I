@@ -15,7 +15,6 @@ class ImageButton extends mdc.ripple.MDCRipple{
   }
 
   setImage(newSrc){
-    console.log(newSrc);
     this.img.setAttribute('src', newSrc);
   }
 }

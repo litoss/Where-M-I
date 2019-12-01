@@ -7,7 +7,7 @@ class Menu extends TopAppBar{
     super('Where M I', menu.root_, icon.root_, "mdc-top-app-bar--relative mdc-top-app-bar--dense");
 
     this.icon = icon;
-    loginDialog();
+    initLoginDialog();
 
     icon.listen('click', () => {
       document.getElementById('map').appendChild(dialog.root_);
