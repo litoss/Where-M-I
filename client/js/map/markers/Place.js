@@ -30,7 +30,7 @@ class Place {
     });
     discardButton.addEventListener('click', function(){
       pageDrawer.open = false;
-      placeMarker.setMap(null);
+      marker.setMap(null);
     });
     this.marker.addListener('click', () => {
       this.infoWindow.open(map, this.marker);

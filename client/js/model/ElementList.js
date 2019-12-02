@@ -11,21 +11,23 @@ class ElementList{
         li.appendChild(iconSpan);
       }
 
-      var primarySpan = document.createElement('span');
-      primarySpan.className = "mdc-list-item__primary-text";
-      primarySpan.innerHTML = primaryText;
+      var textSpan = document.createElement('span');
+      textSpan.className = "mdc-list-item__text";
+      li.appendChild(textSpan);
 
       if(secondaryText){
-        var textSpan = document.createElement('span');
-        textSpan.className = "mdc-list-item__text";
+        var primarySpan = document.createElement('span');
+        primarySpan.className = "mdc-list-item__primary-text";
+        primarySpan.innerHTML = primaryText;
         textSpan.appendChild(primarySpan);
+
         var secondarySpan = document.createElement('span');
         secondarySpan.className = "mdc-list-item__primary-text";
         secondarySpan.innerHTML = secondaryText;
+
         textSpan.appendChild(secondarySpan);
-        li.appendChild(textSpan);
       }else{
-        li.appendChild(primarySpan);
+        textSpan.innerHTML = primaryText;
       }
 
       return li;

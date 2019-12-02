@@ -94,5 +94,34 @@ var simone = {
    description: "Premi il pulsante 'cerca nei dintorni' per cercare locazioni"
  }
 
+ var browserList = [
+   {description:"Visualizzazione di una mappa geografica della posizione del turista", check:true},
+   {description:"Meccanismo di ricerca di clip dei luoghi di interesse", check:false},
+   {description:"Accesso ad una playlist di audio clip relativi ai luoghi più interessanti dei dintorni", check:false},
+   {description:"Organizzare la playlist per locazione, tipo, dettaglio e audience", check:false},
+   {description:"L'utente può passare da una clip all'altra in maniera molto semplice", check:false},
+   {description:"Il sistema riproduce la prima clip sul luogo in cui si trova", check:false},
+   {description:"Il sistema sceglie il prossimo luogo da visitare", check:false},
+   {description:"Il sistema ri-seleziona il luogo precedente", check:false},
+   {description:"Il sistema riproduce il prossimo clip in lista sullo stesso luogo da visitare", check:false},
+   {description:"Il sistema riprende la riproduzione", check:false},
+   {description:"Meccanismo per filtrare la playlist di clip in base ad alcune caratteristiche", check:false},
+   {description:"Visualizzazione di un'area per la registrazione ed il login, se l'utente non è loggato", check:false},
+   {description:"Scelta della lingua/delle lingue dei clip", check:false},
+   {description:"Scelta del tipo di audience", check:false},
+   {description:"Scelta del tipo di interessi culturali dell'utente", check:false},
+   {description:"Creazione di percorsi guidati personalizzati", check:false},
+   {description:"Visualizzazione di un'area contentente classifiche generali su clip, vlogger e percorsi", check:false},
+   {description:"Visualizzazione di una mappa geografica in base alla propria posizione GPS", check:false},
+   {description:"Possibilità di aggiustare la propria posizione sulla mappa, trascinando un apposito placeholder presente sulla mappa", check:false},
+   {description:"Se la posizione GPS non è disponibile, l’utente deve poter specificare manualmente la posizione navigando sulla mappa eventualmente zoomando oppure attraverso l’inserimento di: Via, Civico, Città, Provincia, Paese", check:false},
+   {description:"Visualizzazione dei luoghi turistici nei dintorni, in base alla posizione specificata e su un'area specificabile dall'utente", check:false},
+   {description:"Mostrare la playlist delle clip sui luoghi turistici di interesse. Estrarre le audio-guide da YouTube.", check:false},
+   {description:"Possibilità di filtrare i luoghi turistici in base alla tipologia e all’orario di apertura/chiusura.", check:false},
+   {description:"Possibilità di taggare un luogo turistico come già visitato. Visualizzare il tag sulla mappa.", check:false},
+   {description:"Possibilità di taggare un luogo turistico come già visitato. Visualizzare il tag sulla mappa.", check:false},
+   {description:"Accesso ai contenuti di Wikipedia: cercare il contenuto di DBPedia relativo al luogo nella lingua richiesta e riprodurre il contenuto della descrizione iniziale con sintesi vocale", check:false},
+   {description:"Implementare un meccanismo di acquisizione feedback dall’utente e visualizzare tale feedback sulla mappa.", check:false}
+ ]
   var example = [];
   for(var i=0;i<10;i++) example.push({primaryText: "Ciccio Pasticcio", secondaryText: "2225 Contributi"});
