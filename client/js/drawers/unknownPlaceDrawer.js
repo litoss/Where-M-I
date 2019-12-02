@@ -17,11 +17,11 @@ function selectPlace() {
         var name = jsonResponse.results.bindings[event.srcElement.id].name.value;
         var descr = jsonResponse.results.bindings[event.srcElement.id].abstract.value;
         var img = jsonResponse.results.bindings[event.srcElement.id].img.value;
-        var selectedCard = new CardTemp(name,null,descr,img);
+        var selectedCard = new CardTemp(name,null,descr,img).root_;
         createDialog(selectedCard);
       });
 
-      var placeCard = new CardTemp(jsonResponse.results.bindings[i].name.value,null,jsonResponse.results.bindings[i].abstract.value,jsonResponse.results.bindings[i].img.value,[button]);
+      var placeCard = new CardTemp(jsonResponse.results.bindings[i].name.value,null,jsonResponse.results.bindings[i].abstract.value,jsonResponse.results.bindings[i].img.value,[button]).root_;
       placeCard.className += ' about-card';
       div.appendChild(placeCard);
     };

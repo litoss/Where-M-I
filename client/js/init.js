@@ -5,12 +5,6 @@
 }*/
 
 var profile;
-var zoomLessButton = new ZoomLess();
-var zoomPlusButton = new ZoomPlus();
-var geolocatorButton = new Geolocation();
-var menuButton = new Menu();
-var positionMarker = new PositionMarker();
-var placeMarker;
 var map = new Mappa();
 
 /*var xhr = new XMLHttpRequest();

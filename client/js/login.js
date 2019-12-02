@@ -1,4 +1,4 @@
-function render(button){
+/*function render(button){
   gapi.signin2.render(button, {
       'scope': 'profile email',
       'width': 240,
@@ -30,7 +30,7 @@ function onSuccess(googleUser) {
 
   var items = document.querySelectorAll('.mdc-list-item--disabled');
   for(var i=0; i<3;i++) items[i].className="mdc-list-item";*/
-
+/*
   logoutButton.addEventListener('click', signOut);
 }
 
@@ -56,5 +56,5 @@ function signOut() {
     render(menuButton.loginButton);
     var items = document.querySelector('#editor-buttons').querySelectorAll('.mdc-list-item');
     for(var i=0; i<3;i++) items[i].className="mdc-list-item mdc-list-item--disabled";
-*/  });
-}
+*//*  });
+}*/

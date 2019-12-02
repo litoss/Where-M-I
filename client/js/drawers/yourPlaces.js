@@ -1,5 +1,5 @@
 function openPlaces(){
-  
+
   if(profile != null){
     document.getElementById('content_title').innerHTML = 'Your Places';
     document.getElementById('content_content').innerHTML = '';
@@ -14,11 +14,10 @@ function openPlaces(){
       var arr = JSON.parse(xhr.responseText);
       for(var i in arr){
           var button = new ActionButton("Edit");
-          var card = new CardTemp (arr[i].name,null,arr[i].description,null,[button]);
+          var card = new CardTemp (arr[i].name,null,arr[i].description,null,[button]).root_;
           document.getElementById('content_content').appendChild(card);
       }
     }
-
 
     var object = {};
     form.forEach(function(value, key){

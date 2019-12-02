@@ -15,28 +15,40 @@ class Mappa extends google.maps.Map{
       }]
     });
 
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(zoomLessButton.root_);
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(zoomPlusButton.root_);
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(geolocatorButton.root_);
-    this.controls[google.maps.ControlPosition.TOP_LEFT].push(menuButton.root_);
+    //Controls inizialize
+    this.zoomBo = new Zoom();
+    this.geolocation = new Geolocation();
+    this.topBar = new TopBar();
+    console.log(this.zoomBo);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomBo);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation);
+    this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
+    this.noPlace = new Place(luogoSconosciuto.title, luogoSconosciuto.media, luogoSconosciuto.description);
+    this.places = [];
+    this.position = new Position();
 
-    this.placeWindow = new PlaceWindow();
-    this.unknownPlaceWindow = new UnknownPlaceWindow();
-    this.unknownMarker = new PlaceMarker('content/nearby.svg');
+    this.directionsService = new google.maps.DirectionsService;
+    this.directionsRenderer = new google.maps.DirectionsRenderer({map: this});
 
-    this.addListener('click', function(e) {
-
-      if(this.unknownMarker.getMap()) this.unknownMarker.setMap(null);
-      else if(this.placeWindow.getMap()) this.placeWindow.setMap(null);
-      else if(this.unknownPlaceWindow.getMap()) this.placeWindow.setMap(null);
-      else{
-         this.unknownMarker.setMap(map);
-         this.unknownMarker.setPosition(e.latLng);
-         this.unknownPlaceWindow.open(map, this.unknownMarker);
-      }
+    this.addListener('click', (event) => {
+      this.clickOnMap(event);
     });
-
     this.updateMap(position);
+  }
+
+  clickOnMap(event){
+    if(this.noPlace.getMap()) this.noPlace.removePosition();
+    else if(this.noPlace.isWindowOpen()) this.noPlace.closeWindow();
+    else{
+      for(var i in this.places) if(this.places[i].isWindowOpen()){
+           this.places[i].closeWindow();
+           return;
+      }
+      else{
+         this.noPlace.setPosition(event.latLng);
+         this.noPlace.openWindow();
+      }
+    }
   }
 
   updateMap(position){
@@ -51,49 +63,11 @@ class Mappa extends google.maps.Map{
 
   addPlace(){
     var response = JSON.parse(this.responseText);
-    var places = [];
     for(var i in response){
         var decode = OpenLocationCode.decode(response[i].OLC);
         var center = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
 
-        places.push(new PlaceMarker('content/nearby.svg', center, map));
-
-        var listener = function(j){
-          places[j].addListener('click', function() {
-            if(map.unknownMarker.getMap()) map.unknownMarker.setMap(null);
-            var card = new CardTemp(response[j].name, null, response[j].description);
-            map.placeWindow.setContent(card);
-            map.placeWindow.open(map, places[j]);
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://texttospeech.googleapis.com/v1/text:synthesize');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = this.reproduceImmersiveSound;
-            xhr.send(JSON.stringify({
-  "audioConfig": {
-    "audioEncoding": "LINEAR16",
-    "pitch": 0,
-    "speakingRate": 3.85
-  },
-  "input": {
-    "text": "Google Cloud Text-to-Speech enables developers to synthesize natural-sounding speech with 100+ voices, available in multiple languages and variants. It applies DeepMind’s groundbreaking research in WaveNet and Google’s powerful neural networks to deliver the highest fidelity possible. As an easy-to-use API, you can create lifelike interactions with your users, across many applications and devices."
-  },
-  "voice": {
-    "languageCode": "it-IT",
-    "name": "it-IT-Standard-A"
-  }
-}));
-          });
-        }
-
-        listener(i);
+        map.places.push(new Place(response[i].name, null, response[i].description, null, center, map));
     }
   }
-
-  reproduceImmersiveSound(){
-    var response = JSON.parse(this.responseText);
-    console.log(response);
-  }
-
-
 }
