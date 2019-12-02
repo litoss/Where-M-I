@@ -1,10 +1,10 @@
 var approx= 0.001;
 var queryUrl;
 
-function setQuery(approx){
+function setQuery(position, approx){
 
-  var lat = map.unknownMarker.getPosition().lat();
-  var long = map.unknownMarker.getPosition().lng();
+  var lat = position.lat();
+  var long = position.lng();
 
   const url="http://dbpedia.org/sparql";
 

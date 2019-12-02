@@ -1,11 +1,11 @@
-function selectPlace() {
+function selectPlace(position) {
 
   document.getElementById('content_content').innerHTML = '';
   document.getElementById('footer_content').innerHTML = '';
   document.getElementById('content_title').innerHTML = 'Select your Place';
   var div = document.createElement('div');
   document.getElementById('content_content').appendChild(div);
-  setQuery(approx);
+  setQuery(position,approx);
   fetch(queryUrl).then(function(response){
     return response.json();
   }).then(function(jsonResponse){
@@ -18,7 +18,7 @@ function selectPlace() {
         var descr = jsonResponse.results.bindings[event.srcElement.id].abstract.value;
         var img = jsonResponse.results.bindings[event.srcElement.id].img.value;
         var selectedCard = new CardTemp(name,null,descr,img).root_;
-        createDialog(selectedCard);
+        createDialog(position, selectedCard);
       });
 
       var placeCard = new CardTemp(jsonResponse.results.bindings[i].name.value,null,jsonResponse.results.bindings[i].abstract.value,jsonResponse.results.bindings[i].img.value,[button]).root_;
@@ -32,8 +32,8 @@ function selectPlace() {
 
     var addBut = new ActionButton('Create It');
     addBut.addEventListener("click",function(){
-      placeMarker.setMap(null);
-      createDialog();
+      map.noPlace.removePosition();
+      createDialog(position);
     });
 
     notHere.appendChild(addBut);

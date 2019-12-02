@@ -1,11 +1,11 @@
-function createDialog(card){
+function createDialog(position, card){
   var content = document.createElement("div");
 
-  var lat = map.unknownMarker.getPosition().lat();
-  var long = map.unknownMarker.getPosition().lng();
+  var lat = position.lat();
+  var long = position.lng();
   var exampleCard;
 
-  if (card == null)  exampleCard = new CardTemp(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media);
+  if (card == null)  exampleCard = new CardTemp(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media).root_;
   else exampleCard = card;
   exampleCard.className += " about-card";
   exampleCard.id = "place-card";
@@ -62,7 +62,7 @@ function createDialog(card){
   button.addEventListener("click", function(){
 
     var form = new FormData();
-    form.append('OLC', OpenLocationCode.encode(placeMarker.getPosition().lat(), placeMarker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_EXTRA));
+    form.append('OLC', OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_EXTRA));
     form.append('user', profile.getId());
     form.append('name', document.getElementById("place-card").querySelector(".mdc-card__title").innerHTML);
     //form.append('category', ?)

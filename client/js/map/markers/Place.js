@@ -22,7 +22,9 @@ class Place {
       maxWidth: 400,
     });
 
-    addButton.addEventListener('click', selectPlace);
+    addButton.addEventListener('click', () => {
+      selectPlace(this.marker.getPosition());
+    });
     directionButton.addEventListener('click', () => {
       this.showDirection();
     });
