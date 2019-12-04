@@ -19,12 +19,9 @@ class Mappa extends google.maps.Map{
     this.zoomBo = new Zoom();
     this.geolocation = new Geolocation();
     this.topBar = new TopBar();
-<<<<<<< HEAD
     this.menuDrawer = new MenuDrawer();
     this.pageDrawer;
-=======
     this.player = new Player();
->>>>>>> cadeddbe940521a39e429c9534a44209bd8c12c3
 
     //document.body.appendChild(this.player);
     this.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(this.player);
@@ -68,7 +65,7 @@ class Mappa extends google.maps.Map{
   }
 
   closeAllWindow(){
-  
+
   }
 
   addPlace(){
