@@ -1,10 +1,6 @@
 function selectPlace(position) {
 
-  document.getElementById('content_content').innerHTML = '';
-  document.getElementById('footer_content').innerHTML = '';
-  document.getElementById('content_title').innerHTML = 'Select your Place';
   var div = document.createElement('div');
-  document.getElementById('content_content').appendChild(div);
   setQuery(position,approx);
   fetch(queryUrl).then(function(response){
     return response.json();
@@ -39,6 +35,8 @@ function selectPlace(position) {
     notHere.appendChild(addBut);
     div.appendChild(notHere);
   });
-  mainDrawer.open = false;
-  pageDrawer.open = true;
+  map.pageDrawer = new PageDrawer(div);
+  map.pageDrawer.setPageTitle('Select your Place');
+
+  map.pageDrawer.openPageDrawer();
 }

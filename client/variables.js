@@ -1,4 +1,4 @@
-var content = [
+var categories = [
   { id:"none", name:"Qualsiasi Categoria"},
   { id:"nat", name:"Nature"},
   { id:"art", name:"Art"},
@@ -123,5 +123,23 @@ var simone = {
    {description:"Accesso ai contenuti di Wikipedia: cercare il contenuto di DBPedia relativo al luogo nella lingua richiesta e riprodurre il contenuto della descrizione iniziale con sintesi vocale", check:false},
    {description:"Implementare un meccanismo di acquisizione feedback dall’utente e visualizzare tale feedback sulla mappa.", check:false}
  ]
+  var browserElements = [
+    {name:"Map",icon:"map"},
+    {name:"Search",icon:"search"},
+    {name:"Charts",icon:"bar_chart"}
+  ]
+
+  var editorElements = [
+    {name:"Your Places",icon:"map"},
+    {name:"Your Clips",icon:"videocam"},
+    {name:"Your Paths",icon:"directions"}
+  ]
+
+  var otherElements = [
+    {name:"Checklist",icon:"check_circle"},
+    {name:"How it works",icon:"emoji_objects"},
+    {name:"About Us",icon:"emoji_people"},
+    {name:"Impostazioni",icon:"settings_applications"}
+  ]
   var example = [];
   for(var i=0;i<10;i++) example.push({primaryText: "Ciccio Pasticcio", secondaryText: "2225 Contributi"});

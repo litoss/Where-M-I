@@ -1,12 +1,12 @@
 function openSearch(){
-  document.getElementById('content_title').innerHTML = 'Search';
-  document.getElementById('content_content').innerHTML= '';
+
+  var content = document.createElement('div');
 
   var search = new TextField("Cerca Clip, Luoghi e Percorsi", "search");
-  document.getElementById('content_content').appendChild(search.root_);
+  content.appendChild(search.root_);
 
   var button = new IconButton('search');
-  document.getElementById('content_content').appendChild(button.root_);
+  content.appendChild(button.root_);
 
   var toolbar = document.createElement('div');
   toolbar.className = "mdc-menu-surface--anchor";
@@ -16,8 +16,8 @@ function openSearch(){
 
   toolbar.appendChild(chipSet.root_);
 
-  elements = [];
-  for(var i in content) elements.push(new ElementList(content[i].name));
+  var elements = [];
+  for(var i in categories) elements.push(new ElementList(categories[i].name));
 
   var list = new List(elements);
   var menus = new Menus(list.root_);
@@ -32,7 +32,11 @@ function openSearch(){
     else chip.selected = false;
   });
 
-  document.getElementById('content_content').appendChild(toolbar);
-  mainDrawer.open = false;
-  pageDrawer.open = true;
+  content.appendChild(toolbar);
+
+  map.pageDrawer = new PageDrawer(content);
+  map.pageDrawer.setPageTitle('Search');
+
+  map.menuDrawer.openDrawer();
+  map.pageDrawer.openPageDrawer();
 }

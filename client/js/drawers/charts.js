@@ -1,6 +1,6 @@
 function openCharts(){
-  document.getElementById('content_title').innerHTML = 'Charts';
-  document.getElementById('content_content').innerHTML = '';
+
+  var content = document.createElement('div');
 
   var tabBar = new TabBar(chartsTab.map(o => o['icon']), chartsTab.map( o => o['name']));
   var list = document.createElement('div');
@@ -31,9 +31,13 @@ function openCharts(){
 
   tabBar.activateTab(0);
 
-  document.getElementById('content_content').appendChild(tabBar.root_);
-  document.getElementById('content_content').appendChild(list);
+  content.appendChild(tabBar.root_);
+  content.appendChild(list);
 
-  mainDrawer.open = false;
-  pageDrawer.open = true;
+  map.pageDrawer = new PageDrawer(content);
+  map.pageDrawer.setPageTitle('Charts');
+
+  map.menuDrawer.openDrawer();
+  map.pageDrawer.openPageDrawer();
+
 }

@@ -21,84 +21,6 @@
 <body class="mdc-typography">
   <noscript>You need to enable JavaScript to run this app.</noscript>
 
-  <aside class="mainDrawer mdc-drawer mdc-drawer--modal" id="menu_drawer">
-    <div class="mdc-drawer__content">
-      <nav class="mdc-list" id="mdc-list">
-        <h6 class="mdc-list-group__subheader">Browser</h6>
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
-          <span class="mdc-list-item__text">Map</span>
-        </a>
-        <a class="mdc-list-item" onclick="openSearch()">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">search</i>
-          <span class="mdc-list-item__text">Search</span>
-        </a>
-        <a class="mdc-list-item" onclick="openCharts()">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bar_chart</i>
-          <span class="mdc-list-item__text">Charts</span>
-        </a>
-        <a class="mdc-list-item" onclick="openCheckListBrowser()">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">check_circle</i>
-          <span class="mdc-list-item__text">CheckList</span>
-        </a>
-        <hr class="mdc-list-divider">
-        <h6 class="mdc-list-group__subheader">Editor</h6>
-        <div id="editor-buttons">
-          <a class="mdc-list-item mdc-list-item--disabled" onclick="openPlaces()">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
-            <span class="mdc-list-item__text">Your Places</span>
-          </a>
-          <a class="mdc-list-item mdc-list-item--disabled" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">videocam</i>
-            <span class="mdc-list-item__text">Your Clips</span>
-          </a>
-          <a class="mdc-list-item mdc-list-item--disabled" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">directions</i>
-            <span class="mdc-list-item__text">Your Paths</span>
-          </a>
-        </div>
-        <hr class="mdc-list-divider">
-        <a class="mdc-list-item" href="#" onclick="openHow()">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">emoji_objects</i>
-          <span class="mdc-list-item__text">How it works</span>
-        </a>
-        <a class="mdc-list-item" href="#" onclick="openAbout()">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">emoji_people</i>
-          <span class="mdc-list-item__text">About Us</span>
-        </a>
-        <hr class="mdc-list-divider">
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings_applications</i>
-          <span class="mdc-list-item__text">Impostazioni</span>
-        </a>
-      </nav>
-    </div>
-  </aside>
-  <div class="mdc-drawer-scrim" id="scrim"></div>
-  <!--main drawer-->
-
-  <!--*********************
-    *      pages drawer
-    **********************-->
-  <aside class="mdc-drawer mdc-drawer--modal" id="content_drawer">
-    <header class="mdc-top-app-bar mdc-top-app-bar--relative" id="content_header">
-      <div class="mdc-top-app-bar__row">
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" id="content_menu">menu</button>
-          <span class="mdc-top-app-bar__title" id="content_title"></span>
-        </section>
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-          <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download" id="content_clear">clear</button>
-        </section>
-      </div>
-    </header>
-    <div class="mdc-drawer__content" id="content_content">
-
-    </div>
-    <div class="mdc-drawer__contet" id="footer_content">
-    </div>
-  </aside>
-
   <div id="map" class="main-content"></div>
 
   <script src="variables.js"></script>
@@ -121,6 +43,7 @@
   <script src="js/model/ActionButton.js"></script>
   <script src="js/model/ElementList.js"></script>
   <script src="js/model/TopAppBar.js"></script>
+  <script src="js/model/Drawer.js"></script>
 
 
   <!-- Controller -->
@@ -134,12 +57,12 @@
 
   <script src="js/drawers/charts.js"></script>
   <script src="js/drawers/about.js"></script>
-  <script src="js/drawers/menu_drawer.js"></script>
-  <script src="js/drawers/page_drawer.js"></script>
   <script src="js/drawers/settings.js"></script>
   <script src="js/drawers/search.js"></script>
   <script src="js/drawers/yourPlaces.js"></script>
   <script src="js/drawers/unknownPlaceDrawer.js"></script>
+  <script src="js/drawers/MenuDrawer.js"></script>
+  <script src="js/drawers/PageDrawer.js"></script>
   <script src="js/drawers/checkListBrowser.js"></script>
 
   <script src="js/dialogs/how.js"></script>

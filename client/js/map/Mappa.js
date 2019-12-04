@@ -19,6 +19,8 @@ class Mappa extends google.maps.Map{
     this.zoomBo = new Zoom();
     this.geolocation = new Geolocation();
     this.topBar = new TopBar();
+    this.menuDrawer = new MenuDrawer();
+    this.pageDrawer;
 
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomBo);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation);

@@ -1,8 +1,6 @@
 function openAbout() {
 
-  document.getElementById('content_content').innerHTML = '';
-  document.getElementById('content_title').innerHTML = 'About Us';
-
+  var content = document.createElement('div');
   var aboutBar = new TabBar(aboutTab.map(o => o['icon']), aboutTab.map(o => o['name']));
   var div = document.createElement('div');
 
@@ -29,9 +27,12 @@ function openAbout() {
 
   aboutBar.activateTab(0);
 
-  document.getElementById('content_content').appendChild(aboutBar.root_);
-  document.getElementById('content_content').appendChild(div);
+  content.appendChild(aboutBar.root_);
+  content.appendChild(div);
 
-  mainDrawer.open = false;
-  pageDrawer.open = true;
+  map.pageDrawer = new PageDrawer(content);
+  map.pageDrawer.setPageTitle('About Us');
+
+  map.menuDrawer.openDrawer();
+  map.pageDrawer.openPageDrawer();
 }
