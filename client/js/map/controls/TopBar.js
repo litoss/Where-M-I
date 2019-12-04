@@ -6,7 +6,13 @@ class TopBar {
     this.card.root_.className += " about-card";
     this.button = document.createElement('div');
     this.render(this.button);
+
+
     this.menus = new Menus(new List([this.card.root_,this.button]).root_);
+    this.menus.setAnchorCorner(13);
+    console.log(mdc.menu);
+
+
     var anchor = document.createElement('div');
     anchor.className = "mdc-menu-surface--anchor";
     anchor.appendChild(this.icon.root_);
@@ -22,6 +28,7 @@ class TopBar {
     this.topBar.listen('MDCTopAppBar:nav', () => {
       mainDrawer.open = !mainDrawer.open;
     });
+    console.log(this.topBar.root_);
   }
 
   render(button){

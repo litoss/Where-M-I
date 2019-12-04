@@ -19,7 +19,7 @@ class CardTemp{
 
     this.title = document.createElement('h2');
     this.title.className = "mdc-card__title mdc-typography mdc-typography--headline6";
-    this.title.appendChild(document.createTextNode(titleText));
+    this.title.innerHTML = titleText;
     primary.appendChild(this.title);
 
     if(subtitleText){
