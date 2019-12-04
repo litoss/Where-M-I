@@ -7,8 +7,15 @@
   height: 100%;
 }
 
+.mdc-player{
+  background-color: white;
+  width:300px;
+  height:48px;
+}
 
-
+.mdc-player > button{
+  float:left;
+}
 html,
 body {
   height: 100%;

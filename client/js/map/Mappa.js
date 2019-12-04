@@ -19,9 +19,15 @@ class Mappa extends google.maps.Map{
     this.zoomBo = new Zoom();
     this.geolocation = new Geolocation();
     this.topBar = new TopBar();
+<<<<<<< HEAD
     this.menuDrawer = new MenuDrawer();
     this.pageDrawer;
+=======
+    this.player = new Player();
+>>>>>>> cadeddbe940521a39e429c9534a44209bd8c12c3
 
+    //document.body.appendChild(this.player);
+    this.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(this.player);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomBo);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
@@ -46,10 +52,8 @@ class Mappa extends google.maps.Map{
            this.places[i].closeWindow();
            return;
       }
-      else{
-         this.noPlace.setPosition(event.latLng);
-         this.noPlace.openWindow();
-      }
+       this.noPlace.setPosition(event.latLng);
+       this.noPlace.openWindow();
     }
   }
 
@@ -61,6 +65,10 @@ class Mappa extends google.maps.Map{
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = this.addPlace;
     xhr.send(JSON.stringify({OLC: area}));
+  }
+
+  closeAllWindow(){
+  
   }
 
   addPlace(){

@@ -49,7 +49,7 @@ class Position{
     this.marker.setPosition(latLng);
   }
 
-  removePosition(){
+  remove(){
     this.marker.setMap(null);
     this.circle.setMap(null);
   }

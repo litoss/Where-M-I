@@ -68,7 +68,7 @@ var simone = {
  var stefano = {
     media: "content/stefano.jpg",
     title: "Stefano" ,
-    description: "Student of Computer Science for Management, at Alma Mater Studiorum Bologna",
+    description: "Studento di informatico",
     contacts: [
       {url:"https://www.facebook.com/stefano.propato", icon:"fab fa-facebook"},
       {url:"https://github.com/elPeroN", icon:"fab fa-github"},
@@ -79,7 +79,7 @@ var simone = {
  var vincenzo = {
    media: "content/vincenzo.jpg",
    title: "Vincenzo" ,
-   description: "Coluem que porta le pizzes. Aliquam id sem nec enim auctor fermentum. Nulla aliquam arcu id dictum egestas. Sed sit amet tellus et justo aliquam cursus.",
+   description: "Aliquam id sem nec enim auctor fermentum. Nulla aliquam arcu id dictum egestas. Sed sit amet tellus et justo aliquam cursus.",
    contacts: [{url:"https://www.facebook.com/vincenzo.armandi.5", icon:"fab fa-facebook"}]
  }
 
