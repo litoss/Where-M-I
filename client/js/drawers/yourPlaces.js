@@ -1,6 +1,5 @@
 function openPlaces(){
-  console.log("test");
-  if(profile != null){
+  
     var content = document.createElement('div');
     var form = new FormData();
     form.append('user', profile.getId());
@@ -25,6 +24,4 @@ function openPlaces(){
 
     map.pageDrawer = new PageDrawer('Your Places', content);
     map.pageDrawer.open = true;
-
-  }else loginDialog();
 }

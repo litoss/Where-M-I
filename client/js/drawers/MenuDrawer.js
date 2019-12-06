@@ -53,7 +53,6 @@ class MenuDrawer extends Drawer{
       case 2: openCharts();
         break;
       case 3: if(profile)openPlaces();
-          console.log(profile);
         break;
       case 6: openCheckListBrowser();
         break;
