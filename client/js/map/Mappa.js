@@ -19,16 +19,10 @@ class Mappa extends google.maps.Map{
     this.zoomControl = new Zoom();
     this.geolocation = new Geolocation();
     this.topBar = new TopBar();
-<<<<<<< HEAD
     this.player = new Player();
 
     this.menuDrawer = new MenuDrawer();
     this.pageDrawer;
-=======
-    this.menuDrawer = new MenuDrawer();
-    this.pageDrawer;
-    this.player = new Player();
->>>>>>> 6eebbf787668666e0637359487c0088e301615fe
 
     this.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(this.player);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomControl.root_);
