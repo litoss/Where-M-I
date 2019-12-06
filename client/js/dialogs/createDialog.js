@@ -5,7 +5,7 @@ function createDialog(position, card){
   var long = position.lng();
   var exampleCard;
 
-  if (card == null)  exampleCard = new CardTemp(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media).root_;
+  if (card == null)  exampleCard = new Card(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media).root_;
   else exampleCard = card;
   exampleCard.className += " about-card";
   exampleCard.id = "place-card";

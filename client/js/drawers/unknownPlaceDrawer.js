@@ -13,11 +13,11 @@ function selectPlace(position) {
         var name = jsonResponse.results.bindings[event.srcElement.id].name.value;
         var descr = jsonResponse.results.bindings[event.srcElement.id].abstract.value;
         var img = jsonResponse.results.bindings[event.srcElement.id].img.value;
-        var selectedCard = new CardTemp(name,null,descr,img).root_;
+        var selectedCard = new Card(name,null,descr,img).root_;
         createDialog(position, selectedCard);
       });
 
-      var placeCard = new CardTemp(jsonResponse.results.bindings[i].name.value,null,jsonResponse.results.bindings[i].abstract.value,jsonResponse.results.bindings[i].img.value,[button]).root_;
+      var placeCard = new Card(jsonResponse.results.bindings[i].name.value,null,jsonResponse.results.bindings[i].abstract.value,jsonResponse.results.bindings[i].img.value,[button]).root_;
       placeCard.className += ' about-card';
       div.appendChild(placeCard);
     };
@@ -35,8 +35,7 @@ function selectPlace(position) {
     notHere.appendChild(addBut);
     div.appendChild(notHere);
   });
-  map.pageDrawer = new PageDrawer(div);
-  map.pageDrawer.setPageTitle('Select your Place');
 
-  map.pageDrawer.openPageDrawer();
+  map.pageDrawer = new PageDrawer('Select your Place', div);
+  map.pageDrawer.open = true;
 }

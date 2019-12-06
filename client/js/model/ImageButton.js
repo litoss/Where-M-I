@@ -1,15 +1,15 @@
 class ImageButton extends mdc.ripple.MDCRipple{
   constructor(src, options){
-    var button = document.createElement('button');
-    button.className = "mdc-icon-button ";
-    if(options) button.className += options;
+    var root = document.createElement('button');
+    root.className = "mdc-icon-button";
+    if(options) root.className += " " + options;
 
     var img = document.createElement('img');
     img.className = "mdc-icon-button__icon mdc-image__circular";
     img.setAttribute('src', src);
-    button.appendChild(img);
+    root.appendChild(img);
 
-    super(button);
+    super(root);
     this.unbounded = true;
     this.img = img;
   }

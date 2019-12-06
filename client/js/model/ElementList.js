@@ -1,8 +1,9 @@
 class ElementList{
-    constructor(primaryText, secondaryText, icon) {
+    constructor(primaryText, secondaryText, icon, options) {
 
       var li = document.createElement('li');
       li.className = "mdc-list-item";
+      if(options) li.className += " " + options;
 
       if(icon){
         var iconSpan = document.createElement('span');

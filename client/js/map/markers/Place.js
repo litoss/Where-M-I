@@ -14,7 +14,7 @@ class Place {
     var addButton = new ActionButton("find");
     var directionButton = new ActionButton('goto');
     var discardButton = new ActionButton("discard");
-    var card = new CardTemp(name, null, description, img, [addButton, discardButton, directionButton]).root_;
+    var card = new Card(name, null, description, img, [addButton, discardButton, directionButton]).root_;
     card.className += " about-card";
 
     this.infoWindow = new google.maps.InfoWindow({
@@ -90,7 +90,7 @@ class Place {
   var listener = function(j){
     map.places[j].addListener('click', function() {
       if(map.unknownMarker.getMap()) map.unknownMarker.setMap(null);
-      var card = new CardTemp(, null, );
+      var card = new Card(, null, );
       map.placeWindow.setContent(card);
       map.placeWindow.open(map, places[j]);
 

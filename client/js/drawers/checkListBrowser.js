@@ -8,9 +8,6 @@ function openCheckListBrowser(){
 
   content.appendChild(new List(list).root_);
 
-  map.pageDrawer = new PageDrawer(content);
-  map.pageDrawer.setPageTitle('Browser - Check List');
-
-  map.menuDrawer.openDrawer();
-  map.pageDrawer.openPageDrawer();
+  map.pageDrawer = new PageDrawer('Browser - Check List', content);
+  map.pageDrawer.open = true;
 }

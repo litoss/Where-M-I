@@ -1,6 +1,7 @@
 class Zoom{
   constructor(){
-    var div = document.createElement('div');
+    this.root_ = document.createElement('div');
+
     var buttonAdd = new IconButton('add','mdc-button--raised');
     var buttonRemove = new IconButton('remove','mdc-button--raised');
 
@@ -10,9 +11,8 @@ class Zoom{
     buttonAdd.listen('click', this.zoomIn);
     buttonRemove.listen('click', this.zoomOut);
 
-    div.appendChild(buttonAdd.root_);
-    div.appendChild(buttonRemove.root_);
-    return div;
+    this.root_.appendChild(buttonAdd.root_);
+    this.root_.appendChild(buttonRemove.root_);
   }
 
   zoomIn(){

@@ -16,19 +16,16 @@ class Mappa extends google.maps.Map{
     });
 
     //Controls inizialize
-    this.zoomBo = new Zoom();
+    this.zoomControl = new Zoom();
     this.geolocation = new Geolocation();
     this.topBar = new TopBar();
-<<<<<<< HEAD
+    this.player = new Player();
+
     this.menuDrawer = new MenuDrawer();
     this.pageDrawer;
-=======
-    this.player = new Player();
->>>>>>> cadeddbe940521a39e429c9534a44209bd8c12c3
 
-    //document.body.appendChild(this.player);
     this.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(this.player);
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomBo);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomControl.root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
     this.noPlace = new Place(luogoSconosciuto.title, luogoSconosciuto.media, luogoSconosciuto.description);
@@ -68,7 +65,7 @@ class Mappa extends google.maps.Map{
   }
 
   closeAllWindow(){
-  
+
   }
 
   addPlace(){

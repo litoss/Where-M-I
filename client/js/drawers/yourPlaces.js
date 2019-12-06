@@ -1,5 +1,5 @@
 function openPlaces(){
-
+  console.log("test");
   if(profile != null){
     var content = document.createElement('div');
     var form = new FormData();
@@ -12,7 +12,7 @@ function openPlaces(){
       var arr = JSON.parse(xhr.responseText);
       for(var i in arr){
           var button = new ActionButton("Edit");
-          var card = new CardTemp (arr[i].name,null,arr[i].description,null,[button]).root_;
+          var card = new Card (arr[i].name,null,arr[i].description,null,[button]).root_;
           content.appendChild(card);
       }
     }
@@ -23,11 +23,8 @@ function openPlaces(){
     });
     xhr.send(JSON.stringify(object));
 
-    map.pageDrawer = new PageDrawer(content);
-    map.pageDrawer.setPageTitle('Your Places');
-
-    map.menuDrawer.openDrawer();
-    map.pageDrawer.openPageDrawer();
+    map.pageDrawer = new PageDrawer('Your Places', content);
+    map.pageDrawer.open = true;
 
   }else loginDialog();
 }

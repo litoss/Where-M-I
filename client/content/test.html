@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body class="mdc-typography">
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div>
+    <h3 class="mdc-typography--subtitle1">Anchored Menu</h3>
+    <button class="mdc-button">Open menu</button>
+
+    <div class="mdc-menu-surface--anchor">
+
+      <div class="mdc-menu mdc-menu-surface" tabindex="-1">
+        <ul class="mdc-list" role="menu" aria-hidden="true">
+          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Passionfruit</li>
+          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Orange</li>
+          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Guava</li>
+          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Pitaya</li>
+          <li class="mdc-list-divider" role="separator"></li>
+          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Pineapple</li>
+          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Mango</li>
+          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Papaya</li>
+          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Lychee</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    var button = document.querySelector('.mdc-button');
+    const menu = new mdc.menu.MDCMenu(document.querySelector('.mdc-menu-surface'));
+    //const surf = new mdc.menuSurface.MDCMenuSurface(document.querySelector('.mdc-menu-surface'));
+
+    const list = new mdc.menu.MDCList(document.querySelector('.mdc-list'))
+    button.addEventListener('click', () => {
+      //console.log(mdc.menuSurface);
+      console.log(0);
+      menu.setAnchorCorner(mdc.menu.Corner.TOP_RIGHT);
+      menu.open = !menu.open;
+    });
+  </script>
+
+
+</body>
+
+</html>

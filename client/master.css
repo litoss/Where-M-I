@@ -23,19 +23,19 @@ body {
   padding: 0;
 }
 
-#content_drawer {
+.mdc-drawer-content {
   z-index: 4;
 }
 
 @media only screen and (max-width: 480px) {
-    #content_drawer {
+    .mdc-drawer-content {
     width: 100%;
     }
 
 }
 
 @media all and (min-width:481px) {
-    #content_drawer {
+    .mdc-drawer-content {
     width: 480px;
     }
     #content_header{

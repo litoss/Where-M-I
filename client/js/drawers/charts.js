@@ -34,10 +34,7 @@ function openCharts(){
   content.appendChild(tabBar.root_);
   content.appendChild(list);
 
-  map.pageDrawer = new PageDrawer(content);
-  map.pageDrawer.setPageTitle('Charts');
-
-  map.menuDrawer.openDrawer();
-  map.pageDrawer.openPageDrawer();
+  map.pageDrawer = new PageDrawer('Charts', content);
+  map.pageDrawer.open = true;
 
 }

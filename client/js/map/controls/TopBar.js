@@ -2,16 +2,18 @@ class TopBar {
   constructor(){
     this.menu = new IconButton('menu',"mdc-top-app-bar__navigation-icon");
     this.icon = new ImageButton('content/photo.png',);
-    this.card = new CardTemp("Guest",null,null,"content/photo.png");
+    this.card = new Card("Guest",null,null,"content/photo.png");
     this.card.root_.className += " about-card";
     this.button = document.createElement('div');
     this.render(this.button);
 
 
-    this.menus = new Menus(new List([this.card.root_,this.button]).root_);
-    this.menus.setAnchorCorner(13);
-    console.log(mdc.menu);
+    this.menus = new Menu(new List([this.card.root_,this.button]).root_);
+    this.menus.setAnchorCorner(mdc.menu.Corner.TOP_RIGHT);
+    console.log(mdc.menu.Corner.TOP_RIGHT);
+    this.menus.setAnchorCorner(mdc.menu.Corner.TOP_RIGHT);
 
+  //  this.surf = new mdc.menuSurface.MDCMenuSurface(this.menus.root_);
 
     var anchor = document.createElement('div');
     anchor.className = "mdc-menu-surface--anchor";
@@ -21,12 +23,12 @@ class TopBar {
     this.topBar = new TopAppBar('Where M I', this.menu.root_, anchor, "mdc-top-app-bar--relative mdc-top-app-bar--dense");
 
     this.icon.listen('click', () => {
+    //  this.menus.setAnchorCorner(mdc.menu.Corner.TOP_LEFT);
       this.menus.open= !this.menus.open;
     })
 
     this.topBar.listen('MDCTopAppBar:nav', () => {
-      map.menuDrawer.openDrawer();
-      map.menuDrawer.elements[1].focus();
+      map.menuDrawer.open = true;
     });
     console.log(this.topBar.root_);
   }
@@ -70,7 +72,7 @@ class TopBar {
 
       map.topBar.button.innerHTML = '';
       map.topBar.render(map.topBar.button);
-});
+    });
   }
 
   onFailure(error) {

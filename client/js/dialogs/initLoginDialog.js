@@ -12,7 +12,7 @@ function initLoginDialog(){
     var img = profile.getImageUrl();
   }
 
-  var card = new CardTemp(name,null,null,img);
+  var card = new Card(name,null,null,img);
   card.className = "about-card";
   content.appendChild(card);
   footer = document.createElement('div');

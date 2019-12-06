@@ -20,12 +20,14 @@ function openSearch(){
   for(var i in categories) elements.push(new ElementList(categories[i].name));
 
   var list = new List(elements);
-  var menus = new Menus(list.root_);
-  toolbar.appendChild(menus.root_);
+  var menu = new Menu(list.root_);
+
+  toolbar.appendChild(menu.root_);
 
   chip.listen("click", () => {
-    menus.open = true;
+    menu.open = true;
   })
+
   list.listen('MDCList:action', (event) => {
     chip.setName(content[event.detail.index].name);
     if(event.detail.index) chip.selected = true;
@@ -34,9 +36,6 @@ function openSearch(){
 
   content.appendChild(toolbar);
 
-  map.pageDrawer = new PageDrawer(content);
-  map.pageDrawer.setPageTitle('Search');
-
-  map.menuDrawer.openDrawer();
-  map.pageDrawer.openPageDrawer();
+  map.pageDrawer = new PageDrawer('Search', content);
+  map.pageDrawer.open = true;
 }

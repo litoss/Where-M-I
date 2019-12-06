@@ -1,16 +1,51 @@
-class Drawer{
-  constructor(headerContent, mainContent) {
-    this.root_ = document.createElement('aside');
-    this.root_.className = "mdc-drawer mdc-drawer--modal";
-    var header =document.createElement('div');
+class Drawer extends mdc.drawer.MDCDrawer{
 
-    var content = document.createElement('div');
-    content.className = "mdc-drawer__content";
+  /*
+  *  Componente Drawer
+  *  https://material.io/develop/web/components/drawers/
+  */
 
-    header.appendChild(headerContent);
-    content.appendChild(mainContent);
-    this.root_.appendChild(header);
-    this.root_.appendChild(content);
+  constructor(title, subtitle, content, options) {
 
+    var div = document.createElement('div');
+
+    var drawer = document.createElement('aside');
+    drawer.className = "mdc-drawer mdc-drawer--modal";
+    if(options) drawer.className += " " + options;
+
+    if(title || subtitle){
+      var drawerHeader = document.createElement('div');
+      drawerHeader.className = "mdc-drawer__header";
+      drawer.appendChild(drawerHeader);
+
+      if(title){
+        var drawerTitle = document.createElement('h3');
+        drawerTitle.className = "mdc-drawer__title";
+        drawerTitle.innerHTML = title;
+        drawerHeader.appendChild(drawerTitle);
+      }
+
+      if(subtitle){
+        var drawerSubtitle = document.createElement('h6');
+        drawerSubtitle.className = "mdc-drawer__subtitle";
+        drawerSubtitle.innerHTML = subtitle;
+        drawerHeader.appendChild(drawerSubtitle);
+      }
+    }
+
+    var drawerContent = document.createElement('div');
+    drawerContent.className = "mdc-drawer__content";
+    drawerContent.appendChild(content);
+    drawer.appendChild(drawerContent);
+
+    var scrim = document.createElement('div');
+    scrim.className = "mdc-drawer-scrim";
+
+    var parent = document.querySelector('#map');
+
+    parent.appendChild(drawer);
+    parent.appendChild(scrim);
+
+    super(drawer);
   }
 }

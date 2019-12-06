@@ -1,4 +1,4 @@
-class Position{
+class Position {
   constructor(){
     this.marker = new google.maps.Marker({
       icon: {
@@ -17,8 +17,8 @@ class Position{
     });
 
     this.infoWindow = new google.maps.InfoWindow({
-          content: new CardTemp(yourPlace.title, yourPlace.description).root_,
-          maxWidth: 400,
+        content: new Card(yourPlace.title, yourPlace.description).root_,
+        maxWidth: 400
     });
 
     this.marker.bindTo("position", this.circle, "center");

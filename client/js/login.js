@@ -15,18 +15,18 @@ function onSuccess(googleUser) {
   menuButton.icon.setImage(profile.getImageUrl());
   console.log('user logged in');
 
-  var card = new CardTemp(profile.getName(),null,null,profile.getImageUrl());
+  var card = new Card(profile.getName(),null,null,profile.getImageUrl());
   card.className = "about-card";
   var logoutButton = new ActionButton('signout');
   var menuList = new List([card,logoutButton]);
-  //menuButton.toolbar.removeChild(menus);
-  menuButton.menus.root_.innerHTML = '';
-  menuButton.menus.root_.appendChild(menuList.root_);
+  //menuButton.toolbar.removeChild(Menu);
+  menuButton.Menu.root_.innerHTML = '';
+  menuButton.Menu.root_.appendChild(menuList.root_);
  /*
   menuButton.loginButton.innerHTML =""
   var logOutButton = new ActionButton("logout");
   logOutButton.addEventListener('click', signOut);
-  menuButton.menus.root_.appendChild(logOutButton);
+  menuButton.Menu.root_.appendChild(logOutButton);
 
   var items = document.querySelectorAll('.mdc-list-item--disabled');
   for(var i=0; i<3;i++) items[i].className="mdc-list-item";*/
@@ -42,14 +42,14 @@ function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
 
-    var card = new CardTemp("Guest",null,null,"content/photo.png");
+    var card = new Card("Guest",null,null,"content/photo.png");
     card.className = "about-card";
     var loginButton = document.createElement('div');
     render(loginButton);
     var menuList = new List([card,loginButton]);
 
-    menuButton.menus.root_.innerHTML = '';
-    menuButton.menus.root_.appendChild(menuList.root_);
+    menuButton.Menu.root_.innerHTML = '';
+    menuButton.Menu.root_.appendChild(menuList.root_);
     /*
     console.log('User signed out.');
     menuButton.icon.setImage('content/photo.png');
