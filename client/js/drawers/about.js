@@ -30,7 +30,7 @@ function openAbout() {
   content.appendChild(aboutBar.root_);
   content.appendChild(div);
 
-  map.pageDrawer = new PageDrawer(content);
+  map.pageDrawer = new PageDrawer('About Us',content);
   map.pageDrawer.open = true;
 
 }

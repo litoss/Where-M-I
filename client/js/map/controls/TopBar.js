@@ -10,7 +10,6 @@ class TopBar {
 
     this.menus = new Menu(new List([this.card.root_,this.button]).root_);
     this.menus.setAnchorCorner(mdc.menu.Corner.TOP_RIGHT);
-    console.log(mdc.menu.Corner.TOP_RIGHT);
     this.menus.setAnchorCorner(mdc.menu.Corner.TOP_RIGHT);
 
   //  this.surf = new mdc.menuSurface.MDCMenuSurface(this.menus.root_);
@@ -30,7 +29,6 @@ class TopBar {
     this.topBar.listen('MDCTopAppBar:nav', () => {
       map.menuDrawer.open = true;
     });
-    console.log(this.topBar.root_);
   }
 
   render(button){
@@ -48,12 +46,11 @@ class TopBar {
   onSuccess(googleUser) {
     profile = googleUser.getBasicProfile();
     map.topBar.icon.setImage(profile.getImageUrl());
-    console.log('user logged in');
-
-
     map.topBar.card.setTitle(profile.getName());
     map.topBar.card.setImage(profile.getImageUrl());
-
+    for(var i=6; i<9; i++) {
+      map.menuDrawer.elements[i].className = "mdc-list-item";
+    }
     var action = new ActionButton('signout');
     map.topBar.button.innerHTML = '';
     map.topBar.button.appendChild(action);
@@ -66,12 +63,18 @@ class TopBar {
   signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
+      profile = null;
 
+      map.topBar.icon.setImage("content/photo.png");
       map.topBar.card.setTitle("Guest");
       map.topBar.card.setImage("content/photo.png");
 
       map.topBar.button.innerHTML = '';
       map.topBar.render(map.topBar.button);
+
+      for(var i=6; i<9; i++) {
+        map.menuDrawer.elements[i].className += " mdc-list-item--disabled";
+      }
     });
   }
 

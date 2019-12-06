@@ -14,8 +14,16 @@ class PageDrawer extends Drawer{
   contentcontent.appendChild(topBarDrawer.root_);
   contentcontent.appendChild(content);
 
-  super(null, null, contentcontent);
-    this.topBarDrawer = topBarDrawer;
+  super(null, null, contentcontent, 'mdc-drawer-content');
+  this.topBarDrawer = topBarDrawer;
+
+  document.querySelector('.mdc-drawer-content').nextElementSibling.id = 'closed-scrim';
+  document.querySelector('.mdc-drawer-content').nextElementSibling.className = '';
+
+  this.listen('MDCDrawer:closed', () => {
+    document.querySelector('.main-content').removeChild(document.querySelector('.mdc-drawer-content'));
+    document.querySelector('.main-content').removeChild(document.querySelector('#closed-scrim'));
+  });
   }
 
   setPageTitle(newTitle){

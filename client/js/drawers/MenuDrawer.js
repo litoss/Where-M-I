@@ -23,7 +23,7 @@ class MenuDrawer extends Drawer{
   editorTag.innerHTML ='Editor';
   elements.push(editorTag);
 
-  for(var i in editorElements) elements.push(new ElementList(editorElements[i].name,null,editorElements[i].icon));
+  for(var i in editorElements) elements.push(new ElementList(editorElements[i].name,null,editorElements[i].icon, 'mdc-list-item--disabled'));
 
   var div2 = document.createElement('hr');
   div2.className = 'mdc-list-divider';
@@ -35,8 +35,10 @@ class MenuDrawer extends Drawer{
   nav.className = "mdc-list";
   for(var i in elements) nav.appendChild(elements[i]);
 
-  //fine creazioen lista
+  //fine creazione lista
   super(null, null, nav);
+
+  this.elements = elements;
 
   this.listen('MDCDrawer:closed', () => {
     document.querySelector('.main-content').focus();
@@ -45,13 +47,13 @@ class MenuDrawer extends Drawer{
 
   this.listen('MDCList:action', (event) => {
     this.open = false;
-    console.log(event.detail.index);
     switch(event.detail.index){
       case 1: openSearch();
         break;
       case 2: openCharts();
         break;
-      case 3: openPlaces();
+      case 3: if(profile)openPlaces();
+          console.log(profile);
         break;
       case 6: openCheckListBrowser();
         break;

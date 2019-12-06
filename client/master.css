@@ -23,9 +23,6 @@ body {
   padding: 0;
 }
 
-.mdc-drawer-content {
-  z-index: 4;
-}
 
 @media only screen and (max-width: 480px) {
     .mdc-drawer-content {
