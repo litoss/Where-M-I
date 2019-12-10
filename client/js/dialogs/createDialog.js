@@ -73,9 +73,9 @@ function createDialog(position, card){
     xhr.open('POST', '/new_place');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
-      console.log(xhr.responseText);
         if (xhr.status === 200 ) {
             alert('Aggiunto con Successo!');
+            //map.places.push(new Place(response[i].name, null, response[i].description, null, center, map)
         }
         else if (xhr.status !== 200) {
             alert('Request failed.  Returned status of ' + xhr.status);

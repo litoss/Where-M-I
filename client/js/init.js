@@ -5,7 +5,6 @@
 }*/
 
 var profile;
-
 var map = new Mappa();
 
 

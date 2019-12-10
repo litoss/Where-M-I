@@ -70,11 +70,43 @@ class Mappa extends google.maps.Map{
 
   addPlace(){
     var response = JSON.parse(this.responseText);
+
     for(var i in response){
         var decode = OpenLocationCode.decode(response[i].OLC);
         var center = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
 
         map.places.push(new Place(response[i].name, null, response[i].description, null, center, map));
     }
+  }
+
+  getDistance(x1,x2,y1,y2){
+    var deltaX = Math.abs(x1 - x2);
+    var deltaY = Math.abs(y1 - y2)
+    return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+  }
+
+  findClosestMarker(){
+    if(this.position.getMap()){
+      var lat = this.position.getPosition().lat();
+      var lng = this.position.getPosition().lng();
+
+      var minDistance = this.getDistance(lat, this.places[0].getPosition().lat(), lng, this.places[0].getPosition().lng());
+      var marker = 0;
+
+      for(var i=1; i<this.places.length; i++){
+
+        var distance = this.getDistance(lat, this.places[i].getPosition().lat(), lng, this.places[i].getPosition().lng());
+
+        if(distance < minDistance){
+          marker = i;
+          distance = distance;
+        }
+      }
+
+      if(minDistance) return this.places[marker];
+      else return -1;
+
+    }else{
+    } //ERROR
   }
 }

@@ -1,5 +1,5 @@
 class Place {
-  constructor(name, img, description, category, latLng, map){
+  constructor(name, img, description, category, latLng){
 
     this.marker = new google.maps.Marker({
       position: latLng,
@@ -14,7 +14,8 @@ class Place {
     var addButton = new ActionButton("find");
     var directionButton = new ActionButton('goto');
     var discardButton = new ActionButton("discard");
-    var card = new Card(name, null, description, img, [addButton, discardButton, directionButton]).root_;
+    var positionButton = new ActionButton('set position');
+    var card = new Card(name, null, description, img, [addButton, discardButton, directionButton, positionButton]).root_;
     card.className += " about-card";
 
     this.infoWindow = new google.maps.InfoWindow({
@@ -35,7 +36,13 @@ class Place {
     this.marker.addListener('click', () => {
       this.infoWindow.open(map, this.marker);
     });
+    positionButton.addEventListener('click', () => {
+      console.log(map);
+      map.position.setPosition(this.marker.getPosition());
+      this.removePosition();
+    });
   }
+
 
   showDirection(){
     if(map.position.getPosition()){
@@ -57,6 +64,10 @@ class Place {
       //Non hai la geolocalizzazione attiva!
       window.alert('Non hai la geolocalizzazione attiva');
     }
+  }
+
+  getPosition(){
+    return this.marker.getPosition();
   }
 
   getMap(){

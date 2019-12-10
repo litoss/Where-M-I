@@ -1,29 +1,34 @@
 class PageDrawer extends Drawer{
   constructor(title, content){
 
-  var contentcontent = document.createElement('div');
+    var contentcontent = document.createElement('div');
 
-  var menu = new IconButton('menu');
-  var topBarDrawer = new TopAppBar(title, menu.root_, null , 'mdc-top-app-bar--relative');
+    var menu = new IconButton('menu');
+    var clear = new IconButton('clear');
+    var topBarDrawer = new TopAppBar(title, menu.root_, clear.root_ , 'mdc-top-app-bar--relative');
 
-  menu.listen('click', () => {
-    this.open = false;
-    map.menuDrawer.open = true;
-  })
+    menu.listen('click', () => {
+      this.open = false;
+      map.menuDrawer.open = true;
+    })
 
-  contentcontent.appendChild(topBarDrawer.root_);
-  contentcontent.appendChild(content);
+    clear.listen('click', () => {
+      this.open = false;
+    })
 
-  super(null, null, contentcontent, 'mdc-drawer-content');
-  this.topBarDrawer = topBarDrawer;
+    contentcontent.appendChild(topBarDrawer.root_);
+    contentcontent.appendChild(content);
 
-  document.querySelector('.mdc-drawer-content').nextElementSibling.id = 'closed-scrim';
-  document.querySelector('.mdc-drawer-content').nextElementSibling.className = '';
+    super(null, null, contentcontent, 'mdc-drawer-content');
+    this.topBarDrawer = topBarDrawer;
 
-  this.listen('MDCDrawer:closed', () => {
-    document.querySelector('.main-content').removeChild(document.querySelector('.mdc-drawer-content'));
-    document.querySelector('.main-content').removeChild(document.querySelector('#closed-scrim'));
-  });
+    document.querySelector('.mdc-drawer-content').nextElementSibling.id = 'closed-scrim';
+    document.querySelector('.mdc-drawer-content').nextElementSibling.className = '';
+
+    this.listen('MDCDrawer:closed', () => {
+      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-drawer-content'));
+      document.querySelector('.main-content').removeChild(document.querySelector('#closed-scrim'));
+    });
   }
 
   setPageTitle(newTitle){

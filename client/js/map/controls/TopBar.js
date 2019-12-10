@@ -45,6 +45,7 @@ class TopBar {
 
   onSuccess(googleUser) {
     profile = googleUser.getBasicProfile();
+    console.log(profile);
     map.topBar.icon.setImage(profile.getImageUrl());
     map.topBar.card.setTitle(profile.getName());
     map.topBar.card.setImage(profile.getImageUrl());
