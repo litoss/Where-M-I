@@ -14,6 +14,7 @@ function selectPlace(position) {
         var descr = jsonResponse.results.bindings[event.srcElement.id].abstract.value;
         var img = jsonResponse.results.bindings[event.srcElement.id].img.value;
         var selectedCard = new Card(name,null,descr,img).root_;
+        selectedCard.className += ' about-card';
         createDialog(position, selectedCard);
       });
 
@@ -28,8 +29,11 @@ function selectPlace(position) {
 
     var addBut = new ActionButton('Create It');
     addBut.addEventListener("click",function(){
+      if(profile){
       map.noPlace.removePosition();
       createDialog(position);
+      }
+      else alert('You must be logged in to use this function');
     });
 
     notHere.appendChild(addBut);

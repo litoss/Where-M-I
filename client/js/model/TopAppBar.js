@@ -3,7 +3,6 @@ class TopAppBar extends mdc.topAppBar.MDCTopAppBar{
       var header = document.createElement('header');
       header.className = "mdc-top-app-bar";
       if(options) header.className += " " + options;
-      header.id = "content_header";
 
       var div = document.createElement('div');
       div.className = "mdc-top-app-bar__row";

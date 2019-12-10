@@ -26,22 +26,22 @@ exports.add_one = async (loc_code, utente, loc_name, loc_class, m_rating, orario
     try {
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        let doc = {_id: new ObjectID(), 
+        let doc = {_id: new ObjectID(),
             OLC: loc_code,
             user: utente,
             name: loc_name,
             category: loc_class,
             media_rating: m_rating,
-            opening: orario,             
+            opening: orario,
             description: descrizione
          };
-        
+
         let ret = await db.collection('place').insertOne(doc);
         console.log(doc) // display the inserted information
         client.close();
         return ret;
 
-        } 
+        }
     catch (err) {
         throw err;
     }
@@ -53,15 +53,15 @@ exports.add_review = async (loc_code, utente, a_rating, p_rating, v_tag, comm) =
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
 
-        let doc = {_id: new ObjectID(), 
+        let doc = {_id: new ObjectID(),
             OLC: loc_code,
             user: utente,
             rating_audio: a_rating,
             rating_place: p_rating,
-            visit_tag: v_tag,             
+            visit_tag: v_tag,
             comment: comm
          };
-        
+
         let ret = await db.collection('review').insertOne(doc);
         console.log(doc) // display the inserted information
         client.close();
@@ -86,7 +86,7 @@ exports.find = async(req) => { //ritorna il documento ricercato
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        
+
         /*
         inserendo la stringa append davanti al carattere ricercato significa che il $regret (che serve a ricercare il nome anche avendo il nome parziale)
         ricerchiamo il nome parziale ma deve essere nell-ordine che lo scriviamo, senza lui se cercassimo la lettera S troverebbe anche ad esempio la parola
@@ -95,7 +95,7 @@ exports.find = async(req) => { //ritorna il documento ricercato
 //console.log(OLC);
         var append = '^';
         var expression = [];
-       
+
 
         if (req.body.OLC && req.body.OLC != '' ){
             var olc = append.concat(req.body.OLC);
@@ -107,7 +107,7 @@ exports.find = async(req) => { //ritorna il documento ricercato
             expression.push({user:{$regex:utente}});
 
         }
-       
+
 
         if (req.body.name && req.body.name != ''){
             var nome = append.concat(req.body.name);
@@ -124,19 +124,19 @@ exports.find = async(req) => { //ritorna il documento ricercato
             expression.push({media_rating:{$regex:m_rating}});
 
         }
-     
+
 
         if (req.body.opening){
             var apertura = append.concat(req.body.opening);
             expression.push({opening:{$regex:apertura}});
 
-        } 
-       
+        }
 
-       
-               
-        //var _utente = append.concat(utente);        
-       /*  var _nome = append.concat(nome);        
+
+
+
+        //var _utente = append.concat(utente);
+       /*  var _nome = append.concat(nome);
         var _categoria = append.concat(categoria); */
 
         /* var append = '^';
@@ -151,14 +151,14 @@ exports.find = async(req) => { //ritorna il documento ricercato
                 {category:{$regex:_categoria, $options:'i'}}, */
                 //{m_rating:{$regex:media_rating}},
                 //{opening:{$regex:orario}}
-            //]};// $options:'i' serve ad annulare il Case Sensitive del regex */      
+            //]};// $options:'i' serve ad annulare il Case Sensitive del regex */
 
       console.log(expression);
-      
+
             var query;
             if (expression.length > 1){query = {$and:expression};}
             if(expression.length == 1){query = expression[0]}
-            
+
 
         var items = await db.collection('place').find(query).project({_id:0}).toArray();
 
@@ -181,7 +181,7 @@ exports.exist_one = async(olc) => { //ritorna true se il codice luogo esiste nel
         const db = client.db("webdb");
         var query = {OLC : olc}
 
-        var items = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false 
+        var items = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
         client.close();
 
         return items;
@@ -198,10 +198,10 @@ exports.update_one = async(/* DA INSERIRE I VALORI DELLLA QUERY CHE VOGLIAMO CAM
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        
-        var query = {  /* DA DECIDERE I VALORI DELLA QUERY DA PASSARE NELLA FUNZIONE, COME RICERCARE I PARAMETRI DA CAMBIARE */ }; 
 
-        
+        var query = {  /* DA DECIDERE I VALORI DELLA QUERY DA PASSARE NELLA FUNZIONE, COME RICERCARE I PARAMETRI DA CAMBIARE */ };
+
+
         var items = await db.collection('review').updateOne(query, new_values);
 
         client.close();
@@ -279,7 +279,7 @@ exports.clear_place = async() => {
         return items;
 
         }
-        
+
     catch (err){
 
         throw err;
@@ -337,25 +337,25 @@ exports.showdb = function(ret){
 function list_coll()
 {
 
-    MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  }, (err, client) => 
+    MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  }, (err, client) =>
     {
 
         if (err) throw err;
 
         const db = client.db("webdb");
 
-        db.listCollections().toArray().then((docs) => 
+        db.listCollections().toArray().then((docs) =>
         {
             console.log('Available collections:');
             docs.forEach((doc, idx, array) => { console.log(doc.name) });
         })
-   
-        .catch((err) => 
+
+        .catch((err) =>
         {
           console.log(err);
         })
-    
-        .finally(() => 
+
+        .finally(() =>
         {
             client.close();
         });
@@ -368,20 +368,20 @@ function remove_one(coll , nome)
     MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
 
         if (err) throw err;
-    
+
         const db = client.db("wedb");
-    
+
         let query = { name: nome , price: 10};
-    
+
         db.collection(coll).deleteOne(query).then((result) => {
-    
+
             console.log('Car deleted');
             console.log(result);
         }).catch((err) => {
-    
+
             console.log(err);
         }).finally(() => {
-    
+
             client.close();
         });
     });
@@ -390,7 +390,7 @@ function remove_one(coll , nome)
 function update_one(coll, nome, prezzo)
 {
 
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>   
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
     {
 
         if (err) throw err;
@@ -400,19 +400,19 @@ function update_one(coll, nome, prezzo)
         let filQuery = { name: nome };
         let updateQuery = { $set: { "price": prezzo }};
 
-        db.collection(coll).updateOne(filQuery, updateQuery).then(result => 
+        db.collection(coll).updateOne(filQuery, updateQuery).then(result =>
             {
                 console.log('Car updated');
                 console.log(result);
 
         })
-        
-        .catch((err) => 
+
+        .catch((err) =>
         {
             console.log(err);
         })
-        
-        .finally(() => 
+
+        .finally(() =>
         {
             client.close();
         });
@@ -422,28 +422,28 @@ function update_one(coll, nome, prezzo)
 
 function find_one(coll, nome) //return a document
 {
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => 
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
     {
 
         if (err) throw err;
-    
+
         const db = client.db("webdb");
-    
+
         let collection = db.collection(coll);
         let query = { name: nome }
-    
-        collection.findOne(query).then(doc => 
+
+        collection.findOne(query).then(doc =>
         {
             console.log(doc);
         })
-        
-        .catch((err) => 
+
+        .catch((err) =>
         {
             console.log(err);
         })
-        
-        .finally(() => 
-        { 
+
+        .finally(() =>
+        {
             client.close();
         });
     });
@@ -451,28 +451,28 @@ function find_one(coll, nome) //return a document
 
 function find(coll, nome, pippo) //return a collection
 {
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => 
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
     {
 
         if (err) throw err;
-    
+
         const db = client.db("webdb");
 
 
         db.collection(coll).find({}).project({_id: 0}).toArray().then((docs) => //.project serve ad escludere l'id dall'output
         {
             console.log(docs);
-            
+
 
         })
-        
-        .catch((err) => 
+
+        .catch((err) =>
         {
             console.log(err);
         })
-        
-        .finally(() => 
-        { 
+
+        .finally(() =>
+        {
             client.close();
         });
     });
@@ -482,32 +482,32 @@ function find(coll, nome, pippo) //return a collection
 
 function find_with_regular_expression(coll, nome)
 {
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => 
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
     {
-      
+
         if (err) throw err;
-    
+
         const db = client.db("webdb");
-    
+
         let collection = db.collection(coll);
         let query = { name: nome }
-    
-        collection.findOne(query).then(doc => 
+
+        collection.findOne(query).then(doc =>
         {
             console.log(doc);
         })
-        
-        .catch((err) => 
+
+        .catch((err) =>
         {
             console.log(err);
         })
-        
-        .finally(() => 
-        { 
+
+        .finally(() =>
+        {
             client.close();
         });
     });
-  
+
 }
 
 
