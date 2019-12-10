@@ -42,23 +42,28 @@ var technologies = [
   {media: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png", title: "HTML"},
   {media: "https://www.lifewire.com/thmb/s9kfBeuaF14VAGgE-SjDB-L0ZDs=/768x0/filters:no_upscale():max_bytes(150000):strip_icc()/css3-57b597e85f9b58b5c2b338de.png", title: "CSS"},
   {media: "https://powerforallats.com/wp-content/uploads/2016/03/js-logo.png", title: "JavaScript"},
+  {media: "https://mpng.pngfly.com/20190401/zsf/kisspng-mongodb-document-oriented-database-nosql-openshift-web-app-development-servcie-in-dehradun-5ca1b8cb8a0f32.3708278115541024755655.jpg", title: "MongoDb"},
   {media: "https://pbs.twimg.com/profile_images/925576484122779648/ucVTUoPg_400x400.jpg", title: "Material.io"},
-  {media: "https://upload.wikimedia.org/wikipedia/commons/4/48/GoogleMaps_logo.svg", title: "Google Maps"},
+  {media: "http://www.logoeps.net/wp-content/uploads/2016/08/Google-Maps-logo.jpg", title: "Google Maps"},
   {media: "https://ortlerskytrails.it/wp-content/uploads/2019/03/Youtube-logo-square.png", title: "YouTube"},
   {media: "https://pbs.twimg.com/profile_images/721301450962432000/L9ehCZfC_400x400.jpg", title: "Dbpedia"}
+
 ];
 
 var simone = {
    media: "content/simone.jpg",
    title: "Simone" ,
-   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id sem nec enim auctor fermentum. Nulla aliquam arcu id dictum egestas. Sed sit amet tellus et justo aliquam cursus.",
-   contacts: [{url:"https://www.facebook.com/Simo.Ferraguti", icon:"fab fa-facebook"}]
+   description: "Gocker Master",
+   contacts: [
+     {url:"https://www.facebook.com/Simo.Ferraguti", icon:"fab fa-facebook"},
+     {url:"https://github.com/SF-Fox", icon:"fab fa-github"},
+   ]
  };
 
  var carlos = {
    media: "content/carlo.jpg",
    title: "Carlos" ,
-   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id sem nec enim auctor fermentum. Nulla aliquam arcu id dictum egestas. Sed sit amet tellus et justo aliquam cursus.",
+   description: "The &#34;Bee&#34; Man",
    contacts: [
      {url:"https://www.facebook.com/carlos.caramaschi1", icon:"fab fa-facebook"},
      {url:"https://github.com/litoss", icon:"fab fa-github"}
@@ -68,7 +73,7 @@ var simone = {
  var stefano = {
     media: "content/stefano.jpg",
     title: "Stefano" ,
-    description: "Studento di informatico",
+    description: " Software <del>Engineer</del> Architect",
     contacts: [
       {url:"https://www.facebook.com/stefano.propato", icon:"fab fa-facebook"},
       {url:"https://github.com/elPeroN", icon:"fab fa-github"},
@@ -79,7 +84,7 @@ var simone = {
  var vincenzo = {
    media: "content/vincenzo.jpg",
    title: "Vincenzo" ,
-   description: "Aliquam id sem nec enim auctor fermentum. Nulla aliquam arcu id dictum egestas. Sed sit amet tellus et justo aliquam cursus.",
+   description: "&lt;body&gt; builder",
    contacts: [{url:"https://www.facebook.com/vincenzo.armandi.5", icon:"fab fa-facebook"}]
  }
 

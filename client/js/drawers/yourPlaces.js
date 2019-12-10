@@ -1,5 +1,5 @@
 function openPlaces(){
-  
+
     var content = document.createElement('div');
     var form = new FormData();
     form.append('user', profile.getId());
@@ -12,6 +12,7 @@ function openPlaces(){
       for(var i in arr){
           var button = new ActionButton("Edit");
           var card = new Card (arr[i].name,null,arr[i].description,null,[button]).root_;
+          card.className += ' about-card';
           content.appendChild(card);
       }
     }

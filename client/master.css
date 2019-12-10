@@ -23,25 +23,42 @@ body {
   padding: 0;
 }
 
+@font-face {
+    font-family: 'where-m-i';
+    src: url('./content/font/wheremi-webfont.woff2') format('woff2'),
+         url('./content/font/wheremi-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.mdc-top-app-bar--dense .mdc-top-app-bar__title {
+  font-family: 'where-m-i';
+  font-size: 30px;
+}
+
+#menuHeader {
+  width: 100%;
+}
 
 @media only screen and (max-width: 480px) {
-    .mdc-drawer-content {
+    .page-drawer-content {
     width: 100%;
     }
 
 }
 
 @media all and (min-width:481px) {
-    .mdc-drawer-content {
-    width: 480px;
+    .main-topbar{
+      width: 480px;
     }
-    #content_header{
+    .page-drawer-content{
       width: 480px;
     }
 }
 
-.about-card, .place-card{
+.about-card {
   margin:20px;
+  width: 430px;
 }
 
 .mdc-top-app-bar--relative{
@@ -52,11 +69,11 @@ body {
   border-radius: 50%;
 }
 
-.about-card .mdc-card__media:first-child{
-  min-width: 110px;
-  min-height: 110px;
-  float: left;
+.about-card .mdc-card__media{
+  width: 150px;
+  height: 150px;
   margin: 10px;
+  border-radius: 50%;
 }
 
 .about-card .mdc-card__primary-action {
@@ -68,7 +85,7 @@ body {
 }
 
 .about-card .mdc-card__primary{
-    padding: 1rem;
+    width: 250px;
 }
 .notListedPlace {
   padding: 1rem;
@@ -76,4 +93,25 @@ body {
 
 .mdc-dialog_actions {
   margin: 10px;
+}
+
+/*login menu*/
+.login-menu {
+  width: 300px;
+  border-radius: 20px;
+}
+
+.login-img {
+  width: 200px;
+  border-radius: 50%;
+  margin: 50px;
+}
+
+.login-name {
+  text-align: center;
+}
+
+.login-button {
+  text-align: center;
+  margin: 25px;
 }

@@ -4,6 +4,10 @@ class MenuDrawer extends Drawer{
   //Creo la lista di opzioni del menu
   var elements = [];
 
+  var menuHeader = document.createElement('img');
+  menuHeader.src = '../../content/menuheader.svg';
+  menuHeader.id = 'menuHeader';
+
   //Aggiungo il sottotitolo browser
   var browserTag = document.createElement('h6');
   browserTag.className = 'mdc-list-group__subheader';
@@ -33,6 +37,7 @@ class MenuDrawer extends Drawer{
 
   var nav = document.createElement('nav');
   nav.className = "mdc-list";
+  nav.appendChild(menuHeader);
   for(var i in elements) nav.appendChild(elements[i]);
 
   //fine creazione lista
