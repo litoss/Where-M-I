@@ -1,5 +1,7 @@
 function selectPlace(position) {
 
+  if(!map.pageDrawer){
+
   var div = document.createElement('div');
   setQuery(position,approx);
   fetch(queryUrl).then(function(response){
@@ -42,4 +44,5 @@ function selectPlace(position) {
 
   map.pageDrawer = new PageDrawer('Select your Place', div);
   map.pageDrawer.open = true;
+  }
 }

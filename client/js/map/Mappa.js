@@ -42,7 +42,10 @@ class Mappa extends google.maps.Map{
   }
 
   clickOnMap(event){
-    if(this.noPlace.getMap()) this.noPlace.removePosition();
+    if(this.noPlace.getMap()) {
+      this.noPlace.removePosition();
+      if(map.pageDrawer) map.pageDrawer.open = false;
+    }
     else if(this.noPlace.isWindowOpen()) this.noPlace.closeWindow();
     else{
       for(var i in this.places) if(this.places[i].isWindowOpen()){

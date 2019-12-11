@@ -11,33 +11,36 @@ class Place {
         anchor: new google.maps.Point(12, 12)
     }});
 
-    var addButton = new ActionButton("find");
-    var directionButton = new ActionButton('goto');
-    var discardButton = new ActionButton("discard");
-    var positionButton = new ActionButton('set position');
-    var card = new Card(name, null, description, img, [addButton, discardButton, directionButton, positionButton]).root_;
-    card.className += " about-card";
+    var buttonList = [];
+
+
+
+    var addButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+    var directionButton = new IconButton('navigation','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+    var positionButton = new IconButton('person_pin','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+
+    buttonList.push(directionButton.root_);
+    buttonList.push(positionButton.root_);
+    var card = new Card(name, null, description, img,[addButton.root_],buttonList).root_;
+    card.className += " infoWindow-card";
 
     this.infoWindow = new google.maps.InfoWindow({
       content: card,
       maxWidth: 400,
     });
 
-    addButton.addEventListener('click', () => {
-      selectPlace(this.marker.getPosition());
+    addButton.root_.addEventListener('click', () => {
+      if(profile) selectPlace(this.marker.getPosition());
+      else alert('You must be logged in to use this function');
     });
-    directionButton.addEventListener('click', () => {
+
+    directionButton.root_.addEventListener('click', () => {
       this.showDirection();
-    });
-    discardButton.addEventListener('click', function(){
-      pageDrawer.open = false;
-      marker.setMap(null);
     });
     this.marker.addListener('click', () => {
       this.infoWindow.open(map, this.marker);
     });
-    positionButton.addEventListener('click', () => {
-      console.log(map);
+    positionButton.root_.addEventListener('click', () => {
       map.position.setPosition(this.marker.getPosition());
       this.removePosition();
     });

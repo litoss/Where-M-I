@@ -135,7 +135,7 @@ var simone = {
   ]
 
   var editorElements = [
-    {name:"Your Places",icon:"map"},
+    {name:"Your Places",icon:"apartment"},
     {name:"Your Clips",icon:"videocam"},
     {name:"Your Paths",icon:"directions"}
   ]
@@ -144,7 +144,7 @@ var simone = {
     {name:"Checklist",icon:"check_circle"},
     {name:"How it works",icon:"emoji_objects"},
     {name:"About Us",icon:"emoji_people"},
-    {name:"Impostazioni",icon:"settings_applications"}
+    {name:"Settings",icon:"settings_applications"}
   ]
   var example = [];
   for(var i=0;i<10;i++) example.push({primaryText: "Ciccio Pasticcio", secondaryText: "2225 Contributi"});

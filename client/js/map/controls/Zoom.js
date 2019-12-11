@@ -1,9 +1,10 @@
 class Zoom{
   constructor(){
     this.root_ = document.createElement('div');
+    this.root_.className = 'zoomButtons';
 
-    var buttonAdd = new IconButton('add','mdc-button--raised');
-    var buttonRemove = new IconButton('remove','mdc-button--raised');
+    var buttonAdd = new IconButton('add','mdc-button--raised mdc-image__circular');
+    var buttonRemove = new IconButton('remove','mdc-button--raised mdc-image__circular');
 
     buttonAdd.unbounded = true;
     buttonRemove.unbounded = true;

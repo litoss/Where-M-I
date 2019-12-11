@@ -16,21 +16,10 @@ class PageDrawer extends Drawer{
       this.open = false;
     })
 
-<<<<<<< HEAD
     contentcontent.appendChild(topBarDrawer.root_);
     contentcontent.appendChild(content);
 
-    super(null, null, contentcontent, 'mdc-drawer-content');
-    this.topBarDrawer = topBarDrawer;
 
-    document.querySelector('.mdc-drawer-content').nextElementSibling.id = 'closed-scrim';
-    document.querySelector('.mdc-drawer-content').nextElementSibling.className = '';
-
-    this.listen('MDCDrawer:closed', () => {
-      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-drawer-content'));
-      document.querySelector('.main-content').removeChild(document.querySelector('#closed-scrim'));
-    });
-=======
   super(null, null, contentcontent, 'page-drawer-content');
   this.topBarDrawer = topBarDrawer;
 
@@ -38,10 +27,11 @@ class PageDrawer extends Drawer{
   document.querySelector('.page-drawer-content').nextElementSibling.className = '';
 
   this.listen('MDCDrawer:closed', () => {
+    map.pageDrawer = null;
     document.querySelector('.main-content').removeChild(document.querySelector('.page-drawer-content'));
     document.querySelector('.main-content').removeChild(document.querySelector('#closed-scrim'));
   });
->>>>>>> 714db1975723a2d91d3cf1033c58982146d9ab15
+
   }
 
   setPageTitle(newTitle){

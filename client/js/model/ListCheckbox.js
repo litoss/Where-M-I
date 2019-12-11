@@ -19,7 +19,7 @@ class ListCheckBox extends mdc.list.MDCList{
           label.className = 'mdc-list-item__text';
           label.setAttribute('for', ids[i]);
           label.appendChild(document.createTextNode(names[i]));
-          
+
           li.appendChild(span);
           li.appendChild(label);
           ul.appendChild(li);

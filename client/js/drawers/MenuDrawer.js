@@ -5,6 +5,7 @@ class MenuDrawer extends Drawer{
   var elements = [];
 
   var menuHeader = document.createElement('img');
+  menuHeader.className = 'mdc-elevation--z3';
   menuHeader.src = '../../content/menuheader.svg';
   menuHeader.id = 'menuHeader';
 
@@ -62,6 +63,8 @@ class MenuDrawer extends Drawer{
       case 6: openCheckListBrowser();
         break;
       case 8: openAbout();
+        break;
+      case 9: openSettings();
         break;
     }
   });

@@ -1,24 +1,19 @@
 class TopBar {
   constructor(){
     this.menu = new IconButton('menu',"mdc-top-app-bar__navigation-icon");
-    this.icon = new ImageButton('content/photo.png',);
+    this.icon = new ImageButton('content/photo.png');
 
-    this.img = document.createElement('img');
-    this.img.className = 'login-img'
-    this.img.src = 'content/photo.png';
-    this.name = document.createElement('h3');
-    this.name.className = 'login-name'
-    this.name.innerHTML = 'Guest';
+    var settingsButton = new IconButton('settings');
+    settingsButton.listen('click',openSettings);
+    this.loginCard = new Card("Guest",null,null,"content/photo.png",null,[settingsButton.root_],'login-card');
+
     this.button = document.createElement('div');
     this.button.className = 'login-button';
     this.render(this.button);
 
 
-    this.menus = new Menu(new List([this.img,this.name,this.button]).root_, ' login-menu');
+    this.menus = new Menu(new List([this.loginCard.root_,this.button]).root_, ' login-menu');
     this.menus.setAbsolutePosition(-250,48);
-
-
-  //  this.surf = new mdc.menuSurface.MDCMenuSurface(this.menus.root_);
 
     var anchor = document.createElement('div');
     anchor.className = "mdc-menu-surface--anchor";
@@ -28,7 +23,6 @@ class TopBar {
     this.topBar = new TopAppBar('Where M I ?', this.menu.root_, anchor, "mdc-top-app-bar--relative mdc-top-app-bar--dense main-topbar");
 
     this.icon.listen('click', () => {
-    //  this.menus.setAnchorCorner(mdc.menu.Corner.TOP_LEFT);
       this.menus.open= !this.menus.open;
     })
 
@@ -52,10 +46,10 @@ class TopBar {
 
   onSuccess(googleUser) {
     profile = googleUser.getBasicProfile();
-    console.log(profile);
     map.topBar.icon.setImage(profile.getImageUrl());
-    map.topBar.name.innerHTML = profile.getName();
-    map.topBar.img.src = profile.getImageUrl();
+
+    map.topBar.loginCard.setTitle(profile.getName());
+    map.topBar.loginCard.setImage(profile.getImageUrl());
     for(var i=6; i<9; i++) {
       map.menuDrawer.elements[i].className = "mdc-list-item";
     }
@@ -74,8 +68,8 @@ class TopBar {
       profile = null;
 
       map.topBar.icon.setImage("content/photo.png");
-      map.topBar.name.innerHTML = "Guest";
-      map.topBar.img.src = "content/photo.png";
+      map.topBar.loginCard.setTitle("Guest");
+      map.topBar.loginCard.setImage("content/photo.png");
 
       map.topBar.button.innerHTML = '';
       map.topBar.render(map.topBar.button);

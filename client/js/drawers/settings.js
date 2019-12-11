@@ -1,6 +1,4 @@
-function openImpostazioni(){
-  document.getElementById('content_title').innerHTML = 'Impostazioni';
-  document.getElementById('content_content').innerHTML = '';
+function openSettings(){
 
   var div = document.createElement('div');
   div.className = 'mdc-list-group';
@@ -11,9 +9,9 @@ function openImpostazioni(){
   header.appendChild(document.createTextNode('Filtra le Categorie'));
   div.appendChild(header);
 
-  const contentSelector = new ListCheckBox(content.map(o => o['id']), content.map(o => o['name']));
+  const contentSelector = new ListCheckBox(categories.map(o => o['id']), categories.map(o => o['name']));
   div.appendChild(contentSelector.root_);
 
-  document.getElementById('content_content').appendChild(div);
-  pageDrawer.open = true;
+  map.pageDrawer = new PageDrawer('Settings', div);
+  map.pageDrawer.open = true;
 }

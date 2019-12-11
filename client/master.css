@@ -94,24 +94,74 @@ body {
 .mdc-dialog_actions {
   margin: 10px;
 }
+.mdc-button--raised{
+  margin: 5px;
+}
+.zoomButtons {
+  display: flex;
+  flex-direction: column;
+}
 
+/*infowindow*/
+.infoWindow-card {
+  margin: 10px;
+  width: 280px;
+}
+
+.infoWindow-card .mdc-card__primary-action{
+  height: 180px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.infoWindow-card .mdc-card__primary{
+    width: 160px;
+}
+
+.infoWindow-card .mdc-card__media{
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  border-radius: 50%;
+}
+}
 /*login menu*/
+.mdc-image__circular{
+  border-radius: 50%;
+}
+
 .login-menu {
   width: 300px;
   border-radius: 20px;
 }
 
-.login-img {
-  width: 200px;
-  border-radius: 50%;
-  margin: 50px;
+.login-card {
+  margin: 10px;
+  width: 280px;
 }
 
-.login-name {
-  text-align: center;
+.login-card .mdc-card__primary-action{
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.login-card .mdc-card__primary{
+    width: 160px;
+}
+
+.login-card .mdc-card__media{
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  border-radius: 50%;
 }
 
 .login-button {
   text-align: center;
   margin: 25px;
 }
+/*login menu end*/
