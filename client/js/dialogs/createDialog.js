@@ -11,56 +11,31 @@ function createDialog(position, card){
   exampleCard.id = "place-card";
   content.appendChild(exampleCard);
 
-  if (card == null){
-    var addName = document.createElement("div");
-    var name = new TextField("Name","add");
-    var submit = new IconButton("add");
-    submit.root_.addEventListener("click", function(){
-      document.getElementById("place-card").querySelector(".mdc-card__title").innerHTML= name.value;
-    })
-    addName.appendChild(name.root_);
-    addName.appendChild(submit.root_);
-    content.appendChild(addName);
+  var form = document.createElement('form');
 
-    var addDescr = document.createElement("div");
-    var descr = new TextField("Description","add");
-    var submit = new IconButton("add");
-    submit.root_.addEventListener("click", function(){
-      document.getElementById("place-card").querySelector(".mdc-typography--body2").innerHTML= descr.value;
-    })
-    addDescr.appendChild(descr.root_);
-    addDescr.appendChild(submit.root_);
-    content.appendChild(addDescr);
+  if (card == null){
+    var name = new TextField("Name",null,true,"emoji_flags");
+    form.appendChild(name.root_);
+
+    var descr = new TextField("Description",null,null,"subject");
+    form.appendChild(descr.root_);
   }
 
-  var addCat = document.createElement("div");
-  var cat = new TextField("Category","add");
-  var submit = new IconButton("add");
-  submit.root_.addEventListener("click", function(){
-  })
-  addCat.appendChild(cat.root_);
-  addCat.appendChild(submit.root_);
-  content.appendChild(addCat);
+  var opHo = new TextField("Opening Hours","hh:mm/hh:mm",null,"schedule");
+  form.appendChild(opHo.root_);
 
-  var addOpHo = document.createElement("div");
-  var opHo = new TextField("Opening Hours","add");
-  var submit = new IconButton("add");
-  submit.root_.addEventListener("click", function(){
-  })
-  addOpHo.appendChild(opHo.root_);
-  addOpHo.appendChild(submit.root_);
-  content.appendChild(addOpHo);
+  var elements = [];
+  for (var i in categories) elements.push(new ElementList(categories[i].name));
+  var listEl = new List(elements);
+  var cat = new Select("Category",listEl.root_,'form-field');
+  form.appendChild(cat.root_);
 
-  var addImage = document.createElement("div");
-  var input = document.createElement("input");
-  input.type = 'file';
-  input.id = 'file';
-  content.appendChild(addImage);
+  content.appendChild(form);
 
   var footer = document.createElement('div');
-  var button = new ActionButton("add");
-  button.addEventListener("click", function(){
+  var button = new IconButton("add","mdc-button--raised mdc-image__circular");
 
+  button.root_.addEventListener("click", function(){
     var form = new FormData();
     form.append('OLC', OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_EXTRA));
     form.append('user', profile.getId());
@@ -89,7 +64,7 @@ function createDialog(position, card){
 
     xhr.send(JSON.stringify(object));
   });
-  footer.appendChild(button);
+  footer.appendChild(button.root_);
 
 
   var dialog = new Dialog(content,footer,"Add some informations.");

@@ -1,10 +1,10 @@
 class List extends mdc.list.MDCList{
     constructor(elements, options) {
-        var ul = document.createElement('ul');
-        ul.className = "mdc-list ";
-        if(options) ul.className += "mdc-list--two-line";
-        for(var i in elements) ul.appendChild(elements[i]);
+        var item = document.createElement('ul');
+        item.className = "mdc-list ";
+        if(options) item.className += " " + options;
+        for(var i in elements) item.appendChild(elements[i]);
 
-        super(ul);
+        super(item);
     }
 }

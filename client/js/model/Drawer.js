@@ -1,10 +1,5 @@
 class Drawer extends mdc.drawer.MDCDrawer{
 
-  /*
-  *  Componente Drawer
-  *  https://material.io/develop/web/components/drawers/
-  */
-
   constructor(title, subtitle, content, options) {
 
     var div = document.createElement('div');

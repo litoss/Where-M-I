@@ -1,7 +1,8 @@
 class Card{
   constructor(titleText, subtitleText, secondaryText, img, actionButtons, actionIcons, options) {
     this.root_ = document.createElement('div');
-    this.root_.className = "mdc-card mdc-card--outlined " + options;
+    this.root_.className = "mdc-card mdc-card--outlined";
+    if(options) this.root_.className += " " + options;
 
     var primaryAction = document.createElement('div');
     primaryAction.className = "mdc-card__primary-action";

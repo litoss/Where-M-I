@@ -165,3 +165,11 @@ body {
   margin: 25px;
 }
 /*login menu end*/
+
+.mdc-menu-surface {
+  height: 300px;
+}
+
+.form-field {
+  margin: 10px;
+}

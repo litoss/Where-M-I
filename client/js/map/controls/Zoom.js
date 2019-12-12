@@ -3,8 +3,8 @@ class Zoom{
     this.root_ = document.createElement('div');
     this.root_.className = 'zoomButtons';
 
-    var buttonAdd = new IconButton('add','mdc-button--raised mdc-image__circular');
-    var buttonRemove = new IconButton('remove','mdc-button--raised mdc-image__circular');
+    var buttonAdd = new IconButton('zoom_in','mdc-button--raised mdc-image__circular');
+    var buttonRemove = new IconButton('zoom_out','mdc-button--raised mdc-image__circular');
 
     buttonAdd.unbounded = true;
     buttonRemove.unbounded = true;
