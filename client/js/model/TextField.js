@@ -1,5 +1,5 @@
 class TextField extends mdc.textField.MDCTextField{
-    constructor(name, format, required, icon) {
+    constructor(name, format, required, maxLenght, icon) {
         var div = document.createElement('div');
         div.className = "mdc-text-field mdc-text-field--outlined";
 

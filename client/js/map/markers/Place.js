@@ -11,17 +11,17 @@ class Place {
         anchor: new google.maps.Point(12, 12)
     }});
 
-    var buttonList = [];
-
-
+    var rightButtonList = [];
+    var leftButtonList = [];
 
     var addButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
     var directionButton = new IconButton('navigation','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
     var positionButton = new IconButton('person_pin','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
 
-    buttonList.push(directionButton.root_);
-    buttonList.push(positionButton.root_);
-    var card = new Card(name, null, description, img,[addButton.root_],buttonList).root_;
+    rightButtonList.push(directionButton.root_);
+    rightButtonList.push(positionButton.root_);
+    if(name == 'Località Sconosciuta') leftButtonList.push(addButton.root_);
+    var card = new Card(name, null, description, img, leftButtonList, rightButtonList).root_;
     card.className += " infoWindow-card";
 
     this.infoWindow = new google.maps.InfoWindow({
