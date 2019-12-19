@@ -20,18 +20,27 @@ class Place {
 
     rightButtonList.push(directionButton.root_);
     rightButtonList.push(positionButton.root_);
-    if(name == 'Località Sconosciuta') leftButtonList.push(addButton.root_);
+    if(name == 'Località Sconosciuta') {
+      var addButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+      addButton.root_.addEventListener('click', () => {
+        if(profile) selectPlace(this.marker.getPosition());
+        else alert('You must be logged in to use this function');
+      });
+      leftButtonList.push(addButton.root_);
+    }else{
+      var editButton = new IconButton('edit','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+      editButton.root_.addEventListener('click', () => {
+        if(profile) ;
+        else alert('You must be logged in to use this function');
+      });
+      leftButtonList.push(editButton.root_);
+    }
     var card = new Card(name, null, description, img, leftButtonList, rightButtonList).root_;
     card.className += " infoWindow-card";
 
     this.infoWindow = new google.maps.InfoWindow({
       content: card,
       maxWidth: 400,
-    });
-
-    addButton.root_.addEventListener('click', () => {
-      if(profile) selectPlace(this.marker.getPosition());
-      else alert('You must be logged in to use this function');
     });
 
     directionButton.root_.addEventListener('click', () => {

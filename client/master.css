@@ -173,3 +173,7 @@ body {
 .form-field {
   margin: 10px;
 }
+
+#image-input {
+  display: none;
+}

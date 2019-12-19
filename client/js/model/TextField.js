@@ -1,5 +1,5 @@
 class TextField extends mdc.textField.MDCTextField{
-    constructor(name, format, required, maxLenght, icon) {
+    constructor(name, format, required, icon) {
         var div = document.createElement('div');
         div.className = "mdc-text-field mdc-text-field--outlined";
 
@@ -22,6 +22,7 @@ class TextField extends mdc.textField.MDCTextField{
         outline.className = 'mdc-notched-outline';
         div.appendChild(outline);
 
+
         var leading = document.createElement('div');
         leading.className = 'mdc-notched-outline__leading';
         outline.appendChild(leading);
@@ -42,5 +43,7 @@ class TextField extends mdc.textField.MDCTextField{
         outline.appendChild(trailing);
 
         super(div);
+
+        this.input = input;
     }
 }

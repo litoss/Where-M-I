@@ -5,28 +5,57 @@ function createDialog(position, card){
   var long = position.lng();
   var exampleCard;
 
-  if (card == null)  exampleCard = new Card(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media, null, null, 'about-card').root_;
+  if (card == null)  exampleCard = new Card(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media, null, null, 'about-card');
   else exampleCard = card;
   exampleCard.id = "place-card";
-  content.appendChild(exampleCard);
+  content.appendChild(exampleCard.root_);
 
   if (card == null){
-    var name = new TextField("Name",null,true,"emoji_flags");
-    content.appendChild(name.root_);
+
+    var imgUpload = new IconButton('add_a_photo',"mdc-button--raised mdc-image__circular");
+    var input = document.createElement('input');
+    input.setAttribute('type','file');
+    input.id = 'image-input';
+    imgUpload.root_.appendChild(input);
+    content.appendChild(imgUpload.root_);
+
+    imgUpload.listen('click', async() => {
+      input.click();
+    });
+
+    input.addEventListener('input', () => {
+      var url = URL.createObjectURL(event.target.files[0]);
+      exampleCard.setImage(url);
+    })
+
+    var nameForm = new TextField("Name",null,true,"emoji_flags");
+    content.appendChild(nameForm.root_);
+
+    nameForm.input.addEventListener('input', () => {
+      exampleCard.setTitle(nameForm.value);
+    })
 
 
-    var descr = new TextField("Description",null,null,"subject");
-    content.appendChild(descr.root_);
+    var descrForm = new TextField("Description",null,null,"subject");
+    content.appendChild(descrForm.root_);
+
+    descrForm.input.addEventListener('input', () => {
+    exampleCard.setSecondary(descrForm.value);
+    })
   }
 
-  var opHo = new TextField("Opening Hours","hh:mm/hh:mm",null,"schedule");
-  content.appendChild(opHo.root_);
+  var opHoForm = new TextField("Opening Hours","hh:mm/hh:mm",null,"schedule");
+  content.appendChild(opHoForm.root_);
 
   var elements = [];
-  for (var i in categories) elements.push(new ElementList(categories[i].name));
+  for (var i in categories) elements.push(new SelectList(categories[i].name,categories[i].id));
   var listEl = new List(elements);
   var cat = new Select("Category",listEl.root_,'form-field');
   content.appendChild(cat.root_);
+
+  cat.listen('MDCSelect:change', () => {
+  exampleCard.setSubTitle( 'Category: ' + cat.selectedText.innerHTML);
+  })
 
   var footer = document.createElement('div');
   var button = new IconButton("add","mdc-button--raised mdc-image__circular");
@@ -36,19 +65,37 @@ function createDialog(position, card){
     form.append('OLC', OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_EXTRA));
     form.append('user', profile.getId());
 
-    if(name) nameValidation(name);
-    else{
+    //name validation
+    if(nameForm) {
+      if(nameForm.value.length == 0) {
+        alert('No input on name');
+        return;
+      }
+      else if(nameForm.value.length > 20){
+        alert("Name is too long");
+        return;
+      }
+      form.append('name',nameForm.value);
+    }else{
      form.append('name', document.getElementById("place-card").querySelector(".mdc-card__title").innerHTML);
     }
 
+    if(input) var blob= input.files[0];
     //get img from card
-    var imgUrl = exampleCard.querySelector('.mdc-card__media').style.backgroundImage.slice(4, -1).replace(/["']/g, "");
-    var blob = await getimageBlob(imgUrl);
+    else{
+      var imgUrl = exampleCard.querySelector('.mdc-card__media').style.backgroundImage.slice(4, -1).replace(/["']/g, "");
+      var blob = await getimageBlob(imgUrl);
+    }
     var b64image = await encode64(blob);
-    //form.append('category', ?)
-    //form.append('orario', ?);
-    form.append('description', document.getElementById("place-card").querySelector(".mdc-typography--body2").innerHTML);
     form.append('image', b64image);
+
+    form.append('category', cat.value);
+    form.append('orario', opHoForm.value);
+
+    if(descrForm){
+      form.append('description', descrForm.value);
+    }else form.append('description', document.getElementById("place-card").querySelector(".mdc-typography--body2").innerHTML);
+
     submit(form);
 
   });
@@ -64,10 +111,7 @@ function createDialog(position, card){
 });
 
 function nameValidation(name){
-  console.log(name.value.length);
-  if(name.value.length == 0) console.log('no input');
-  else if(name.value.length > 20) console.log("long");
-  console.log(name.value);
+
 }
 
 async function getimageBlob(url){
