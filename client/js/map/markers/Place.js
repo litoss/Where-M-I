@@ -21,12 +21,12 @@ class Place {
     rightButtonList.push(directionButton.root_);
     rightButtonList.push(positionButton.root_);
     if(name == 'Località Sconosciuta') {
-      var addButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-      addButton.root_.addEventListener('click', () => {
+      var searchButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+      searchButton.root_.addEventListener('click', () => {
         if(profile) selectPlace(this.marker.getPosition());
         else alert('You must be logged in to use this function');
       });
-      leftButtonList.push(addButton.root_);
+      leftButtonList.push(searchButton.root_);
     }else{
       var editButton = new IconButton('edit','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
       editButton.root_.addEventListener('click', () => {
@@ -37,6 +37,11 @@ class Place {
       leftButtonList.push(editButton.root_);
     }
     var card = new Card(name, null, description, img, leftButtonList, rightButtonList, 'infoWindow-card');
+
+    if(name != 'Località Sconosciuta') card.primaryAction.addEventListener('click',() => {
+      if(!map.pageDrawer)selectedPlace(card);
+      else map.pageDrawer.open = false;
+    })
 
     this.infoWindow = new google.maps.InfoWindow({
       content: card.root_,
