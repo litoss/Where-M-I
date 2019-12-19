@@ -19,7 +19,6 @@ class PageDrawer extends Drawer{
     contentcontent.appendChild(topBarDrawer.root_);
     contentcontent.appendChild(content);
 
-
   super(null, null, contentcontent, 'page-drawer-content');
   this.topBarDrawer = topBarDrawer;
 

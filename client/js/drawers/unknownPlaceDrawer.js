@@ -15,9 +15,9 @@ function selectPlace(position) {
         var name = jsonResponse.results.bindings[event.srcElement.id].name.value;
         var descr = jsonResponse.results.bindings[event.srcElement.id].abstract.value;
         var img = jsonResponse.results.bindings[event.srcElement.id].img.value;
-        var selectedCard = new Card(name,null,descr,img).root_;
-        selectedCard.className += ' about-card';
-        createDialog(position, selectedCard);
+        var selectedCard = new Card(name,null,descr,img);
+        selectedCard.root_.className += ' about-card';
+        createEditDialog(position, selectedCard, 'create');
       });
 
       var placeCard = new Card(jsonResponse.results.bindings[i].name.value,null,jsonResponse.results.bindings[i].abstract.value,jsonResponse.results.bindings[i].img.value,[button]).root_;
@@ -31,10 +31,7 @@ function selectPlace(position) {
 
     var addBut = new ActionButton('Create It');
     addBut.addEventListener("click",function(){
-      if(profile){
-      map.noPlace.removePosition();
-      createDialog(position);
-      }
+      if(profile) createEditDialog(position, null, 'create');
       else alert('You must be logged in to use this function');
     });
 

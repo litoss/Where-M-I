@@ -1,5 +1,13 @@
-function createDialog(position, card){
+function createEditDialog(position, card, type){
   var content = document.createElement("div");
+
+  if (type == 'edit'){
+    var dialogTitle = 'Edit this place.';
+    var dialogIcon = 'edit';
+  }else{
+    var dialogTitle = 'Add some informations.';
+    var dialogIcon = 'add';
+  }
 
   var lat = position.lat();
   var long = position.lng();
@@ -58,7 +66,7 @@ function createDialog(position, card){
   })
 
   var footer = document.createElement('div');
-  var button = new IconButton("add","mdc-button--raised mdc-image__circular");
+  var button = new IconButton(dialogIcon,"mdc-button--raised mdc-image__circular");
 
   button.root_.addEventListener("click", async function validate(){
     var form = new FormData();
@@ -77,13 +85,13 @@ function createDialog(position, card){
       }
       form.append('name',nameForm.value);
     }else{
-     form.append('name', document.getElementById("place-card").querySelector(".mdc-card__title").innerHTML);
+     form.append('name', exampleCard.getTitle());
     }
 
     if(input) var blob= input.files[0];
     //get img from card
     else{
-      var imgUrl = exampleCard.querySelector('.mdc-card__media').style.backgroundImage.slice(4, -1).replace(/["']/g, "");
+      var imgUrl = exampleCard.getImage();
       var blob = await getimageBlob(imgUrl);
     }
     var b64image = await encode64(blob);
@@ -94,15 +102,15 @@ function createDialog(position, card){
 
     if(descrForm){
       form.append('description', descrForm.value);
-    }else form.append('description', document.getElementById("place-card").querySelector(".mdc-typography--body2").innerHTML);
+    }else form.append('description', exampleCard.getSecondary());
 
-    submit(form);
+    submit(form, type);
 
   });
   footer.appendChild(button.root_);
 
 
-  var dialog = new Dialog(content,footer,"Add some informations.");
+  var dialog = new Dialog(content,footer,dialogTitle);
   document.getElementById('map').appendChild(dialog.root_);
   dialog.open();
 
@@ -142,7 +150,9 @@ function convertBlobToBase64(blob){
     return convertPromise;
   }
 
-function submit(form){
+function submit(form, type){
+  if (type == 'create') var uri = '/new_place';
+  //else var uri = ''
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/new_place');
   xhr.setRequestHeader('Content-Type', 'application/json');

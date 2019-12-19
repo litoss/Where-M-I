@@ -30,16 +30,16 @@ class Place {
     }else{
       var editButton = new IconButton('edit','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
       editButton.root_.addEventListener('click', () => {
-        if(profile) ;
+        var card = new Card(name, null, description, img, null, null, 'about-card');
+        if(profile) createEditDialog(this.marker.getPosition(),card, 'edit') ;
         else alert('You must be logged in to use this function');
       });
       leftButtonList.push(editButton.root_);
     }
-    var card = new Card(name, null, description, img, leftButtonList, rightButtonList).root_;
-    card.className += " infoWindow-card";
+    var card = new Card(name, null, description, img, leftButtonList, rightButtonList, 'infoWindow-card');
 
     this.infoWindow = new google.maps.InfoWindow({
-      content: card,
+      content: card.root_,
       maxWidth: 400,
     });
 

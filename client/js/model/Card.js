@@ -61,6 +61,10 @@ class Card{
     }
   }
 
+  getTitle(){
+    return this.title.innerHTML;
+  }
+
   setTitle(newTitle){
     this.title.innerHTML = newTitle;
   }
@@ -68,11 +72,15 @@ class Card{
   setSubTitle(newSubTitle){
     this.subtitle.innerHTML = newSubTitle;
   }
-
+  getImage(){
+    return this.media.style.backgroundImage.slice(4, -1).replace(/["']/g, "");
+  }
   setImage(newSrc){
     this.media.style.backgroundImage = "url('" + newSrc + "')";
   }
-
+  getSecondary(){
+    return this.secondary.innerHTML;
+  }
   setSecondary(newSecondaryText){
     this.secondary.innerHTML = newSecondaryText;
   }
