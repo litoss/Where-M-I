@@ -6,7 +6,7 @@ const port = 8000;
 const myModule = require('./mongo2.js');
 
 app.use(express.urlencoded({extended : true}));
-app.use(express.json());
+app.use(express.json({limit: "50mb"}));//dirlo a Simo
 
 
 app.use('/', express.static(__dirname + '/client'));
@@ -28,12 +28,11 @@ app.get("/categorie", function (req, res) { //richiesta del json con le categori
 });
 
 app.post("/new_place", async (req, res) => { // aggiunta di un nuovo luogo
-        
-    try {    
-        
+
+    try {
         let doc = await myModule.add_one(req);
         res.send(doc);
-        
+
     } catch (err) { //catch the error if the database isn't connected
         res.send(err);
     }
@@ -41,11 +40,11 @@ app.post("/new_place", async (req, res) => { // aggiunta di un nuovo luogo
 
 app.post("/new_review", async (req, res) =>{
 
-try {    
-        
+try {
+
     let doc = await myModule.add_review(req);
     res.send(doc);
-        
+
     } catch (err) { //catch the error if the database isn't connected
         res.send(err);
     }
@@ -54,13 +53,13 @@ try {
 
 
 app.post("/find", async (req, res) => {
-   
+
     try{
 
         var doc = await myModule.find(req);
         console.log(doc)
         res.send(JSON.stringify(doc));
-    
+
     }
     catch(err){
         res.send(err);
@@ -69,7 +68,7 @@ app.post("/find", async (req, res) => {
 });
 
 app.get("/list_place", async (req, res) => {
-    
+
     try {
 
     let ret = await myModule.showdb_place();
@@ -82,7 +81,7 @@ app.get("/list_place", async (req, res) => {
 });
 
 app.get("/list_review", async (req, res) => {
-    
+
     try {
 
     let ret = await myModule.showdb_review();
@@ -94,7 +93,7 @@ app.get("/list_review", async (req, res) => {
 });
 
 app.get("/drop_place", async (req, res) => {
-    
+
     try {
 
     let ret = await myModule.clear_place();
@@ -106,7 +105,7 @@ app.get("/drop_place", async (req, res) => {
 });
 
 app.get("/drop_review", async (req, res) => {
-    
+
     try {
 
     let ret = await myModule.clear_review();
@@ -118,11 +117,11 @@ app.get("/drop_review", async (req, res) => {
 });
 
 app.post("/star", async (req, res) => {
-    
+
     try{
     let ret = await myModule.up_star(req);
     res.send(JSON.stringify(ret));
-    
+
 }
     catch (err){
         res.send(err);

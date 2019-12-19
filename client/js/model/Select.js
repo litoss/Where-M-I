@@ -50,5 +50,6 @@ class Select extends mdc.select.MDCSelect {
     super(item);
 
     this.selectedText = selectedText;
+    this.listContainer = listContainer;
   }
 }

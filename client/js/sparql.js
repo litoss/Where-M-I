@@ -6,7 +6,7 @@ function setQuery(position, approx){
   var lat = position.lat();
   var long = position.lng();
 
-  const url="http://dbpedia.org/sparql";
+  const url="https://dbpedia.org/sparql";
 
   var queryPlaces = [
   "  PREFIX dbo: <http://dbpedia.org/ontology/>",

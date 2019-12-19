@@ -71,14 +71,17 @@ class Mappa extends google.maps.Map{
 
   }
 
-  addPlace(){
+  async addPlace(){
     var response = JSON.parse(this.responseText);
-
     for(var i in response){
+
         var decode = OpenLocationCode.decode(response[i].OLC);
         var center = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
 
-        map.places.push(new Place(response[i].name, null, response[i].description, null, center, map));
+        //image decoding from base64
+        var image = decode64(response[i].image);
+        
+        map.places.push(new Place(response[i].name, image, response[i].description, null, center));
     }
   }
 

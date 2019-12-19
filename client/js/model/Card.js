@@ -4,19 +4,19 @@ class Card{
     this.root_.className = "mdc-card mdc-card--outlined";
     if(options) this.root_.className += " " + options;
 
-    var primaryAction = document.createElement('div');
-    primaryAction.className = "mdc-card__primary-action";
-    primaryAction.setAttribute('tabindex','0');
-    this.root_.appendChild(primaryAction);
+    this.primaryAction = document.createElement('div');
+    this.primaryAction.className = "mdc-card__primary-action";
+    this.primaryAction.setAttribute('tabindex','0');
+    this.root_.appendChild(this.primaryAction);
 
     this.media = document.createElement('div');
     this.media.className = "mdc-card__media";
     this.media.style.backgroundImage = "url('" + img + "')";
-    primaryAction.appendChild(this.media);
+    this.primaryAction.appendChild(this.media);
 
     var primary = document.createElement('div');
     primary.className = "mdc-card__primary";
-    primaryAction.appendChild(primary);
+    this.primaryAction.appendChild(primary);
 
     this.title = document.createElement('h2');
     this.title.className = "mdc-card__title mdc-typography mdc-typography--headline6";
