@@ -59,6 +59,7 @@ function createEditDialog(position, card, type){
   for (var i in categories) elements.push(new SelectList(categories[i].name,categories[i].id));
   var listEl = new List(elements);
   var cat = new Select("Category",listEl.root_,'form-field');
+  cat.listContainer.className += ''+ 'cat-list';
   content.appendChild(cat.root_);
 
   cat.listen('MDCSelect:change', () => {
@@ -88,6 +89,13 @@ function createEditDialog(position, card, type){
      form.append('name', exampleCard.getTitle());
     }
 
+    form.append('category', cat.value);
+    form.append('orario', opHoForm.value);
+
+    if(descrForm){
+      form.append('description', descrForm.value);
+    }else form.append('description', exampleCard.getSecondary());
+
     if(input) var blob= input.files[0];
     //get img from card
     else{
@@ -97,12 +105,7 @@ function createEditDialog(position, card, type){
     var b64image = await encode64(blob);
     form.append('image', b64image);
 
-    form.append('category', cat.value);
-    form.append('orario', opHoForm.value);
 
-    if(descrForm){
-      form.append('description', descrForm.value);
-    }else form.append('description', exampleCard.getSecondary());
 
     submit(form, type);
 
@@ -118,38 +121,6 @@ function createEditDialog(position, card, type){
   document.getElementById('map').removeChild(dialog.root_);
 });
 
-function nameValidation(name){
-
-}
-
-async function getimageBlob(url){
-  const proxyurl = "https://cors-anywhere.herokuapp.com/";
-  let response = await fetch(proxyurl + url);
-  let result = await response.blob();
-  return result;
-}
-
-
-function encode64(file) {
-  var to64 = convertBlobToBase64(file);
-  return to64;
-}
-
-function convertBlobToBase64(blob){
-    var convertPromise = new Promise(function(resolve, reject){
-      var fileReader = new FileReader();
-      fileReader.onload = function() {
-          var dataUrl = this.result;
-          var base64 = dataUrl.split(',')[1]
-          resolve(base64);
-      };
-
-      fileReader.readAsDataURL(blob);
-    });
-
-    return convertPromise;
-  }
-
 function submit(form, type){
   if (type == 'create') var uri = '/new_place';
   //else var uri = ''
@@ -159,7 +130,15 @@ function submit(form, type){
   xhr.onload = function() {
       if (xhr.status === 200 ) {
           alert('Aggiunto con Successo!');
-          //map.places.push(new Place(response[i].name, null, response[i].description, null, center, map)
+
+          var decode = OpenLocationCode.decode(form.get('OLC'));
+          var center = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
+          var image = decode64(form.get('image'));
+          
+          var addedPlace = new Place(form.get('name'), image, form.get('description'), null, center);
+          map.places.push(addedPlace);
+          map.noPlace.removePosition();
+          addedPlace.openWindow();
       }
       else if (xhr.status !== 200) {
           alert('Request failed.  Returned status of ' + xhr.status);
@@ -172,6 +151,6 @@ function submit(form, type){
   });
 
   console.log(JSON.stringify(object));
-  //xhr.send(JSON.stringify(object));
+  xhr.send(JSON.stringify(object));
 }
 }

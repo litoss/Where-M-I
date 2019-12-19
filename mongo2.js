@@ -21,7 +21,7 @@ const url = 'mongodb://localhost:27017';
 
 
 exports.add_one = async (req) => {
-    
+
     var m_rating = 0; // alla creazione di un nuovo luogo settiamo la media a 0 dato non ci sono ancora recensioni
 
     try {
@@ -32,22 +32,23 @@ exports.add_one = async (req) => {
         DB viene creata la struttura e i parametri che non vengono inseriti nel json sono semplicemente settati a undefined ed
         eventualmente modificati nel futuro. */
 
-        let doc = {_id: new ObjectID(), 
+        let doc = {_id: new ObjectID(),
             OLC: req.body.OLC,                  //codice location
             user: req.body.user,                //nome user che crea il luogo
             name: req.body.name,                //nome del posto
             category: req.body.category,        // categoria del luogo(es. pizzeria, museo)
             media_rating: m_rating,             //media rating a zero alla creazione del luogo
-            opening: req.body.opening,          // orari di apertura del luogo          
-            description: req.body.description   // descrizione del luogo
+            opening: req.body.opening,          // orari di apertura del luogo
+            description: req.body.description,   // descrizione del luogo
+            image: req.body.image
          };
-        
+
         let ret = await db.collection('place').insertOne(doc);
-        console.log(doc) // display the inserted information
+        console.log(doc.name) // display the inserted information
         client.close();
         return ret;
 
-        } 
+        }
     catch (err) {
         throw err;
     }
@@ -55,7 +56,7 @@ exports.add_one = async (req) => {
 
 
 exports.add_review = async (req) => {
-   
+
     console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
     console.log('\n');
 
@@ -69,7 +70,7 @@ exports.add_review = async (req) => {
 
         var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:utente}} ] };
 
-        var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false 
+        var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
         //if the OLC of this user is not in the DB create it
 
@@ -77,7 +78,7 @@ exports.add_review = async (req) => {
 
         if(exist == false){
 
-            
+
             var v_tag;
             if (req.body.visit_tag){
 
@@ -87,12 +88,12 @@ exports.add_review = async (req) => {
                 v_tag = false;
             }
 
-            let doc = {_id: new ObjectID(), 
+            let doc = {_id: new ObjectID(),
                         OLC: req.body.OLC,
                         user: req.body.user,
                         rating_audio: req.body.rating_audio,
                         rating_place: req.body.rating_place,
-                        visit_tag: v_tag, 
+                        visit_tag: v_tag,
                         comment: req.body.comment
                     }
             let ret_new = await db.collection('review').insertOne(doc);
@@ -100,7 +101,7 @@ exports.add_review = async (req) => {
             console.log(ret_new.result);
 
         client.close();
-        
+
         if (req.body.rating_place || req.body.rating_audio){
 
             up_star(req); //with the OLC we update the media of rating of the place
@@ -111,12 +112,12 @@ exports.add_review = async (req) => {
         }
         else{ //if the OLC for the user is already inserted
 
- 
+
             var object_body = {}; //create the object with the values to update
 
             if (req.body.rating_audio && req.body.rating_audio != '' ){
                 object.rating_audio = req.body.rating_audio
-                
+
             }
             if (req.body.rating_place && req.body.rating_place != '' ){
                 object.rating_place = req.body.rating_place;
@@ -130,14 +131,14 @@ exports.add_review = async (req) => {
                 object.comment = req.body.comment;
             }
 
-            var new_values = {$set: object_body}; 
+            var new_values = {$set: object_body};
             var ret_update = await db.collection('review').updateOne(query, new_values); //update with the parameter that are passed trought the body
 
             client.close();
 
-            
+
             return ret_update;
-            
+
         }
 
     }
@@ -146,7 +147,7 @@ exports.add_review = async (req) => {
         throw err;
     }
 
-    
+
 
 /* QUANDO SI FA AGGIUNTA DI REVIEW BISOGNA FARE L'UPDATE
 DELLA MEDIA DELLE RECENZIONI NELLA COLLEZIONE PLACE  */
@@ -161,7 +162,7 @@ exports.find = async(req) => { //ritorna il documento ricercato
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        
+
         /*
         inserendo la stringa append davanti al carattere ricercato significa che il $regret (che serve a ricercare il nome anche avendo il nome parziale)
         ricerchiamo il nome parziale ma deve essere nell-ordine che lo scriviamo, senza lui se cercassimo la lettera S troverebbe anche ad esempio la parola
@@ -170,7 +171,7 @@ exports.find = async(req) => { //ritorna il documento ricercato
 
         var append = '^';
         var expression = [];
-       
+
 
         if (req.body.OLC && req.body.OLC != '' ){
             var olc = append.concat(req.body.OLC);
@@ -195,12 +196,12 @@ exports.find = async(req) => { //ritorna il documento ricercato
         if (req.body.opening){
             var apertura = append.concat(req.body.opening);
             expression.push({opening:{$regex:apertura}});
-        } 
+        }
 
         var query;
             if(expression.length >  1){query = {$and:expression};}
             if(expression.length == 1){query = expression[0]}
-            
+
         var items = await db.collection('place').find(query).project({_id:0}).toArray();
 
         client.close();
@@ -222,7 +223,7 @@ exports.exist_one = async(olc) => { //ritorna true se il codice luogo esiste nel
         const db = client.db("webdb");
         var query = {OLC : olc}
 
-        var items = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false 
+        var items = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
         client.close();
 
         return items;
@@ -246,10 +247,10 @@ exports.update_one = async(/* DA INSERIRE I VALORI DELLLA QUERY CHE VOGLIAMO CAM
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        
-        var query = {  /* DA DECIDERE I VALORI DELLA QUERY DA PASSARE NELLA FUNZIONE, COME RICERCARE I PARAMETRI DA CAMBIARE */ }; 
 
-        
+        var query = {  /* DA DECIDERE I VALORI DELLA QUERY DA PASSARE NELLA FUNZIONE, COME RICERCARE I PARAMETRI DA CAMBIARE */ };
+
+
         var items = await db.collection('review').updateOne(query, new_values);
 
         client.close();
@@ -328,21 +329,21 @@ exports.clear_place = async() => {
         return items;
 
         }
-        
+
     catch (err){
 
         throw err;
     }
 }
- 
+
 up_star = async(req) => {
 
-    
+
     try{
 
-        
+
         console.log('\n');
-        
+
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
 
@@ -350,7 +351,7 @@ up_star = async(req) => {
 
         if(req.body.rating_place){
             var star = await db.collection('review').aggregate([{$match:query}, {"$group":{"_id":null, rating_place:{"$avg":"$rating_place"}}}]).toArray(); //rating_place deve essere un valore numerico
-        
+
             var object = {};
             object.media_rating = star[0].rating_place
             var new_values = {$set : object};
@@ -363,27 +364,27 @@ up_star = async(req) => {
 
         if(req.body.rating_audio){
             var star1 = await db.collection('review').aggregate([{$match:query}, {"$group":{"_id":null, rating_audio:{"$avg":"$rating_audio"}}}]).toArray(); //rating_place deve essere un valore numerico
-      
+
             var object1 = {};
             object1.media_rating = star[0].rating_audio
             var new_values1 = {$set : object1};
-    
+
             var rate_update_audio = await db.collection('place').updateOne(query, new_values1); //update with the parameter that are passed trought the body
-    
+
             console.log(JSON.stringify("rating_place totale aggiornato: " + star1[0].rating_audio));
             console.log(rate_update_audio.result);
         }
-        
+
 
         client.close();
 
         return ("rate place update: " + rate_update_place.result + "   rate audio update: " + rate_update_audio.result);
 
-        
+
     }
     catch(err){
         return err;
-    }      
+    }
 }
 
 
@@ -427,25 +428,25 @@ exports.showdb = function(ret){
 function list_coll()
 {
 
-    MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  }, (err, client) => 
+    MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  }, (err, client) =>
     {
 
         if (err) throw err;
 
         const db = client.db("webdb");
 
-        db.listCollections().toArray().then((docs) => 
+        db.listCollections().toArray().then((docs) =>
         {
             console.log('Available collections:');
             docs.forEach((doc, idx, array) => { console.log(doc.name) });
         })
-   
-        .catch((err) => 
+
+        .catch((err) =>
         {
           console.log(err);
         })
-    
-        .finally(() => 
+
+        .finally(() =>
         {
             client.close();
         });
@@ -458,20 +459,20 @@ function remove_one(coll , nome)
     MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
 
         if (err) throw err;
-    
+
         const db = client.db("wedb");
-    
+
         let query = { name: nome , price: 10};
-    
+
         db.collection(coll).deleteOne(query).then((result) => {
-    
+
             console.log('Car deleted');
             console.log(result);
         }).catch((err) => {
-    
+
             console.log(err);
         }).finally(() => {
-    
+
             client.close();
         });
     });
@@ -480,7 +481,7 @@ function remove_one(coll , nome)
 function update_one(coll, nome, prezzo)
 {
 
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>   
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
     {
 
         if (err) throw err;
@@ -490,19 +491,19 @@ function update_one(coll, nome, prezzo)
         let filQuery = { name: nome };
         let updateQuery = { $set: { "price": prezzo }};
 
-        db.collection(coll).updateOne(filQuery, updateQuery).then(result => 
+        db.collection(coll).updateOne(filQuery, updateQuery).then(result =>
             {
                 console.log('Car updated');
                 console.log(result);
 
         })
-        
-        .catch((err) => 
+
+        .catch((err) =>
         {
             console.log(err);
         })
-        
-        .finally(() => 
+
+        .finally(() =>
         {
             client.close();
         });
@@ -512,28 +513,28 @@ function update_one(coll, nome, prezzo)
 
 function find_one(coll, nome) //return a document
 {
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => 
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
     {
 
         if (err) throw err;
-    
+
         const db = client.db("webdb");
-    
+
         let collection = db.collection(coll);
         let query = { name: nome }
-    
-        collection.findOne(query).then(doc => 
+
+        collection.findOne(query).then(doc =>
         {
             console.log(doc);
         })
-        
-        .catch((err) => 
+
+        .catch((err) =>
         {
             console.log(err);
         })
-        
-        .finally(() => 
-        { 
+
+        .finally(() =>
+        {
             client.close();
         });
     });
@@ -541,28 +542,28 @@ function find_one(coll, nome) //return a document
 
 function find(coll, nome, pippo) //return a collection
 {
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => 
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
     {
 
         if (err) throw err;
-    
+
         const db = client.db("webdb");
 
 
         db.collection(coll).find({}).project({_id: 0}).toArray().then((docs) => //.project serve ad escludere l'id dall'output
         {
             console.log(docs);
-            
+
 
         })
-        
-        .catch((err) => 
+
+        .catch((err) =>
         {
             console.log(err);
         })
-        
-        .finally(() => 
-        { 
+
+        .finally(() =>
+        {
             client.close();
         });
     });
@@ -572,32 +573,32 @@ function find(coll, nome, pippo) //return a collection
 
 function find_with_regular_expression(coll, nome)
 {
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => 
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
     {
-      
+
         if (err) throw err;
-    
+
         const db = client.db("webdb");
-    
+
         let collection = db.collection(coll);
         let query = { name: nome }
-    
-        collection.findOne(query).then(doc => 
+
+        collection.findOne(query).then(doc =>
         {
             console.log(doc);
         })
-        
-        .catch((err) => 
+
+        .catch((err) =>
         {
             console.log(err);
         })
-        
-        .finally(() => 
-        { 
+
+        .finally(() =>
+        {
             client.close();
         });
     });
-  
+
 }
 
 
@@ -629,9 +630,3 @@ partenza da OLC e array di percorsi successivi
 
 
 */
-
-
-
-
-
-
