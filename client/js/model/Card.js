@@ -23,12 +23,9 @@ class Card{
     this.title.innerHTML = titleText;
     primary.appendChild(this.title);
 
-    if(subtitleText){
-      var subtitle = document.createElement('h3');
-      subtitle.className = "mdc-typography mdc-typography--subtitle2";
-      subtitle.appendChild(document.createTextNode(subtitleText));
-      primary.appendChild(subtitle);
-    }
+    this.subtitle = document.createElement('h3');
+    this.subtitle.className = "mdc-typography mdc-typography--subtitle2";
+    primary.appendChild(this.subtitle);
 
     if(secondaryText){
       this.secondary = document.createElement('div');
@@ -64,14 +61,26 @@ class Card{
     }
   }
 
+  getTitle(){
+    return this.title.innerHTML;
+  }
+
   setTitle(newTitle){
     this.title.innerHTML = newTitle;
   }
 
+  setSubTitle(newSubTitle){
+    this.subtitle.innerHTML = newSubTitle;
+  }
+  getImage(){
+    return this.media.style.backgroundImage.slice(4, -1).replace(/["']/g, "");
+  }
   setImage(newSrc){
     this.media.style.backgroundImage = "url('" + newSrc + "')";
   }
-
+  getSecondary(){
+    return this.secondary.innerHTML;
+  }
   setSecondary(newSecondaryText){
     this.secondary.innerHTML = newSecondaryText;
   }
