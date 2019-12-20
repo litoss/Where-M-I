@@ -28,7 +28,7 @@ class TopBar {
 
     this.topBar.listen('MDCTopAppBar:nav', () => {
       map.menuDrawer.open = true;
-      map.menuDrawer.elements[2].focus();
+      //map.menuDrawer.elements[1].focus();
     });
   }
 

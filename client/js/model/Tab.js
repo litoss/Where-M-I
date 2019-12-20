@@ -1,5 +1,5 @@
 class Tab extends mdc.tabBar.MDCTabBar{
-  constructor(icon, name) {
+  constructor(name, icon) {
     var button = document.createElement('button');
     button.className = 'mdc-tab mdc-tab--stacked';
     button.setAttribute('role','tab');
@@ -10,12 +10,14 @@ class Tab extends mdc.tabBar.MDCTabBar{
     content.className = 'mdc-tab__content';
     button.appendChild(content);
 
-    var ico = document.createElement('span');
-    ico.className = 'mdc-tab__icon material-icons';
-    ico.setAttribute('aria-hidden','true');
-    ico.appendChild(document.createTextNode(icon));
-    content.appendChild(ico);
-
+    if(icon){
+      var ico = document.createElement('span');
+      ico.className = 'mdc-tab__icon material-icons';
+      ico.setAttribute('aria-hidden','true');
+      ico.appendChild(document.createTextNode(icon));
+      content.appendChild(ico);
+    }
+    
     var text = document.createElement('span');
     text.className = 'mdc-tab__text-label';
     text.appendChild(document.createTextNode(name));

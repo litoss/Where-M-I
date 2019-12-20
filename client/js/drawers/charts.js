@@ -2,7 +2,7 @@ function openCharts(){
 
   var content = document.createElement('div');
 
-  var tabBar = new TabBar(chartsTab.map(o => o['icon']), chartsTab.map( o => o['name']));
+  var tabBar = new TabBar(chartsTab.map(o => o['name']), chartsTab.map( o => o['icon']));
   var list = document.createElement('div');
   list.style.padding = '20px';
 
@@ -13,7 +13,7 @@ function openCharts(){
   for(var i in example) vloggers.push(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
 
   var paths = [];
-  for(var i in example) paths.push(new ElementList(example[i].primaryText,example[i].secondaryText, 'music_note'));
+  for(var i in example) paths.push(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
 
   tabBar.listen("MDCTabBar:activated", (event) => {
 

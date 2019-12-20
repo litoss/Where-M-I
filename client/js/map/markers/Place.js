@@ -1,5 +1,47 @@
 class Place {
-  constructor(name, img, description, category, latLng){
+  constructor(place){
+
+    var rightButtonList = [];
+    var leftButtonList = [];
+    var latLng = null;
+    var name;
+    var description;
+    var image;
+
+    if(place){
+      var editButton = new IconButton('edit','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+      leftButtonList.push(editButton.root_);
+
+      var decode = OpenLocationCode.decode(place.OLC);
+      latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
+      name = place.name;
+      description = place.description;
+      image = decode64(place.image);
+
+    }else{
+
+      if(profile){
+        var searchButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+        leftButtonList.push(searchButton.root_);
+      }
+
+      name = luogoSconosciuto.title;
+      description = luogoSconosciuto.description;
+      image = luogoSconosciuto.media;
+    }
+
+    var directionButton = new IconButton('navigation','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+    var positionButton = new IconButton('person_pin','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
+
+    rightButtonList.push(directionButton.root_);
+    rightButtonList.push(positionButton.root_);
+
+    var card = new Card(name, null, description, image, leftButtonList, rightButtonList, 'infoWindow-card');
+
+    this.infoWindow = new google.maps.InfoWindow({
+      content: card.root_,
+      maxWidth: 400,
+    });
 
     this.marker = new google.maps.Marker({
       position: latLng,
@@ -11,53 +53,35 @@ class Place {
         anchor: new google.maps.Point(12, 12)
     }});
 
-    var rightButtonList = [];
-    var leftButtonList = [];
-
-    var addButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-    var directionButton = new IconButton('navigation','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-    var positionButton = new IconButton('person_pin','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-
-    rightButtonList.push(directionButton.root_);
-    rightButtonList.push(positionButton.root_);
-    if(name == 'Località Sconosciuta') {
-      var searchButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-      searchButton.root_.addEventListener('click', () => {
-        if(profile) selectPlace(this.marker.getPosition());
-        else alert('You must be logged in to use this function');
-      });
-      leftButtonList.push(searchButton.root_);
-    }else{
-      var editButton = new IconButton('edit','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-      editButton.root_.addEventListener('click', () => {
-        var card = new Card(name, null, description, img, null, null, 'about-card');
-        if(profile) createEditDialog(this.marker.getPosition(),card, 'edit') ;
-        else alert('You must be logged in to use this function');
-      });
-      leftButtonList.push(editButton.root_);
-    }
-    var card = new Card(name, null, description, img, leftButtonList, rightButtonList, 'infoWindow-card');
-
-    if(name != 'Località Sconosciuta') card.primaryAction.addEventListener('click',() => {
-      if(!map.pageDrawer)selectedPlace(card);
-      else map.pageDrawer.open = false;
-    })
-
-    this.infoWindow = new google.maps.InfoWindow({
-      content: card.root_,
-      maxWidth: 400,
-    });
-
-    directionButton.root_.addEventListener('click', () => {
+    directionButton.listen('click', () => {
       this.showDirection();
     });
+
     this.marker.addListener('click', () => {
       this.infoWindow.open(map, this.marker);
     });
-    positionButton.root_.addEventListener('click', () => {
+
+    positionButton.listen('click', () => {
       map.position.setPosition(this.marker.getPosition());
       this.removePosition();
     });
+
+    if(place){
+      card.primaryAction.addEventListener('click',() => {
+        if(!map.pageDrawer) selectedPlace(place);
+        else map.pageDrawer.open = false;
+      });
+      leftButtonList[0].addEventListener('click', () => {
+        var card = new Card(name, null, description, image, null, null, 'about-card');
+        if(profile) createEditDialog(this.marker.getPosition(),card, 'edit') ;
+        else alert('You must be logged in to use this function');
+      });
+    }else{
+      leftButtonList[0].addEventListener('click', () => {
+        if(profile) selectPlace(this.marker.getPosition());
+        else alert('You must be logged in to use this function');
+      });
+    }
   }
 
 

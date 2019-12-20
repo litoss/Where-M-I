@@ -28,8 +28,9 @@ class Mappa extends google.maps.Map{
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomControl.root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
-    this.noPlace = new Place(luogoSconosciuto.title, luogoSconosciuto.media, luogoSconosciuto.description);
+
     this.places = [];
+    this.noPlace;
     this.position = new Position();
 
     this.directionsService = new google.maps.DirectionsService;
@@ -42,18 +43,10 @@ class Mappa extends google.maps.Map{
   }
 
   clickOnMap(event){
-    if(this.noPlace.getMap()) {
-      this.noPlace.removePosition();
-      if(map.pageDrawer) map.pageDrawer.open = false;
-    }
-    else if(this.noPlace.isWindowOpen()) this.noPlace.closeWindow();
-    else{
-      for(var i in this.places) if(this.places[i].isWindowOpen()){
-           this.places[i].closeWindow();
-           return;
-      }
-       this.noPlace.setPosition(event.latLng);
-       this.noPlace.openWindow();
+    if(!this.closeAllWindow()) {
+      this.noPlace = new Place();
+      this.noPlace.setPosition(event.latLng);
+      this.noPlace.openWindow();
     }
   }
 
@@ -68,21 +61,27 @@ class Mappa extends google.maps.Map{
   }
 
   closeAllWindow(){
+    var close = 0;
 
+    if(this.noPlace) {
+      this.noPlace.removePosition();
+      this.noPlace = null;
+      close = 1;
+    }
+
+    for(var i in this.places) if(this.places[i].isWindowOpen()){
+       this.places[i].closeWindow();
+       close = 1;
+    }
+
+    return close;
   }
 
   async addPlace(){
     var response = JSON.parse(this.responseText);
     for(var i in response){
-
-        var decode = OpenLocationCode.decode(response[i].OLC);
-        var center = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
-
-        //image decoding from base64
-        var image = decode64(response[i].image);
-        
-        map.places.push(new Place(response[i].name, image, response[i].description, null, center));
-    }
+       map.places.push(new Place(response[i]));
+     }
   }
 
   getDistance(x1,x2,y1,y2){
