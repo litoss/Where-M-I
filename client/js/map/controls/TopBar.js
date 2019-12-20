@@ -11,8 +11,10 @@ class TopBar {
     this.button.className = 'login-button';
     this.render(this.button);
 
-
-    this.menus = new Menu(new List([this.loginCard.root_,this.button]).root_, ' login-menu');
+    var list = new List();
+    list.addElement(this.loginCard.root_);
+    list.addElement(this.button);
+    this.menus = new Menu(list.root_, 'login-menu');
     this.menus.setAbsolutePosition(-250,48);
 
     var anchor = document.createElement('div');

@@ -16,10 +16,8 @@ function openSearch(){
 
   toolbar.appendChild(chipSet.root_);
 
-  var elements = [];
-  for(var i in categories) elements.push(new ElementList(categories[i].name));
-
-  var list = new List(elements);
+  var list = new List();
+  for(var i in categories) list.addElement(new ElementList(categories[i].name));
   var menu = new Menu(list.root_);
 
   toolbar.appendChild(menu.root_);

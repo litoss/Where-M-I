@@ -21,25 +21,27 @@ function selectedPlace(place){
   var list = document.createElement('div');
   list.style.padding = '20px';
 
-  var clips = [];
-  for(var i in example) clips.push(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-
-  var vloggers = [];
-  for(var i in example) vloggers.push(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-
-  var paths = [];
-  for(var i in example) paths.push(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-
   tabBar.listen("MDCTabBar:activated", (event) => {
 
     list.innerHTML = '';
 
     switch (event.detail.index) {
-      case 0: list.appendChild(new List(clips).root_);
+      case 0:
+        var whatList = new List();
+        for (var i in example) whatList.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+        list.appendChild(whatList.root_);
+        var card = new Card('ciao');
+        whatList.addElement(card.root_);
         break;
-      case 1: list.appendChild(new List(vloggers).root_);
+      case 1:
+        var howList = new List();
+        for (var i in example) howList.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+        list.appendChild(howList.root_);
         break;
-      case 2: list.appendChild(new List(paths).root_);
+      case 2:
+        var whyList = new List();
+        for (var i in example) whyList.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+        list.appendChild(whyList.root_);
         break;
     }
   });

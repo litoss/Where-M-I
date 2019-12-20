@@ -6,25 +6,25 @@ function openCharts(){
   var list = document.createElement('div');
   list.style.padding = '20px';
 
-  var clips = [];
-  for(var i in example) clips.push(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-
-  var vloggers = [];
-  for(var i in example) vloggers.push(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-
-  var paths = [];
-  for(var i in example) paths.push(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-
   tabBar.listen("MDCTabBar:activated", (event) => {
 
     list.innerHTML = '';
 
     switch (event.detail.index) {
-      case 0: list.appendChild(new List(clips).root_);
+      case 0:
+        var clips = new List();
+        for(var i in example) clips.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+        list.appendChild(clips.root_);
         break;
-      case 1: list.appendChild(new List(vloggers).root_);
+      case 1:
+        var vloggers = new List();
+        for(var i in example) vloggers.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+        list.appendChild(vloggers.root_);
         break;
-      case 2: list.appendChild(new List(paths).root_);
+      case 2:
+        var paths = new List();
+        for(var i in example) paths.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+        list.appendChild(paths.root_);
         break;
     }
   });
