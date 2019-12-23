@@ -56,13 +56,7 @@ function selectedPlace(place){
 
 
   //What
-  var url = 'https://www.googleapis.com/youtube/v3/videos';
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', url);
-  xhr.onload = function(){
-
-  };
-  xhr.send();
+  search();
 
   //How
   //Why
