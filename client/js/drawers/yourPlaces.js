@@ -1,8 +1,6 @@
 function openPlaces(){
 
     var content = document.createElement('div');
-    var form = new FormData();
-    form.append('user', profile.getId());
 
     xhr = new XMLHttpRequest();
     xhr.open('POST', '/find');
@@ -20,11 +18,7 @@ function openPlaces(){
       }
     }
 
-    var object = {};
-    form.forEach(function(value, key){
-        object[key] = value;
-    });
-    xhr.send(JSON.stringify(object));
+    xhr.send(JSON.stringify({token: token}));
 
     map.pageDrawer = new PageDrawer('Your Places', content);
     map.pageDrawer.open = true;
