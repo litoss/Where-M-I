@@ -55,9 +55,9 @@ function createEditDialog(position, card, type){
   var opHoForm = new TextField("Opening Hours","hh:mm/hh:mm",null,"schedule");
   content.appendChild(opHoForm.root_);
 
-  var elements = [];
-  for (var i in categories) elements.push(new SelectList(categories[i].name,categories[i].id));
-  var listEl = new List(elements);
+  var listEl = new List();
+  for (var i in categories) listEl.addElement(new SelectList(categories[i].name,categories[i].id));
+
   var cat = new Select("Category",listEl.root_,'form-field');
   cat.listContainer.className += ''+ 'cat-list';
   content.appendChild(cat.root_);
@@ -134,7 +134,7 @@ function submit(form, type){
           var decode = OpenLocationCode.decode(form.get('OLC'));
           var center = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
           var image = decode64(form.get('image'));
-          
+
           var addedPlace = new Place(form.get('name'), image, form.get('description'), null, center);
           map.places.push(addedPlace);
           map.noPlace.removePosition();
