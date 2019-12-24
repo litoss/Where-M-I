@@ -13,7 +13,7 @@ function initClient() {
     apiKey: API_KEY,
     clientId: CLIENT_ID,
     discoveryDocs: DISCOVERY_DOCS,
-    scope: "https://www.googleapis.com/auth/youtube"
+    scope: SCOPES
   }).then(function () {
     // Listen for sign-in state changes.
     gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
@@ -41,7 +41,6 @@ function updateSigninStatus(isSignedIn) {
     for(var i=6; i<9; i++) {
       map.menuDrawer.elements[i].className = "mdc-list-item";
     }
-
   } else {
 
     map.topBar.icon.setImage("content/photo.png");
