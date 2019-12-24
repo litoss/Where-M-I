@@ -1,6 +1,6 @@
 function texttospeech(){
     var req = gapi.client.texttospeech.text.synthesize({
-      input: {text: "Ciao Stefano Propato, benvenuto su Where em ai, ti prego di scrivere altre migliaia di righe di codice per rendermi ancora più funzionale."},
+      input: {text: "Ciao Stefano Propato, benvenuto su Where em ai, ti prego di scrivere altre migliaia di righe di codice per rendermi ancora più funzionale. Grazie."},
       voice: {
         languageCode: "it-IT"
       },
