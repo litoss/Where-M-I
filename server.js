@@ -6,7 +6,7 @@ const port = 8000;
 const myModule = require('./mongo2.js');
 
 app.use(express.urlencoded({extended : true}));
-app.use(express.json({limit: "50mb"}));//dirlo a Simo
+app.use(express.json({limit: '50mb'}));
 
 
 app.use('/', express.static(__dirname + '/client'));
@@ -30,6 +30,7 @@ app.get("/categorie", function (req, res) { //richiesta del json con le categori
 app.post("/new_place", async (req, res) => { // aggiunta di un nuovo luogo
 
     try {
+
         let doc = await myModule.add_one(req);
         res.send(doc);
 

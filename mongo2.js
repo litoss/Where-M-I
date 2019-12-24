@@ -19,8 +19,33 @@ const ObjectID = mongo.ObjectID; //serve per poter passare i parametri in name e
 const url = 'mongodb://localhost:27017';
 //const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
 
+//le prossime due righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
 
-exports.add_one = async (req) => {
+const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
+const {OAuth2Client} = require('google-auth-library');
+const client_user = new OAuth2Client(CLIENT_ID);
+
+verify = async(token) => {
+
+
+    const ticket = await client_user.verifyIdToken({
+        idToken: token,
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    return userid;
+    // If request specified a G Suite domain:
+    //const domain = payload['hd'];
+
+  }
+  verify().catch(console.error);
+
+
+
+exports.add_one = async (req) => { //creazione di un nuovo luogo
 
     var m_rating = 0; // alla creazione di un nuovo luogo settiamo la media a 0 dato non ci sono ancora recensioni
 
@@ -32,23 +57,63 @@ exports.add_one = async (req) => {
         DB viene creata la struttura e i parametri che non vengono inseriti nel json sono semplicemente settati a undefined ed
         eventualmente modificati nel futuro. */
 
-        let doc = {_id: new ObjectID(),
-            OLC: req.body.OLC,                  //codice location
-            user: req.body.user,                //nome user che crea il luogo
-            name: req.body.name,                //nome del posto
-            category: req.body.category,        // categoria del luogo(es. pizzeria, museo)
-            media_rating: m_rating,             //media rating a zero alla creazione del luogo
-            opening: req.body.opening,          // orari di apertura del luogo
-            description: req.body.description,   // descrizione del luogo
-            image: req.body.image
-         };
+        var query = {OLC : req.body.OLC};
+        var exist = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
-        let ret = await db.collection('place').insertOne(doc);
-        console.log(doc.name) // display the inserted information
-        client.close();
-        return ret;
+
+        var veruser = verify(req.body.token);
+
+
+        if(exist == false){
+
+            let doc = {_id: new ObjectID(),
+                OLC: req.body.OLC,                  //codice location
+                user: veruser,                //nome user che crea il luogo
+                name: req.body.name,                //nome del posto
+                category: req.body.category,        // categoria del luogo(es. pizzeria, museo)
+                media_rating: m_rating,             //media rating a zero alla creazione del luogo
+                opening: req.body.opening,          // orari di apertura del luogo
+                description: req.body.description,   // descrizione del luogo
+                image: req.body.image
+            };
+
+            let ret = await db.collection('place').insertOne(doc);
+            console.log("adding new place \n" + JSON.stringify(doc)) // display the inserted information
+            client.close();
+            return JSON.stringify(ret);
+        }
+
+
+        else{ //se il posto esiste allora vengono modificati i parametri che sono settati nel JSON
+
+            var object2 = {};
+
+                if (req.body.name && req.body.name != '' ){
+                    object2.name = req.body.name;
+
+                }
+                if (req.body.category && req.body.category != '' ){
+                    object2.category = req.body.category;
+
+                }
+                if (req.body.opening && req.body.opening != '' ){
+                    object2.opening = req.body.opening;
+
+                }
+                if (req.body.description && req.body.description != '' ){
+                    object2.description = req.body.description;
+                }
+                if (req.body.image && req.body.image != '' ){
+                    object2.image = req.body.image;
+                }
+            var new_values = {$set: object2};
+            var ret_update = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
+            console.log(ret_update.result);
+            client.close();
+            return (JSON.stringify(ret_update));
 
         }
+    }
     catch (err) {
         throw err;
     }
@@ -66,9 +131,10 @@ exports.add_review = async (req) => {
 
         //check if exist the review of the user
         var olc = req.body.OLC;
-        var utente = req.body.user;
+        var veruser = verify(req.body.token);
 
-        var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:utente}} ] };
+
+        var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:veruser}} ] };
 
         var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
@@ -90,7 +156,7 @@ exports.add_review = async (req) => {
 
             let doc = {_id: new ObjectID(),
                         OLC: req.body.OLC,
-                        user: req.body.user,
+                        user: veruser,
                         rating_audio: req.body.rating_audio,
                         rating_place: req.body.rating_place,
                         visit_tag: v_tag,
@@ -149,9 +215,6 @@ exports.add_review = async (req) => {
 
 
 
-/* QUANDO SI FA AGGIUNTA DI REVIEW BISOGNA FARE L'UPDATE
-DELLA MEDIA DELLE RECENZIONI NELLA COLLEZIONE PLACE  */
-
 }
 
 
@@ -173,15 +236,17 @@ exports.find = async(req) => { //ritorna il documento ricercato
         var expression = [];
 
 
-        if (req.body.OLC && req.body.OLC != '' ){
+
+        if (req.body.OLC){
             var olc = append.concat(req.body.OLC);
             expression.push({OLC:{$regex:olc}});
         }
-        if (req.body.user && req.body.user != ''){
-            var utente = append.concat(req.body.user);
+        if (req.body.token){
+            var veruser = verify(req.body.token);
+            var utente = append.concat(veruser);
             expression.push({user:{$regex:utente}});
         }
-        if (req.body.name && req.body.name != ''){
+        if (req.body.name){
             var nome = append.concat(req.body.name);
             expression.push({name:{$regex:nome}});
         }
@@ -235,20 +300,16 @@ exports.exist_one = async(olc) => { //ritorna true se il codice luogo esiste nel
     }
 }
 
-exports.update_one = async(/* DA INSERIRE I VALORI DELLLA QUERY CHE VOGLIAMO CAMBIARE, */new_values) => {
+/* exports.update_one = async(/* DA INSERIRE I VALORI DELLLA QUERY CHE VOGLIAMO CAMBIARE, new_values) => {
 
     //per UPDATE.ONE olc e user sono standard e arrivano per forza, if su i 2 rating e visit e comment e semplicemente sovrascrivo
-
-
-    OLC:
-    user:
-
 
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
 
-        var query = {  /* DA DECIDERE I VALORI DELLA QUERY DA PASSARE NELLA FUNZIONE, COME RICERCARE I PARAMETRI DA CAMBIARE */ };
+        var query = {  // DA DECIDERE I VALORI DELLA QUERY DA PASSARE NELLA FUNZIONE, COME RICERCARE I PARAMETRI DA CAMBIARE
+                        };
 
 
         var items = await db.collection('review').updateOne(query, new_values);
@@ -262,7 +323,7 @@ exports.update_one = async(/* DA INSERIRE I VALORI DELLLA QUERY CHE VOGLIAMO CAM
     }
 
 }
-
+ */
 
 exports.showdb_place = async () => {
 
@@ -336,12 +397,16 @@ exports.clear_place = async() => {
     }
 }
 
+
+
+
+
+
+
+
 up_star = async(req) => {
 
-
     try{
-
-
         console.log('\n');
 
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -394,66 +459,6 @@ up_star = async(req) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-exports.showdb = function(ret){
-
-    MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  }, (err, client) => {
-
-        const db = client.db("webdb");
-
-        db.collection('cars').find().toArray((err,items) => {
-            console.log(items);
-            ret(items);
-        })
-
-    })
-}
-*/
-
-function list_coll()
-{
-
-    MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  }, (err, client) =>
-    {
-
-        if (err) throw err;
-
-        const db = client.db("webdb");
-
-        db.listCollections().toArray().then((docs) =>
-        {
-            console.log('Available collections:');
-            docs.forEach((doc, idx, array) => { console.log(doc.name) });
-        })
-
-        .catch((err) =>
-        {
-          console.log(err);
-        })
-
-        .finally(() =>
-        {
-            client.close();
-        });
-
-    });
-}
-
 function remove_one(coll , nome)
 {
     MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
@@ -478,144 +483,6 @@ function remove_one(coll , nome)
     });
 }
 
-function update_one(coll, nome, prezzo)
-{
-
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
-    {
-
-        if (err) throw err;
-
-        const db = client.db("webdb");
-
-        let filQuery = { name: nome };
-        let updateQuery = { $set: { "price": prezzo }};
-
-        db.collection(coll).updateOne(filQuery, updateQuery).then(result =>
-            {
-                console.log('Car updated');
-                console.log(result);
-
-        })
-
-        .catch((err) =>
-        {
-            console.log(err);
-        })
-
-        .finally(() =>
-        {
-            client.close();
-        });
-    });
-}
-
-
-function find_one(coll, nome) //return a document
-{
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
-    {
-
-        if (err) throw err;
-
-        const db = client.db("webdb");
-
-        let collection = db.collection(coll);
-        let query = { name: nome }
-
-        collection.findOne(query).then(doc =>
-        {
-            console.log(doc);
-        })
-
-        .catch((err) =>
-        {
-            console.log(err);
-        })
-
-        .finally(() =>
-        {
-            client.close();
-        });
-    });
-}
-
-function find(coll, nome, pippo) //return a collection
-{
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
-    {
-
-        if (err) throw err;
-
-        const db = client.db("webdb");
-
-
-        db.collection(coll).find({}).project({_id: 0}).toArray().then((docs) => //.project serve ad escludere l'id dall'output
-        {
-            console.log(docs);
-
-
-        })
-
-        .catch((err) =>
-        {
-            console.log(err);
-        })
-
-        .finally(() =>
-        {
-            client.close();
-        });
-    });
-}
-
-
-
-function find_with_regular_expression(coll, nome)
-{
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) =>
-    {
-
-        if (err) throw err;
-
-        const db = client.db("webdb");
-
-        let collection = db.collection(coll);
-        let query = { name: nome }
-
-        collection.findOne(query).then(doc =>
-        {
-            console.log(doc);
-        })
-
-        .catch((err) =>
-        {
-            console.log(err);
-        })
-
-        .finally(() =>
-        {
-            client.close();
-        });
-    });
-
-}
-
-
-
-
-
-
-
-//find_with_regular_expression("cars", /^A/); //trova tutti i nomi che iniziano per A
-//update_one("cars", "audi", 50);
-//remove_one("cars", "scemo");
-//add_one("test1", 10);
-//add_many();
-//find_one("cars", "scemo"); //return a document
-//find("cars", "scemo"); //return a collection
-// list_coll();
-
 
 
 /*
@@ -623,9 +490,25 @@ function find_with_regular_expression(coll, nome)
 Nuove Collezioni:
 
 
+1)
 Percorsi_>
 partenza da OLC e array di percorsi successivi
 
+JSON
+{[
+[olc:1,olc:2,olc:3,olc:4],
+[olc1:, olc:7],
+[olc:1, olc:3, olc:2]
+]}
+
+2) FATTO
+Modifica dei valori della collezzione luoghi
+
+3)FATTO
+controllo token username da google
+
+4)BHO SENTI STE
+campo immagine
 
 
 
