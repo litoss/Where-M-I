@@ -7,13 +7,13 @@ class TopBar {
     settingsButton.listen('click',openSettings);
     this.loginCard = new Card("Guest",null,null,"content/photo.png",null,[settingsButton.root_],'login-card');
 
-    this.button = document.createElement('div');
-    this.button.className = 'login-button';
-    this.render(this.button);
+    this.authorizeButton = new ActionButton('Accedi');
+    this.signoutButton = new ActionButton('Disconnetti');
 
     var list = new List();
     list.addElement(this.loginCard.root_);
-    list.addElement(this.button);
+    list.addElement(this.authorizeButton);
+    list.addElement(this.signoutButton);
     this.menus = new Menu(list.root_, 'login-menu');
     this.menus.setAbsolutePosition(-250,48);
 
@@ -32,58 +32,5 @@ class TopBar {
       map.menuDrawer.open = true;
       //map.menuDrawer.elements[1].focus();
     });
-  }
-
-  render(button){
-    gapi.signin2.render(button, {
-        'scope': 'profile email',
-        'width': 240,
-        'height': 50,
-        'longtitle': false,
-        'theme': 'dark',
-        'onsuccess': this.onSuccess,
-        'onfailure': this.onFailure
-    });
-  }
-
-  onSuccess(googleUser) {
-    token = googleUser.getAuthResponse().id_token;
-    profile = googleUser.getBasicProfile();
-    map.topBar.icon.setImage(profile.getImageUrl());
-
-    map.topBar.loginCard.setTitle(profile.getName());
-    map.topBar.loginCard.setImage(profile.getImageUrl());
-    for(var i=6; i<9; i++) {
-      map.menuDrawer.elements[i].className = "mdc-list-item";
-    }
-    var action = new ActionButton('signout');
-    map.topBar.button.innerHTML = '';
-    map.topBar.button.appendChild(action);
-
-    map.topBar.button.addEventListener('click', function(){
-      map.topBar.signOut();
-    });
-  }
-
-  signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      profile = null;
-
-      map.topBar.icon.setImage("content/photo.png");
-      map.topBar.loginCard.setTitle("Guest");
-      map.topBar.loginCard.setImage("content/photo.png");
-
-      map.topBar.button.innerHTML = '';
-      map.topBar.render(map.topBar.button);
-
-      for(var i=6; i<9; i++) {
-        map.menuDrawer.elements[i].className += " mdc-list-item--disabled";
-      }
-    });
-  }
-
-  onFailure(error) {
-    console.log(error);
   }
 }

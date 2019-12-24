@@ -41,9 +41,6 @@ verify = async(token) => {
     //const domain = payload['hd'];
 
   }
-  verify().catch(console.error);
-
-
 
 exports.add_one = async (req) => { //creazione di un nuovo luogo
 

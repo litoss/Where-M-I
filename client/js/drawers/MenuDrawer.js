@@ -66,6 +66,8 @@ class MenuDrawer extends Drawer{
         break;
       case 9: openSettings();
         break;
+      case 10: openPrivacy();
+        break;
     }
   });
   }

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <meta name="theme-color" content="#000000">
-  <meta name="google-signin-client_id" content="588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
@@ -24,8 +23,6 @@
   <div id="map" class="main-content"></div>
 
   <script src="variables.js"></script>
-  <script src="https://apis.google.com/js/client.js"></script>
-  <script src="https://apis.google.com/js/platform.js"></script>
 
   <!-- Model -->
   <script src="js/model/IconButtonToggle.js"></script>
@@ -86,7 +83,7 @@
   <script src="js/map/Mappa.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/youtube.js"></script>
-
+  <script src="https://apis.google.com/js/api.js?onload=handleClientLoad"></script>
   <!-- CDN -->
   <script src="js/init.js" async defer></script>
 
