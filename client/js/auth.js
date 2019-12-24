@@ -1,7 +1,7 @@
 var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
 var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
-var SCOPES = 'https://www.googleapis.com/auth/youtube profile';
+var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/cloud-platform profile';
 
 function handleClientLoad() {
   // Load the API client and auth2 library
@@ -25,15 +25,13 @@ function initClient() {
   });
 
   gapi.client.load('youtube', 'v3');
-
+  gapi.client.load('texttospeech', 'v1');
 }
 
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    console.log(gapi.auth2.getAuthInstance().currentUser.get());
     token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-
 
     map.topBar.icon.setImage(profile.getImageUrl());
     map.topBar.loginCard.setTitle(profile.getName());
