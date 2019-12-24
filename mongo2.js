@@ -12,6 +12,8 @@ We can also use async/await syntax to work with promises.
 
 */
 
+//modifica per provare il git di simone
+
 const mongo = require('mongodb');
 
 const MongoClient = mongo.MongoClient;
