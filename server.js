@@ -22,7 +22,7 @@ app.use((req,res,next) => {
 
 app.get("/categorie", function (req, res) { //richiesta del json con le categorie
 
-    console.log("requested: categorie.json");
+    //console.log("requested: categorie.json");
     res.sendFile(__dirname+"/client/categorie.json");
 
 });
@@ -58,7 +58,7 @@ app.post("/find", async (req, res) => {
     try{
 
         var doc = await myModule.find(req);
-        console.log(doc)
+        //console.log(doc)
         res.send(JSON.stringify(doc));
 
     }

@@ -9,7 +9,6 @@ The then() method always returns a Promise, which enables us to chain method cal
 
 Note: the MongoClient's connect returns a promise if no callback is passed.
 We can also use async/await syntax to work with promises.
-
 */
 
 const mongo = require('mongodb');
@@ -37,6 +36,7 @@ verify = async(token) => {
     const payload = ticket.getPayload();
 
     const userid = payload['sub'];
+    console.log(userid);
     return userid;
     // If request specified a G Suite domain:
     //const domain = payload['hd'];
@@ -59,7 +59,7 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
         var exist = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
 
-        var veruser = verify(req.body.token);
+        var veruser = await verify(req.body.token);
 
 
         if(exist == false){
@@ -76,7 +76,7 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
             };
 
             let ret = await db.collection('place').insertOne(doc);
-            console.log("adding new place \n" + JSON.stringify(doc)) // display the inserted information
+            //console.log("adding new place \n" + JSON.stringify(doc)) // display the inserted information
             client.close();
             return JSON.stringify(ret);
         }
@@ -106,7 +106,7 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
                 }
             var new_values = {$set: object2};
             var ret_update = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
-            console.log(ret_update.result);
+            //console.log(ret_update.result);
             client.close();
             return (JSON.stringify(ret_update));
 
@@ -120,8 +120,8 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
 
 exports.add_review = async (req) => {
 
-    console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
-    console.log('\n');
+    //console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
+    //console.log('\n');
 
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -129,7 +129,7 @@ exports.add_review = async (req) => {
 
         //check if exist the review of the user
         var olc = req.body.OLC;
-        var veruser = verify(req.body.token);
+        var veruser = await verify(req.body.token);
 
 
         var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:veruser}} ] };
@@ -138,7 +138,7 @@ exports.add_review = async (req) => {
 
         //if the OLC of this user is not in the DB create it
 
-        console.log("review user exist: " + exist);
+        //console.log("review user exist: " + exist);
 
         if(exist == false){
 
@@ -161,8 +161,8 @@ exports.add_review = async (req) => {
                         comment: req.body.comment
                     }
             let ret_new = await db.collection('review').insertOne(doc);
-            console.log("review added");
-            console.log(ret_new.result);
+            //console.log("review added");
+            //console.log(ret_new.result);
 
         client.close();
 
@@ -207,7 +207,7 @@ exports.add_review = async (req) => {
 
     }
     catch(err){
-        console.log(err);
+        //console.log(err);
         throw err;
     }
 
@@ -240,7 +240,8 @@ exports.find = async(req) => { //ritorna il documento ricercato
             expression.push({OLC:{$regex:olc}});
         }
         if (req.body.token){
-            var veruser = verify(req.body.token);
+            var veruser = await verify(req.body.token);
+            console.log("veruser" + veruser);
             var utente = append.concat(veruser);
             expression.push({user:{$regex:utente}});
         }
@@ -405,8 +406,6 @@ exports.clear_place = async() => {
 up_star = async(req) => {
 
     try{
-        console.log('\n');
-
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
 
@@ -421,8 +420,8 @@ up_star = async(req) => {
 
             var rate_update_place = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
 
-            console.log(JSON.stringify("rating_place totale aggiornato: " + star[0].rating_place));
-            console.log(rate_update_place.result);
+            //console.log(JSON.stringify("rating_place totale aggiornato: " + star[0].rating_place));
+            //console.log(rate_update_place.result);
         }
 
         if(req.body.rating_audio){
@@ -434,8 +433,8 @@ up_star = async(req) => {
 
             var rate_update_audio = await db.collection('place').updateOne(query, new_values1); //update with the parameter that are passed trought the body
 
-            console.log(JSON.stringify("rating_place totale aggiornato: " + star1[0].rating_audio));
-            console.log(rate_update_audio.result);
+            //console.log(JSON.stringify("rating_place totale aggiornato: " + star1[0].rating_audio));
+            //console.log(rate_update_audio.result);
         }
 
 
@@ -469,11 +468,11 @@ function remove_one(coll , nome)
 
         db.collection(coll).deleteOne(query).then((result) => {
 
-            console.log('Car deleted');
-            console.log(result);
+            //console.log('Car deleted');
+            //console.log(result);
         }).catch((err) => {
 
-            console.log(err);
+            //console.log(err);
         }).finally(() => {
 
             client.close();
