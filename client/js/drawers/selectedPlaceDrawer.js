@@ -1,13 +1,27 @@
 function selectedPlace(place){
   var content = document.createElement('div');
+
   var src = decode64(place.image);
+  console.log(place);
+  var imgContainer = document.createElement('div');
+  imgContainer.className = 'img-container';
   var img = document.createElement('img');
   img.setAttribute('src', src);
-  content.appendChild(img);
+  img.className = 'selected-place-img'
+  content.appendChild(imgContainer);
+  imgContainer.appendChild(img);
 
   var title = document.createElement('h2');
+  title.className = 'selected-place-title';
   title.innerHTML = place.name;
-  content.appendChild(title);
+  imgContainer.appendChild(title);
+
+
+  if (place.opening) {
+    var openingHours = document.createElement('h5');
+    openingHours.innerHTML = 'Opening Hours: ' + place.opening;
+    imgContainer.appendChild(openingHours);
+  }
 
   var separator1 = document.createElement('hr');
   separator1.className = 'mdc-list-divider';

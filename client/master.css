@@ -166,6 +166,8 @@ body {
 }
 /*login menu end*/
 
+
+/* edit-dialog*/
 .cat-list {
   height: 280px;
 }
@@ -174,3 +176,18 @@ body {
 #image-input {
   display: none;
 }
+/*edit dialog end*/
+
+/*selected place*/
+.img-container{
+  overflow: hidden;
+  width: 100%;
+  height: 300px;
+}
+.selected-place-img {
+  width: 100%;
+}
+.selected-place-title {
+  text-align: center;
+}
+/*selected place end*/

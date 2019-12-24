@@ -90,7 +90,7 @@ function createEditDialog(position, card, type){
     }
 
     form.append('category', cat.value);
-    form.append('orario', opHoForm.value);
+    form.append('opening', opHoForm.value);
 
     if(descrForm){
       form.append('description', descrForm.value);
@@ -135,10 +135,10 @@ function submit(form, type){
           var center = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
           var image = decode64(form.get('image'));
 
-          var addedPlace = new Place(form.get('name'), image, form.get('description'), null, center);
-          map.places.push(addedPlace);
+          //var addedPlace = new Place(form.get('name'), image, form.get('description'), null, center);
+          //map.places.push(addedPlace);
           map.noPlace.removePosition();
-          addedPlace.openWindow();
+          //addedPlace.openWindow();
       }
       else if (xhr.status !== 200) {
           alert('Request failed.  Returned status of ' + xhr.status);
