@@ -72,7 +72,8 @@ function createEditDialog(position, card, type){
   button.root_.addEventListener("click", async function validate(){
     var form = new FormData();
     form.append('OLC', OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_EXTRA));
-    form.append('user', profile.getId());
+    form.append('token', token);
+
 
     //name validation
     if(nameForm) {

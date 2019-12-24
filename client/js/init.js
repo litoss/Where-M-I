@@ -5,6 +5,7 @@
 }*/
 
 var profile;
+var token;
 var map = new Mappa();
 
 

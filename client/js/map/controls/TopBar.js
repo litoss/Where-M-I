@@ -47,6 +47,7 @@ class TopBar {
   }
 
   onSuccess(googleUser) {
+    token = googleUser.getAuthResponse().id_token;
     profile = googleUser.getBasicProfile();
     map.topBar.icon.setImage(profile.getImageUrl());
 

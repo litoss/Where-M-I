@@ -20,10 +20,9 @@ class Place {
 
     }else{
 
-      if(profile){
         var searchButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
         leftButtonList.push(searchButton.root_);
-      }
+      
 
       name = luogoSconosciuto.title;
       description = luogoSconosciuto.description;
