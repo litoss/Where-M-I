@@ -18,6 +18,10 @@ const MongoClient = mongo.MongoClient;
 const ObjectID = mongo.ObjectID; //serve per poter passare i parametri in name e price dentro ObjectID
 const url = 'mongodb://localhost:27017';
 //const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
+<<<<<<< HEAD
+=======
+//le prossime due righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
+>>>>>>> 27d1913f6e2f34401206289799d16c3e9e96fd5c
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
 const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
