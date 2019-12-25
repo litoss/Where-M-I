@@ -18,10 +18,6 @@ const MongoClient = mongo.MongoClient;
 const ObjectID = mongo.ObjectID; //serve per poter passare i parametri in name e price dentro ObjectID
 const url = 'mongodb://localhost:27017';
 //const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
-<<<<<<< HEAD
-=======
-//le prossime due righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
->>>>>>> 27d1913f6e2f34401206289799d16c3e9e96fd5c
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
 const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
@@ -30,7 +26,6 @@ const client_user = new OAuth2Client(CLIENT_ID);
 
 verify = async(token) => {
 
-
     const ticket = await client_user.verifyIdToken({
         idToken: token,
         audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
@@ -38,7 +33,6 @@ verify = async(token) => {
         //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
     const payload = ticket.getPayload();
-
     const userid = payload['sub'];
     console.log(userid);
     return userid;
@@ -67,7 +61,6 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
 
 
         if(exist == false){
-
             let doc = {_id: new ObjectID(),
                 OLC: req.body.OLC,                  //codice location
                 user: veruser,                //nome user che crea il luogo
@@ -87,7 +80,6 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
 
 
         else{ //se il posto esiste allora vengono modificati i parametri che sono settati nel JSON
-
             var object2 = {};
 
                 if (req.body.name && req.body.name != '' ){
@@ -113,7 +105,6 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
             //console.log(ret_update.result);
             client.close();
             return (JSON.stringify(ret_update));
-
         }
     }
     catch (err) {
@@ -134,17 +125,13 @@ exports.add_review = async (req) => {
         var olc = req.body.OLC;
         var veruser = await verify(req.body.token);
 
-
         var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:veruser}} ] };
-
         var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
         //if the OLC of this user is not in the DB create it
         //console.log("review user exist: " + exist);
 
         if(exist == false){
-
-
             var v_tag;
             if (req.body.visit_tag){
 
@@ -199,10 +186,7 @@ exports.add_review = async (req) => {
 
             var new_values = {$set: object_body};
             var ret_update = await db.collection('review').updateOne(query, new_values); //update with the parameter that are passed trought the body
-
             client.close();
-
-
             return ret_update;
 
         }
@@ -212,9 +196,6 @@ exports.add_review = async (req) => {
         //console.log(err);
         throw err;
     }
-
-
-
 }
 
 exports.find = async(req) => { //ritorna il documento ricercato
@@ -231,8 +212,6 @@ exports.find = async(req) => { //ritorna il documento ricercato
 
         var append = '^';
         var expression = [];
-
-
 
         if (req.body.OLC){
             var olc = append.concat(req.body.OLC);
@@ -264,17 +243,12 @@ exports.find = async(req) => { //ritorna il documento ricercato
         var query;
             if(expression.length >  1){query = {$and:expression};}
             if(expression.length == 1){query = expression[0]}
-
         var items = await db.collection('place').find(query).project({_id:0}).toArray();
-
         client.close();
-
         return items;
-
     }
     catch(err){
         return err;
-
     }
 }
 
@@ -284,10 +258,8 @@ exports.exist_one = async(olc) => { //ritorna true se il codice luogo esiste nel
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         var query = {OLC : olc}
-
         var items = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
         client.close();
-
         return items;
 
     }
@@ -303,10 +275,8 @@ exports.showdb_place = async () => {
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         let items = await db.collection('place').find().project({_id:0}).toArray();
-
         client.close();
         return items;
-
         }
 
     catch (err){
@@ -320,8 +290,8 @@ exports.showdb_review = async () => {
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-       // let items = await db.collection('review').find().project({_id:0}).toArray();
-       let items = await db.collection('review').find().toArray();
+        // let items = await db.collection('review').find().project({_id:0}).toArray();
+        let items = await db.collection('review').find().toArray();
         client.close();
         return items;
 
@@ -416,12 +386,6 @@ up_star = async(req) => {
 }
 
 
-
-
-
-
-
-
 function remove_one(coll , nome)
 {
     MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
@@ -446,12 +410,9 @@ function remove_one(coll , nome)
     });
 }
 
-
-
 /*
 
 Nuove Collezioni:
-
 
 1)
 Percorsi_>
@@ -463,6 +424,7 @@ JSON
 [olc1:, olc:7],
 [olc:1, olc:3, olc:2]
 ]}
+aggiunta percorso, rimozione e find
 
 2) FATTO
 Modifica dei valori della collezzione luoghi
@@ -473,6 +435,7 @@ controllo token username da google
 4)BHO SENTI STE
 campo immagine
 
-
+5)
+Rimozione di un luogo
 
 */
