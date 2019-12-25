@@ -10,6 +10,7 @@ The then() method always returns a Promise, which enables us to chain method cal
 Note: the MongoClient's connect returns a promise if no callback is passed.
 We can also use async/await syntax to work with promises.
 */
+//riprova
 
 const mongo = require('mongodb');
 
@@ -17,9 +18,8 @@ const MongoClient = mongo.MongoClient;
 const ObjectID = mongo.ObjectID; //serve per poter passare i parametri in name e price dentro ObjectID
 const url = 'mongodb://localhost:27017';
 //const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
-//Commento di Carlo
-//le prossime due righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
 
+//le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
 const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
 const {OAuth2Client} = require('google-auth-library');
 const client_user = new OAuth2Client(CLIENT_ID);
@@ -117,7 +117,6 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
     }
 }
 
-
 exports.add_review = async (req) => {
 
     //console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
@@ -137,7 +136,6 @@ exports.add_review = async (req) => {
         var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
         //if the OLC of this user is not in the DB create it
-
         //console.log("review user exist: " + exist);
 
         if(exist == false){
@@ -215,9 +213,6 @@ exports.add_review = async (req) => {
 
 }
 
-
-
-//exports.find = async(olc, utente, nome, categoria, media_rating, orario) => { //ritorna il documento ricercato
 exports.find = async(req) => { //ritorna il documento ricercato
 
     try{
@@ -279,7 +274,6 @@ exports.find = async(req) => { //ritorna il documento ricercato
     }
 }
 
-
 exports.exist_one = async(olc) => { //ritorna true se il codice luogo esiste nella collezione place
 
     try{
@@ -298,31 +292,6 @@ exports.exist_one = async(olc) => { //ritorna true se il codice luogo esiste nel
 
     }
 }
-
-/* exports.update_one = async(/* DA INSERIRE I VALORI DELLLA QUERY CHE VOGLIAMO CAMBIARE, new_values) => {
-
-    //per UPDATE.ONE olc e user sono standard e arrivano per forza, if su i 2 rating e visit e comment e semplicemente sovrascrivo
-
-    try{
-        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
-        const db = client.db("webdb");
-
-        var query = {  // DA DECIDERE I VALORI DELLA QUERY DA PASSARE NELLA FUNZIONE, COME RICERCARE I PARAMETRI DA CAMBIARE
-                        };
-
-
-        var items = await db.collection('review').updateOne(query, new_values);
-
-        client.close();
-
-    }
-    catch(err){
-        return err;
-
-    }
-
-}
- */
 
 exports.showdb_place = async () => {
 
@@ -395,13 +364,6 @@ exports.clear_place = async() => {
         throw err;
     }
 }
-
-
-
-
-
-
-
 
 up_star = async(req) => {
 
