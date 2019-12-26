@@ -17,9 +17,6 @@ app.use((req,res,next) => {
     next();
 });
 
-
-
-
 app.get("/categorie", function (req, res) { //richiesta del json con le categorie
 
     //console.log("requested: categorie.json");
@@ -27,40 +24,40 @@ app.get("/categorie", function (req, res) { //richiesta del json con le categori
 
 });
 
-app.post("/new_place", async (req, res) => { // aggiunta di un nuovo luogo
+// aggiunta di un nuovo luogo collezione place
+app.post("/new_place", async (req, res) => {
 
     try {
 
         let doc = await myModule.add_one(req);
-        res.send(doc);
+        res.send(JSON.stringify(doc));
 
     } catch (err) { //catch the error if the database isn't connected
         res.send(err);
     }
 });
 
-app.post("/new_review", async (req, res) =>{
+//elimina un posto nella collezione place
+app.post("/del_place", async (req, res) => {
 
-try {
+    try {
 
-    let doc = await myModule.add_review(req);
-    res.send(doc);
+        let doc = await myModule.del_one(req);
+        res.send(JSON.stringify(doc));
 
     } catch (err) { //catch the error if the database isn't connected
         res.send(err);
     }
 
-})
+});
 
-
+//trova informazioni su posto collezione place
 app.post("/find", async (req, res) => {
 
     try{
 
-        var doc = await myModule.find(req);
-        //console.log(doc)
+        let doc = await myModule.find(req);
         res.send(JSON.stringify(doc));
-
     }
     catch(err){
         res.send(err);
@@ -68,6 +65,7 @@ app.post("/find", async (req, res) => {
 
 });
 
+//mostra DB collezione place
 app.get("/list_place", async (req, res) => {
 
     try {
@@ -81,18 +79,7 @@ app.get("/list_place", async (req, res) => {
     }
 });
 
-app.get("/list_review", async (req, res) => {
-
-    try {
-
-    let ret = await myModule.showdb_review();
-    res.send(JSON.stringify(ret));
-    }
-    catch (err){
-        res.send("errore nella stampa lista review")
-    }
-});
-
+//drop totale collezione place
 app.get("/drop_place", async (req, res) => {
 
     try {
@@ -105,6 +92,33 @@ app.get("/drop_place", async (req, res) => {
     }
 });
 
+//creazione nuova recensione collezione review
+app.post("/new_review", async (req, res) =>{
+try {
+
+    let doc = await myModule.add_review(req);
+    res.send(doc);
+
+    } catch (err) { //catch the error if the database isn't connected
+        res.send(err);
+    }
+
+})
+
+//mostra DB collezione review
+app.get("/list_review", async (req, res) => {
+
+    try {
+
+    let ret = await myModule.showdb_review();
+    res.send(JSON.stringify(ret));
+    }
+    catch (err){
+        res.send("errore nella stampa lista review")
+    }
+});
+
+//drop totale collezione review
 app.get("/drop_review", async (req, res) => {
 
     try {
@@ -117,18 +131,6 @@ app.get("/drop_review", async (req, res) => {
     }
 });
 
-app.post("/star", async (req, res) => {
 
-    try{
-    let ret = await myModule.up_star(req);
-    res.send(JSON.stringify(ret));
-
-}
-    catch (err){
-        res.send(err);
-    }
-
-
-});
 
 app.listen(port, () => console.log("Server started on port: " + port));

@@ -108,9 +108,24 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
         }
     }
     catch (err) {
-        throw err;
+        return err;
     }
 }
+
+exports.del_one = async (req) => {
+    try {
+      let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+      const db = client.db("webdb");
+      var query = {OLC : req.body.OLC};
+      var can = await db.collection('place').deleteOne(query);
+      client.close();
+      return(can);
+    }
+    catch (err) {
+      return(err);
+    }
+}
+
 
 exports.add_review = async (req) => {
 
@@ -290,7 +305,6 @@ exports.showdb_review = async () => {
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        // let items = await db.collection('review').find().project({_id:0}).toArray();
         let items = await db.collection('review').find().toArray();
         client.close();
         return items;
@@ -364,7 +378,7 @@ up_star = async(req) => {
             var star1 = await db.collection('review').aggregate([{$match:query}, {"$group":{"_id":null, rating_audio:{"$avg":"$rating_audio"}}}]).toArray(); //rating_place deve essere un valore numerico
 
             var object1 = {};
-            object1.media_rating = star[0].rating_audio
+            object1.media_rating = star[0].rating_audio;
             var new_values1 = {$set : object1};
 
             var rate_update_audio = await db.collection('place').updateOne(query, new_values1); //update with the parameter that are passed trought the body
@@ -435,7 +449,7 @@ controllo token username da google
 4)BHO SENTI STE
 campo immagine
 
-5)
-Rimozione di un luogo
+5)FATTO
+Rimozione di un luogo tramite OLC dalla collezione place
 
 */
