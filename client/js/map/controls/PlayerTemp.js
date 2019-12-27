@@ -1,4 +1,4 @@
-class Player{
+class PlayerTemp{
   constructor(){
     var div = document.createElement('div');
     div.className = "mdc-player";

@@ -1,11 +1,16 @@
-function search(){
-    q = "boating|sailing -fishing";
-    var request = gapi.client.youtube.search.list({
-      q: q,
-      part: 'snippet'
-    });
+function search(olc, purpose){
+  q = olc + ":" + purpose + ":ita:*";
 
-    request.execute(function(response) {
-      var str = JSON.stringify(response.result);
-    });
-  }
+  return gapi.client.youtube.search.list({
+    q: q,
+    part: 'id'
+  }).then(function(response){
+
+    var div = document.createElement('div');
+    for(var item in response.result.items){
+      div.appendChild(new Player(response.result.items[item].id.videoId));
+    }
+    console.log(div);
+    return div;
+  });
+}

@@ -19,42 +19,56 @@
 
 <body class="mdc-typography">
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div>
-    <h3 class="mdc-typography--subtitle1">Anchored Menu</h3>
-    <button class="mdc-button">Open menu</button>
-
-    <div class="mdc-menu-surface--anchor">
-
-      <div class="mdc-menu mdc-menu-surface" tabindex="-1">
-        <ul class="mdc-list" role="menu" aria-hidden="true">
-          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Passionfruit</li>
-          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Orange</li>
-          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Guava</li>
-          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Pitaya</li>
-          <li class="mdc-list-divider" role="separator"></li>
-          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Pineapple</li>
-          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Mango</li>
-          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Papaya</li>
-          <li class="mdc-list-item mdc-ripple-upgraded" role="menuitem" tabindex="-1">Lychee</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
+  <audio id="youtube" autoplay controls loop></audio>
 
   <script>
-    var button = document.querySelector('.mdc-button');
-    const menu = new mdc.menu.MDCMenu(document.querySelector('.mdc-menu-surface'));
-    //const surf = new mdc.menuSurface.MDCMenuSurface(document.querySelector('.mdc-menu-surface'));
+    var vid = "jd4B04JZgyo",
+      audio_streams = {},
+      audio_tag = document.getElementById('youtube');
 
-    const list = new mdc.menu.MDCList(document.querySelector('.mdc-list'));
-    list.listen('')
-    button.addEventListener('click', () => {
-      //console.log(mdc.menuSurface);
-      console.log(0);
-      menu.setAnchorCorner(mdc.menu.Corner.TOP_RIGHT);
-      menu.open = !menu.open;
+    fetch("https://" + vid + "-focus-opensocial.googleusercontent.com/gadgets/proxy?container=none&url=https%3A%2F%2Fwww.youtube.com%2Fget_video_info%3Fvideo_id%3D" + vid).then(response => {
+      if (response.ok) {
+        response.text().then(data => {
+
+          var data = parse_str(data),
+            streams = (data.url_encoded_fmt_stream_map + ',' + data.adaptive_fmts).split(',');
+
+          streams.forEach(function(s, n) {
+            var stream = parse_str(s),
+              itag = stream.itag * 1,
+              quality = false;
+            console.log(stream);
+            switch (itag) {
+              case 139:
+                quality = "48kbps";
+                break;
+              case 140:
+                quality = "128kbps";
+                break;
+              case 141:
+                quality = "256kbps";
+                break;
+            }
+            if (quality) audio_streams[quality] = stream.url;
+          });
+
+          console.log(audio_streams);
+
+          audio_tag.src = audio_streams['128kbps'];
+          audio_tag.play();
+        })
+      }
     });
+
+    function parse_str(str) {
+      return str.split('&').reduce(function(params, param) {
+        var paramSplit = param.split('=').map(function(value) {
+          return decodeURIComponent(value.replace('+', ' '));
+        });
+        params[paramSplit[0]] = paramSplit[1];
+        return params;
+      }, {});
+    }
   </script>
 
 

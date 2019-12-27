@@ -11,9 +11,9 @@ class TopBar {
     this.signoutButton = new ActionButton('Disconnetti');
 
     var list = new List();
-    list.addElement(this.loginCard.root_);
-    list.addElement(this.authorizeButton);
-    list.addElement(this.signoutButton);
+    list.add(this.loginCard.root_);
+    list.add(this.authorizeButton);
+    list.add(this.signoutButton);
     this.menus = new Menu(list.root_, 'login-menu');
     this.menus.setAbsolutePosition(-250,48);
 

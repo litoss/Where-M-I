@@ -56,7 +56,7 @@ function createEditDialog(position, card, type){
   content.appendChild(opHoForm.root_);
 
   var listEl = new List();
-  for (var i in categories) listEl.addElement(new SelectList(categories[i].name,categories[i].id));
+  for (var i in categories) listEl.add(new SelectList(categories[i].name,categories[i].id));
 
   var cat = new Select("Category",listEl.root_,'form-field');
   cat.listContainer.className += ''+ 'cat-list';

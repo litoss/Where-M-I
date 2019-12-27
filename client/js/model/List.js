@@ -6,7 +6,11 @@ class List extends mdc.list.MDCList{
         super(item);
     }
 
-    addElement(newElement){
+    add(newElement){
       this.root_.appendChild(newElement);
+    }
+
+    size(){
+      return this.listElements.length;
     }
 }

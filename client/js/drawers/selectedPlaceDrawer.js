@@ -1,21 +1,14 @@
 function selectedPlace(place){
   var content = document.createElement('div');
 
-  var src = decode64(place.image);
-  console.log(place);
   var imgContainer = document.createElement('div');
   imgContainer.className = 'img-container';
-  var img = document.createElement('img');
-  img.setAttribute('src', src);
-  img.className = 'selected-place-img'
   content.appendChild(imgContainer);
+
+  var img = document.createElement('img');
+  img.setAttribute('src', decode64(place.image));
+  img.className = 'selected-place-img'
   imgContainer.appendChild(img);
-
-  var title = document.createElement('h2');
-  title.className = 'selected-place-title';
-  title.innerHTML = place.name;
-  imgContainer.appendChild(title);
-
 
   if (place.opening) {
     var openingHours = document.createElement('h5');
@@ -27,56 +20,59 @@ function selectedPlace(place){
   separator1.className = 'mdc-list-divider';
   content.appendChild(separator1);
 
+  var description = document.createElement('p');
+  description.innerHTML = place.description;
+  content.appendChild(description);
+
   var separator2 = document.createElement('hr');
   separator2.className = 'mdc-list-divider';
   content.appendChild(separator2);
 
+  var olc = document.createElement('p');
+  olc.innerHTML = "Open location code: " + place.OLC;
+  content.appendChild(olc);
+
+  var separator3 = document.createElement('hr');
+  separator3.className = 'mdc-list-divider';
+  content.appendChild(separator3);
+
+  var clipTitle = document.createElement('h3');
+  clipTitle.innerHTML = "Clip Audio";
+  content.appendChild(clipTitle);
+
   var tabBar = new TabBar(['what','how','why']);
   var list = document.createElement('div');
-  list.style.padding = '20px';
+  var whatList, howList, whyList;
 
-  tabBar.listen("MDCTabBar:activated", (event) => {
+  search(place.OLC, "what").then(function(response){
+    whatList = response;
+    return search(place.OLC, "how");
+  }).then(function(response){
+    howList = response;
+    return search(place.OLC, "why");
+  }).then(function(response){
+    whyList = response;
 
-    list.innerHTML = '';
+      tabBar.listen("MDCTabBar:activated", (event) => {
 
-    switch (event.detail.index) {
-      case 0:
-        var whatList = new List();
-        for (var i in example) whatList.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-        list.appendChild(whatList.root_);
-        var card = new Card('ciao');
-        whatList.addElement(card.root_);
-        break;
-      case 1:
-        var howList = new List();
-        for (var i in example) howList.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-        list.appendChild(howList.root_);
-        break;
-      case 2:
-        var whyList = new List();
-        for (var i in example) whyList.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-        list.appendChild(whyList.root_);
-        break;
-    }
+        list.innerHTML = '';
+
+        switch (event.detail.index) {
+          case 0: list.appendChild(whatList);
+            break;
+          case 1: list.appendChild(howList);
+            break;
+          case 2: list.appendChild(whyList);
+            break;
+        }
+      });
+
+      tabBar.activateTab(0);
+
+      content.appendChild(tabBar.root_);
+      content.appendChild(list);
+
+      map.pageDrawer  = new PageDrawer(place.name, content);
+      map.pageDrawer.open = true;
   });
-
-  tabBar.activateTab(0);
-
-  content.appendChild(tabBar.root_);
-  content.appendChild(list);
-
-
-
-
-
-
-
-  //What
-  search();
-
-  //How
-  //Why
-
-  map.pageDrawer  = new PageDrawer(null, content);
-  map.pageDrawer.open = true;
 }

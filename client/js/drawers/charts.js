@@ -13,17 +13,17 @@ function openCharts(){
     switch (event.detail.index) {
       case 0:
         var clips = new List();
-        for(var i in example) clips.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+        for(var i in example) clips.add(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
         list.appendChild(clips.root_);
         break;
       case 1:
         var vloggers = new List();
-        for(var i in example) vloggers.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+        for(var i in example) vloggers.add(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
         list.appendChild(vloggers.root_);
         break;
       case 2:
         var paths = new List();
-        for(var i in example) paths.addElement(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+        for(var i in example) paths.add(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
         list.appendChild(paths.root_);
         break;
     }
