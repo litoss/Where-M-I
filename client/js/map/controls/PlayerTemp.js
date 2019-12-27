@@ -12,11 +12,9 @@ class PlayerTemp{
 
     slider.listen('MDCSlider:change', () => console.log(`Value changed to ${slider.value}`));
     play.listen('click', () => {
-      slider.disabled = false;
-      var marker = map.findClosestMarker();
-      if(marker){
-
-      }
+      translate('Hello beautiful ','en', 'it').then(function(result){
+        console.log(result);
+      });
     });
     return div;
   }

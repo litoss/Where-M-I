@@ -26,13 +26,14 @@ function initClient() {
 
   gapi.client.load('youtube', 'v3');
   gapi.client.load('texttospeech', 'v1');
+  gapi.client.load('translate', 'v2');
 }
 
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-    
+
     map.topBar.icon.setImage(profile.getImageUrl());
     map.topBar.loginCard.setTitle(profile.getName());
     map.topBar.loginCard.setImage(profile.getImageUrl());

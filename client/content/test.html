@@ -22,14 +22,14 @@
   <audio id="youtube" autoplay controls loop></audio>
 
   <script>
-    var vid = "jd4B04JZgyo",
+    var vid = "cfe8Mw3UIW0",
       audio_streams = {},
       audio_tag = document.getElementById('youtube');
 
     fetch("https://" + vid + "-focus-opensocial.googleusercontent.com/gadgets/proxy?container=none&url=https%3A%2F%2Fwww.youtube.com%2Fget_video_info%3Fvideo_id%3D" + vid).then(response => {
       if (response.ok) {
         response.text().then(data => {
-
+          console.log(response);
           var data = parse_str(data),
             streams = (data.url_encoded_fmt_stream_map + ',' + data.adaptive_fmts).split(',');
 
