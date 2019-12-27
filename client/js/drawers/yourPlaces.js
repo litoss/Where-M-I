@@ -8,9 +8,13 @@ function openPlaces(){
     xhr.onload = function(){
       var arr = JSON.parse(xhr.responseText);
       for(var i in arr){
-          var button = new ActionButton("Edit");
+          var editButton = new IconButton('edit');
+          editButton.root_.id = i;
+          editButton.listen('click', (event) => {
+            createEditDialog(arr[event.srcElement.id]);
+          });
           var image = decode64(arr[i].image);
-          var card = new Card (arr[i].name, null, arr[i].description, image, [button], null,'about-card');
+          var card = new Card (arr[i].name, null, arr[i].description, image, null,[editButton.root_],'about-card');
           content.appendChild(card.root_);
       }
     }

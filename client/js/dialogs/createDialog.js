@@ -87,13 +87,12 @@ async function createEditDialog(place){
     }
     form.append('name',nameForm.value);
 
-
     form.append('category', cat.value);
+
     form.append('opening', opHoForm.value);
 
-    if(descrForm){
-      form.append('description', descrForm.value);
-    }else form.append('description', exampleCard.getSecondary());
+    form.append('description', descrForm.value);
+
 
     if(input.files[0]) {
       var blob= input.files[0];
@@ -114,33 +113,27 @@ async function createEditDialog(place){
 });
 
 function submit(form){
+  var place = {};
+  form.forEach(function(value, key){
+      place[key] = value;
+  });
+
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/new_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
       if (xhr.status === 200 ) {
           alert('Aggiunto con Successo!');
-
-          var decode = OpenLocationCode.decode(form.get('OLC'));
-          var center = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
-          var image = decode64(form.get('image'));
-
-          //var addedPlace = new Place(form.get('name'), image, form.get('description'), null, center);
-          //map.places.push(addedPlace);
-          //map.noPlace.removePosition();
-          //addedPlace.openWindow();
+          var addedPlace = new Place(place);
+          map.places.push(addedPlace);
+          map.closeAllWindow();
       }
       else if (xhr.status !== 200) {
           alert('Request failed.  Returned status of ' + xhr.status);
       }
   };
 
-  var object = {};
-  form.forEach(function(value, key){
-      object[key] = value;
-  });
 
-  console.log(JSON.stringify(object));
-  xhr.send(JSON.stringify(object));
+  xhr.send(JSON.stringify(place));
 }
 }
