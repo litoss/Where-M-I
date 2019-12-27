@@ -22,7 +22,7 @@ class Place {
 
         var searchButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
         leftButtonList.push(searchButton.root_);
-      
+
 
       name = luogoSconosciuto.title;
       description = luogoSconosciuto.description;
@@ -72,7 +72,7 @@ class Place {
       });
       leftButtonList[0].addEventListener('click', () => {
         var card = new Card(name, null, description, image, null, null, 'about-card');
-        if(profile) createEditDialog(this.marker.getPosition(),card, 'edit') ;
+        if(profile) createEditDialog(place);
         else alert('You must be logged in to use this function');
       });
     }else{

@@ -1,6 +1,6 @@
 async function getimageBlob(url){
-  const proxyurl = "https://cors-anywhere.herokuapp.com/";
-  let response = await fetch(proxyurl + url);
+
+  let response = await fetch( url);
   let result = await response.blob();
   return result;
 }

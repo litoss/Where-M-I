@@ -1,56 +1,35 @@
-function createEditDialog(position, card, type){
+async function createEditDialog(place){
   var content = document.createElement("div");
 
-  if (type == 'edit'){
-    var dialogTitle = 'Edit this place.';
-    var dialogIcon = 'edit';
+  var dialogTitle = 'Edit this place.';
+  var dialogIcon = 'edit';
+  var imgUri;
+  var img64;
+
+  if(place.image) {
+    imgUri = decode64(place.image);
+    img64 = place.image;
   }else{
-    var dialogTitle = 'Add some informations.';
-    var dialogIcon = 'add';
+    imgUri = 'content/no_street.png';
   }
+  var  exampleCard = new Card(place.name, null, null, imgUri, null, null, 'about-card');
 
-  var lat = position.lat();
-  var long = position.lng();
-  var exampleCard;
-
-  if (card == null)  exampleCard = new Card(luogoSconosciuto.title, null, luogoSconosciuto.description, luogoSconosciuto.media, null, null, 'about-card');
-  else exampleCard = card;
   exampleCard.id = "place-card";
   content.appendChild(exampleCard.root_);
 
-  if (card == null){
+  var imgUpload = new IconButton('add_a_photo',"mdc-button--raised mdc-image__circular");
+  var input = document.createElement('input');
+  input.setAttribute('type','file');
+  input.id = 'image-input';
+  imgUpload.root_.appendChild(input);
+  content.appendChild(imgUpload.root_);
 
-    var imgUpload = new IconButton('add_a_photo',"mdc-button--raised mdc-image__circular");
-    var input = document.createElement('input');
-    input.setAttribute('type','file');
-    input.id = 'image-input';
-    imgUpload.root_.appendChild(input);
-    content.appendChild(imgUpload.root_);
+  var nameForm = new TextField("Name",null,true,"emoji_flags");
+  nameForm.input.setAttribute('value', place.name);
+  content.appendChild(nameForm.root_);
 
-    imgUpload.listen('click', async() => {
-      input.click();
-    });
-
-    input.addEventListener('input', () => {
-      var url = URL.createObjectURL(event.target.files[0]);
-      exampleCard.setImage(url);
-    })
-
-    var nameForm = new TextField("Name",null,true,"emoji_flags");
-    content.appendChild(nameForm.root_);
-
-    nameForm.input.addEventListener('input', () => {
-      exampleCard.setTitle(nameForm.value);
-    })
-
-
-    var descrForm = new TextField("Description",null,null,"subject");
-    content.appendChild(descrForm.root_);
-
-    descrForm.input.addEventListener('input', () => {
-    exampleCard.setSecondary(descrForm.value);
-    })
-  }
+  var descrForm = new TextField("Description",null,null,"subject");
+  content.appendChild(descrForm.root_);
 
   var opHoForm = new TextField("Opening Hours","hh:mm/hh:mm",null,"schedule");
   content.appendChild(opHoForm.root_);
@@ -62,33 +41,52 @@ function createEditDialog(position, card, type){
   cat.listContainer.className += ''+ 'cat-list';
   content.appendChild(cat.root_);
 
+  var footer = document.createElement('div');
+  var button = new IconButton(dialogIcon,"mdc-button--raised mdc-image__circular");
+
+  var dialog = new Dialog(content,footer,dialogTitle);
+  document.getElementById('map').appendChild(dialog.root_);
+  dialog.open();
+  nameForm.input.focus();
+
+  imgUpload.listen('click', () => {
+    input.click();
+  });
+
+  input.addEventListener('input', () => {
+    var url = URL.createObjectURL(event.target.files[0]);
+    exampleCard.setImage(url);
+  })
+
+
+  nameForm.input.addEventListener('input', () => {
+    exampleCard.setTitle(nameForm.value);
+  })
+
+
+  descrForm.input.addEventListener('input', () => {
+  exampleCard.setSecondary(descrForm.value);
+  })
+
   cat.listen('MDCSelect:change', () => {
   exampleCard.setSubTitle( 'Category: ' + cat.selectedText.innerHTML);
   })
 
-  var footer = document.createElement('div');
-  var button = new IconButton(dialogIcon,"mdc-button--raised mdc-image__circular");
-
   button.root_.addEventListener("click", async function validate(){
     var form = new FormData();
-    form.append('OLC', OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_EXTRA));
+    form.append('OLC', place.OLC);
     form.append('token', token);
 
-
-    //name validation
-    if(nameForm) {
-      if(nameForm.value.length == 0) {
-        alert('No input on name');
-        return;
-      }
-      else if(nameForm.value.length > 20){
-        alert("Name is too long");
-        return;
-      }
-      form.append('name',nameForm.value);
-    }else{
-     form.append('name', exampleCard.getTitle());
+    if(nameForm.value.length == 0) {
+      alert('No input on name');
+      return;
     }
+    else if(nameForm.value.length > 25){
+      alert("Name is too long");
+      return;
+    }
+    form.append('name',nameForm.value);
+
 
     form.append('category', cat.value);
     form.append('opening', opHoForm.value);
@@ -97,34 +95,25 @@ function createEditDialog(position, card, type){
       form.append('description', descrForm.value);
     }else form.append('description', exampleCard.getSecondary());
 
-    if(input) var blob= input.files[0];
-    //get img from card
-    else{
-      var imgUrl = exampleCard.getImage();
-      var blob = await getimageBlob(imgUrl);
+    if(input.files[0]) {
+      var blob= input.files[0];
+      img64 = await encode64(blob);
     }
-    var b64image = await encode64(blob);
-    form.append('image', b64image);
+    if(img64) form.append('image', img64);
+    else {
+      alert('Select an Image');
+      return;
+    }
 
-
-
-    submit(form, type);
-
+    submit(form);
   });
   footer.appendChild(button.root_);
-
-
-  var dialog = new Dialog(content,footer,dialogTitle);
-  document.getElementById('map').appendChild(dialog.root_);
-  dialog.open();
 
   dialog.listen('MDCDialog:closing', function() {
   document.getElementById('map').removeChild(dialog.root_);
 });
 
-function submit(form, type){
-  if (type == 'create') var uri = '/new_place';
-  //else var uri = ''
+function submit(form){
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/new_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -138,7 +127,7 @@ function submit(form, type){
 
           //var addedPlace = new Place(form.get('name'), image, form.get('description'), null, center);
           //map.places.push(addedPlace);
-          map.noPlace.removePosition();
+          //map.noPlace.removePosition();
           //addedPlace.openWindow();
       }
       else if (xhr.status !== 200) {
