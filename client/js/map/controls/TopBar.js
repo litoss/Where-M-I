@@ -26,7 +26,6 @@ class TopBar {
 
     this.icon.listen('click', () => {
       this.menus.open= !this.menus.open;
-      texttospeech();
     })
 
     this.topBar.listen('MDCTopAppBar:nav', () => {

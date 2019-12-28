@@ -91,8 +91,11 @@ async function createEditDialog(place){
 
     form.append('opening', opHoForm.value);
 
-    form.append('description', descrForm.value);
-
+    if(descrForm.value.length == 0) {
+          if(place.description) form.append('description', place.description);
+          else alert('Please insert a short Description');
+        }
+    else form.append('description', descrForm.value);
 
     if(input.files[0]) {
       var blob= input.files[0];

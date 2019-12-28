@@ -1,11 +1,11 @@
-function translate(text, source, target){
+async function translate(text, source, target){
 
-  return gapi.client.language.translations.translate({
+  let response = await gapi.client.language.translations.translate({
     q: text,
     source: source,
     target: target,
     format: 'text'
-  }).then(function(response){
-    return response.result.data.translations[0].translatedText;
-  });
+  });;
+  let result = response.result.data.translations[0].translatedText;
+  return result;
 }

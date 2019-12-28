@@ -21,8 +21,21 @@ function selectedPlace(place){
   content.appendChild(separator1);
 
   var description = document.createElement('p');
+  description.className = 'descr'
   description.innerHTML = place.description;
   content.appendChild(description);
+
+  var translateButton = new IconButton('translate');
+  content.appendChild(translateButton.root_);
+  translateButton.listen('click', async() => {
+    description.innerHTML = await translate(place.description, 'en', 'it');
+  })
+
+  var texttospeechButton = new IconButton('speaker_notes');
+  content.appendChild(texttospeechButton.root_);
+  texttospeechButton.listen('click', () => {
+    texttospeech(document.querySelector('.descr').innerHTML, 'it-IT');
+  })
 
   var separator2 = document.createElement('hr');
   separator2.className = 'mdc-list-divider';
