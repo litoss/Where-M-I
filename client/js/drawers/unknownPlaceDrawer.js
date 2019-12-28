@@ -17,7 +17,7 @@ function selectPlace(position) {
         place['description'] = jsonResponse.results.bindings[event.srcElement.id].abstract.value;
         var lat = jsonResponse.results.bindings[event.srcElement.id].lat.value;
         var long = jsonResponse.results.bindings[event.srcElement.id].long.value;
-        place['OLC'] = OpenLocationCode.encode(lat, long, OpenLocationCode.CODE_PRECISION_EXTRA);
+        place['OLC'] = OpenLocationCode.encode(lat, long, OpenLocationCode.CODE_PRECISION_NORMAL);
         const proxyurl = "https://cors-anywhere.herokuapp.com/";
         var src = await getimageBlob(proxyurl + jsonResponse.results.bindings[event.srcElement.id].img.value);
         var image = await encode64(src);
@@ -37,7 +37,7 @@ function selectPlace(position) {
     var addBut = new ActionButton('Create It');
     addBut.addEventListener("click", async () =>{
       var place = {};
-      place['OLC'] = OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_EXTRA);
+      place['OLC'] = OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
       if(profile) createEditDialog(place);
       else alert('You must be logged in to use this function');
     });

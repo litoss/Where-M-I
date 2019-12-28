@@ -10,7 +10,7 @@ The then() method always returns a Promise, which enables us to chain method cal
 Note: the MongoClient's connect returns a promise if no callback is passed.
 We can also use async/await syntax to work with promises.
 */
-//riprova
+
 
 const mongo = require('mongodb');
 
@@ -34,19 +34,25 @@ verify = async(token) => {
     });
     const payload = ticket.getPayload();
     const userid = payload['sub'];
-    console.log(userid);
+    //console.log(userid);
     return userid;
     // If request specified a G Suite domain:
     //const domain = payload['hd'];
-
-  }
+}
 
 exports.add_one = async (req) => { //creazione di un nuovo luogo
 
     var m_rating = 0; // alla creazione di un nuovo luogo settiamo la media a 0 dato non ci sono ancora recensioni
-
     try {
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+
+//      useNewUrlParser => Determines whether or not to use the new url parser.
+//Enables the new, spec-compliant, url parser shipped in the core driver.
+//This url parser fixes a number of problems with the original parser, and aims to outright replace that parser in the near future.
+//Defaults to true, and must be explicitly set to false to use the legacy url parser.
+//    useUnifiedTopology => Enables the new unified topology layer
+// Servono entrambi per poter eliminare il Warning fi deprecazione. In MongoDB e' stato riscritto il tool che viene usato per fare
+//il parse del MongoDB connection strings.
         const db = client.db("webdb");
 
         /*  anche se non viene fatto un controllo di quello che viene passato dal client nel json quando si aggiunge nel
@@ -55,10 +61,7 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
 
         var query = {OLC : req.body.OLC};
         var exist = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
-
-
         var veruser = await verify(req.body.token);
-
 
         if(exist == false){
             let doc = {_id: new ObjectID(),
@@ -78,26 +81,22 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
             return JSON.stringify(ret);
         }
 
-
         else{ //se il posto esiste allora vengono modificati i parametri che sono settati nel JSON
             var object2 = {};
 
-                if (req.body.name && req.body.name != '' ){
+                if (req.body.name){
                     object2.name = req.body.name;
-
                 }
-                if (req.body.category && req.body.category != '' ){
+                if (req.body.category){
                     object2.category = req.body.category;
-
                 }
-                if (req.body.opening && req.body.opening != '' ){
+                if (req.body.opening){
                     object2.opening = req.body.opening;
-
                 }
-                if (req.body.description && req.body.description != '' ){
+                if (req.body.description){
                     object2.description = req.body.description;
                 }
-                if (req.body.image && req.body.image != '' ){
+                if (req.body.image){
                     object2.image = req.body.image;
                 }
             var new_values = {$set: object2};
@@ -126,110 +125,23 @@ exports.del_one = async (req) => {
     }
 }
 
-
-exports.add_review = async (req) => {
-
-    //console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
-    //console.log('\n');
+exports.find_place = async(req) => { //ritorna il documento ricercato
 
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-
-        //check if exist the review of the user
-        var olc = req.body.OLC;
-        var veruser = await verify(req.body.token);
-
-        var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:veruser}} ] };
-        var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
-
-        //if the OLC of this user is not in the DB create it
-        //console.log("review user exist: " + exist);
-
-        if(exist == false){
-            var v_tag;
-            if (req.body.visit_tag){
-
-                v_tag = req.body.visit_tag;
-            }
-            else{
-                v_tag = false;
-            }
-
-            let doc = {_id: new ObjectID(),
-                        OLC: req.body.OLC,
-                        user: veruser,
-                        rating_audio: req.body.rating_audio,
-                        rating_place: req.body.rating_place,
-                        visit_tag: v_tag,
-                        comment: req.body.comment
-                    }
-            let ret_new = await db.collection('review').insertOne(doc);
-            //console.log("review added");
-            //console.log(ret_new.result);
-
-        client.close();
-
-        if (req.body.rating_place || req.body.rating_audio){
-
-            up_star(req); //with the OLC we update the media of rating of the place
-        }
-
-        return ret_new;
-
-        }
-        else{ //if the OLC for the user is already inserted
-
-
-            var object_body = {}; //create the object with the values to update
-
-            if (req.body.rating_audio && req.body.rating_audio != '' ){
-                object.rating_audio = req.body.rating_audio
-
-            }
-            if (req.body.rating_place && req.body.rating_place != '' ){
-                object.rating_place = req.body.rating_place;
-
-            }
-            if (req.body.visit_tag && req.body.visit_tag != '' ){
-               object.visit_tag = req.body.visit_tag;
-
-            }
-            if (req.body.comment && req.body.comment != '' ){
-                object.comment = req.body.comment;
-            }
-
-            var new_values = {$set: object_body};
-            var ret_update = await db.collection('review').updateOne(query, new_values); //update with the parameter that are passed trought the body
-            client.close();
-            return ret_update;
-
-        }
-
-    }
-    catch(err){
-        //console.log(err);
-        throw err;
-    }
-}
-
-exports.find = async(req) => { //ritorna il documento ricercato
-
-    try{
-        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
-        const db = client.db("webdb");
-
         /*
         inserendo la stringa append davanti al carattere ricercato significa che il $regret (che serve a ricercare il nome anche avendo il nome parziale)
-        ricerchiamo il nome parziale ma deve essere nell-ordine che lo scriviamo, senza lui se cercassimo la lettera S troverebbe anche ad esempio la parola
+        ricerchiamo il nome parziale ma deve essere nell'ordine che lo scriviamo, senza lui se cercassimo la lettera S troverebbe anche ad esempio la parola
         test anche se la S è al centro della parola, con append verrebbe fuori solo la parola Sam che ha la S davanti.
         */
-
         var append = '^';
-        var expression = [];
+        var expression = []; //la funzione find() ha bisogno di un array
 
         if (req.body.OLC){
-            var olc = append.concat(req.body.OLC);
+            var str = req.body.OLC;
+            var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
+            var olc = append.concat(n);
             expression.push({OLC:{$regex:olc}});
         }
         if (req.body.token){
@@ -267,23 +179,7 @@ exports.find = async(req) => { //ritorna il documento ricercato
     }
 }
 
-exports.exist_one = async(olc) => { //ritorna true se il codice luogo esiste nella collezione place
-
-    try{
-        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
-        const db = client.db("webdb");
-        var query = {OLC : olc}
-        var items = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
-        client.close();
-        return items;
-
-    }
-    catch(err){
-        return err;
-
-    }
-}
-
+//ritorna tutta la collezione place
 exports.showdb_place = async () => {
 
     try{
@@ -300,6 +196,143 @@ exports.showdb_place = async () => {
     }
 }
 
+//aggiunge una review alla collezione review
+exports.add_review = async (req) => {
+
+    //console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
+    //console.log('\n');
+
+    try{
+        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+        const db = client.db("webdb");
+
+        //check if exist the review of the user
+        var olc = req.body.OLC;
+        var veruser = await verify(req.body.token);
+
+        var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:veruser}} ] };
+        var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
+
+        //if the OLC of this user is not in the DB create it
+        //console.log("review user exist: " + exist);
+
+        if(exist == false){
+            var v_tag;
+            if (req.body.visit_tag){
+
+                v_tag = req.body.visit_tag;
+            }
+            else{
+                v_tag = false;
+            }
+
+            let doc = {_id: new ObjectID(),
+                        OLC: req.body.OLC,
+                        user: veruser,
+                        rating_place: req.body.rating_place,
+                        visit_tag: v_tag,
+                        comment: req.body.comment
+                    }
+            let ret_new = await db.collection('review').insertOne(doc);
+            //console.log("review added");
+            //console.log(ret_new.result);
+
+        client.close();
+
+        if (req.body.rating_place){
+            up_star(req); //with the OLC we update the media of rating of the place
+        }
+
+        return ret_new;
+
+        }
+        else{ //if the OLC for the user is already inserted
+
+
+            var object_body = {}; //create the object with the values to update
+
+            if (req.body.rating_place){
+                object.rating_place = req.body.rating_place;
+
+            }
+            if (req.body.visit_tag){
+               object.visit_tag = req.body.visit_tag;
+
+            }
+            if (req.body.comment){
+                object.comment = req.body.comment;
+            }
+
+            var new_values = {$set: object_body};
+            var ret_update = await db.collection('review').updateOne(query, new_values); //update with the parameter that are passed trought the body
+
+            client.close(); //chiudiamo il client perche' ci pensa la funzione up_star a riaprire la comunicazione con il DB
+            if (req.body.rating_place){
+                  up_star(req);
+            }
+            return ret_update;
+        }
+    }
+    catch(err){
+        //console.log(err);
+        return (err);
+    }
+}
+
+//eliminazione di un commento nella collezione review
+exports.del_review = async (req) => {
+    try {
+      let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+      const db = client.db("webdb");
+      var query = {OLC : req.body.OLC}; // OLC + User e quindi veruser
+      var can = await db.collection('review').deleteOne(query);
+      client.close();
+      up_star(req);//dopo l'eliminazione di una recensione deve essere riaggiornato la media rating
+      return(can);
+    }
+    catch (err) {
+      return(err);
+    }
+}
+
+//ricerca delle recensioni collezione review
+exports.find_review = async(req) => {
+    try{
+        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+        const db = client.db("webdb");
+        /*
+        Con la funzione trovo:
+        - tutte le recensioni di un posto dato un OLC.
+        - tutte le recensioni di un utente dato il suo token
+        - la recensione del OLC che cerco dato il token di un utente
+        */
+        var append = '^';
+        var expression = [];
+
+        if (req.body.OLC){
+            var olc = append.concat(req.body.OLC);
+            expression.push({OLC:{$regex:olc}});
+        }
+
+        if (req.body.token){
+            var veruser = await verify(req.body.token);
+            var nome = append.concat(veruser);
+            expression.push({name:{$regex:nome}});
+        }
+
+        var query;
+            if(expression.length >  1){query = {$and:expression};}
+            if(expression.length == 1){query = expression[0]}
+        var items = await db.collection('review').find(query).project({_id:0}).toArray();
+        client.close();
+        return items;
+    }
+    catch(err){
+        return err;
+    }
+}
+
+//mostra il DB della collezione review
 exports.showdb_review = async () => {
 
     try{
@@ -308,17 +341,14 @@ exports.showdb_review = async () => {
         let items = await db.collection('review').find().toArray();
         client.close();
         return items;
-
         }
-
     catch (err){
-
         throw err;
     }
 }
 
+//drop di tutti i posti nella collezione place
 exports.clear_place = async() => {
-
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
@@ -335,8 +365,8 @@ exports.clear_place = async() => {
     }
 }
 
- exports.clear_review = async() => {
-
+//drop di tutte le recensioni nella collezione review
+exports.clear_review = async() => {
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
@@ -344,7 +374,6 @@ exports.clear_place = async() => {
 
         client.close();
         return items;
-
         }
 
     catch (err){
@@ -353,103 +382,188 @@ exports.clear_place = async() => {
     }
 }
 
+//aggiornamento della media rating del luogo all'aggiornamento del rating durnte una review
 up_star = async(req) => {
-
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
 
         var query = {OLC : req.body.OLC};
-
-        if(req.body.rating_place){
-            var star = await db.collection('review').aggregate([{$match:query}, {"$group":{"_id":null, rating_place:{"$avg":"$rating_place"}}}]).toArray(); //rating_place deve essere un valore numerico
-
-            var object = {};
-            object.media_rating = star[0].rating_place
-            var new_values = {$set : object};
-
-            var rate_update_place = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
+        var star = await db.collection('review').aggregate([{$match:query}, {"$group":{"_id":null, rating_place:{"$avg":"$rating_place"}}}]).toArray(); //rating_place deve essere un valore numerico
+        var object = {};
+        object.media_rating = star[0].rating_place
+        var new_values = {$set : object};
+        var rate_update_place = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
 
             //console.log(JSON.stringify("rating_place totale aggiornato: " + star[0].rating_place));
             //console.log(rate_update_place.result);
-        }
-
-        if(req.body.rating_audio){
-            var star1 = await db.collection('review').aggregate([{$match:query}, {"$group":{"_id":null, rating_audio:{"$avg":"$rating_audio"}}}]).toArray(); //rating_place deve essere un valore numerico
-
-            var object1 = {};
-            object1.media_rating = star[0].rating_audio;
-            var new_values1 = {$set : object1};
-
-            var rate_update_audio = await db.collection('place').updateOne(query, new_values1); //update with the parameter that are passed trought the body
-
-            //console.log(JSON.stringify("rating_place totale aggiornato: " + star1[0].rating_audio));
-            //console.log(rate_update_audio.result);
-        }
 
 
         client.close();
-
         return ("rate place update: " + rate_update_place.result + "   rate audio update: " + rate_update_audio.result);
-
-
     }
     catch(err){
         return err;
     }
 }
 
+//aggiunge un percorso preferito alla collezione route
+exports.add_route = async(req) =>{
+    try{
+        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+        const db = client.db("webdb");
+        let doc = {_id: new ObjectID(),
+            OLC: req.body.route[0],
+            route: req.body.route
+            //se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
+            //visualizzati anche tutti i percorsi dove quest'ultimo e' una tappa
 
-function remove_one(coll , nome)
-{
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
-
-        if (err) throw err;
-
-        const db = client.db("wedb");
-
-        let query = { name: nome , price: 10};
-
-        db.collection(coll).deleteOne(query).then((result) => {
-
-            //console.log('Car deleted');
-            //console.log(result);
-        }).catch((err) => {
-
-            //console.log(err);
-        }).finally(() => {
-
-            client.close();
-        });
-    });
+        };
+        let ret = await db.collection('routes').insertOne(doc);
+        client.close();
+        return ret;
+    }
+    catch(err){
+      return (err);
+    }
 }
 
+//eliminina un percorso preferito alla collezione route
+//va passato l'array intero dei posti del percorso che si vuole eliminare
+exports.del_route = async(req) =>{
+    try{
+      let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+      const db = client.db("webdb");
+      var query = {route : req.body.route};
+      var can = await db.collection('routes').deleteOne(query);
+      client.close();
+      return can;
+    }
+    catch(err){
+      return (err);
+    }
+}
+
+//trova un percorso preferito alla collezione route dato OLC
+exports.find_route = async(req) =>{
+    try{
+        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+        const db = client.db("webdb");
+        var query = {OLC: req.body.route};
+        var items = await db.collection('routes').find(query).project({_id:0,OLC:0}).toArray();
+        //facciamo la project anche di OLC che al client non serve, serve solo al server per fare la find
+
+        client.close();
+        return items;
+    }
+    catch(err){
+      return (err);
+    }
+}
+
+//aggiunge un utente e le relative preferenze alla collezione preferences
+//nel caso l'utente esistesse gi' aggiorna le sue preferenze
+exports.add_pref = async(req) =>{
+    try{
+        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+        const db = client.db("webdb");
+
+        var veruser = await verify(req.body.token);
+        var query = {user : veruser};
+        var exist = await db.collection('preferences').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
+
+        if(exist == false){
+        let doc = {_id: new ObjectID(),
+            user: veruser,
+            categories: req.body.categories,
+            audience: req.body.audience,
+            lenguage: req.body.lenguage
+            //se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
+            //visualizzati anche tutti i percorsi dove quest'ultimo e' una tappa
+        };
+        let ret = await db.collection('preferences').insertOne(doc);
+        client.close();
+        return (JSON.stringify(ret));
+        }
+
+        else{
+          var object3 = {};
+            if(req.body.categories)
+            {
+              object3.category = req.body.categories;
+            }
+            if(req.body.audience)
+            {
+              object3.audience = req.body.audience;
+            }
+            if(req.body.lenguage)
+            {
+              object3.lenguage = req.body.lenguage;
+            }
+          var new_values = {$set: object3};
+          var ret_update = await db.collection('preferences').updateOne(query, new_values); //update with the parameter that are passed trought the body
+          client.close();
+          return (JSON.stringify(ret_update));
+        }
+    }
+    catch(err){
+      return (err);
+    }
+}
+
+//trova le preferenze di un'utente dato il suo token
+exports.find_pref = async(req) =>{
+    try{
+        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+        const db = client.db("webdb");
+        var veruser = await verify(req.body.token);
+
+        var query = {user: veruser};
+        var items = await db.collection('preferences').find(query).project({_id:0}).toArray();
+        client.close();
+        return items;
+    }
+    catch(err){
+      return (err);
+    }
+}
+
+
+
 /*
+DA FARE==>
 
-Nuove Collezioni:
-
-1)
-Percorsi_>
-partenza da OLC e array di percorsi successivi
-
+1)FATTO
+nuova Collezione Percorsi_> partenza da OLC e array di percorsi successivi
 JSON
 {[
-[olc:1,olc:2,olc:3,olc:4],
-[olc1:, olc:7],
-[olc:1, olc:3, olc:2]
+["olc1","olc2","olc3","olc4"],
+["olc1", "olc7"],
+["olc1", "olc3", "olc2"]
 ]}
 aggiunta percorso, rimozione e find
 
 2) FATTO
-Modifica dei valori della collezzione luoghi
+Modifica dei valori della collezione luoghi
 
 3)FATTO
 controllo token username da google
 
-4)BHO SENTI STE
-campo immagine
+4)FATTO
+campo immagine, max JSON size in server.js
 
 5)FATTO
 Rimozione di un luogo tramite OLC dalla collezione place
 
+6)FATTO
+Aggiungere troncamento olc nel find
+
+7)FATTO
+nuova collezione preferenze
+{
+user:  ,
+categories:  ,
+audience:  ,
+lenguage:
+}
 */

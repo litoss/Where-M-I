@@ -6,7 +6,7 @@ const port = 8000;
 const myModule = require('./mongo2.js');
 
 app.use(express.urlencoded({extended : true}));
-app.use(express.json({limit: '50mb'}));
+app.use(express.json({limit: '16mb'}));
 
 
 app.use('/', express.static(__dirname + '/client'));
@@ -52,17 +52,16 @@ app.post("/del_place", async (req, res) => {
 });
 
 //trova informazioni su posto collezione place
-app.post("/find", async (req, res) => {
+app.post("/find_place", async (req, res) => {
 
     try{
 
-        let doc = await myModule.find(req);
+        let doc = await myModule.find_place(req);
         res.send(JSON.stringify(doc));
     }
     catch(err){
         res.send(err);
     }
-
 });
 
 //mostra DB collezione place
@@ -88,7 +87,7 @@ app.get("/drop_place", async (req, res) => {
     res.send(JSON.stringify(ret));
     }
     catch (err){
-        res.send(err);
+        res.send(JSON.stringify(err));
     }
 });
 
@@ -104,6 +103,18 @@ try {
     }
 
 })
+
+//trova informazioni su recensioni dato luogo collezione review
+app.post("/find_review", async (req, res) => {
+
+    try{
+        let doc = await myModule.find_review(req);
+        res.send(JSON.stringify(doc));
+    }
+    catch(err){
+        res.send(err);
+    }
+});
 
 //mostra DB collezione review
 app.get("/list_review", async (req, res) => {
@@ -127,6 +138,66 @@ app.get("/drop_review", async (req, res) => {
     res.send(JSON.stringify(ret));
     }
     catch (err){
+        res.send(err);
+    }
+});
+
+// aggiunta di un nuovo percorso alla collezione route
+app.post("/new_route", async (req, res) => {
+
+    try {
+        let doc = await myModule.add_route(req);
+        res.send(JSON.stringify(doc));
+    } catch (err) { //catch the error if the database isn't connected
+        res.send(err);
+    }
+});
+
+// aggiunta di un nuovo percorso alla collezione route
+//va passato l'array intero dei posti del percorso che si vuole eliminare
+app.post("/del_route", async (req, res) => {
+
+    try {
+        let doc = await myModule.del_route(req);
+        res.send(JSON.stringify(doc));
+    } catch (err) { //catch the error if the database isn't connected
+        res.send(err);
+    }
+});
+
+//trova percorsi predefiniti dato luogo collezione routes
+//passare: route:"OLC ricercato"
+app.post("/find_route", async (req, res) => {
+
+    try{
+        let doc = await myModule.find_route(req);
+        res.send(JSON.stringify(doc));
+    }
+    catch(err){
+        res.send(err);
+    }
+});
+
+// aggiunta di un nuovo utente alla collezione preferences
+// se l'utente esiste gia' vengono aggiornati i valori delle preferenze
+app.post("/add_preference", async (req, res) => {
+
+    try {
+        let doc = await myModule.add_pref(req);
+        res.send(JSON.stringify(doc));
+    } catch (err) { //catch the error if the database isn't connected
+        res.send(err);
+    }
+});
+
+// trova preferenze utente nella collezione preferences
+// passare il token utente: token: "*********"
+app.post("/find_preference", async (req, res) => {
+
+    try {
+        let doc = await myModule.find_pref(req);
+        res.send(JSON.stringify(doc));
+    } catch (err) { //catch the error if the database isn't connected
         res.send(err);
     }
 });
