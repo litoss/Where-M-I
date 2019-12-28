@@ -43,6 +43,7 @@ async function createEditDialog(place){
 
   var footer = document.createElement('div');
   var button = new IconButton(dialogIcon,"mdc-button--raised mdc-image__circular");
+  footer.appendChild(button.root_);
 
   var dialog = new Dialog(content,footer,dialogTitle);
   document.getElementById('map').appendChild(dialog.root_);
@@ -72,7 +73,7 @@ async function createEditDialog(place){
   exampleCard.setSubTitle( 'Category: ' + cat.selectedText.innerHTML);
   })
 
-  button.root_.addEventListener("click", async function validate(){
+  button.listen("click", async function validate(){
     var form = new FormData();
     form.append('OLC', place.OLC);
     form.append('token', token);
@@ -106,7 +107,6 @@ async function createEditDialog(place){
 
     submit(form);
   });
-  footer.appendChild(button.root_);
 
   dialog.listen('MDCDialog:closing', function() {
   document.getElementById('map').removeChild(dialog.root_);
