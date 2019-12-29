@@ -1,3 +1,6 @@
+// Google Cloud Translation API
+// https://cloud.google.com/translate/docs/
+
 async function translate(text, source, target){
 
   let response = await gapi.client.language.translations.translate({
@@ -6,6 +9,7 @@ async function translate(text, source, target){
     target: target,
     format: 'text'
   });;
+  
   let result = response.result.data.translations[0].translatedText;
   return result;
 }

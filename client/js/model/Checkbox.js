@@ -1,3 +1,6 @@
+// Material Design Components (MDC) - Checkbox
+// https://material.io/develop/web/components/input-controls/checkboxes/
+
 class Checkbox extends mdc.checkbox.MDCCheckbox{
     constructor(id) {
         var checkbox = document.createElement('div');
@@ -5,7 +8,7 @@ class Checkbox extends mdc.checkbox.MDCCheckbox{
 
         var input = document.createElement('input');
         input.className = "mdc-checkbox__native-control";
-        input.type = 'checkbox';
+        input.type = "checkbox";
         input.id = id;
         checkbox.appendChild(input);
 

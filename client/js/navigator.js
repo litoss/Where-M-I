@@ -1,14 +1,16 @@
 var geolocator;
 
 function localize(){
-  geolocator = navigator.geolocation.watchPosition(watch, error, {enableHighAccuracy: true,timeout: 5000,maximumAge: 0});
+  var options = {enableHighAccuracy: true,timeout: 5000,maximumAge: 0};
+  geolocator = navigator.geolocation.watchPosition(watch, error, options);
 }
 
 function watch(position){
   if(position.coords.accuracy < 100){
-    map.position.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
+    var latLng = {lat: position.coords.latitude, lng: position.coords.longitude};
+    map.position.setPosition(latLng);
     map.position.setAccuracy(position.coords.accuracy);
-    map.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
+    map.setPosition(latLng);
   }else error();
 }
 
@@ -54,6 +56,14 @@ function clearRecord(){
   recordedChunks = [];
 }
 
-function getRecord(){
-  return new Blob(recordedChunks, {type : 'audio/webm'});
+async function getRecord(){
+  return new Promise((resolve,reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      resolve(e.target.result);
+    };
+
+    reader.readAsDataURL(new Blob(recordedChunks, {type : 'audio/webm'}));
+  });
 }
