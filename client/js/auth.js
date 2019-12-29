@@ -20,8 +20,8 @@ function initClient() {
 
     // Handle the initial sign-in state.
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-    map.topBar.authorizeButton.addEventListener('click', handleAuthClick);
-    map.topBar.signoutButton.addEventListener('click', handleSignoutClick);
+    map.topBar.authorizeButton.listen('click', handleAuthClick);
+    map.topBar.signoutButton.listen('click', handleSignoutClick);
   });
 
   gapi.client.load('youtube', 'v3');

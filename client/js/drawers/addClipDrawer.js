@@ -1,30 +1,91 @@
 function addClipDrawer(){
 
-  var content = document.createElement('div');
+  var div = document.createElement('div');
 
-  var h1 = document.createElement('h1');
-  h1.innerHTML = 'Nuova clip';
-  content.appendChild(h1);
+  var newClip = document.createElement('h2');
+  newClip.innerHTML = 'Nuova clip';
+  div.appendChild(newClip);
 
-  var titolo = new TextField("Name",null,true,"emoji_flags");
-  content.appendChild(titolo.root_);
+  var titolo = new TextField("Name");
+  titolo.required = true;
+  div.appendChild(titolo.root_);
+  div.appendChild(document.createElement('br'));
 
-  var testo = new TextField("Testo",null, true);
-  content.appendChild(testo.root_);
+  var testo = new TextField("Testo",null, null, null, "mdc-text-field--textarea");
+  testo.required = true;
+  div.appendChild(testo.root_);
+  div.appendChild(document.createElement('br'));
 
   var what = new FormField(new Radio('radio1'), 'What');
-  content.appendChild(what.root_);
+  div.appendChild(what.root_);
 
   var how = new FormField(new Radio('radio2'), 'How');
-  content.appendChild(how.root_);
+  div.appendChild(how.root_);
 
   var why = new FormField(new Radio('radio3'), 'Why');
-  content.appendChild(why.root_);
+  div.appendChild(why.root_);
 
-  var categoria = new List();
-  content.appendChild(categoria.root_);
+  var listE1 = new List();
+  for (var i in categories) listE1.add(new SelectList(categories[i].name,categories[i].id));
 
+  var selectE1 = new Select("Content", listE1.root_);
+  div.appendChild(selectE1.root_);
 
-  map.pageDrawer = new PageDrawer('New Clip', content);
+  var listE2 = new List();
+  for (var i in audience) listE2.add(new SelectList(categories[i].name,categories[i].id));
+
+  var selectE2 = new Select("Audience", listE2.root_);
+  div.appendChild(selectE2.root_);
+
+  var registerClip = document.createElement('h2');
+  registerClip.innerHTML = 'Registra clip';
+  div.appendChild(registerClip);
+
+  var register = new IconButton("fiber_manual_record","mdc-button--raised");
+  div.appendChild(register.root_);
+
+  var stop = new IconButton("stop", "mdc-button--raised");
+  div.appendChild(stop.root_);
+
+  var play = new IconButton("play_arrow", "mdc-button--raised");
+  div.appendChild(play.root_);
+
+  var label = document.createElement('label');
+  label.innerHTML = "00:00:00";
+  div.appendChild(label);
+
+  var cancel = new IconButton('delete');
+  div.appendChild(cancel.root_);
+  div.appendChild(document.createElement('br'));
+
+  var bozza = new ActionButton('Salva come bozza');
+  div.appendChild(bozza.root_);
+
+  var salva = new ActionButton('Carica su Where M I');
+  div.appendChild(salva.root_);
+
+  register.listen('click', startRecord);
+  stop.listen('click', stopRecord);
+  play.listen('click', () => {
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      var audio = new Audio(e.target.result);
+      audio.play();
+    };
+
+    reader.readAsDataURL(getRecord());
+  });
+  cancel.listen('click', clearRecord);
+
+  salva.listen('click',() => {
+    if(titolo.value && testo.value){
+      insertClip(titolo.value, testo.value, 'private', getRecord());
+    }else{
+      alert("Mancano dati");
+    }
+  })
+
+  map.pageDrawer = new PageDrawer('New Clip', div);
   map.pageDrawer.open = true;
 }

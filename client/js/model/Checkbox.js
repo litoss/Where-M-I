@@ -5,8 +5,8 @@ class Checkbox extends mdc.checkbox.MDCCheckbox{
 
         var input = document.createElement('input');
         input.className = "mdc-checkbox__native-control";
-        input.setAttribute('type','checkbox');
-        input.setAttribute('id', id);
+        input.type = 'checkbox';
+        input.id = id;
         checkbox.appendChild(input);
 
         var background = document.createElement('div');

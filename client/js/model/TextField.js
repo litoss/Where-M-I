@@ -1,7 +1,8 @@
 class TextField extends mdc.textField.MDCTextField{
-    constructor(name, format, required, icon) {
+    constructor(name, format, required, icon, options) {
         var div = document.createElement('div');
-        div.className = "mdc-text-field mdc-text-field--outlined";
+        div.className = "mdc-text-field";
+        if(options) div.className += " " + options;
 
         if(icon){
           div.className += ' ' + 'mdc-text-field--with-leading-icon';
@@ -11,9 +12,16 @@ class TextField extends mdc.textField.MDCTextField{
           div.appendChild(leadingIcon);
         }
 
-        var input = document.createElement('input');
+        var input;
+        if(options && options.includes("mdc-text-field--textarea")){
+          input = document.createElement('textarea');
+          input.rows = "4";
+        }else{
+          input = document.createElement('input');
+          input.type = "text";
+        }
         input.className = "mdc-text-field__input";
-        input.setAttribute('type','text');
+
         if(required) input.setAttribute('required',true);
         if(format) input.setAttribute('placeholder',format);
         div.appendChild(input);

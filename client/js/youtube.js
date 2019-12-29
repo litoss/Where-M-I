@@ -14,3 +14,24 @@ function search(olc, purpose){
     return div;
   });
 }
+
+function insertClip(title, description, privacyStatus, readStream){
+
+  gapi.client.youtube.videos.insert({
+    part: 'id,snippet,status',
+    resource: {
+      snippet: {
+        title: title,
+        description: description
+      },
+      status: {
+        privacyStatus: privacyStatus
+      }
+    },
+    media: {
+      body: readStream
+    }
+  }).then(function(response){
+    console.log(response);
+  });
+}

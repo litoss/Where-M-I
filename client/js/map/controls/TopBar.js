@@ -12,8 +12,8 @@ class TopBar {
 
     var list = new List();
     list.add(this.loginCard.root_);
-    list.add(this.authorizeButton);
-    list.add(this.signoutButton);
+    list.add(this.authorizeButton.root_);
+    list.add(this.signoutButton.root_);
     this.menus = new Menu(list.root_, 'login-menu');
     this.menus.setAbsolutePosition(-250,48);
 

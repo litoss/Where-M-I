@@ -23,19 +23,37 @@ function error(err) {
   alert('La tua geolocalizzazione è troppo scadente');
 }
 
-var audioChunks;
+// Recording audio
+// https://developers.google.com/web/fundamentals/media/recording-audio
 
-function recordAudio(){
-  navigator.mediaDevice.getUserMedia({
-    audio: true
+var mediaRecorder;
+var recordedChunks = [];
+
+function stopRecord(){
+  mediaRecorder.stop();
+}
+
+function startRecord(){
+  navigator.mediaDevices.getUserMedia({
+    audio: true,
+    video: false
   }).then(function(stream){
-    const mediaRecorder = new MediaRecorder(stream);
-    audioChunks = [];
 
-    mediaRecorder.addEventListener("dataavailable", (event) => {
-      audioChunks.push(event.data);
+    mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
+    mediaRecorder.addEventListener('dataavailable', function(e) {
+      if (e.data.size > 0) {
+        recordedChunks.push(e.data);
+      }
     });
 
     mediaRecorder.start();
   });
+}
+
+function clearRecord(){
+  recordedChunks = [];
+}
+
+function getRecord(){
+  return new Blob(recordedChunks, {type : 'audio/webm'});
 }
