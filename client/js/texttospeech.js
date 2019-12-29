@@ -1,12 +1,12 @@
 // Google Cloud Text-to-Speech API
 // https://cloud.google.com/text-to-speech/docs/
 
-function texttospeech(){
+function texttospeech(input, lang){
 
     var req = gapi.client.texttospeech.text.synthesize({
-      input: {text: "Ciao Stefano Propato, benvenuto su Where em ai, ti prego di scrivere altre migliaia di righe di codice per rendermi ancora più funzionale. Grazie."},
+      input: {text: input},
       voice: {
-        languageCode: "it-IT"
+        languageCode: lang
       },
       audioConfig:{audioEncoding: 'MP3'}
     });
