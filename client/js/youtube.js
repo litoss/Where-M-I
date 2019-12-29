@@ -1,3 +1,6 @@
+// Youtube Data API
+// https://developers.google.com/youtube/v3/docs
+
 function search(olc, purpose){
   q = olc + ":" + purpose + ":ita:*";
 

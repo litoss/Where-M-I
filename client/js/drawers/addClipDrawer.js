@@ -66,21 +66,17 @@ function addClipDrawer(){
 
   register.listen('click', startRecord);
   stop.listen('click', stopRecord);
-  play.listen('click', () => {
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-      var audio = new Audio(e.target.result);
-      audio.play();
-    };
-
-    reader.readAsDataURL(getRecord());
+  play.listen('click', async () => {
+    var stream = await getRecord();
+    var audio = new Audio(stream);
+    audio.play();
   });
   cancel.listen('click', clearRecord);
 
-  salva.listen('click',() => {
+  salva.listen('click', async () => {
     if(titolo.value && testo.value){
-      insertClip(titolo.value, testo.value, 'private', getRecord());
+      var stream = await getRecord();
+      insertClip(titolo.value, testo.value, 'private', stream);
     }else{
       alert("Mancano dati");
     }

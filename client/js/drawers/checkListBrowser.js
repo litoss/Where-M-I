@@ -3,8 +3,7 @@ function openCheckListBrowser(){
 
   var list = new List();
   for(var i in browserList)
-    if(browserList[i].check) list.add(new ElementList(browserList[i].description, null, 'check_circle'));
-    else list.add(new ElementList(browserList[i].description, null, 'cancel'));
+    list.add(new ElementList(browserList[i].description, null, browserList[i].check ? 'check_circle' : 'cancel'));
 
   content.appendChild(list.root_);
 
