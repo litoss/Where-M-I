@@ -1,7 +1,8 @@
 function openAbout() {
 
   var content = document.createElement('div');
-  var aboutBar = new TabBar(aboutTab.map(o => o['icon']), aboutTab.map(o => o['name']));
+  var aboutBar = new TabBar(aboutTab.map(o => o['name']), aboutTab.map(o => o['icon']));
+  console.log(aboutBar);
   var div = document.createElement('div');
 
   aboutBar.listen("MDCTabBar:activated", (event) => {
