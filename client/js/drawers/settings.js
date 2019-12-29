@@ -17,6 +17,7 @@ function openSettings(){
   catAnchor.appendChild(menuCat.root_);
   content.appendChild(catAnchor);
 
+  var
 
   map.pageDrawer = new PageDrawer('Settings', content);
   map.pageDrawer.open = true;

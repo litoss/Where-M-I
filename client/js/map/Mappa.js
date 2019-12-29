@@ -53,7 +53,7 @@ class Mappa extends google.maps.Map{
     var olc = OpenLocationCode.encode(position.lat, position.lng, OpenLocationCode.CODE_PRECISION_NORMAL);
     var area = olc.substring(0, 4);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/find');
+    xhr.open('POST', '/find_place');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = this.addPlace;
     xhr.send(JSON.stringify({OLC: area}));
@@ -76,7 +76,7 @@ class Mappa extends google.maps.Map{
     return close;
   }
 
-  async addPlace(){
+  addPlace(){
     var response = JSON.parse(this.responseText);
     for(var i in response){
        map.places.push(new Place(response[i]));
