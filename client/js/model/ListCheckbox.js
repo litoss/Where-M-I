@@ -1,5 +1,5 @@
 class ListCheckBox extends mdc.list.MDCList{
-    constructor(ids, names) {
+    constructor(ids, names, options) {
         var ul = document.createElement('ul');
         ul.className = "mdc-list";
         ul.setAttribute('role','group');

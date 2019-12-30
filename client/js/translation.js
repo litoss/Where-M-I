@@ -9,7 +9,7 @@ async function translate(text, source, target){
     target: target,
     format: 'text'
   });;
-  
+
   let result = response.result.data.translations[0].translatedText;
   return result;
 }

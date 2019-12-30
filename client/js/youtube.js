@@ -1,24 +1,34 @@
 // Youtube Data API
 // https://developers.google.com/youtube/v3/docs
 
-function search(olc, purpose){
+async function search(olc, purpose){
   q = olc + ":" + purpose + ":ita:*";
 
-  return gapi.client.youtube.search.list({
+  let request = gapi.client.youtube.search.list({
     q: q,
     part: 'id'
-  }).then(function(response){
-
-    var div = document.createElement('div');
-    for(var item in response.result.items){
-      div.appendChild(new Player(response.result.items[item].id.videoId));
-    }
-    console.log(div);
-    return div;
   });
+
+  console.log(request);
+  var div = document.createElement('div');
+  //for(var item in response.result.items){
+  //  div.appendChild(new Player(response.result.items[item].id.videoId));
+  //}
+  return div;
+
 }
 
-function insertClip(title, description, privacyStatus, readStream){
+async function listVideos(){
+  let response = await gapi.client.youtube.search.list({
+    part: "id, snippet",
+    forMine: true,
+    type: "video",
+  //  q: "8FPHF800+:*" da scommentare
+  });
+  return response.result.items;
+}
+
+async function insertClip(title, description, privacyStatus, readStream){
 
   gapi.client.youtube.videos.insert({
     part: 'id,snippet,status',
@@ -30,11 +40,8 @@ function insertClip(title, description, privacyStatus, readStream){
       status: {
         privacyStatus: privacyStatus
       }
-    },
-    media: {
-      body: readStream
     }
-  }).then(function(response){
+  }, readStream).then(function(response){
     console.log(response);
   });
 }

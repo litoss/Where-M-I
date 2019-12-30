@@ -5,7 +5,6 @@ async function getimageBlob(url){
   return result;
 }
 
-
 function encode64(file) {
   var to64 = convertBlobToBase64(file);
   return to64;

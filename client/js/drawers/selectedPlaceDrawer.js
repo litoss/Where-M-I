@@ -1,4 +1,4 @@
-function selectedPlace(place){
+async function selectedPlace(place){
   var content = document.createElement('div');
 
   var imgContainer = document.createElement('div');
@@ -55,37 +55,30 @@ function selectedPlace(place){
 
   var tabBar = new TabBar(['what','how','why']);
   var list = document.createElement('div');
-  var whatList, howList, whyList;
 
-  search(place.OLC, "what").then(function(response){
-    whatList = response;
-    return search(place.OLC, "how");
-  }).then(function(response){
-    howList = response;
-    return search(place.OLC, "why");
-  }).then(function(response){
-    whyList = response;
+  let whatList = await search(place.OLC, "what");
+  let howList = await search(place.OLC, "how");
+  let whyList = await search(place.OLC, "why");
 
-      tabBar.listen("MDCTabBar:activated", (event) => {
+  tabBar.listen("MDCTabBar:activated", (event) => {
 
-        list.innerHTML = '';
+    list.innerHTML = '';
 
-        switch (event.detail.index) {
-          case 0: list.appendChild(whatList);
-            break;
-          case 1: list.appendChild(howList);
-            break;
-          case 2: list.appendChild(whyList);
-            break;
-        }
-      });
-
-      tabBar.activateTab(0);
-
-      content.appendChild(tabBar.root_);
-      content.appendChild(list);
-
-      map.pageDrawer  = new PageDrawer(place.name, content);
-      map.pageDrawer.open = true;
+    switch (event.detail.index) {
+      case 0: list.appendChild(whatList);
+        break;
+      case 1: list.appendChild(howList);
+        break;
+      case 2: list.appendChild(whyList);
+        break;
+    }
   });
+
+  tabBar.activateTab(0);
+
+  content.appendChild(tabBar.root_);
+  content.appendChild(list);
+
+  map.pageDrawer  = new PageDrawer(place.name, content);
+  map.pageDrawer.open = true;
 }
