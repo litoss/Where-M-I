@@ -38,10 +38,10 @@ app.post("/new_place", async (req, res) => {
 });
 
 //elimina un posto nella collezione place
+//bisogna passare OLC e token dell'utente che lo ha creato
 app.post("/del_place", async (req, res) => {
 
     try {
-
         let doc = await myModule.del_one(req);
         res.send(JSON.stringify(doc));
 
@@ -143,6 +143,8 @@ app.get("/drop_review", async (req, res) => {
 });
 
 // aggiunta di un nuovo percorso alla collezione route
+//bisogna passare array percorso e token user che lo sta creando
+//{route:["olc1","olc2","olc3","olc4"]}
 app.post("/new_route", async (req, res) => {
 
     try {
@@ -154,7 +156,8 @@ app.post("/new_route", async (req, res) => {
 });
 
 // aggiunta di un nuovo percorso alla collezione route
-//va passato l'array intero dei posti del percorso che si vuole eliminare
+//va passato l'array intero dei posti del percorso che si vuole eliminare e token user che lo ha creato
+//{route:["olc1","olc2","olc3","olc4"]}
 app.post("/del_route", async (req, res) => {
 
     try {
@@ -167,6 +170,7 @@ app.post("/del_route", async (req, res) => {
 
 //trova percorsi predefiniti dato luogo collezione routes
 //passare: route:"OLC ricercato"
+//{"route":"FHOLC888"}
 app.post("/find_route", async (req, res) => {
 
     try{

@@ -115,7 +115,8 @@ exports.del_one = async (req) => {
     try {
       let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
       const db = client.db("webdb");
-      var query = {OLC : req.body.OLC};
+      var veruser = await verify(req.body.token);
+      var query = {$and: [{ OLC:req.body.OLC } , { user:veruser }]};
       var can = await db.collection('place').deleteOne(query);
       client.close();
       return(can);
@@ -210,7 +211,7 @@ exports.add_review = async (req) => {
         var olc = req.body.OLC;
         var veruser = await verify(req.body.token);
 
-        var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:veruser}} ] };
+        var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:veruser}} ] };//controlla se esiste una recensione di questo utente di questo posto
         var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
         //if the OLC of this user is not in the DB create it
@@ -284,7 +285,8 @@ exports.del_review = async (req) => {
     try {
       let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
       const db = client.db("webdb");
-      var query = {OLC : req.body.OLC}; // OLC + User e quindi veruser
+      var veruser = await verify(req.body.token);
+      var query = {$and: [{ OLC:req.body.OLC } , { user:veruser }]};
       var can = await db.collection('review').deleteOne(query);
       client.close();
       up_star(req);//dopo l'eliminazione di una recensione deve essere riaggiornato la media rating
@@ -412,9 +414,11 @@ exports.add_route = async(req) =>{
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
+        var veruser = await verify(req.body.token);
         let doc = {_id: new ObjectID(),
             OLC: req.body.route[0],
             route: req.body.route
+            user:veruser
             //se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
             //visualizzati anche tutti i percorsi dove quest'ultimo e' una tappa
 
@@ -434,7 +438,9 @@ exports.del_route = async(req) =>{
     try{
       let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
       const db = client.db("webdb");
-      var query = {route : req.body.route};
+      //var query = {route : req.body.route};
+      var veruser = await verify(req.body.token);
+      var query = {$and: [{ route : req.body.route } , { user:veruser }]};
       var can = await db.collection('routes').deleteOne(query);
       client.close();
       return can;
