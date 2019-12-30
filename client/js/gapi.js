@@ -61,4 +61,5 @@ function handleAuthClick(event) {
 
 function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
+  profile = null;
 }

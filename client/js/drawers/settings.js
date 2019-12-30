@@ -2,18 +2,16 @@ function openSettings(){
 
   var content = document.createElement('div');
 
+//categories
   var catAnchor = document.createElement('div');
   catAnchor.className = 'mdc-menu-surface--anchor';
-  var catButton = new ActionButton('Categories');
-  catButton.addEventListener('click', () => {
+  var catButton = new ActionButton('Add Categories');
+  catButton.root_.addEventListener('click', () => {
     menuCat.open = true;
   })
-  var div = document.createElement('div');
-
   const contentSelector = new ListCheckBox(categories.map(o => o['id']), categories.map(o => o['name']));
-  div.appendChild(contentSelector.root_);
-  var menuCat = new Menu(div);
-  catAnchor.appendChild(catButton);
+  var menuCat = new Menu(contentSelector.root_);
+  catAnchor.appendChild(catButton.root_);
   catAnchor.appendChild(menuCat.root_);
   content.appendChild(catAnchor);
 

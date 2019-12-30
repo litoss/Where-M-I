@@ -12,7 +12,7 @@ async function createEditDialog(place){
   }else{
     imgUri = 'content/no_street.png';
   }
-  var  exampleCard = new Card(place.name, null, null, imgUri, null, null, 'about-card');
+  var  exampleCard = new Card(place.name, place.category, place.description, imgUri, null, null, 'about-card');
 
   exampleCard.id = "place-card";
   content.appendChild(exampleCard.root_);
@@ -22,16 +22,17 @@ async function createEditDialog(place){
   input.setAttribute('type','file');
   input.id = 'image-input';
   imgUpload.root_.appendChild(input);
-  content.appendChild(imgUpload.root_);
 
-  var nameForm = new TextField("Name",null,true,"emoji_flags");
+
+  var nameForm = new TextField("Name","emoji_flags");
   nameForm.input.setAttribute('value', place.name);
   content.appendChild(nameForm.root_);
+  content.appendChild(imgUpload.root_);
 
-  var descrForm = new TextField("Description",null,null,"subject");
+  var descrForm = new TextField("Description", "subject", 'mdc-text-field--textarea');
   content.appendChild(descrForm.root_);
 
-  var opHoForm = new TextField("Opening Hours","hh:mm/hh:mm",null,"schedule");
+  var opHoForm = new TextField("Opening Hours", "schedule");
   content.appendChild(opHoForm.root_);
 
   var listEl = new List();

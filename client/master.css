@@ -191,3 +191,7 @@ body {
   text-align: center;
 }
 /*selected place end*/
+
+.mdc-text-field, .mdc-select{
+  margin: 20px 0 0 20px;
+}

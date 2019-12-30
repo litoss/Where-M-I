@@ -1,7 +1,7 @@
 class TextField extends mdc.textField.MDCTextField{
-    constructor(name, format, required, icon, options) {
+    constructor(name, icon, options) {
         var div = document.createElement('div');
-        div.className = "mdc-text-field";
+        div.className = "mdc-text-field mdc-text-field--outlined";
         if(options) div.className += " " + options;
 
         if(icon){
@@ -21,9 +21,7 @@ class TextField extends mdc.textField.MDCTextField{
           input.type = "text";
         }
         input.className = "mdc-text-field__input";
-
-        if(required) input.setAttribute('required',true);
-        if(format) input.setAttribute('placeholder',format);
+;
         div.appendChild(input);
 
         var outline = document.createElement('div');

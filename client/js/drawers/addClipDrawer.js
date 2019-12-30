@@ -11,7 +11,7 @@ function addClipDrawer(){
   div.appendChild(titolo.root_);
   div.appendChild(document.createElement('br'));
 
-  var testo = new TextField("Testo",null, null, null, "mdc-text-field--textarea");
+  var testo = new TextField("Testo", null, "mdc-text-field--textarea");
   testo.required = true;
   div.appendChild(testo.root_);
   div.appendChild(document.createElement('br'));

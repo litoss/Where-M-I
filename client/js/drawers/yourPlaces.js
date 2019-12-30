@@ -3,7 +3,7 @@ function openPlaces(){
     var content = document.createElement('div');
 
     xhr = new XMLHttpRequest();
-    xhr.open('POST', '/find');
+    xhr.open('POST', '/find_place');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function(){
       var arr = JSON.parse(xhr.responseText);
