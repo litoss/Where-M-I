@@ -11,6 +11,8 @@ async function texttospeech(input, lang){
       audioConfig:{audioEncoding: 'MP3'}
     });
 
-    var snd = new Audio("data:audio/mp3;base64," + response.result.audioContent);
-    snd.play();
+    // var snd = new Audio("data:audio/mp3;base64," +
+    var result =response.result.audioContent;
+    return result;
+    // snd.play();
 }

@@ -1,4 +1,7 @@
 async function selectedPlace(place){
+
+  var audio;
+
   var content = document.createElement('div');
 
   var imgContainer = document.createElement('div');
@@ -21,21 +24,23 @@ async function selectedPlace(place){
   content.appendChild(separator1);
 
   var description = document.createElement('p');
-  description.className = 'descr'
-  description.innerHTML = place.description;
+  description.className = 'descr';
+  if(preferences.language != 'en-US') description.innerHTML = await translate(place.description, 'en', preferences.language );
+  else description.innerHTML = place.description;
   content.appendChild(description);
-
-  var translateButton = new IconButton('translate');
-  content.appendChild(translateButton.root_);
-  translateButton.listen('click', async() => {
-    description.innerHTML = await translate(place.description, 'en', 'it');
-  })
 
   var texttospeechButton = new IconButton('speaker_notes');
   content.appendChild(texttospeechButton.root_);
-  texttospeechButton.listen('click', () => {
-    texttospeech(document.querySelector('.descr').innerHTML, 'it-IT');
-  })
+  texttospeechButton.listen('click', async() => {
+    if(audio) {
+      audio.pause();
+      audio = null;
+    }else {
+      var speech = await texttospeech(document.querySelector('.descr').innerHTML, preferences.language);
+      audio = new Audio("data:audio/mp3;base64," + speech);
+      audio.play();
+    }
+  });
 
   var separator2 = document.createElement('hr');
   separator2.className = 'mdc-list-divider';
@@ -81,4 +86,9 @@ async function selectedPlace(place){
 
   map.pageDrawer  = new PageDrawer(place.name, content);
   map.pageDrawer.open = true;
+
+  map.pageDrawer.listen('MDCDrawer:closed', () => {
+    audio.pause();
+    audio = null;
+  });
 }

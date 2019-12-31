@@ -13,4 +13,8 @@ class List extends mdc.list.MDCList{
     size(){
       return this.listElements.length;
     }
+
+    getElements(){
+      return this.listElements;
+    }
 }

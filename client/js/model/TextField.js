@@ -38,11 +38,12 @@ class TextField extends mdc.textField.MDCTextField{
         notch.className = 'mdc-notched-outline__notch';
         outline.appendChild(notch);
 
-        var floatingLabel = document.createElement('label');
-        floatingLabel.className = 'mdc-floating-label';
-        floatingLabel.innerHTML = name;
-        notch.appendChild(floatingLabel);
-
+        if(name) {
+          var floatingLabel = document.createElement('label');
+          floatingLabel.className = 'mdc-floating-label';
+          floatingLabel.innerHTML = name;
+          notch.appendChild(floatingLabel);
+        }
 
         var trailing = document.createElement('div');
         trailing.className = 'mdc-notched-outline__trailing';

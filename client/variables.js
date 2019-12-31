@@ -19,6 +19,13 @@ var categories = [
   { id:"oth", name:"Altro"}
 ];
 
+var languages = [
+  { name: 'Italiano', tag:'it'},
+  { name: 'English', tag:'en'},
+  { name: 'French', tag:'fr'},
+  { name: 'Spanish', tag:'es'}
+];
+
 var audience = [
   { id:"gen", name:"Generic"},
   { id:"pre", name:"Pre-School"},
@@ -147,5 +154,9 @@ var simone = {
     {name:"Settings",icon:"settings_applications"},
     {name:"Privacy Policy",icon:"policy"}
   ]
+
+  var defaultPrefs = { language:'it',audience:"gen",categories:'none'}
+
+
   var example = [];
   for(var i=0;i<10;i++) example.push({primaryText: "Ciccio Pasticcio", secondaryText: "2225 Contributi"});

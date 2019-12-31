@@ -33,8 +33,9 @@ function initClient() {
 
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
+    token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
     profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+    preferences = getPreferences(token);
 
     map.topBar.icon.setImage(profile.getImageUrl());
     map.topBar.loginCard.setTitle(profile.getName());
@@ -62,4 +63,16 @@ function handleAuthClick(event) {
 function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
   profile = null;
+  preferences = defaultPrefs;
+}
+
+function getPreferences(token) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/find_preference');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    var response = JSON.parse(xhr.response);
+    preferences = response[0];
+  };
+  xhr.send(JSON.stringify({token: token}));
 }

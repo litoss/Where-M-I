@@ -29,7 +29,8 @@ async function createEditDialog(place){
   content.appendChild(nameForm.root_);
   content.appendChild(imgUpload.root_);
 
-  var descrForm = new TextField("Description", "subject", 'mdc-text-field--textarea');
+  var descrForm = new TextField(null, "subject", 'mdc-text-field--textarea');
+  descrForm.input.value = place.description;
   content.appendChild(descrForm.root_);
 
   var opHoForm = new TextField("Opening Hours", "schedule");
@@ -49,6 +50,7 @@ async function createEditDialog(place){
   var dialog = new Dialog(content,footer,dialogTitle);
   document.getElementById('map').appendChild(dialog.root_);
   dialog.open();
+  //descrForm.input.focus();
   nameForm.input.focus();
 
   imgUpload.listen('click', () => {
