@@ -1,5 +1,5 @@
 var categories = [
-  { id:"none", name:"Qualsiasi Categoria"},
+  { id:"none", name:"All"},
   { id:"nat", name:"Nature"},
   { id:"art", name:"Art"},
   { id:"his", name:"History"},
@@ -14,9 +14,8 @@ var categories = [
   { id:"shp", name:"Shopping"},
   { id:"tec", name:"Tech"},
   { id:"pop", name:"Pop culture & gossip"},
-  { id:"prs", name:"Nessuna"}, //nome errato
-  { id:"none", name:"Personal experiences"},
-  { id:"oth", name:"Altro"}
+  { id:"prs", name:"Personal experiences"},
+  { id:"oth", name:"Other"}
 ];
 
 var languages = [

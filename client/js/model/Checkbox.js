@@ -28,5 +28,11 @@ class Checkbox extends mdc.checkbox.MDCCheckbox{
         svg.appendChild(path);
 
         super(checkbox);
+
+        this.input = input;
+    }
+
+    getCheckedValue(){
+      return this.input.id;
     }
 }

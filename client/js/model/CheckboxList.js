@@ -11,5 +11,7 @@ class CheckboxList{
 
     this.root_.appendChild(checkbox.root_);
     this.root_.appendChild(name);
+
+    //return this.root_;
   }
 }

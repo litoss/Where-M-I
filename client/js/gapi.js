@@ -72,7 +72,8 @@ function getPreferences(token) {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
     var response = JSON.parse(xhr.response);
-    preferences = response[0];
+    if (response[0]) preferences = response[0];
+    else preferences = defaultPrefs;
   };
   xhr.send(JSON.stringify({token: token}));
 }
