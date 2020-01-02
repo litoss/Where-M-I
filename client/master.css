@@ -195,3 +195,8 @@ body {
 .mdc-text-field, .mdc-select{
   margin: 20px 0 0 20px;
 }
+
+/*welcome dialog*/
+#welcome-img {
+  width: 100%;
+}

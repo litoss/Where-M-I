@@ -28,5 +28,12 @@ class Dialog extends mdc.dialog.MDCDialog{
     item.appendChild(scrim);
 
     super(item);
+
+    this.content = content;
+  }
+
+  setContent(newContent){
+    this.content.firstChild.remove();
+    this.content.appendChild(newContent);
   }
 }

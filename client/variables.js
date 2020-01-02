@@ -117,10 +117,10 @@ var simone = {
    {description:"Il sistema riproduce il prossimo clip in lista sullo stesso luogo da visitare", check:false},
    {description:"Il sistema riprende la riproduzione", check:false},
    {description:"Meccanismo per filtrare la playlist di clip in base ad alcune caratteristiche", check:false},
-   {description:"Visualizzazione di un'area per la registrazione ed il login, se l'utente non è loggato", check:false},
-   {description:"Scelta della lingua/delle lingue dei clip", check:false},
-   {description:"Scelta del tipo di audience", check:false},
-   {description:"Scelta del tipo di interessi culturali dell'utente", check:false},
+   {description:"Visualizzazione di un'area per la registrazione ed il login, se l'utente non è loggato", check:true},
+   {description:"Scelta della lingua/delle lingue dei clip", check:true},
+   {description:"Scelta del tipo di audience", check:true},
+   {description:"Scelta del tipo di interessi culturali dell'utente", check:true},
    {description:"Creazione di percorsi guidati personalizzati", check:false},
    {description:"Visualizzazione di un'area contentente classifiche generali su clip, vlogger e percorsi", check:false},
    {description:"Visualizzazione di una mappa geografica in base alla propria posizione GPS", check:false},
@@ -131,7 +131,7 @@ var simone = {
    {description:"Possibilità di filtrare i luoghi turistici in base alla tipologia e all’orario di apertura/chiusura.", check:false},
    {description:"Possibilità di taggare un luogo turistico come già visitato. Visualizzare il tag sulla mappa.", check:false},
    {description:"Possibilità di taggare un luogo turistico come già visitato. Visualizzare il tag sulla mappa.", check:false},
-   {description:"Accesso ai contenuti di Wikipedia: cercare il contenuto di DBPedia relativo al luogo nella lingua richiesta e riprodurre il contenuto della descrizione iniziale con sintesi vocale", check:false},
+   {description:"Accesso ai contenuti di Wikipedia: cercare il contenuto di DBPedia relativo al luogo nella lingua richiesta e riprodurre il contenuto della descrizione iniziale con sintesi vocale", check:true},
    {description:"Implementare un meccanismo di acquisizione feedback dall’utente e visualizzare tale feedback sulla mappa.", check:false}
  ]
   var browserElements = [

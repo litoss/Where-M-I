@@ -88,7 +88,9 @@ async function selectedPlace(place){
   map.pageDrawer.open = true;
 
   map.pageDrawer.listen('MDCDrawer:closed', () => {
-    audio.pause();
-    audio = null;
+    if(audio){
+      audio.pause();
+      audio = null;
+    }
   });
 }

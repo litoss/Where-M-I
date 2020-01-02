@@ -38,6 +38,7 @@ class Mappa extends google.maps.Map{
     this.addListener('click', (event) => {
       this.clickOnMap(event);
     });
+    openWelcome();
     this.updateMap(position);
   }
 
