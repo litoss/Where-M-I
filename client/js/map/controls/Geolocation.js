@@ -3,7 +3,7 @@ class Geolocation extends IconButtonToggle{
     super('my_location','location_disabled','mdc-button--raised mdc-image__circular');
     this.unbounded = true;
     this.listen('MDCIconButtonToggle:change', (event) => {
-      if(event.detail.isOn) localize();
+      if(event.detail.isOn) openWelcome();
       else clear();
     });
   }

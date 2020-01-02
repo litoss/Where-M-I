@@ -6,11 +6,11 @@ function localize(){
 }
 
 function watch(position){
-  if(position.coords.accuracy < 100){
+  if(position.coords.accuracy){
     var latLng = {lat: position.coords.latitude, lng: position.coords.longitude};
     map.position.setPosition(latLng);
     map.position.setAccuracy(position.coords.accuracy);
-    map.setPosition(latLng);
+    map.setCenter(latLng);
   }else error();
 }
 

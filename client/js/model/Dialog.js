@@ -6,12 +6,12 @@ class Dialog extends mdc.dialog.MDCDialog{
     container.className = "mdc-dialog__container";
     var surface = document.createElement('div');
     surface.className = "mdc-dialog__surface";
-    if (title != null){
-      var dialogTitle = document.createElement("h2");
-      dialogTitle.className = "mdc-dialog__title";
-      dialogTitle.innerHTML = title;
-      surface.appendChild(dialogTitle);
-    }
+
+    var dialogTitle = document.createElement("h2");
+    dialogTitle.className = "mdc-dialog__title";
+    dialogTitle.innerHTML = title;
+    surface.appendChild(dialogTitle);
+
     var content = document.createElement('div');
     content.className = "mdc-dialog__content";
     var footer = document.createElement('footer');
@@ -30,10 +30,21 @@ class Dialog extends mdc.dialog.MDCDialog{
     super(item);
 
     this.content = content;
+    this.title = dialogTitle;
+    this.footer = footer;
   }
 
   setContent(newContent){
     this.content.firstChild.remove();
     this.content.appendChild(newContent);
+  }
+
+  setTitle(newTitle){
+    this.title.innerHTML = newTitle;
+  }
+
+  setFooter(newFooter){
+    this.footer.firstChild.remove();
+    this.footer.appendChild(newFooter);
   }
 }
