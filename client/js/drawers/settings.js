@@ -38,50 +38,6 @@ function openSettings(){
   content.appendChild(contentSelector.root_);
 
 
-
-  // var submit = new IconButton('add');
-  // content.appendChild(submit.root_);
-  //
-  // submit.listen('click', () => {
-  //   var form = new FormData();
-  //   form.append('token', token);
-  //   if(lang.value)form.append('language', lang.value);
-  //   if(aud.value)form.append('audience', aud.value);
-  //
-  //   var selectedCheckboxes = [];
-  //   for (var i in contentSelector.content){
-  //      if(contentSelector.content[i].checked){
-  //        selectedCheckboxes.push(contentSelector.content[i].getCheckedValue());
-  //      }
-  //    }
-  //    if(!selectedCheckboxes[0]) selectedCheckboxes.push('none');
-  //   form.append('categories', selectedCheckboxes);
-  //
-  //   var selected = {};
-  //   form.forEach(function(value, key){
-  //       selected[key] = value;
-  //   });
-  //
-  //   preferences = selected;
-  //
-  //   if(profile){
-  //     xhr = new XMLHttpRequest();
-  //     xhr.open('POST', '/add_preference');
-  //     xhr.setRequestHeader('Content-Type', 'application/json');
-  //     xhr.onload = function() {
-  //         if (xhr.status === 200 ) {
-  //             map.pageDrawer.open = false;
-  //         }
-  //         else if (xhr.status !== 200) {
-  //             alert('Something went wrong please try again');
-  //         }
-  //     };
-  //     xhr.send(JSON.stringify(preferences));
-  //     console.log(JSON.stringify(preferences));
-  //   };
-  // });
-
-
   map.pageDrawer = new PageDrawer('Settings', content);
   map.pageDrawer.open = true;
 

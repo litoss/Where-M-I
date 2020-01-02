@@ -25,7 +25,7 @@ async function selectedPlace(place){
 
   var description = document.createElement('p');
   description.className = 'descr';
-  if(preferences.language != 'en-US') description.innerHTML = await translate(place.description, 'en', preferences.language );
+  if(preferences.language != 'en') description.innerHTML = await translate(place.description, 'en', preferences.language );
   else description.innerHTML = place.description;
   content.appendChild(description);
 
