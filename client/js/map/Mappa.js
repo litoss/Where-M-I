@@ -31,6 +31,7 @@ class Mappa extends google.maps.Map{
     this.places = [];
     this.noPlace;
     this.position = new Position();
+    this.draggableMarker;
 
     this.directionsService = new google.maps.DirectionsService;
     this.directionsRenderer = new google.maps.DirectionsRenderer({map: this});

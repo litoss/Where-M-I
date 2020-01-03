@@ -15,14 +15,19 @@ function watch(position){
 }
 
 function clear(){
-  navigator.geolocation.clearWatch(geolocator);
+  geolocator = navigator.geolocation.clearWatch(geolocator);
   map.position.remove();
 }
 
 function error(err) {
-  clear();
-  map.geolocation.setToggle(false);
-  alert('La tua geolocalizzazione è troppo scadente');
+  if(geolocator != null) clear();
+  //rimuove marker se cambio metodo di localizzazione
+  if(map.draggableMarker){
+    map.draggableMarker.marker.setMap(null);
+    map.draggableMarker = null;
+  }
+  alert('Geolocation error, please try again or use another method');
+  openWelcome();
 }
 
 // Recording audio
