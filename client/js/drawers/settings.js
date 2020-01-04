@@ -49,7 +49,11 @@ function openSettings(){
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = function() {
           if (xhr.status !== 200) {
-              alert('Something went wrong please try again');
+            var snackbar = new SnackBar('Something went wrong please try again');
+            snackbar.open();
+            snackbar.listen("MDCSnackbar:closed",() => {
+              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+            });
           }
       };
       xhr.send(JSON.stringify(preferences));

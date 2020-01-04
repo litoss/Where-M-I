@@ -82,11 +82,19 @@ async function createEditDialog(place){
     form.append('token', token);
 
     if(nameForm.value.length == 0) {
-      alert('No input on name');
+      var snackbar = new SnackBar('No input on name');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
       return;
     }
-    else if(nameForm.value.length > 25){
-      alert("Name is too long");
+    else if(nameForm.value.length > 30){
+      var snackbar = new SnackBar('name is too long');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
       return;
     }
     form.append('name',nameForm.value);
@@ -97,7 +105,13 @@ async function createEditDialog(place){
 
     if(descrForm.value.length == 0) {
           if(place.description) form.append('description', place.description);
-          else alert('Please insert a short Description');
+          else {
+            var snackbar = new SnackBar('Please insert a short description');
+            snackbar.open();
+            snackbar.listen("MDCSnackbar:closed",() => {
+              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+            });
+          }
         }
     else form.append('description', descrForm.value);
 
@@ -107,7 +121,11 @@ async function createEditDialog(place){
     }
     if(img64) form.append('image', img64);
     else {
-      alert('Select an Image');
+      var snackbar = new SnackBar('Select an Image');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
       return;
     }
 
@@ -129,7 +147,11 @@ function submit(form){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
       if (xhr.status === 200 ) {
-          alert('Aggiunto con Successo!');
+        var snackbar = new SnackBar('Successfully added');
+        snackbar.open();
+        snackbar.listen("MDCSnackbar:closed",() => {
+          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+        });
           var addedPlace = new Place(place);
           map.places.push(addedPlace);
           map.closeAllWindow();

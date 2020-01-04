@@ -83,14 +83,34 @@ function openSearch(){
   })
 
   button.listen('click', () => {
-    
+
+    if (selectType.value == '') {
+      var snackbar = new SnackBar('Choice where you want search');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
+      return;
+    }
+    else if(selectType.value == 'plc') var uri = '/find_place';
+    else if(selectType.value == 'clp') {
+      alert('Implementare ricerca youtube');
+      return;
+    }
+    else if(selectType.value == 'pth') var uri = "/find_route";
+
     var name = search.value;
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/find_place');
+    xhr.open('POST', uri);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = async function(){
       searchDiv.innerHTML = '';
       var response = JSON.parse(xhr.response);
+      if(!response[0]){
+        var errorText = document.createElement('h3');
+        errorText.innerHTML = 'No results';
+        searchDiv.appendChild(errorText);
+      }
       for(var i in response) {
         var place = response[i];
         var img = await decode64(place.image);

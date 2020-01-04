@@ -44,7 +44,13 @@ function selectPlace(position) {
         var place = {};
         place['OLC'] = OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
         if(profile) createEditDialog(place);
-        else alert('You must be logged in to use this function');
+        else {
+          var snackbar = new SnackBar('You must be logged in to use this function');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+          });
+        }
       });
 
       notHere.appendChild(addBut.root_);

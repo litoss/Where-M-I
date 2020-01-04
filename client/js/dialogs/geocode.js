@@ -35,8 +35,11 @@ function openGeocode() {
         map.setCenter(latLng);
         geocodeDialog.close();
       } else {
-        console.log(status);
-        alert('Please submit a valid address');
+        var snackbar = new SnackBar('Please submit a valid Address');
+        snackbar.open();
+        snackbar.listen("MDCSnackbar:closed",() => {
+          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+        });
       }
     });
   })
