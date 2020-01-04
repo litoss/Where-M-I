@@ -56,14 +56,6 @@ function clearRecord(){
   recordedChunks = [];
 }
 
-async function getRecord(){
-  return new Promise((resolve,reject) => {
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-      resolve(e.target.result);
-    };
-
-    reader.readAsDataURL(new Blob(recordedChunks, {type : 'audio/webm'}));
-  });
+async function getChunks(){
+  return recordedChunks;
 }

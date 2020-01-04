@@ -9,7 +9,7 @@ async function selectedPlace(place){
   content.appendChild(imgContainer);
 
   var img = document.createElement('img');
-  img.setAttribute('src', decode64(place.image));
+  img.setAttribute('src', decode64(place.image, "image/jpg"));
   img.className = 'selected-place-img'
   imgContainer.appendChild(img);
 

@@ -16,7 +16,7 @@ class Place {
       latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
       name = place.name;
       description = place.description;
-      image = decode64(place.image);
+      image = decode64(place.image, "image/jpg");
 
     }else{
 

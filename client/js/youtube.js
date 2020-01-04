@@ -30,7 +30,7 @@ async function listVideos(){
 
 async function insertClip(title, description, privacyStatus, readStream){
 
-  gapi.client.youtube.videos.insert({
+  var request = gapi.client.youtube.videos.insert({
     part: 'id,snippet,status',
     resource: {
       snippet: {
@@ -40,8 +40,14 @@ async function insertClip(title, description, privacyStatus, readStream){
       status: {
         privacyStatus: privacyStatus
       }
+    },
+    media: {
+      body: readStream
     }
-  }, readStream).then(function(response){
+  });
+
+  console.log(request);
+  request.then(function(response){
     console.log(response);
   });
 }

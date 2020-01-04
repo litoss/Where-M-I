@@ -7,7 +7,7 @@ async function createEditDialog(place){
   var img64;
 
   if(place.image) {
-    imgUri = decode64(place.image);
+    imgUri = decode64(place.image, "image/jpg");
     img64 = place.image;
   }else{
     imgUri = 'content/no_street.png';

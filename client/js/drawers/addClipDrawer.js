@@ -67,16 +67,31 @@ function addClipDrawer(){
   register.listen('click', startRecord);
   stop.listen('click', stopRecord);
   play.listen('click', async () => {
-    var stream = await getRecord();
-    var audio = new Audio(stream);
+    var chunks = await getChunks();
+    var url = await getURLfromBlob(new Blob(chunks, {type : 'audio/webm'}));
+    var audio = new Audio(url);
     audio.play();
   });
   cancel.listen('click', clearRecord);
 
   salva.listen('click', async () => {
-    if(titolo.value && testo.value){
-      var stream = await getRecord();
-      insertClip(titolo.value, testo.value, 'private', stream);
+    if(!false){
+      var chunks = await getChunks();
+      var base64 = await convertBlobToBase64(new Blob(chunks, {type : 'audio/webm'}));
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/audio_to_video');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = async function(){
+        var url = await decode64(this.responseText, "video/webm");
+        var video = document.createElement('video');
+        video.controls;
+        video.src = url;
+        document.body.appendChild(video);
+
+        //insertClip("titolo", "descrizione", "private", );
+      };
+      xhr.send(JSON.stringify({chunks: base64}));
     }else{
       alert("Mancano dati");
     }

@@ -13,7 +13,7 @@ function openPlaces(){
           editButton.listen('click', (event) => {
             createEditDialog(arr[event.srcElement.id]);
           });
-          var image = decode64(arr[i].image);
+          var image = decode64(arr[i].image, "image/jpg");
           var card = new Card (arr[i].name, null, arr[i].description, image, null,[editButton.root_],'about-card');
           content.appendChild(card.root_);
       }
