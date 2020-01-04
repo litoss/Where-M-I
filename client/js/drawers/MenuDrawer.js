@@ -62,6 +62,8 @@ class MenuDrawer extends Drawer{
         break;
       case 4: if(profile)openClips();
         break;
+      case 5: if(profile)openPaths();
+        break;
       case 6: openCheckListBrowser();
         break;
       case 8: openAbout();
