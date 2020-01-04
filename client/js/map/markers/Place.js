@@ -30,10 +30,8 @@ class Place {
     }
 
     var directionButton = new IconButton('navigation','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-    var positionButton = new IconButton('person_pin','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
 
     rightButtonList.push(directionButton.root_);
-    rightButtonList.push(positionButton.root_);
 
     var card = new Card(name, null, description, image, leftButtonList, rightButtonList, 'infoWindow-card');
 
@@ -60,11 +58,6 @@ class Place {
       this.infoWindow.open(map, this.marker);
     });
 
-    positionButton.listen('click', () => {
-      map.position.setPosition(this.marker.getPosition());
-      this.removePosition();
-    });
-
     if(place){
       card.primaryAction.addEventListener('click',() => {
         if(!map.pageDrawer) selectedPlace(place);
@@ -73,12 +66,24 @@ class Place {
       leftButtonList[0].addEventListener('click', () => {
         var card = new Card(name, null, description, image, null, null, 'about-card');
         if(profile) createEditDialog(place);
-        else alert('You must be logged in to use this function');
+        else {
+          var snackbar = new SnackBar('You must be logged to use this function');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+          });
+        }
       });
     }else{
       leftButtonList[0].addEventListener('click', () => {
         if(profile) selectPlace(this.marker.getPosition());
-        else alert('You must be logged in to use this function');
+        else {
+          var snackbar = new SnackBar('You must be logged to use this function');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+          });
+        }
       });
     }
   }

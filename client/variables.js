@@ -123,13 +123,12 @@ var simone = {
    {description:"Scelta del tipo di interessi culturali dell'utente", check:true},
    {description:"Creazione di percorsi guidati personalizzati", check:false},
    {description:"Visualizzazione di un'area contentente classifiche generali su clip, vlogger e percorsi", check:false},
-   {description:"Visualizzazione di una mappa geografica in base alla propria posizione GPS", check:false},
-   {description:"Possibilità di aggiustare la propria posizione sulla mappa, trascinando un apposito placeholder presente sulla mappa", check:false},
-   {description:"Se la posizione GPS non è disponibile, l’utente deve poter specificare manualmente la posizione navigando sulla mappa eventualmente zoomando oppure attraverso l’inserimento di: Via, Civico, Città, Provincia, Paese", check:false},
-   {description:"Visualizzazione dei luoghi turistici nei dintorni, in base alla posizione specificata e su un'area specificabile dall'utente", check:false},
+   {description:"Visualizzazione di una mappa geografica in base alla propria posizione GPS", check:true},
+   {description:"Possibilità di aggiustare la propria posizione sulla mappa, trascinando un apposito placeholder presente sulla mappa", check:true},
+   {description:"Se la posizione GPS non è disponibile, l’utente deve poter specificare manualmente la posizione navigando sulla mappa eventualmente zoomando oppure attraverso l’inserimento di: Via, Civico, Città, Provincia, Paese", check:true},
+   {description:"Visualizzazione dei luoghi turistici nei dintorni, in base alla posizione specificata e su un'area specificabile dall'utente", check:true},
    {description:"Mostrare la playlist delle clip sui luoghi turistici di interesse. Estrarre le audio-guide da YouTube.", check:false},
    {description:"Possibilità di filtrare i luoghi turistici in base alla tipologia e all’orario di apertura/chiusura.", check:false},
-   {description:"Possibilità di taggare un luogo turistico come già visitato. Visualizzare il tag sulla mappa.", check:false},
    {description:"Possibilità di taggare un luogo turistico come già visitato. Visualizzare il tag sulla mappa.", check:false},
    {description:"Accesso ai contenuti di Wikipedia: cercare il contenuto di DBPedia relativo al luogo nella lingua richiesta e riprodurre il contenuto della descrizione iniziale con sintesi vocale", check:true},
    {description:"Implementare un meccanismo di acquisizione feedback dall’utente e visualizzare tale feedback sulla mappa.", check:false}
@@ -156,6 +155,11 @@ var simone = {
 
   var defaultPrefs = { language:'it',audience:"gen",categories:'none'}
 
+  var searchType = [
+    { name: "Place", id:'plc' },
+    { name: "Clip", id:'clp' },
+    { name: "Path", id:'pth' }
+  ]
 
   var example = [];
   for(var i=0;i<10;i++) example.push({primaryText: "Ciccio Pasticcio", secondaryText: "2225 Contributi"});

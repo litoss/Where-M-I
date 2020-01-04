@@ -23,13 +23,19 @@ class DraggableMarker {
     });
 
 
-    var message = document.createElement('div');
-    message.innerHTML = '<h3>WHERE M I??</h3><h4>Please drag me to set your position</h4>';
+    var message = document.createElement('h4');
+    message.innerHTML = 'Please drag me to set your position';
     var infowindow = new google.maps.InfoWindow({
       content: message
     });
 
     setTimeout(function(){
       infowindow.open(map, marker); }, 600);
-  }
+
+  google.maps.event.addListener(marker, 'drag', function(marker) {
+      infowindow.close();
+  });
+
+  this.marker = marker;
+}
 }
