@@ -21,7 +21,7 @@ class TextField extends mdc.textField.MDCTextField{
           input.type = "text";
         }
         input.className = "mdc-text-field__input";
-;
+
         div.appendChild(input);
 
         var outline = document.createElement('div');

@@ -141,43 +141,4 @@ class Place {
   openWindow(){
     this.infoWindow.open(map, this.marker);
   }
-
-  /*
-  var listener = function(j){
-    map.places[j].addListener('click', function() {
-      if(map.unknownMarker.getMap()) map.unknownMarker.setMap(null);
-      var card = new Card(, null, );
-      map.placeWindow.setContent(card);
-      map.placeWindow.open(map, places[j]);
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'https://texttospeech.googleapis.com/v1/text:synthesize');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onload = this.reproduceImmersiveSound;
-      xhr.send(JSON.stringify({
-"audioConfig": {
-"audioEncoding": "LINEAR16",
-"pitch": 0,
-"speakingRate": 3.85
-},
-"input": {
-"text": "Google Cloud Text-to-Speech enables developers to synthesize natural-sounding speech with 100+ voices, available in multiple languages and variants. It applies DeepMind’s groundbreaking research in WaveNet and Google’s powerful neural networks to deliver the highest fidelity possible. As an easy-to-use API, you can create lifelike interactions with your users, across many applications and devices."
-},
-"voice": {
-"languageCode": "it-IT",
-"name": "it-IT-Standard-A"
-}
-}));
-    });
-  }
-
-  listener(i);
-}
-}
-
-reproduceImmersiveSound(){
-var response = JSON.parse(this.responseText);
-console.log(response);
-}
-*/
 }

@@ -65,14 +65,11 @@ function addClipDrawer(){
   div.appendChild(salva.root_);
 
   register.listen('click', startRecord);
-  stop.listen('click', stopRecord);
-  play.listen('click', async () => {
-    var chunks = await getChunks();
-    var url = await getURLfromBlob(new Blob(chunks, {type : 'audio/webm'}));
-    var audio = new Audio(url);
-    audio.play();
-  });
   cancel.listen('click', clearRecord);
+
+  stop.listen('click', async () => {
+    stopRecord();
+  });
 
   salva.listen('click', async () => {
     if(!false){
