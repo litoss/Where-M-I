@@ -155,6 +155,11 @@ var simone = {
 
   var defaultPrefs = { language:'it',audience:"gen",categories:'none'}
 
+  var searchType = [
+    { name: "Place", id:'plc' },
+    { name: "Clip", id:'clp' },
+    { name: "Path", id:'pth' }
+  ]
 
   var example = [];
   for(var i=0;i<10;i++) example.push({primaryText: "Ciccio Pasticcio", secondaryText: "2225 Contributi"});

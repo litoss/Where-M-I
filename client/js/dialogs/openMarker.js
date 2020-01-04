@@ -32,4 +32,8 @@ function openMarker() {
     markerDialog.close();
     openGeocode();
   });
+
+  markerDialog.listen('MDCDialog:closing', function() {
+  document.getElementById('map').removeChild(markerDialog.root_);
+  });
 }
