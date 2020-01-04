@@ -13,13 +13,8 @@ function openPlaces(){
           editButton.listen('click', (event) => {
             createEditDialog(response[event.srcElement.id]);
           });
-<<<<<<< HEAD
           var image = decode64(arr[i].image, "image/jpg");
           var card = new Card (arr[i].name, null, arr[i].description, image, null,[editButton.root_],'about-card');
-=======
-          var image = decode64(response[i].image);
-          var card = new Card (response[i].name, null, response[i].description, image, null,[editButton.root_],'about-card');
->>>>>>> 04ea8515edd0f07af7607e0f10bd975ea9e03698
           content.appendChild(card.root_);
 
           var addListener = function(index){
