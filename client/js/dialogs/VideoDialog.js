@@ -2,22 +2,24 @@ function openVideoDialog(audiosrc){
 
   var content = document.createElement('div');
 
-  //var audio = document.createElement('audio');
-  //audio.src = audiosrc;
-  //content.appendChild(audio);
+  var audio = document.createElement('audio');
+  audio.src = audiosrc;
+  audio.controls = 'controls';
+  audio.type     = 'audio/webm';
+  content.appendChild(audio);
 
   var start = new TextField("Start");
   start.required = true;
-  start.pattern = "00:00:00";
-  //content.appendChild(start.root_);
+  start.value = "0";
+  content.appendChild(start.root_);
 
   var end = new TextField("End");
   end.required = true;
-  end.pattern = "00:00:00";
+  end.value = audio.duration;
   content.appendChild(end.root_);
 
-  //var volume = new Slider();
-  //content.appendChild(volume.root_);
+  var volume = new Slider();
+  content.appendChild(volume.root_);
 
   var buttonContainer = document.createElement('div');
   var save = new ActionButton('save');

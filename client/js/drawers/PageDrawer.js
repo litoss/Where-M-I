@@ -19,11 +19,8 @@ class PageDrawer extends Drawer{
     contentcontent.appendChild(topBarDrawer.root_);
     contentcontent.appendChild(content);
 
-  super(null, null, contentcontent, 'page-drawer-content');
+  super(null, null, contentcontent, 'mdc-drawer--dismissible');
   this.topBarDrawer = topBarDrawer;
-
-  document.querySelector('.page-drawer-content').nextElementSibling.id = 'closed-scrim';
-  document.querySelector('.page-drawer-content').nextElementSibling.className = '';
 
   this.listen('MDCDrawer:closed', () => {
     map.pageDrawer = null;

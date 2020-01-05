@@ -42,7 +42,7 @@ class MenuDrawer extends Drawer{
   for(var i in elements) nav.appendChild(elements[i]);
 
   //fine creazione lista
-  super(null, null, nav);
+  super(null, null, nav, 'mdc-drawer--modal');
 
   this.elements = elements;
 

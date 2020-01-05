@@ -1,4 +1,5 @@
-function addClipDrawer(){
+function addClipDrawer(olc){
+  var audios = [];
 
   var div = document.createElement('div');
 
@@ -64,15 +65,15 @@ function addClipDrawer(){
   var salva = new ActionButton('Carica su Where M I');
   div.appendChild(salva.root_);
 
+  var recordMult = new IconButton("fiber_manual_record", "mdc-button--raised");
+   div.appendChild(recordMult.root_);
+
+   var playMult = new IconButton("play_arrow", "mdc-button--raised");
+   div.appendChild(playMult.root_);
+
   register.listen('click', startRecord);
   cancel.listen('click', clearRecord);
-
-  stop.listen('click', async () => {
-    stopRecord();
-    var chunks = await getChunks();
-    var blob = new Blob(chunks, {type : 'audio/webm'});
-    openVideoDialog(getURLfromBlob(blob));
-  });
+  stop.listen('click', stopRecord);
 
   salva.listen('click', async () => {
     if(!false){
@@ -95,7 +96,47 @@ function addClipDrawer(){
     }else{
       alert("Mancano dati");
     }
-  })
+  });
+
+  recordMult.listen('click', async () => {
+  if(mediaRecorder == null || mediaRecorder.state == 'inactive' ) startRecord();
+  else if(mediaRecorder.state == 'recording'){
+    stopWithoutClear();
+    var chunks = await getChunks();
+    // var url = await getURLfromBlob(new Blob(chunks, {type : 'audio/webm'}));
+    // var audio = new Audio(url);
+     audios = audios.concat(chunks);
+  }
+});
+
+playMult.listen('click', async () => {
+ // var chunks = await getChunks();
+ console.log(audios);
+  var url = await getURLfromBlob(new Blob(audios, {type : 'audio/webm'}));
+  //console.log('funzionante' + url)
+  var audio = new Audio(url);
+  audio.play();
+
+  // audios.forEach( async (elem) => {
+  //   console.log(elem);
+  //   var blob = new Blob(elem, {type : 'audio/webm'}));
+  //   blobs.push(base64);
+   })
+//   var xhr = new XMLHttpRequest();
+//     xhr.open('POST', '/upload_multiple_input');
+//     xhr.setRequestHeader('Content-Type', 'application/json');
+//     xhr.onload = async function(){
+//       var url = await decode64(this.responseText, "video/webm");
+//       var video = document.createElement('video');
+//       video.controls;
+//       video.src = url;
+//       document.body.appendChild(video);
+//       //insertClip("titolo", "descrizione", "private", );
+//     };
+//     xhr.send(JSON.stringify({multChunks: base64s}));
+
+
+// })
 
   map.pageDrawer = new PageDrawer('New Clip', div);
   map.pageDrawer.open = true;

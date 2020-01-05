@@ -35,12 +35,19 @@ function error(err) {
 
 var mediaRecorder;
 var recordedChunks = [];
+var multipleRec = [];
 
-function stopRecord(){
+function stopWithoutClear(){
+  mediaRecorder.stop();
+  multipleRec.push(recordedChunks);
+  // clearRecord();
+}
+
+async function stopRecord(){
   mediaRecorder.stop();
 }
 
-function startRecord(){
+async function startRecord(){
   navigator.mediaDevices.getUserMedia({
     audio: true,
     video: false
@@ -49,18 +56,29 @@ function startRecord(){
     mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
     mediaRecorder.addEventListener('dataavailable', function(e) {
       if (e.data.size > 0) {
+        console.log("pushed");
         recordedChunks.push(e.data);
       }
+
+      mediaRecorder.addEventListener('stop', function() {
+        var url = URL.createObjectURL(new Blob(recordedChunks, {type: 'audio/webm'}));
+        openVideoDialog(url);
+      });
     });
 
+    clearRecord();
     mediaRecorder.start();
   });
 }
 
-function clearRecord(){
+async function clearRecord(){
   recordedChunks = [];
 }
 
 async function getChunks(){
   return recordedChunks;
+}
+
+async function getMultipleRec(){
+  return multipleRec;
 }

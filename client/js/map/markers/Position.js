@@ -27,7 +27,7 @@ class Position {
       this.infoWindow.open(map,this.marker);
     })
     addClip.listen('click', () => {
-      addClipDrawer();
+      addClipDrawer(this.marker.getPosition());
     })
   }
 
