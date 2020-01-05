@@ -69,6 +69,9 @@ function addClipDrawer(){
 
   stop.listen('click', async () => {
     stopRecord();
+    var chunks = await getChunks();
+    var blob = new Blob(chunks, {type : 'audio/webm'});
+    openVideoDialog(getURLfromBlob(blob));
   });
 
   salva.listen('click', async () => {

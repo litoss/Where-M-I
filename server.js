@@ -247,14 +247,13 @@ app.get('/prova',(req,res)=>{
 
 app.post('/audio_to_video', async (req,res)=>{
 
-  console.log(req.body.chunks);
   var buffer = Buffer.from(req.body.chunks, 'base64');
   var readable = new Readable();
   readable._read = () => {} // _read is required but you can noop it
   readable.push(buffer);
   readable.push(null)
 
-  var command = ffmpeg('client/content/youtube.jpg')
+  var command = ffmpeg('youtube.jpg')
     .fps(1)
     .size('1920x1080')
     .addInput(readable)
