@@ -59,6 +59,10 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
         DB viene creata la struttura e i parametri che non vengono inseriti nel json sono semplicemente settati a undefined ed
         eventualmente modificati nel futuro. */
 
+/*
+Il controllo se l'utente puo' modificare il luogo se e' il creatore viene eseguito direttamente lato client, visto che viene eseguita
+la richiesta di trovare il luogo prima di farela richiesta di creazione.
+*/
         var query = {OLC : req.body.OLC};
         var exist = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
         var veruser = await verify(req.body.token);
@@ -83,7 +87,7 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
 
         else{ //se il posto esiste allora vengono modificati i parametri che sono settati nel JSON
             var object2 = {};
-
+            if()
                 if (req.body.name){
                     object2.name = req.body.name;
                 }
