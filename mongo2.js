@@ -66,17 +66,17 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
         if(exist == false){
             let doc = {_id: new ObjectID(),
                 OLC: req.body.OLC,                  //codice location
-                user: veruser,                //nome user che crea il luogo
+                user: veruser,                      //nome user che crea il luogo
                 name: req.body.name,                //nome del posto
                 category: req.body.category,        // categoria del luogo(es. pizzeria, museo)
                 media_rating: m_rating,             //media rating a zero alla creazione del luogo
                 opening: req.body.opening,          // orari di apertura del luogo
-                description: req.body.description,   // descrizione del luogo
+                description: req.body.description,  // descrizione del luogo
                 image: req.body.image
             };
 
             let ret = await db.collection('place').insertOne(doc);
-            //console.log("adding new place \n" + JSON.stringify(doc)) // display the inserted information
+            console.log("adding new place \n" + JSON.stringify(doc)) // display the inserted information
             client.close();
             return JSON.stringify(ret);
         }
@@ -147,7 +147,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
-            console.log("veruser" + veruser);
+            //console.log("veruser" + veruser);
             var utente = append.concat(veruser);
             expression.push({user:{$regex:utente}});
         }
@@ -442,9 +442,6 @@ exports.add_route = async(req) =>{
         client.close();
         return (JSON.stringify(ret_update));
         }
-
-
-
     }
     catch(err){
       return (err);
@@ -601,4 +598,14 @@ categories:  ,
 audience:  ,
 language:
 }
+
+8)FATTO
+Ricerca Case-Insensitive dei places
+
+9)FATTO
+Possibilita' modifica route e aggiunta degli user
+
+10)FATTO
+Ricerca tramite user delle route
+
 */
