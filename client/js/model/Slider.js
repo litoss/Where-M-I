@@ -1,5 +1,5 @@
 class Slider extends mdc.slider.MDCSlider {
-    constructor(chips, options) {
+    constructor() {
 
         var slider = document.createElement('div');
         slider.className = "mdc-slider";

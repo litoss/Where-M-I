@@ -1,5 +1,5 @@
 var categories = [
-  { id:"none", name:"Qualsiasi Categoria"},
+  { id:"none", name:"All"},
   { id:"nat", name:"Nature"},
   { id:"art", name:"Art"},
   { id:"his", name:"History"},
@@ -14,9 +14,15 @@ var categories = [
   { id:"shp", name:"Shopping"},
   { id:"tec", name:"Tech"},
   { id:"pop", name:"Pop culture & gossip"},
-  { id:"prs", name:"Nessuna"}, //nome errato
-  { id:"none", name:"Personal experiences"},
-  { id:"oth", name:"Altro"}
+  { id:"prs", name:"Personal experiences"},
+  { id:"oth", name:"Other"}
+];
+
+var languages = [
+  { name: 'Italiano', tag:'it'},
+  { name: 'English', tag:'en'},
+  { name: 'French', tag:'fr'},
+  { name: 'Spanish', tag:'es'}
 ];
 
 var audience = [
@@ -111,21 +117,20 @@ var simone = {
    {description:"Il sistema riproduce il prossimo clip in lista sullo stesso luogo da visitare", check:false},
    {description:"Il sistema riprende la riproduzione", check:false},
    {description:"Meccanismo per filtrare la playlist di clip in base ad alcune caratteristiche", check:false},
-   {description:"Visualizzazione di un'area per la registrazione ed il login, se l'utente non è loggato", check:false},
-   {description:"Scelta della lingua/delle lingue dei clip", check:false},
-   {description:"Scelta del tipo di audience", check:false},
-   {description:"Scelta del tipo di interessi culturali dell'utente", check:false},
+   {description:"Visualizzazione di un'area per la registrazione ed il login, se l'utente non è loggato", check:true},
+   {description:"Scelta della lingua/delle lingue dei clip", check:true},
+   {description:"Scelta del tipo di audience", check:true},
+   {description:"Scelta del tipo di interessi culturali dell'utente", check:true},
    {description:"Creazione di percorsi guidati personalizzati", check:false},
    {description:"Visualizzazione di un'area contentente classifiche generali su clip, vlogger e percorsi", check:false},
-   {description:"Visualizzazione di una mappa geografica in base alla propria posizione GPS", check:false},
-   {description:"Possibilità di aggiustare la propria posizione sulla mappa, trascinando un apposito placeholder presente sulla mappa", check:false},
-   {description:"Se la posizione GPS non è disponibile, l’utente deve poter specificare manualmente la posizione navigando sulla mappa eventualmente zoomando oppure attraverso l’inserimento di: Via, Civico, Città, Provincia, Paese", check:false},
-   {description:"Visualizzazione dei luoghi turistici nei dintorni, in base alla posizione specificata e su un'area specificabile dall'utente", check:false},
+   {description:"Visualizzazione di una mappa geografica in base alla propria posizione GPS", check:true},
+   {description:"Possibilità di aggiustare la propria posizione sulla mappa, trascinando un apposito placeholder presente sulla mappa", check:true},
+   {description:"Se la posizione GPS non è disponibile, l’utente deve poter specificare manualmente la posizione navigando sulla mappa eventualmente zoomando oppure attraverso l’inserimento di: Via, Civico, Città, Provincia, Paese", check:true},
+   {description:"Visualizzazione dei luoghi turistici nei dintorni, in base alla posizione specificata e su un'area specificabile dall'utente", check:true},
    {description:"Mostrare la playlist delle clip sui luoghi turistici di interesse. Estrarre le audio-guide da YouTube.", check:false},
    {description:"Possibilità di filtrare i luoghi turistici in base alla tipologia e all’orario di apertura/chiusura.", check:false},
    {description:"Possibilità di taggare un luogo turistico come già visitato. Visualizzare il tag sulla mappa.", check:false},
-   {description:"Possibilità di taggare un luogo turistico come già visitato. Visualizzare il tag sulla mappa.", check:false},
-   {description:"Accesso ai contenuti di Wikipedia: cercare il contenuto di DBPedia relativo al luogo nella lingua richiesta e riprodurre il contenuto della descrizione iniziale con sintesi vocale", check:false},
+   {description:"Accesso ai contenuti di Wikipedia: cercare il contenuto di DBPedia relativo al luogo nella lingua richiesta e riprodurre il contenuto della descrizione iniziale con sintesi vocale", check:true},
    {description:"Implementare un meccanismo di acquisizione feedback dall’utente e visualizzare tale feedback sulla mappa.", check:false}
  ]
   var browserElements = [
@@ -147,5 +152,14 @@ var simone = {
     {name:"Settings",icon:"settings_applications"},
     {name:"Privacy Policy",icon:"policy"}
   ]
+
+  var defaultPrefs = { language:'it',audience:"gen",categories:'none'}
+
+  var searchType = [
+    { name: "Place", id:'plc' },
+    { name: "Clip", id:'clp' },
+    { name: "Path", id:'pth' }
+  ]
+
   var example = [];
   for(var i=0;i<10;i++) example.push({primaryText: "Ciccio Pasticcio", secondaryText: "2225 Contributi"});

@@ -1,16 +1,16 @@
-class Geolocation{
+class Geolocation extends IconButton{
   constructor(){
-    this.button = new IconButtonToggle('my_location','location_disabled','mdc-button--raised mdc-image__circular');
-    this.button.unbounded = true;
-    this.button.listen('MDCIconButtonToggle:change', (event) => {
-      if(event.detail.isOn) localize();
-      else clear();
+    super('my_location','mdc-button--raised mdc-image__circular');
+    this.unbounded = true;
+    this.listen('click', () => {
+      //toglie la geolocalizzazione
+      if(geolocator != null) clear();
+      //rimuove marker se cambio metodo di localizzazione
+      if(map.draggableMarker){
+        map.draggableMarker.marker.setMap(null);
+        map.draggableMarker = null;
+      }
+      openWelcome();
     });
-
-    return this.button.root_;
-  }
-
-  setToggle(bool){
-    this.button.on = bool;
   }
 }

@@ -1,9 +1,11 @@
-
-
 const express = require("express");
 const app = express();
 const port = 8000;
 const myModule = require('./mongo2.js');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+const {Readable} = require('stream');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 app.use(express.urlencoded({extended : true}));
 app.use(express.json({limit: '16mb'}));
@@ -206,6 +208,77 @@ app.post("/find_preference", async (req, res) => {
     }
 });
 
+app.get("/create_video", async (req, res) => {
 
+  // make sure you set the correct path to your video file
+  var proc = ffmpeg('carlo.jpg')
+    // loop for 5 seconds
+    .loop(5)
+    // using 25 fps
+    .fps(25)
+    // setup event handlers
+    .on('end', function() {
+      console.log('file has been converted succesfully');
+    })
+    .on('error', function(err) {
+      console.log('an error happened: ' + err.message);
+    })
+    // save to file
+    .save('your_target.m4v');
+});
+
+app.get('/prova',(req,res)=>{
+
+  //var outStream = fs.createWriteStream('output.wav');
+
+  var command = ffmpeg('test.avi')
+    .videoCodec('libx264')
+    .audioCodec('libmp3lame')
+    .size('320x240')
+    .format('m4v')
+    .on('error', function(err) {
+      console.log('An error occurred: ' + err.message);
+    })
+    .on('end', function() {
+      console.log('Processing finished !');
+    });
+
+  var ffstream = command.pipe();
+  ffstream.on('data', function(chunk) {
+    console.log('ffmpeg just wrote ' + chunk.length + ' bytes');
+  });
+});
+
+app.post('/audio_to_video', async (req,res)=>{
+
+  var buffer = Buffer.from(req.body.chunks, 'base64');
+  var readable = new Readable();
+  readable._read = () => {} // _read is required but you can noop it
+  readable.push(buffer);
+  readable.push(null)
+
+  var command = ffmpeg('youtube.jpg')
+    .fps(1)
+    .size('1920x1080')
+    .addInput(readable)
+    .format('webm')
+
+    .on('end', function() {
+      console.log('file has been converted succesfully');
+    })
+    .on('error', function(err) {
+      console.log('an error happened: ' + err.message);
+    });
+
+  var ffstream = await command.pipe();
+  var chunks = [];
+  ffstream.on('data', function(chunk) {
+    chunks.push(chunk);
+  });
+  ffstream.on('end', function() {
+    var result = Buffer.concat(chunks);
+    res.send(result.toString('base64'));
+  });
+});
 
 app.listen(port, () => console.log("Server started on port: " + port));

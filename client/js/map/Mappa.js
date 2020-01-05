@@ -16,22 +16,22 @@ class Mappa extends google.maps.Map{
     });
 
     //Controls inizialize
-    this.zoomControl = new Zoom();
     this.geolocation = new Geolocation();
     this.topBar = new TopBar();
     this.player = new PlayerTemp();
-
     this.menuDrawer = new MenuDrawer();
     this.pageDrawer;
 
     this.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(this.player);
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.zoomControl.root_);
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new Zoom(-1).root_);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new Zoom(1).root_);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation.root_);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
 
     this.places = [];
     this.noPlace;
     this.position = new Position();
+    this.draggableMarker;
 
     this.directionsService = new google.maps.DirectionsService;
     this.directionsRenderer = new google.maps.DirectionsRenderer({map: this});
@@ -39,6 +39,7 @@ class Mappa extends google.maps.Map{
     this.addListener('click', (event) => {
       this.clickOnMap(event);
     });
+    openWelcome();
     this.updateMap(position);
   }
 
@@ -54,7 +55,7 @@ class Mappa extends google.maps.Map{
     var olc = OpenLocationCode.encode(position.lat, position.lng, OpenLocationCode.CODE_PRECISION_NORMAL);
     var area = olc.substring(0, 4);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/find');
+    xhr.open('POST', '/find_place');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = this.addPlace;
     xhr.send(JSON.stringify({OLC: area}));
@@ -77,7 +78,7 @@ class Mappa extends google.maps.Map{
     return close;
   }
 
-  async addPlace(){
+  addPlace(){
     var response = JSON.parse(this.responseText);
     for(var i in response){
        map.places.push(new Place(response[i]));

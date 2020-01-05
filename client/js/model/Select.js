@@ -51,5 +51,11 @@ class Select extends mdc.select.MDCSelect {
 
     this.selectedText = selectedText;
     this.listContainer = listContainer;
+    this.notch = notch;
+  }
+
+  setValue(newValue){
+    this.value = newValue;
+    this.notch.style.width = '60px';
   }
 }

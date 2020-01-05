@@ -3,19 +3,28 @@ function openPlaces(){
     var content = document.createElement('div');
 
     xhr = new XMLHttpRequest();
-    xhr.open('POST', '/find');
+    xhr.open('POST', '/find_place');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function(){
-      var arr = JSON.parse(xhr.responseText);
-      for(var i in arr){
+      var response = JSON.parse(xhr.responseText);
+      for(var i in response){
           var editButton = new IconButton('edit');
           editButton.root_.id = i;
           editButton.listen('click', (event) => {
-            createEditDialog(arr[event.srcElement.id]);
+            createEditDialog(response[event.srcElement.id]);
           });
-          var image = decode64(arr[i].image);
-          var card = new Card (arr[i].name, null, arr[i].description, image, null,[editButton.root_],'about-card');
+          var image = decode64(response[i].image, "image/jpg");
+          var card = new Card (response[i].name, null, response[i].description, image, null,[editButton.root_],'about-card');
           content.appendChild(card.root_);
+
+          var addListener = function(index){
+            card.primaryAction.addEventListener("click", () => {
+              var place = response[index];
+              map.pageDrawer.open = false;
+              selectedPlace(place);
+            });
+          }
+          addListener(i);
       }
     }
 

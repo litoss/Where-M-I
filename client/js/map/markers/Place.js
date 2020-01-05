@@ -16,7 +16,7 @@ class Place {
       latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
       name = place.name;
       description = place.description;
-      image = decode64(place.image);
+      image = decode64(place.image, "image/jpg");
 
     }else{
 
@@ -30,10 +30,8 @@ class Place {
     }
 
     var directionButton = new IconButton('navigation','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-    var positionButton = new IconButton('person_pin','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
 
     rightButtonList.push(directionButton.root_);
-    rightButtonList.push(positionButton.root_);
 
     var card = new Card(name, null, description, image, leftButtonList, rightButtonList, 'infoWindow-card');
 
@@ -60,11 +58,6 @@ class Place {
       this.infoWindow.open(map, this.marker);
     });
 
-    positionButton.listen('click', () => {
-      map.position.setPosition(this.marker.getPosition());
-      this.removePosition();
-    });
-
     if(place){
       card.primaryAction.addEventListener('click',() => {
         if(!map.pageDrawer) selectedPlace(place);
@@ -73,12 +66,24 @@ class Place {
       leftButtonList[0].addEventListener('click', () => {
         var card = new Card(name, null, description, image, null, null, 'about-card');
         if(profile) createEditDialog(place);
-        else alert('You must be logged in to use this function');
+        else {
+          var snackbar = new SnackBar('You must be logged to use this function');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+          });
+        }
       });
     }else{
       leftButtonList[0].addEventListener('click', () => {
         if(profile) selectPlace(this.marker.getPosition());
-        else alert('You must be logged in to use this function');
+        else {
+          var snackbar = new SnackBar('You must be logged to use this function');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+          });
+        }
       });
     }
   }
@@ -136,43 +141,4 @@ class Place {
   openWindow(){
     this.infoWindow.open(map, this.marker);
   }
-
-  /*
-  var listener = function(j){
-    map.places[j].addListener('click', function() {
-      if(map.unknownMarker.getMap()) map.unknownMarker.setMap(null);
-      var card = new Card(, null, );
-      map.placeWindow.setContent(card);
-      map.placeWindow.open(map, places[j]);
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'https://texttospeech.googleapis.com/v1/text:synthesize');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onload = this.reproduceImmersiveSound;
-      xhr.send(JSON.stringify({
-"audioConfig": {
-"audioEncoding": "LINEAR16",
-"pitch": 0,
-"speakingRate": 3.85
-},
-"input": {
-"text": "Google Cloud Text-to-Speech enables developers to synthesize natural-sounding speech with 100+ voices, available in multiple languages and variants. It applies DeepMind’s groundbreaking research in WaveNet and Google’s powerful neural networks to deliver the highest fidelity possible. As an easy-to-use API, you can create lifelike interactions with your users, across many applications and devices."
-},
-"voice": {
-"languageCode": "it-IT",
-"name": "it-IT-Standard-A"
-}
-}));
-    });
-  }
-
-  listener(i);
-}
-}
-
-reproduceImmersiveSound(){
-var response = JSON.parse(this.responseText);
-console.log(response);
-}
-*/
 }

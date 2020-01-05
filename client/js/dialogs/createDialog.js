@@ -7,12 +7,12 @@ async function createEditDialog(place){
   var img64;
 
   if(place.image) {
-    imgUri = decode64(place.image);
+    imgUri = decode64(place.image, "image/jpg");
     img64 = place.image;
   }else{
     imgUri = 'content/no_street.png';
   }
-  var  exampleCard = new Card(place.name, null, null, imgUri, null, null, 'about-card');
+  var  exampleCard = new Card(place.name, place.category, place.description, imgUri, null, null, 'about-card');
 
   exampleCard.id = "place-card";
   content.appendChild(exampleCard.root_);
@@ -22,16 +22,18 @@ async function createEditDialog(place){
   input.setAttribute('type','file');
   input.id = 'image-input';
   imgUpload.root_.appendChild(input);
-  content.appendChild(imgUpload.root_);
 
-  var nameForm = new TextField("Name",null,true,"emoji_flags");
+
+  var nameForm = new TextField("Name","emoji_flags");
   nameForm.input.setAttribute('value', place.name);
   content.appendChild(nameForm.root_);
+  content.appendChild(imgUpload.root_);
 
-  var descrForm = new TextField("Description",null,null,"subject");
+  var descrForm = new TextField(null, "subject", 'mdc-text-field--textarea');
+  descrForm.input.value = place.description;
   content.appendChild(descrForm.root_);
 
-  var opHoForm = new TextField("Opening Hours","hh:mm/hh:mm",null,"schedule");
+  var opHoForm = new TextField("Opening Hours", "schedule");
   content.appendChild(opHoForm.root_);
 
   var listEl = new List();
@@ -43,10 +45,12 @@ async function createEditDialog(place){
 
   var footer = document.createElement('div');
   var button = new IconButton(dialogIcon,"mdc-button--raised mdc-image__circular");
+  footer.appendChild(button.root_);
 
   var dialog = new Dialog(content,footer,dialogTitle);
   document.getElementById('map').appendChild(dialog.root_);
   dialog.open();
+  //descrForm.input.focus();
   nameForm.input.focus();
 
   imgUpload.listen('click', () => {
@@ -72,17 +76,25 @@ async function createEditDialog(place){
   exampleCard.setSubTitle( 'Category: ' + cat.selectedText.innerHTML);
   })
 
-  button.root_.addEventListener("click", async function validate(){
+  button.listen("click", async function validate(){
     var form = new FormData();
     form.append('OLC', place.OLC);
     form.append('token', token);
 
     if(nameForm.value.length == 0) {
-      alert('No input on name');
+      var snackbar = new SnackBar('No input on name');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
       return;
     }
-    else if(nameForm.value.length > 25){
-      alert("Name is too long");
+    else if(nameForm.value.length > 30){
+      var snackbar = new SnackBar('name is too long');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
       return;
     }
     form.append('name',nameForm.value);
@@ -93,7 +105,13 @@ async function createEditDialog(place){
 
     if(descrForm.value.length == 0) {
           if(place.description) form.append('description', place.description);
-          else alert('Please insert a short Description');
+          else {
+            var snackbar = new SnackBar('Please insert a short description');
+            snackbar.open();
+            snackbar.listen("MDCSnackbar:closed",() => {
+              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+            });
+          }
         }
     else form.append('description', descrForm.value);
 
@@ -103,13 +121,16 @@ async function createEditDialog(place){
     }
     if(img64) form.append('image', img64);
     else {
-      alert('Select an Image');
+      var snackbar = new SnackBar('Select an Image');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
       return;
     }
 
     submit(form);
   });
-  footer.appendChild(button.root_);
 
   dialog.listen('MDCDialog:closing', function() {
   document.getElementById('map').removeChild(dialog.root_);
@@ -126,7 +147,11 @@ function submit(form){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
       if (xhr.status === 200 ) {
-          alert('Aggiunto con Successo!');
+        var snackbar = new SnackBar('Successfully added');
+        snackbar.open();
+        snackbar.listen("MDCSnackbar:closed",() => {
+          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+        });
           var addedPlace = new Place(place);
           map.places.push(addedPlace);
           map.closeAllWindow();

@@ -6,6 +6,7 @@
 
 var profile;
 var token;
+var preferences = defaultPrefs;
 var map = new Mappa();
 
 /*var xhr = new XMLHttpRequest();

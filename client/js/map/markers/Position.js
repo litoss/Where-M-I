@@ -16,14 +16,18 @@ class Position {
       strokeOpacity: 0.25
     });
 
+    var addClip = new IconButton('audiotrack');
     this.infoWindow = new google.maps.InfoWindow({
-        content: new Card(yourPlace.title, yourPlace.description).root_,
+        content: new Card(yourPlace.title, null, yourPlace.description, null, [addClip.root_]).root_,
         maxWidth: 400
     });
 
     this.marker.bindTo("position", this.circle, "center");
     this.marker.addListener("click", () => {
       this.infoWindow.open(map,this.marker);
+    })
+    addClip.listen('click', () => {
+      addClipDrawer();
     })
   }
 

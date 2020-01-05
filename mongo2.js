@@ -483,7 +483,7 @@ exports.add_pref = async(req) =>{
             user: veruser,
             categories: req.body.categories,
             audience: req.body.audience,
-            lenguage: req.body.lenguage
+            language: req.body.language
             //se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
             //visualizzati anche tutti i percorsi dove quest'ultimo e' una tappa
         };
@@ -502,9 +502,9 @@ exports.add_pref = async(req) =>{
             {
               object3.audience = req.body.audience;
             }
-            if(req.body.lenguage)
+            if(req.body.language)
             {
-              object3.lenguage = req.body.lenguage;
+              object3.language = req.body.language;
             }
           var new_values = {$set: object3};
           var ret_update = await db.collection('preferences').updateOne(query, new_values); //update with the parameter that are passed trought the body
@@ -570,6 +570,6 @@ nuova collezione preferenze
 user:  ,
 categories:  ,
 audience:  ,
-lenguage:
+language:
 }
 */

@@ -5,7 +5,6 @@ async function getimageBlob(url){
   return result;
 }
 
-
 function encode64(file) {
   var to64 = convertBlobToBase64(file);
   return to64;
@@ -26,13 +25,25 @@ function convertBlobToBase64(blob){
     return convertPromise;
   }
 
-function decode64(string){
+function decode64(string, type){
   var byteCharacters = atob(string);
   var byteNumbers = new Array(byteCharacters.length);
   for (var j = 0; j < byteCharacters.length; j++) {
     byteNumbers[j] = byteCharacters.charCodeAt(j);
   }
   var byteArray = new Uint8Array(byteNumbers);
-  var blob = new Blob([byteArray], {type: "image/jpg"});
+  var blob = new Blob([byteArray], {type: type});
   return URL.createObjectURL(blob);
+}
+
+function getURLfromBlob(blob){
+  return new Promise((resolve,reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      resolve(e.target.result);
+    };
+
+    reader.readAsDataURL(blob);
+  });
 }

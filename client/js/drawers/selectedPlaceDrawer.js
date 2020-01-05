@@ -1,4 +1,7 @@
-function selectedPlace(place){
+async function selectedPlace(place){
+
+  var audio;
+
   var content = document.createElement('div');
 
   var imgContainer = document.createElement('div');
@@ -6,7 +9,7 @@ function selectedPlace(place){
   content.appendChild(imgContainer);
 
   var img = document.createElement('img');
-  img.setAttribute('src', decode64(place.image));
+  img.setAttribute('src', decode64(place.image, "image/jpg"));
   img.className = 'selected-place-img'
   imgContainer.appendChild(img);
 
@@ -21,21 +24,23 @@ function selectedPlace(place){
   content.appendChild(separator1);
 
   var description = document.createElement('p');
-  description.className = 'descr'
-  description.innerHTML = place.description;
+  description.className = 'descr';
+  if(preferences.language != 'en') description.innerHTML = await translate(place.description, 'en', preferences.language );
+  else description.innerHTML = place.description;
   content.appendChild(description);
-
-  var translateButton = new IconButton('translate');
-  content.appendChild(translateButton.root_);
-  translateButton.listen('click', async() => {
-    description.innerHTML = await translate(place.description, 'en', 'it');
-  })
 
   var texttospeechButton = new IconButton('speaker_notes');
   content.appendChild(texttospeechButton.root_);
-  texttospeechButton.listen('click', () => {
-    texttospeech(document.querySelector('.descr').innerHTML, 'it-IT');
-  })
+  texttospeechButton.listen('click', async() => {
+    if(audio) {
+      audio.pause();
+      audio = null;
+    }else {
+      var speech = await texttospeech(document.querySelector('.descr').innerHTML, preferences.language);
+      audio = new Audio("data:audio/mp3;base64," + speech);
+      audio.play();
+    }
+  });
 
   var separator2 = document.createElement('hr');
   separator2.className = 'mdc-list-divider';
@@ -55,37 +60,37 @@ function selectedPlace(place){
 
   var tabBar = new TabBar(['what','how','why']);
   var list = document.createElement('div');
-  var whatList, howList, whyList;
 
-  search(place.OLC, "what").then(function(response){
-    whatList = response;
-    return search(place.OLC, "how");
-  }).then(function(response){
-    howList = response;
-    return search(place.OLC, "why");
-  }).then(function(response){
-    whyList = response;
+  let whatList = await search(place.OLC, "what");
+  let howList = await search(place.OLC, "how");
+  let whyList = await search(place.OLC, "why");
 
-      tabBar.listen("MDCTabBar:activated", (event) => {
+  tabBar.listen("MDCTabBar:activated", (event) => {
 
-        list.innerHTML = '';
+    list.innerHTML = '';
 
-        switch (event.detail.index) {
-          case 0: list.appendChild(whatList);
-            break;
-          case 1: list.appendChild(howList);
-            break;
-          case 2: list.appendChild(whyList);
-            break;
-        }
-      });
+    switch (event.detail.index) {
+      case 0: list.appendChild(whatList);
+        break;
+      case 1: list.appendChild(howList);
+        break;
+      case 2: list.appendChild(whyList);
+        break;
+    }
+  });
 
-      tabBar.activateTab(0);
+  tabBar.activateTab(0);
 
-      content.appendChild(tabBar.root_);
-      content.appendChild(list);
+  content.appendChild(tabBar.root_);
+  content.appendChild(list);
 
-      map.pageDrawer  = new PageDrawer(place.name, content);
-      map.pageDrawer.open = true;
+  map.pageDrawer  = new PageDrawer(place.name, content);
+  map.pageDrawer.open = true;
+
+  map.pageDrawer.listen('MDCDrawer:closed', () => {
+    if(audio){
+      audio.pause();
+      audio = null;
+    }
   });
 }
