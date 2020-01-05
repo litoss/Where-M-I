@@ -152,8 +152,9 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
             expression.push({user:{$regex:utente}});
         }
         if (req.body.name){
-            var nome = append.concat(req.body.name);
-            expression.push({name:{$regex:nome}});
+            // var nome = append.concat(req.body.name);
+            // expression.push({name:{$regex:nome}});
+            expression.push({name:{$regex:req.body.name}});
         }
         if (req.body.category){
             var categoria = append.concat(req.body.category);
@@ -415,21 +416,42 @@ exports.add_route = async(req) =>{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         var veruser = await verify(req.body.token);
-        let doc = {_id: new ObjectID(),
-            OLC: req.body.route[0],
-            route: req.body.route
-            user:veruser
-            //se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
-            //visualizzati anche tutti i percorsi dove quest'ultimo e' una tappa
+        var query = {$and: [{ OLC : req.body.route[0] } , { user:veruser }]};
+        var exist = await db.collection('routes').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
-        };
-        let ret = await db.collection('routes').insertOne(doc);
+        if(exist == false){
+          let doc = {_id: new ObjectID(),
+              OLC: req.body.route[0],
+              route: req.body.route,
+              user:veruser
+              //se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
+              //visualizzati anche tutti i percorsi dove quest'ultimo e' una tappa
+          };
+          let ret = await db.collection('routes').insertOne(doc);
+          client.close();
+          return ret;
+        }
+        else{
+          var object4 = {};
+          if(req.body.route){
+            object4.OLC = req.body.route[0];
+            object4.route = req.body.route;
+          }
+        var new_values = {$set: object3};
+        var ret_update = await db.collection('routes').updateOne(query, new_values); //update with the parameter that are passed trought the body
         client.close();
-        return ret;
+        return (JSON.stringify(ret_update));
+        }
+
+
+
     }
     catch(err){
       return (err);
     }
+
+
+
 }
 
 //eliminina un percorso preferito alla collezione route
@@ -438,7 +460,7 @@ exports.del_route = async(req) =>{
     try{
       let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
       const db = client.db("webdb");
-      //var query = {route : req.body.route};
+
       var veruser = await verify(req.body.token);
       var query = {$and: [{ route : req.body.route } , { user:veruser }]};
       var can = await db.collection('routes').deleteOne(query);
@@ -455,7 +477,14 @@ exports.find_route = async(req) =>{
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        var query = {OLC: req.body.route};
+        var query;
+        if(req.body.OLC){
+          query =  {OLC : req.body.OLC};
+        }
+        else{
+          var veruser = await verify(req.body.token);
+          query =  {user:veruser};
+        }
         var items = await db.collection('routes').find(query).project({_id:0,OLC:0}).toArray();
         //facciamo la project anche di OLC che al client non serve, serve solo al server per fare la find
 

@@ -54,6 +54,7 @@ app.post("/del_place", async (req, res) => {
 });
 
 //trova informazioni su posto collezione place
+//se voglio ricevere tutti gli oggetti, mi basta passare ad esempio category:"", una stringa vuota
 app.post("/find_place", async (req, res) => {
 
     try{
@@ -171,8 +172,8 @@ app.post("/del_route", async (req, res) => {
 });
 
 //trova percorsi predefiniti dato luogo collezione routes
-//passare: route:"OLC ricercato"
-//{"route":"FHOLC888"}
+//passare: OLC:"OLC ricercato"
+//{"OLC":"FHOLC888"}
 app.post("/find_route", async (req, res) => {
 
     try{
