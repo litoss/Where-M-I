@@ -33,18 +33,18 @@ function error(err) {
 // Recording audio
 // https://developers.google.com/web/fundamentals/media/recording-audio
 
-var mediaRecorder;
-var recordedChunks = [];
-var multipleRec = [];
-
-function stopWithoutClear(){
-  mediaRecorder.stop();
-  multipleRec.push(recordedChunks);
-  // clearRecord();
-}
+var mediaRecorder, recordedChunks;
 
 async function stopRecord(){
-  mediaRecorder.stop();
+  return new Promise((resolve,reject) => {
+
+    mediaRecorder.addEventListener('stop', function() {
+      var url = URL.createObjectURL(new Blob(recordedChunks, {type: 'audio/webm'}));
+      resolve(url);
+    });
+
+    mediaRecorder.stop();
+  });
 }
 
 async function startRecord(){
@@ -59,26 +59,9 @@ async function startRecord(){
         console.log("pushed");
         recordedChunks.push(e.data);
       }
-
-      mediaRecorder.addEventListener('stop', function() {
-        var url = URL.createObjectURL(new Blob(recordedChunks, {type: 'audio/webm'}));
-        openVideoDialog(url);
-      });
     });
 
-    clearRecord();
+    recordedChunks = [];
     mediaRecorder.start();
   });
-}
-
-async function clearRecord(){
-  recordedChunks = [];
-}
-
-async function getChunks(){
-  return recordedChunks;
-}
-
-async function getMultipleRec(){
-  return multipleRec;
 }

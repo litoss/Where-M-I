@@ -1,4 +1,4 @@
-function addClipDrawer(olc){
+function addClipDrawer(position){
   var audios = [];
 
   var div = document.createElement('div');
@@ -7,7 +7,14 @@ function addClipDrawer(olc){
   newClip.innerHTML = 'Nuova clip';
   div.appendChild(newClip);
 
-  var titolo = new TextField("Name");
+  var olc = new TextField("Open Location Code");
+  olc.required = true;
+  olc.disabled = true;
+  olc.value = OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
+  div.appendChild(olc.root_);
+  div.appendChild(document.createElement('br'));
+
+  var titolo = new TextField("Titolo");
   titolo.required = true;
   div.appendChild(titolo.root_);
   div.appendChild(document.createElement('br'));
@@ -26,15 +33,18 @@ function addClipDrawer(olc){
   var why = new FormField(new Radio('radio3'), 'Why');
   div.appendChild(why.root_);
 
+  var listE0 = new List();
+  for (var i in languages) listE0.add(new SelectList(languages[i].name,languages[i].tag));
+  var lang = new Select("Language",listE0.root_,'form-field');
+  div.appendChild(lang.root_);
+
   var listE1 = new List();
   for (var i in categories) listE1.add(new SelectList(categories[i].name,categories[i].id));
-
   var selectE1 = new Select("Content", listE1.root_);
   div.appendChild(selectE1.root_);
 
   var listE2 = new List();
   for (var i in audience) listE2.add(new SelectList(categories[i].name,categories[i].id));
-
   var selectE2 = new Select("Audience", listE2.root_);
   div.appendChild(selectE2.root_);
 
@@ -42,101 +52,98 @@ function addClipDrawer(olc){
   registerClip.innerHTML = 'Registra clip';
   div.appendChild(registerClip);
 
-  var register = new IconButton("fiber_manual_record","mdc-button--raised");
-  div.appendChild(register.root_);
+  var regdiv = document.createElement('div');
+  div.appendChild(regdiv);
 
-  var stop = new IconButton("stop", "mdc-button--raised");
-  div.appendChild(stop.root_);
-
-  var play = new IconButton("play_arrow", "mdc-button--raised");
-  div.appendChild(play.root_);
+  var register = new IconButtonToggle("stop", "fiber_manual_record","mdc-button--raised");
+  regdiv.appendChild(register.root_);
 
   var label = document.createElement('label');
+  var seconds = 0;
+  var interval;
   label.innerHTML = "00:00:00";
-  div.appendChild(label);
+  regdiv.appendChild(label);
+
+  var audiodiv = document.createElement('div');
+  audiodiv.style.display = "none";
+  div.appendChild(audiodiv);
+
+  var audio = document.createElement('audio');
+  audio.controls = 'controls';
+  audio.type = 'audio/webm';
+  audiodiv.appendChild(audio);
 
   var cancel = new IconButton('delete');
-  div.appendChild(cancel.root_);
-  div.appendChild(document.createElement('br'));
+  audiodiv.appendChild(cancel.root_);
 
-  var bozza = new ActionButton('Salva come bozza');
-  div.appendChild(bozza.root_);
+  var privacy = document.createElement('h2');
+  privacy.innerHTML = 'Privacy Status';
+  div.appendChild(privacy);
 
-  var salva = new ActionButton('Carica su Where M I');
+  var listE3 = new List();
+  listE3.add(new SelectList('Private', 'private'));
+  listE3.add(new SelectList('Public', 'public'));
+
+  var selectE3 = new Select("Privacy", listE3.root_);
+  div.appendChild(selectE3.root_);
+
+  var salva = new ActionButton('Salva Clip');
   div.appendChild(salva.root_);
 
-  var recordMult = new IconButton("fiber_manual_record", "mdc-button--raised");
-   div.appendChild(recordMult.root_);
+  register.listen('MDCIconButtonToggle:change', async () => {
+    function incrementSeconds(){
+      seconds++;
+      var date = new Date(null);
+      date.setSeconds(seconds); // specify value for SECONDS here
+      label.innerHTML = date.toISOString().substr(11, 8);
+    }
+    if(event.detail.isOn){
+      startRecord();
+      interval = setInterval(incrementSeconds, 1000);
+    }else{
+      audio.src = await stopRecord();
+      clearInterval(interval);
+      regdiv.style.display = "none";
+      audiodiv.style.display = "block";
+    }
+  });
 
-   var playMult = new IconButton("play_arrow", "mdc-button--raised");
-   div.appendChild(playMult.root_);
-
-  register.listen('click', startRecord);
-  cancel.listen('click', clearRecord);
-  stop.listen('click', stopRecord);
+  cancel.listen('click', () => {
+    audio.src = '';
+    seconds = 0;
+    label.innerHTML = "00:00:00"
+    regdiv.style.display = "block";
+    audiodiv.style.display = "none";
+  });
 
   salva.listen('click', async () => {
-    if(!false){
-      var chunks = await getChunks();
-      var base64 = await convertBlobToBase64(new Blob(chunks, {type : 'audio/webm'}));
+
+    if(titolo.value && testo.value && (what.input.checked || how.input.checked || why.input.checked ) && lang.value && selectE1.value && selectE2.value && selectE3.value && audio.src){
+
+      var geoloc = olc.value.substring(0,6) + "00+-" + olc.value.substring(0,9) + "-" + olc.value;
+      var purpose = what.input.checked ? "who" : how.input.checked ? "how" : "why";
+      var language = lang.value;
+      var content = selectE1.value;
+      var audience = selectE2.value;
+      var description = geoloc + ":" + purpose + ":" + language + ":" + content + ":A" + audience ;//+ ":P" + detail;
+
+      var blob = await getimageBlob(audio.src);
+      var base64 = await convertBlobToBase64(blob);
 
       var xhr = new XMLHttpRequest();
       xhr.open('POST', '/audio_to_video');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = async function(){
         var url = await decode64(this.responseText, "video/webm");
-        var video = document.createElement('video');
-        video.controls;
-        video.src = url;
-        document.body.appendChild(video);
+        var blob = await getimageBlob(url);
 
-        //insertClip("titolo", "descrizione", "private", );
+        insertClip(titolo.value, description, privacy.value, blob);
       };
       xhr.send(JSON.stringify({chunks: base64}));
     }else{
       alert("Mancano dati");
     }
   });
-
-  recordMult.listen('click', async () => {
-  if(mediaRecorder == null || mediaRecorder.state == 'inactive' ) startRecord();
-  else if(mediaRecorder.state == 'recording'){
-    stopWithoutClear();
-    var chunks = await getChunks();
-    // var url = await getURLfromBlob(new Blob(chunks, {type : 'audio/webm'}));
-    // var audio = new Audio(url);
-     audios = audios.concat(chunks);
-  }
-});
-
-playMult.listen('click', async () => {
- // var chunks = await getChunks();
- console.log(audios);
-  var url = await getURLfromBlob(new Blob(audios, {type : 'audio/webm'}));
-  //console.log('funzionante' + url)
-  var audio = new Audio(url);
-  audio.play();
-
-  // audios.forEach( async (elem) => {
-  //   console.log(elem);
-  //   var blob = new Blob(elem, {type : 'audio/webm'}));
-  //   blobs.push(base64);
-   })
-//   var xhr = new XMLHttpRequest();
-//     xhr.open('POST', '/upload_multiple_input');
-//     xhr.setRequestHeader('Content-Type', 'application/json');
-//     xhr.onload = async function(){
-//       var url = await decode64(this.responseText, "video/webm");
-//       var video = document.createElement('video');
-//       video.controls;
-//       video.src = url;
-//       document.body.appendChild(video);
-//       //insertClip("titolo", "descrizione", "private", );
-//     };
-//     xhr.send(JSON.stringify({multChunks: base64s}));
-
-
-// })
 
   map.pageDrawer = new PageDrawer('New Clip', div);
   map.pageDrawer.open = true;

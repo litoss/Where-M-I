@@ -87,7 +87,7 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
 
         else{ //se il posto esiste allora vengono modificati i parametri che sono settati nel JSON
             var object2 = {};
-            if()
+  //          if()
                 if (req.body.name){
                     object2.name = req.body.name;
                 }

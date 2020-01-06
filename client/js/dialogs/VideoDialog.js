@@ -5,7 +5,7 @@ function openVideoDialog(audiosrc){
   var audio = document.createElement('audio');
   audio.src = audiosrc;
   audio.controls = 'controls';
-  audio.type     = 'audio/webm';
+  audio.type = 'audio/webm';
   content.appendChild(audio);
 
   var start = new TextField("Start");
