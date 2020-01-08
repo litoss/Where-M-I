@@ -1,4 +1,4 @@
-function openCharts(){
+async function openCharts(){
 
   var content = document.createElement('div');
 
@@ -6,15 +6,19 @@ function openCharts(){
   var list = document.createElement('div');
   list.style.padding = '20px';
 
+  var clips = await getTopClips();
+
+
   tabBar.listen("MDCTabBar:activated", (event) => {
 
     list.innerHTML = '';
 
     switch (event.detail.index) {
       case 0:
-        var clips = new List();
-        for(var i in example) clips.add(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-        list.appendChild(clips.root_);
+        var listclips = new List("mdc-list--two-line");
+        console.log(clips);
+        for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
+        list.appendChild(listclips.root_);
         break;
       case 1:
         var vloggers = new List();

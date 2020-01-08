@@ -282,14 +282,7 @@ app.post('/audio_to_video', async (req,res)=>{
     .fps(1)
     .size('1920x1080')
     .addInput(readable)
-    .format('webm')
-
-    .on('end', function() {
-      console.log('file has been converted succesfully');
-    })
-    .on('error', function(err) {
-      console.log('an error happened: ' + err.message);
-    });
+    .format('webm');
 
   var ffstream = await command.pipe();
   var chunks = [];
@@ -300,6 +293,32 @@ app.post('/audio_to_video', async (req,res)=>{
     var result = Buffer.concat(chunks);
     res.send(result.toString('base64'));
   });
+});
+
+app.post('/video_to_audio', async (req,res)=>{
+
+  var buffer = Buffer.from(req.body.chunks, 'base64');
+  console.log(req.body.chunks);
+  var readable = new Readable();
+  readable._read = () => {} // _read is required but you can noop it
+  readable.push(buffer);
+  readable.push(null)
+
+  var command = ffmpeg()
+    .input(readable)
+    .inputFormat('webm')
+    .noVideo()
+    .save('test.mp3');
+
+  /*var ffstream = await command.pipe();
+  var chunks = [];
+  ffstream.on('data', function(chunk) {
+    chunks.push(chunk);
+  });
+  ffstream.on('end', function() {
+    var result = Buffer.concat(chunks);
+    res.send(result.toString('base64'));
+  });*/
 });
 
 app.listen(port, () => console.log("Server started on port: " + port));
