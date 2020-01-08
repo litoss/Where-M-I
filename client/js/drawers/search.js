@@ -54,7 +54,7 @@ function openSearch(){
       var listCat = new List();
       for (var i in categories) listCat.add(new SelectList(categories[i].name,categories[i].id));
       var catSel = new Select("Category",listCat.root_,'form-field');
-      catSel.setValue(searchSettings.categories);
+      catSel.setValue(searchSettings.category);
       container.appendChild(catSel.root_);
 
       var div2 = document.createElement('hr');
@@ -72,7 +72,7 @@ function openSearch(){
       })
 
       catSel.listen('MDCSelect:change',(event) => {
-        searchSettings.categories = catSel.value;
+        searchSettings.category = catSel.value;
       })
 
       isOpen = true;
@@ -92,92 +92,64 @@ function openSearch(){
       return;
     }
     else if(selectType.value == 'plc'){
-       var object = {name:search.value, category:catSel.value}
+      console.log(searchSettings.category);
+       var object = {name:search.value, category:searchSettings.category};
+       var uri = '/find_place';
     }
     else if(selectType.value == 'clp') {
       alert('Implementare ricerca youtube');
       return;
     }
     else if(selectType.value == 'pth') {
-      object = {name:search.value};
+      var object = {namer:search.value};
+      var uri = "/find_route";
     }
+    console.log(uri);
+    console.log(object);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/find_place');
+    xhr.open('POST', uri);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = async function(){
-      if(selectType.value == 'plc'){
-        searchDiv.innerHTML = '';
-        var response = JSON.parse(xhr.response);
-        if(!response[0]){
-          var errorText = document.createElement('h3');
-          errorText.innerHTML = 'No results';
-          searchDiv.appendChild(errorText);
-        }
-        for(var i in response) {
+      searchDiv.innerHTML = '';
+      var response = JSON.parse(xhr.response);
+      if(!response[0]){
+        var errorText = document.createElement('h3');
+        errorText.innerHTML = 'No results in category selected: '+ searchSettings.category;
+        searchDiv.appendChild(errorText);
+      }
+      for(var i in response) {
+        if(selectType.value == 'plc'){
           var place = response[i];
+          var name = place.name;
           var img = await decode64(place.image);
-          var card = new Card(place.name,null,null, img,null,null,'about-card');
-          card.primaryAction.id = i;
-          searchDiv.appendChild(card.root_);
+        }else{
+          var route = response [i];
+          var name = route.namer;
+          var img = null;
+        }
+        var card = new Card(name,null,null, img,null,null,'about-card');
+        searchDiv.appendChild(card.root_);
 
-          var addListener = function(index){
-            card.primaryAction.addEventListener("click", () => {
+        var addListener = function(index){
+          card.primaryAction.addEventListener("click", () => {
+            if(selectType.value == 'plc'){
               var place = response[index];
               map.pageDrawer.open = false;
               selectedPlace(place);
-            });
-          }
-          addListener(i);
+            }else{
+              var path =  response[index];
+              map.pageDrawer.open = false;
+              selectedPath(path);
+            }
+          });
         }
-      }else if(selectType.value == 'pth'){
-        for(var i in xhr.response){
-            pathxhr(xhr.response[i].OLC);
-        }
+        addListener(i);
       }
-    };
+    }
+
     xhr.send(JSON.stringify(object));
-  })
-
-
+  });
 
   map.pageDrawer = new PageDrawer('Search', content);
   map.pageDrawer.open = true;
-}
-
-function pathxhr(olc){
-//devo fare una richiesta per ogni OLC che mi rida la ricerca???
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', "/find_route");
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = async function(){
-    console.log(xhr.response);
-    // if(selectType.value == 'plc'){
-    //   searchDiv.innerHTML = '';
-    //   var response = JSON.parse(xhr.response);
-    //   if(!response[0]){
-    //     var errorText = document.createElement('h3');
-    //     errorText.innerHTML = 'No results';
-    //     searchDiv.appendChild(errorText);
-    //   }
-    //   for(var i in response) {
-    //     var place = response[i];
-    //     var img = await decode64(place.image);
-    //     var card = new Card(place.name,null,null, img,null,null,'about-card');
-    //     card.primaryAction.id = i;
-    //     searchDiv.appendChild(card.root_);
-    //
-    //     var addListener = function(index){
-    //       card.primaryAction.addEventListener("click", () => {
-    //         var place = response[index];
-    //         map.pageDrawer.open = false;
-    //         selectedPlace(place);
-    //       });
-    //     }
-    //     addListener(i);
-    //   }
-    // }else if(selectType.value == 'pth'){
-    //   pathxhr(re);
-    // }
-  };
-  xhr.send(JSON.stringify({OLC:olc}));
 }

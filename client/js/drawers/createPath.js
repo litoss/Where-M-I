@@ -4,6 +4,10 @@ function createPath(){
 
     var content = document.createElement('div');
 
+    var nameField = new TextField("Insert name for new route");
+
+    content.appendChild(nameField.root_);
+
     var search = new TextField("Search next Place");
     search.addTrailing('search');
 
@@ -66,6 +70,8 @@ function createPath(){
     })
 
     createButton.listen('click', () => {
+      var namer = nameField.value;
+
       if(route.length < 2){
         var snackbar = new SnackBar('You have to add at least two Places to your Path');
         snackbar.open();
@@ -87,7 +93,7 @@ function createPath(){
         });
       }
       console.log(route);
-      xhr.send(JSON.stringify({route: route, token: token}));
+      xhr.send(JSON.stringify({namer: namer, route: route, token: token}));
 
     })
 

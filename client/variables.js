@@ -1,5 +1,5 @@
 var categories = [
-  { id:"", name:"All"},
+  { id:"", name:""},
   { id:"nat", name:"Nature"},
   { id:"art", name:"Art"},
   { id:"his", name:"History"},

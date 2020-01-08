@@ -57,7 +57,6 @@ function openSettings(){
           }
       };
       xhr.send(JSON.stringify(preferences));
-      console.log(JSON.stringify(preferences));
     };
 
   })
