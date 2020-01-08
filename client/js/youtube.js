@@ -23,13 +23,14 @@ async function listVideos(){
     part: "id, snippet",
     forMine: true,
     type: "video",
-  //  q: "8FPHF800+:*" da scommentare
+    q: "8FPHF800+:*"
   });
   return response.result.items;
 }
 
 async function insertClip(title, description, privacyStatus, readStream){
 
+  //console.log(gapi.client.youtube.videos.insert);
   var request = gapi.client.youtube.videos.insert({
     part: 'id,snippet,status',
     resource: {
@@ -47,7 +48,4 @@ async function insertClip(title, description, privacyStatus, readStream){
   });
 
   console.log(request);
-  request.then(function(response){
-    console.log(response);
-  });
 }

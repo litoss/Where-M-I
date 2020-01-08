@@ -36,7 +36,7 @@ function decode64(string, type){
   return URL.createObjectURL(blob);
 }
 
-function getURLfromBlob(blob){
+function getDatafromURL(blob){
   return new Promise((resolve,reject) => {
     const reader = new FileReader();
 
