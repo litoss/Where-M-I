@@ -83,56 +83,101 @@ function openSearch(){
   })
 
   button.listen('click', () => {
-
     if (selectType.value == '') {
-      var snackbar = new SnackBar('Choice where you want search');
+      var snackbar = new SnackBar('You forgot to choice where you want to search');
       snackbar.open();
       snackbar.listen("MDCSnackbar:closed",() => {
         document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
       });
       return;
     }
-    else if(selectType.value == 'plc') var uri = '/find_place';
+    else if(selectType.value == 'plc'){
+       var object = {name:search.value, category:catSel.value}
+    }
     else if(selectType.value == 'clp') {
       alert('Implementare ricerca youtube');
       return;
     }
-    else if(selectType.value == 'pth') var uri = "/find_route";
-
-    var name = search.value;
+    else if(selectType.value == 'pth') {
+      object = {name:search.value};
+    }
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', uri);
+    xhr.open('POST', '/find_place');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = async function(){
-      searchDiv.innerHTML = '';
-      var response = JSON.parse(xhr.response);
-      if(!response[0]){
-        var errorText = document.createElement('h3');
-        errorText.innerHTML = 'No results';
-        searchDiv.appendChild(errorText);
-      }
-      for(var i in response) {
-        var place = response[i];
-        var img = await decode64(place.image);
-        var card = new Card(place.name,null,null, img,null,null,'about-card');
-        card.primaryAction.id = i;
-        searchDiv.appendChild(card.root_);
-
-        var addListener = function(index){
-          card.primaryAction.addEventListener("click", () => {
-            var place = response[index];
-            map.pageDrawer.open = false;
-            selectedPlace(place);
-          });
+      if(selectType.value == 'plc'){
+        searchDiv.innerHTML = '';
+        var response = JSON.parse(xhr.response);
+        if(!response[0]){
+          var errorText = document.createElement('h3');
+          errorText.innerHTML = 'No results';
+          searchDiv.appendChild(errorText);
         }
-        addListener(i);
+        for(var i in response) {
+          var place = response[i];
+          var img = await decode64(place.image);
+          var card = new Card(place.name,null,null, img,null,null,'about-card');
+          card.primaryAction.id = i;
+          searchDiv.appendChild(card.root_);
+
+          var addListener = function(index){
+            card.primaryAction.addEventListener("click", () => {
+              var place = response[index];
+              map.pageDrawer.open = false;
+              selectedPlace(place);
+            });
+          }
+          addListener(i);
+        }
+      }else if(selectType.value == 'pth'){
+        for(var i in xhr.response){
+            pathxhr(xhr.response[i].OLC);
+        }
       }
     };
-    xhr.send(JSON.stringify({name: name}));
+    xhr.send(JSON.stringify(object));
   })
 
 
 
   map.pageDrawer = new PageDrawer('Search', content);
   map.pageDrawer.open = true;
+}
+
+function pathxhr(olc){
+//devo fare una richiesta per ogni OLC che mi rida la ricerca???
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', "/find_route");
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = async function(){
+    console.log(xhr.response);
+    // if(selectType.value == 'plc'){
+    //   searchDiv.innerHTML = '';
+    //   var response = JSON.parse(xhr.response);
+    //   if(!response[0]){
+    //     var errorText = document.createElement('h3');
+    //     errorText.innerHTML = 'No results';
+    //     searchDiv.appendChild(errorText);
+    //   }
+    //   for(var i in response) {
+    //     var place = response[i];
+    //     var img = await decode64(place.image);
+    //     var card = new Card(place.name,null,null, img,null,null,'about-card');
+    //     card.primaryAction.id = i;
+    //     searchDiv.appendChild(card.root_);
+    //
+    //     var addListener = function(index){
+    //       card.primaryAction.addEventListener("click", () => {
+    //         var place = response[index];
+    //         map.pageDrawer.open = false;
+    //         selectedPlace(place);
+    //       });
+    //     }
+    //     addListener(i);
+    //   }
+    // }else if(selectType.value == 'pth'){
+    //   pathxhr(re);
+    // }
+  };
+  xhr.send(JSON.stringify({OLC:olc}));
 }

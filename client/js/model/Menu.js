@@ -4,5 +4,10 @@ class Menu extends mdc.menu.MDCMenu{
         div.className = "mdc-menu mdc-menu-surface " + options;
         div.appendChild(list);
         super(div);
+
+        this.list = list;
+    }
+    getContent(){
+      return this.list;
     }
 }

@@ -53,4 +53,9 @@ class TextField extends mdc.textField.MDCTextField{
 
         this.input = input;
     }
+    addTrailing(icon){
+      this.root_.className += ' ' + 'mdc-text-field--with-trailing-icon';
+      this.trailing = new IconButton(icon, "toolbar mdc-menu-surface--anchor");
+      this.root_.appendChild(this.trailing.root_);
+    }
 }

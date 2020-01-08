@@ -51,7 +51,7 @@ body {
     .main-topbar{
       width: 480px;
     }
-    .page-drawer-content{
+    .mdc-drawer--dismissible{
       width: 480px;
     }
 }
@@ -199,4 +199,10 @@ body {
 /*welcome dialog*/
 #welcome-img {
   width: 100%;
+}
+
+.drawer-fab {
+  position: fixed;
+  bottom: 1rem;
+  left: 400px;
 }

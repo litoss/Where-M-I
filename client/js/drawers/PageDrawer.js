@@ -24,10 +24,7 @@ class PageDrawer extends Drawer{
 
   this.listen('MDCDrawer:closed', () => {
     map.pageDrawer = null;
-    document.querySelector('.main-content').removeChild(document.querySelector('.page-drawer-content'));
-    document.querySelector('.main-content').removeChild(document.querySelector('#closed-scrim'));
   });
-
   }
 
   setPageTitle(newTitle){
