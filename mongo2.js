@@ -59,11 +59,16 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
         DB viene creata la struttura e i parametri che non vengono inseriti nel json sono semplicemente settati a undefined ed
         eventualmente modificati nel futuro. */
 
+/*
+Il controllo se l'utente puo' modificare il luogo se e' il creatore viene eseguito direttamente lato client, visto che viene eseguita
+la richiesta di trovare il luogo prima di farela richiesta di creazione.
+*/
         var query = {OLC : req.body.OLC};
         var exist = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
         var veruser = await verify(req.body.token);
 
         if(exist == false){
+
             let doc = {_id: new ObjectID(),
                 OLC: req.body.OLC,                  //codice location
                 user: veruser,                      //nome user che crea il luogo
@@ -141,9 +146,9 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
 
         if (req.body.OLC){
             var str = req.body.OLC;
-            var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
-            var olc = append.concat(n);
-            expression.push({OLC:{$regex:olc}});
+            //var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
+            var olc = append.concat(req.body.OLC);
+            expression.push({OLC:{$regex:str,$options:'i'},});
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
@@ -417,7 +422,7 @@ exports.add_route = async(req) =>{
         const db = client.db("webdb");
         var veruser = await verify(req.body.token);
         //verifichiamo che se viene passato per l'update solo la route oppure solo il name se esistono
-        //VIETATO PASSARE OLC, VA PASSATO ARRAY DEI LUOGHI RICERCATI
+        //VIETATO PASSARE OLC, VA PASSATO
         var query = {$or:[{$and: [{ OLC : req.body.route[0] } , { user:veruser }]}, {$and: [{ namer : req.body.namer } , { user:veruser }]}]};
         var exist = await db.collection('routes').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
