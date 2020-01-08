@@ -1,28 +1,4 @@
 
-/* Always set the map height explicitly to define the size of the div
-* element that contains the map. */
-/* Optional: Makes the sample page fill the window. */
-#map {
-  position: fixed;
-  height: 100%;
-}
-
-.mdc-player{
-  background-color: white;
-  width:300px;
-  height:48px;
-}
-
-.mdc-player > button{
-  float:left;
-}
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 @font-face {
     font-family: 'where-m-i';
     src: url('./content/font/wheremi-webfont.woff2') format('woff2'),
@@ -30,6 +6,19 @@ body {
     font-weight: normal;
     font-style: normal;
 }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  position: fixed;
+  height: 100%;
+}
+
 
 .mdc-top-app-bar--dense .mdc-top-app-bar__title {
   font-family: 'where-m-i';
@@ -42,16 +31,19 @@ body {
 
 @media only screen and (max-width: 480px) {
     .page-drawer-content {
-    width: 100%;
+      width: 100%;
     }
 
+    .mdc-drawer--dismissible{
+      width: 100%;
+    }
 }
 
 @media all and (min-width:481px) {
     .main-topbar{
       width: 480px;
     }
-    .page-drawer-content{
+    .mdc-drawer--dismissible{
       width: 480px;
     }
 }
@@ -87,6 +79,7 @@ body {
 .about-card .mdc-card__primary{
     width: 250px;
 }
+
 .notListedPlace {
   padding: 1rem;
 }
@@ -96,16 +89,6 @@ body {
 }
 .mdc-button--raised{
   margin: 5px;
-}
-.zoomButtons {
-  display: flex;
-  flex-direction: column;
-}
-
-/*infowindow*/
-.infoWindow-card {
-  margin: 10px;
-  width: 280px;
 }
 
 .infoWindow-card .mdc-card__primary-action{
