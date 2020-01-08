@@ -148,7 +148,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
             var str = req.body.OLC;
             //var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
             var olc = append.concat(req.body.OLC);
-            expression.push({OLC:{$regex:str,$options:'i'},});
+            expression.push({OLC:{$regex:str},});
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
@@ -159,7 +159,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         if (req.body.name){
             // var nome = append.concat(req.body.name);
             // expression.push({name:{$regex:nome}});
-            expression.push({name:{$regex:req.body.name}});
+            expression.push({name:{$regex:req.body.name,$options:'i'}});
         }
         if (req.body.category){
             var categoria = append.concat(req.body.category);
