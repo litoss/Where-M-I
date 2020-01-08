@@ -43,8 +43,9 @@ function selectPlace(position) {
       addBut.listen("click", async () =>{
         var place = {};
         place['OLC'] = OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
-        if(profile) createEditDialog(place);
-        else {
+        if(profile) {
+          createEditDialog(place);
+        }else {
           var snackbar = new SnackBar('You must be logged in to use this function');
           snackbar.open();
           snackbar.listen("MDCSnackbar:closed",() => {

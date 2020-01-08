@@ -155,12 +155,19 @@ function submit(form){
           var addedPlace = new Place(place);
           map.places.push(addedPlace);
           map.closeAllWindow();
+          dialog.close();
+          map.pageDrawer.open = false;
+          var snackbar = new SnackBar('Place added Successfully');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+          });
+
       }
       else if (xhr.status !== 200) {
           alert('Request failed.  Returned status of ' + xhr.status);
       }
   };
-
 
   xhr.send(JSON.stringify(place));
 }

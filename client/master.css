@@ -183,3 +183,9 @@ body {
 #welcome-img {
   width: 100%;
 }
+
+.drawer-fab {
+  position: fixed;
+  bottom: 1rem;
+  left: 400px;
+}

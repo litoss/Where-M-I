@@ -68,6 +68,7 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
         var veruser = await verify(req.body.token);
 
         if(exist == false){
+
             let doc = {_id: new ObjectID(),
                 OLC: req.body.OLC,                  //codice location
                 user: veruser,                      //nome user che crea il luogo
@@ -87,7 +88,7 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
 
         else{ //se il posto esiste allora vengono modificati i parametri che sono settati nel JSON
             var object2 = {};
-  //          if()
+
                 if (req.body.name){
                     object2.name = req.body.name;
                 }
@@ -145,9 +146,9 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
 
         if (req.body.OLC){
             var str = req.body.OLC;
-            var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
-            var olc = append.concat(n);
-            expression.push({OLC:{$regex:olc}});
+            //var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
+            var olc = append.concat(req.body.OLC);
+            expression.push({OLC:{$regex:str,$options:'i'},});
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
@@ -420,16 +421,19 @@ exports.add_route = async(req) =>{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         var veruser = await verify(req.body.token);
-        var query = {$and: [{ OLC : req.body.route[0] } , { user:veruser }]};
+        //verifichiamo che se viene passato per l'update solo la route oppure solo il name se esistono
+        //VIETATO PASSARE OLC, VA PASSATO
+        var query = {$or:[{$and: [{ OLC : req.body.route[0] } , { user:veruser }]}, {$and: [{ namer : req.body.namer } , { user:veruser }]}]};
         var exist = await db.collection('routes').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
         if(exist == false){
           let doc = {_id: new ObjectID(),
               OLC: req.body.route[0],
               route: req.body.route,
+              namer: req.body.namer, //nome dall'utente del percorso preferito
               user:veruser
-              //se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
-              //visualizzati anche tutti i percorsi dove quest'ultimo e' una tappa
+              /*se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
+              visualizzati anche tutti i percorsi dove quest'ultimo e' una tappa*/
           };
           let ret = await db.collection('routes').insertOne(doc);
           client.close();
@@ -441,7 +445,10 @@ exports.add_route = async(req) =>{
             object4.OLC = req.body.route[0];
             object4.route = req.body.route;
           }
-        var new_values = {$set: object3};
+          if(req.body.namer){
+            object4.namer = req.body.namer;
+          }
+        var new_values = {$set: object4};
         var ret_update = await db.collection('routes').updateOne(query, new_values); //update with the parameter that are passed trought the body
         client.close();
         return (JSON.stringify(ret_update));
@@ -461,9 +468,15 @@ exports.del_route = async(req) =>{
     try{
       let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
       const db = client.db("webdb");
+      var query;
 
       var veruser = await verify(req.body.token);
-      var query = {$and: [{ route : req.body.route } , { user:veruser }]};
+      if(req.body.route){
+        query = {$and: [{ route : req.body.route } , { user:veruser }]};
+      }
+      else{
+        query ={$and: [{ namer : req.body.namer } , { user:veruser }]};
+      }
       var can = await db.collection('routes').deleteOne(query);
       client.close();
       return can;
@@ -482,9 +495,12 @@ exports.find_route = async(req) =>{
         if(req.body.OLC){
           query =  {OLC : req.body.OLC};
         }
-        else{
+        if(req.body.token){
           var veruser = await verify(req.body.token);
           query =  {user:veruser};
+        }
+        if(req.body.namer){
+          query = { namer : req.body.namer}
         }
         var items = await db.collection('routes').find(query).project({_id:0,OLC:0}).toArray();
         //facciamo la project anche di OLC che al client non serve, serve solo al server per fare la find

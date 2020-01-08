@@ -147,7 +147,14 @@ app.get("/drop_review", async (req, res) => {
 
 // aggiunta di un nuovo percorso alla collezione route
 //bisogna passare array percorso e token user che lo sta creando
-//{route:["olc1","olc2","olc3","olc4"]}
+//{"route":["olc1","olc2","olc3","olc4"], "namer":"nome posto"}
+//
+//VIETATO PASSARE OLC, VA PASSATO ARRAY DEI LUOGHI RICERCATI
+/*
+Con questa funzione possiamo sia creare che modificare i percorsi.
+Se non e' presente un percorso (passandogli array luoghi e user oppure namer e user) viene aggiunto.
+se invece è presente vengono modificati i valori dell'array del percorso oppure il nome del percorso.
+*/
 app.post("/new_route", async (req, res) => {
 
     try {
@@ -161,6 +168,11 @@ app.post("/new_route", async (req, res) => {
 // aggiunta di un nuovo percorso alla collezione route
 //va passato l'array intero dei posti del percorso che si vuole eliminare e token user che lo ha creato
 //{route:["olc1","olc2","olc3","olc4"]}
+//VIETATO PASSARE OLC, VA PASSATO ARRAY DEI LUOGHI RICERCATI o NAMER
+/*
+L'eliminazione va sempre effettuata passando il token dell'utente, solo l'owner puo' eliminare il suo percorso.
+In piu' passiamo o il campo route(passandogli l'array con l'esatto percorso), oppure il nome del percorso che gli abbiamo assegnato.
+*/
 app.post("/del_route", async (req, res) => {
 
     try {
@@ -174,6 +186,14 @@ app.post("/del_route", async (req, res) => {
 //trova percorsi predefiniti dato luogo collezione routes
 //passare: OLC:"OLC ricercato"
 //{"OLC":"FHOLC888"}
+/*
+La richiesta viene effettuata con:
+1) OLC se si ha bisogno di tutti i percorsi in partenza da quel luogo.
+2) token dell'utente se si ha bisogno di tutti i percorsi creati dall'utente.
+3) namer se abbiamo bisogno di ricercare un percorso in particolare e sappiamo il nome assegnatogli dall'utente.
+Passare solo uno dei 3 ricercati non 2 insieme alla volta, va fatta una richiesta alla volta per ognuno
+se servono piu' informazioni.
+*/
 app.post("/find_route", async (req, res) => {
 
     try{

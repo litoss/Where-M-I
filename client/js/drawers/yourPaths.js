@@ -18,13 +18,14 @@ function openPaths(){
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function(){
       var response = JSON.parse(xhr.responseText);
-       console.log(response);
-      // if(!response[0]){
-      //   var errorText = document.createElement('h3');
-      //   errorText.innerHTML = 'No results';
-      //   pathDiv.appendChild(errorText);
-      // }
-      // for(var i in response){
+      console.log(response);
+      if(!response[0]){
+        var errorText = document.createElement('h3');
+        errorText.innerHTML = 'No results';
+        pathDiv.appendChild(errorText);
+      }
+      for(var i in response){
+        console.log(response[i].route);
       //     var editButton = new IconButton('edit');
       //     editButton.root_.id = i;
       //     editButton.listen('click', (event) => {
@@ -42,9 +43,9 @@ function openPaths(){
       //       });
       //     }
       //     addListener(i);
-      // }
+       }
     }
-    xhr.send(JSON.stringify({OLC: '8FPHF8XG+MV'}));
+    xhr.send(JSON.stringify({token: token}));
 
     map.pageDrawer = new PageDrawer('Your Paths', content);
     map.pageDrawer.open = true;
