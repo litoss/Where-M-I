@@ -153,9 +153,9 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
 
         if (req.body.OLC){
             var str = req.body.OLC;
-            var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
-            var olc = append.concat(req.body.OLC);
-            expression.push({OLC:{$regex:'.*' + escapeRegExp(olc) + '.*',$options:'i'},});
+            //var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
+            //var olc = append.concat(req.body.OLC);
+            expression.push({OLC:{$regex:'.*' + escapeRegExp(str) + '.*',$options:'i'},});
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
