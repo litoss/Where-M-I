@@ -20,13 +20,17 @@ async function selectedPath(path){
 }
 
 function searchPlace(olc){
-  xhr = new XMLHttpRequest();
+  var unicodeOLC = olc.replace('+','\+');
+  console.log(unicodeOLC);
+
+  var xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_place');
-  xhr.onload = async function(){
+  xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  xhr.onload = function(){
     console.log(xhr.response);
   }
-  console.log(olc);
-  xhr.send(JSON.stringify({OLC: olc}));
+  console.log(JSON.stringify({OLC: unicodeOLC}));
+  xhr.send(JSON.stringify({OLC: unicodeOLC}));
 }
 
 function showRoute(path){
