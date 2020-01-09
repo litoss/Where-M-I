@@ -166,7 +166,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         if (req.body.name){
             // var nome = append.concat(req.body.name);
             // expression.push({name:{$regex:nome}});
-            expression.push({name:{$regex:req.body.name}});
+            expression.push({name:{$regex:req.body.name,$options:'i'}});
         }
         if (req.body.category){
             var categoria = append.concat(req.body.category);
