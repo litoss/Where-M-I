@@ -18,11 +18,12 @@ class Mappa extends google.maps.Map{
     //Controls inizialize
     this.geolocation = new Geolocation();
     this.topBar = new TopBar();
-    this.player = new PlayerTemp();
     this.menuDrawer = new MenuDrawer();
+    this.audio = new Audio();
     this.pageDrawer;
 
-    this.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(this.player);
+
+    this.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(this.audio);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new Zoom(-1).root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new Zoom(1).root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation.root_);
