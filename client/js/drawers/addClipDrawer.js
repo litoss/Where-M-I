@@ -90,6 +90,9 @@ function addClipDrawer(position){
   var salva = new ActionButton('Salva Clip');
   div.appendChild(salva.root_);
 
+  var modifica = new ActionButton('Modifica Clip');
+  div.appendChild(modifica.root_);
+
   register.listen('MDCIconButtonToggle:change', async () => {
     function incrementSeconds(){
       seconds++;
@@ -142,6 +145,16 @@ function addClipDrawer(position){
       xhr.send(JSON.stringify({chunks: base64}));
     }else{
       alert("Mancano dati");
+    }
+  });
+
+  modifica.listen('click', () => {
+    if(audio.src){
+      openVideoDialog(audio.src).then((response) => {
+        audio.src = response;
+      });
+    }else {
+      alert("non hai registrato nessun audio");
     }
   });
 

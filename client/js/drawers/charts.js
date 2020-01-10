@@ -19,6 +19,9 @@ async function openCharts(){
         console.log(clips);
         for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
         list.appendChild(listclips.root_);
+        list.listen('click',(event) => {
+
+        })
         break;
       case 1:
         var vloggers = new List();

@@ -16,8 +16,8 @@ const mongo = require('mongodb');
 
 const MongoClient = mongo.MongoClient;
 const ObjectID = mongo.ObjectID; //serve per poter passare i parametri in name e price dentro ObjectID
-const url = 'mongodb://localhost:27017';
-//const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
+//const url = 'mongodb://localhost:27017';
+const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
 const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
@@ -131,13 +131,6 @@ exports.del_one = async (req) => {
     }
 }
 
-function escapeRegExp(string) {
-    if (string) {
-       return string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-
-    }
-}
-
 exports.find_place = async(req) => { //ritorna il documento ricercato
 
     try{
@@ -154,8 +147,8 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         if (req.body.OLC){
             var str = req.body.OLC;
             //var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
-            //var olc = append.concat(req.body.OLC);
-            expression.push({OLC:{$regex:'.*' + escapeRegExp(str) + '.*',$options:'i'},});
+            var olc = append.concat(req.body.OLC);
+            expression.push({OLC:{$regex:str,$options:'i'},});
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
@@ -166,7 +159,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         if (req.body.name){
             // var nome = append.concat(req.body.name);
             // expression.push({name:{$regex:nome}});
-            expression.push({name:{$regex:req.body.name,$options:'i'}});//option i = Case-Insensitive
+            expression.push({name:{$regex:req.body.name}});
         }
         if (req.body.category){
             var categoria = append.concat(req.body.category);

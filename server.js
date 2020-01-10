@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+var redirect = require('express-http-to-https').redirectToHTTPS
 const port = 8000;
 const myModule = require('./mongo2.js');
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
@@ -7,9 +8,9 @@ const ffmpeg = require('fluent-ffmpeg');
 const {Readable} = require('stream');
 ffmpeg.setFfmpegPath(ffmpegPath);
 
+app.use(redirect([/localhost:8000/]));
 app.use(express.urlencoded({extended : true}));
 app.use(express.json({limit: '16mb'}));
-
 
 app.use('/', express.static(__dirname + '/client'));
 app.use((req,res,next) => {
@@ -320,5 +321,39 @@ app.post('/video_to_audio', async (req,res)=>{
     res.send(result.toString('base64'));
   });*/
 });
+
+app.post('/modify_video', async (req,res)=>{
+
+    // console.log('totrim',req.body.chunks);
+    var buffer = Buffer.from(req.body.chunks, 'base64');
+    var readable = new Readable();
+    readable._read = () => {} // _read is required but you can noop it
+    readable.push(buffer);
+    readable.push(null)
+
+    var command = ffmpeg("https://m8BIIC4i2lA-focus-opensocial.googleusercontent.com/gadgets/proxy?container=none&url=https%3A%2F%2Fwww.youtube.com%2Fget_video_info%3Fvideo_id%3Dm8BIIC4i2lA")
+      .format('webm')
+      .outputOptions([
+        '-ss 00:00:01',
+        '-t 00:00:03',
+    ])
+      .audioFilters('volume=5')
+      .on('end', function() {
+        console.log('file has been modified succesfully');
+      })
+      .on('error', function(err) {
+        console.log('an error happened: ' + err.message);
+      });
+
+    var ffstream = await command.pipe();
+    var chunks = [];
+    ffstream.on('data', function(chunk) {
+      chunks.push(chunk);
+    });
+    ffstream.on('end', function() {
+      var result = Buffer.concat(chunks);
+      res.send(result.toString('base64'));
+    });
+  });
 
 app.listen(port, () => console.log("Server started on port: " + port));

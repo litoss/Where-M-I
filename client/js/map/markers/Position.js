@@ -17,8 +17,10 @@ class Position {
     });
 
     var addClip = new IconButton('audiotrack');
+    var search = new IconButton('search');
+
     this.infoWindow = new google.maps.InfoWindow({
-        content: new Card(yourPlace.title, null, yourPlace.description, null, [addClip.root_]).root_,
+        content: new Card(yourPlace.title, null, yourPlace.description, null, [addClip.root_, search.root_]).root_,
         maxWidth: 400
     });
 
@@ -28,6 +30,13 @@ class Position {
     })
     addClip.listen('click', () => {
       addClipDrawer(this.marker.getPosition());
+    })
+    search.listen('click', () => {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/find_place');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = this.addPlace;
+      xhr.send(JSON.stringify({OLC: area}));
     })
   }
 

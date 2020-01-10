@@ -32,13 +32,25 @@ function openVideoDialog(audiosrc){
   var dialog = new Dialog(content, buttonContainer, "");
 
   document.getElementById('map').appendChild(dialog.root_);
-  dialog.open();
   dialog.scrimClickAction = '';
   dialog.escapeKeyAction = '';
+  dialog.open();
+  volume.layout();
 
-  dialog.listen('MDCDialog:closing', function() {
-    document.getElementById('map').removeChild(welcomeDialog.root_);
+  return new Promise((resolve, reject) => {
+    save.listen('click', async () => {
+      dialog.close();
+      var blob = await getimageBlob(audiosrc);
+      var base64 = await convertBlobToBase64(blob);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/modify_video');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = async function(){
+        var url = await decode64(this.responseText, "video/webm");
+        resolve(url);
+      };
+      xhr.send(JSON.stringify({chunks: base64}));
+    });
   });
-
-  end.input.focus();
 }
