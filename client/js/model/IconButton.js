@@ -8,4 +8,8 @@ class IconButton extends mdc.ripple.MDCRipple{
         super(item);
         this.unbounded = true;
     }
+
+    setIcon(icon){
+      this.root_.innerHTML = icon;
+    }
 }
