@@ -1,10 +1,10 @@
 function openPaths(){
 
     var content = document.createElement('div');
-    var addButton = new ActionButton('Add new Path');
-    content.appendChild(addButton.root_);
+    var createButton = new FloatingActionButton('add', 'drawer-fab');
+    content.appendChild(createButton.root_);
 
-    addButton.listen('click', () => {
+    createButton.listen('click', () => {
       map.pageDrawer.open = false;
       createPath();
     })

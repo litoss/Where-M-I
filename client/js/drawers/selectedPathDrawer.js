@@ -1,6 +1,7 @@
 async function selectedPath(path){
 
   var content = document.createElement('div');
+  content.id = 'content';
 
   for(var i in path.route){
     searchPlace(path.route[i]);
@@ -20,17 +21,17 @@ async function selectedPath(path){
 }
 
 function searchPlace(olc){
-  var unicodeOLC = olc.replace('+','\+');
-  console.log(unicodeOLC);
-
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_place');
-  xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-  xhr.onload = function(){
-    console.log(xhr.response);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = async function(){
+    var response = JSON.parse(xhr.response);
+    var image = await decode64(response[0].image, "image/jpg");
+    var card = new Card (response[0].name, null, response[0].description, image, null,null,'about-card');
+    document.querySelector("#content").appendChild(card.root_);
   }
-  console.log(JSON.stringify({OLC: unicodeOLC}));
-  xhr.send(JSON.stringify({OLC: unicodeOLC}));
+  xhr.send(JSON.stringify({OLC: olc}));
+
 }
 
 function showRoute(path){

@@ -23,6 +23,7 @@ class PageDrawer extends Drawer{
   this.topBarDrawer = topBarDrawer;
 
   this.listen('MDCDrawer:closed', () => {
+    document.querySelector('.mdc-drawer--dismissible').remove();
     map.pageDrawer = null;
   });
   }
