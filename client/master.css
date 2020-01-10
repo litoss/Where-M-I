@@ -189,3 +189,7 @@ body {
   bottom: 1rem;
   left: 400px;
 }
+
+.mdc-fab {
+  z-index: 99;
+}

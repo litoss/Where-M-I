@@ -131,6 +131,13 @@ exports.del_one = async (req) => {
     }
 }
 
+function escapeRegExp(string) {
+    if (string) {
+       return string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+
+    }
+}
+
 exports.find_place = async(req) => { //ritorna il documento ricercato
 
     try{
@@ -147,8 +154,8 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         if (req.body.OLC){
             var str = req.body.OLC;
             //var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
-            var olc = append.concat(req.body.OLC);
-            expression.push({OLC:{$regex:str,$options:'i'},});
+            //var olc = append.concat(req.body.OLC);
+            expression.push({OLC:{$regex:'.*' + escapeRegExp(str) + '.*',$options:'i'},});
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
@@ -159,7 +166,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         if (req.body.name){
             // var nome = append.concat(req.body.name);
             // expression.push({name:{$regex:nome}});
-            expression.push({name:{$regex:req.body.name}});
+            expression.push({name:{$regex:req.body.name,$options:'i'}});//option i = Case-Insensitive
         }
         if (req.body.category){
             var categoria = append.concat(req.body.category);

@@ -46,6 +46,14 @@ async function selectedPlace(place){
   separator2.className = 'mdc-list-divider';
   content.appendChild(separator2);
 
+  var review = new ActionButton('review');
+  content.appendChild(review.root_);
+
+  review.listen('click', () => {
+    reviewDialog();
+  })
+
+
   var olc = document.createElement('p');
   olc.innerHTML = "Open location code: " + place.OLC;
   content.appendChild(olc);
