@@ -4,15 +4,14 @@ function openPaths(){
     var createButton = new FloatingActionButton('add', 'drawer-fab');
     content.appendChild(createButton.root_);
 
+    var pathDiv = document.createElement('div');
+    content.appendChild(pathDiv);
+
     createButton.listen('click', () => {
       map.pageDrawer.open = false;
       createPath();
     })
-
-    var pathDiv = document.createElement('div');
-    content.appendChild(pathDiv);
-
-
+    
     xhr = new XMLHttpRequest();
     xhr.open('POST', '/find_route');
     xhr.setRequestHeader('Content-Type', 'application/json');
