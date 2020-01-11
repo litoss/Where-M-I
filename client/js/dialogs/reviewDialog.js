@@ -1,12 +1,10 @@
-async function reviewDialog(){
+async function reviewDialog(place){
+
+  console.log(place);
   var content = document.createElement("div");
 
   var dialogTitle = 'Add a review for this place.';
   var dialogIcon = 'edit';
-
-  var sliderContainer = document.createElement('div');
-  sliderContainer.id = 'slider_container';
-  content.appendChild(sliderContainer);
 
   var value = null;
   var star = [];
@@ -50,13 +48,6 @@ async function reviewDialog(){
       setStar(4);
   });
 
-  var slider = new Slider('mdc-slider--discrete');
-  sliderContainer.appendChild(slider.root_);
-  slider.min = '0';
-  slider.max = '5';
-
-  slider.listen('MDCSlider:change', () => console.log(`Value changed to ${slider.value}`));
-
   var reviewForm = new TextField(null, "subject", 'mdc-text-field--textarea');
   //reviewForm.input.setAttribute('value', place.name);
   content.appendChild(reviewForm.root_);
@@ -65,13 +56,26 @@ async function reviewDialog(){
   var button = new IconButton(dialogIcon,"mdc-button--raised mdc-image__circular");
   footer.appendChild(button.root_);
 
+  button.listen('click', () => {
+    if(value == null){
+      var snackbar = new SnackBar('Please add a star rating.');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
+      return;
+    }
+    xhr = new XMLHttpRequest();
+    xhr.open('POST', '/new_review');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function(){
+      console.log(xhr.response);
+    }
+    xhr.send(JSON.stringify({token: token, OLC: place.OLC, rating_place: value, comment:reviewForm.value}))
+  })
+
   var dialog = new Dialog(content,footer,dialogTitle);
   document.getElementById('map').appendChild(dialog.root_);
   dialog.open();
 
-  dialog.listen('MDCDialog:opened', () => {
-  slider.layout();
-  });
-
-  slider.value ="3";
 }

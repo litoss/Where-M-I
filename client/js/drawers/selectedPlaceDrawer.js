@@ -19,6 +19,9 @@ async function selectedPlace(place){
     imgContainer.appendChild(openingHours);
   }
 
+  var visited = new IconButton('check_box_ouline_blank');
+  content.appendChild(visited.root_);
+
   var separator1 = document.createElement('hr');
   separator1.className = 'mdc-list-divider';
   content.appendChild(separator1);
@@ -46,17 +49,26 @@ async function selectedPlace(place){
   separator2.className = 'mdc-list-divider';
   content.appendChild(separator2);
 
+  var starContainer =  document.createElement('div');
+  var star = [];
+  for(var i=0;i<5;i++){
+    star[i] = document.createElement('div');
+    star[i].className = "material-icons";
+    star[i].innerHTML = 'star';
+    starContainer.appendChild(star[i]);
+  }
+
   var review = new ActionButton('review');
-  content.appendChild(review.root_);
+  starContainer.appendChild(review.root_);
+
+  content.appendChild(starContainer);
+
+
+
 
   review.listen('click', () => {
-    reviewDialog();
+    reviewDialog(place);
   })
-
-
-  var olc = document.createElement('p');
-  olc.innerHTML = "Open location code: " + place.OLC;
-  content.appendChild(olc);
 
   var separator3 = document.createElement('hr');
   separator3.className = 'mdc-list-divider';
