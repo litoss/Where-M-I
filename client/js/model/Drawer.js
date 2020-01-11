@@ -1,6 +1,6 @@
 class Drawer extends mdc.drawer.MDCDrawer{
 
-  constructor(title, subtitle, content, options) {
+  constructor(topBar, content, options) {
 
     var div = document.createElement('div');
 
@@ -8,24 +8,9 @@ class Drawer extends mdc.drawer.MDCDrawer{
     drawer.className = "mdc-drawer";
     if(options) drawer.className += " " + options;
 
-    if(title || subtitle){
-      var drawerHeader = document.createElement('div');
-      drawerHeader.className = "mdc-drawer__header";
-      drawer.appendChild(drawerHeader);
-
-      if(title){
-        var drawerTitle = document.createElement('h3');
-        drawerTitle.className = "mdc-drawer__title";
-        drawerTitle.innerHTML = title;
-        drawerHeader.appendChild(drawerTitle);
-      }
-
-      if(subtitle){
-        var drawerSubtitle = document.createElement('h6');
-        drawerSubtitle.className = "mdc-drawer__subtitle";
-        drawerSubtitle.innerHTML = subtitle;
-        drawerHeader.appendChild(drawerSubtitle);
-      }
+    if(topBar){
+      topBar.className += " mdc-drawer__header";
+      drawer.appendChild(topBar);
     }
 
     var drawerContent = document.createElement('div');
@@ -42,7 +27,7 @@ class Drawer extends mdc.drawer.MDCDrawer{
       scrim.className = "mdc-drawer-scrim";
       parent.appendChild(scrim);
     }
-    
+
     super(drawer);
   }
 }

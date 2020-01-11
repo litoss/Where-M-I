@@ -53,7 +53,6 @@ async function selectedPlace(place){
     reviewDialog();
   })
 
-
   var olc = document.createElement('p');
   olc.innerHTML = "Open location code: " + place.OLC;
   content.appendChild(olc);
@@ -66,31 +65,30 @@ async function selectedPlace(place){
   clipTitle.innerHTML = "Clip Audio";
   content.appendChild(clipTitle);
 
-  var tabBar = new TabBar(['what','how','why']);
-  var list = document.createElement('div');
+  var what = document.createElement('h3');
+  what.innerHTML = "What is this?";
+  content.appendChild(what);
 
-  let whatList = await search(place.OLC, "what");
-  let howList = await search(place.OLC, "how");
-  let whyList = await search(place.OLC, "why");
+  if(playlist[place.OLC]){
+    search(place.OLC).then((response) => {
+      console.log(response);
+      for(var i=0;i<response.length;i++){
+        var iframe = document.createElement('iframe');
+        iframe.width="420";
+        iframe.height="315";
+        iframe.src="https://www.youtube.com/embed/" +response[i];
+        what.insertAdjacentElement('afterend',iframe);
+      }
+    });
+  }
 
-  tabBar.listen("MDCTabBar:activated", (event) => {
+  var how = document.createElement('h3');
+  how.innerHTML = "How to get in?";
+  content.appendChild(how);
 
-    list.innerHTML = '';
-
-    switch (event.detail.index) {
-      case 0: list.appendChild(whatList);
-        break;
-      case 1: list.appendChild(howList);
-        break;
-      case 2: list.appendChild(whyList);
-        break;
-    }
-  });
-
-  tabBar.activateTab(0);
-
-  content.appendChild(tabBar.root_);
-  content.appendChild(list);
+  var why = document.createElement('h3');
+  why.innerHTML = "What about this?";
+  content.appendChild(why);
 
   map.pageDrawer  = new PageDrawer(place.name, content);
   map.pageDrawer.open = true;

@@ -19,7 +19,7 @@ class PageDrawer extends Drawer{
     contentcontent.appendChild(topBarDrawer.root_);
     contentcontent.appendChild(content);
 
-  super(null, null, contentcontent, 'mdc-drawer--dismissible');
+  super(topBarDrawer.root_, contentcontent, 'mdc-drawer--dismissible');
   this.topBarDrawer = topBarDrawer;
 
   this.listen('MDCDrawer:closed', () => {

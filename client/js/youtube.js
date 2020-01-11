@@ -4,18 +4,12 @@
 async function search(olc, purpose){
   q = olc + ":" + purpose + ":ita:*";
 
-  let request = gapi.client.youtube.search.list({
+  let request = await gapi.client.youtube.search.list({
     q: q,
     part: 'id'
   });
-
-  console.log(request);
-  var div = document.createElement('div');
-  //for(var item in response.result.items){
-  //  div.appendChild(new Player(response.result.items[item].id.videoId));
-  //}
-  return div;
-
+  console.log(request.result);
+  return request.result.items.map(o => o['id']).map(o => o['videoId']);
 }
 
 async function getTopClips(){
@@ -39,23 +33,6 @@ async function getTopVlogger(){
   });
 
   console.log(response);
-}
-
-async function search(olc, purpose){
-  q = olc + ":" + purpose + ":ita:*";
-
-  let request = gapi.client.youtube.search.list({
-    q: q,
-    part: 'id'
-  });
-
-  console.log(request);
-  var div = document.createElement('div');
-  //for(var item in response.result.items){
-  //  div.appendChild(new Player(response.result.items[item].id.videoId));
-  //}
-  return div;
-
 }
 
 async function listVideos(){

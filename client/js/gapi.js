@@ -5,7 +5,7 @@ var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
-var profile, token;
+var profile, token, preferences;
 
 function handleClientLoad() {
   // Load the API client and auth2 library
@@ -47,6 +47,8 @@ function updateSigninStatus(isSignedIn) {
       map.menuDrawer.elements[i].className = "mdc-list-item";
     }
   } else {
+
+    preferences = defaultPrefs;
 
     map.topBar.icon.setImage("content/photo.png");
     map.topBar.loginCard.setTitle("Guest");

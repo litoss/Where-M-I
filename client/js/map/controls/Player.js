@@ -1,11 +1,11 @@
 class Player{
   constructor(){
     var div = document.createElement('div');
-    div.className = "mdc-theme--primary-bg";
-    var back = new IconButton('arrow_back_ios');
-    var play = new IconButtonToggle('pause-circle_filled', 'play_arrow');
+    div.className = "mdc-theme--primary-bg mdc-theme--on-secondary";
+    var back = new IconButton('chevron_left');
+    var play = new IconButtonToggle('pause', 'play_arrow');
     var slider = new Slider();
-    var forward = new IconButton('arrow_forward_ios');
+    var forward = new IconButton('chevron_right');
 
     div.appendChild(back.root_)
     div.appendChild(play.root_);

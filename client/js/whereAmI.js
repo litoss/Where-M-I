@@ -2,13 +2,15 @@ var playlist;
 var position;
 
 function start(){
-  var [marker, distance] = map.findClosestMarker();
+
+  var [marker, distance] = findClosestMarker();
+
   if(distance < 1000 ){
     var olc = olc.value = OpenLocationCode.encode(marker.position.lat(), marker.position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
 
     playlist.push(search(olc, 'who'));
   }else{
-
+    //Non ci sono luoghi intorno a te!
   }
 }
 
@@ -20,7 +22,7 @@ function findClosestMarker(){
     var minDistance = 10000;
     var marker = null;
 
-    for(var i=1; i<map.places.length; i++){
+    for(var i=0; i<map.places.length; i++){
 
       var olc = olc.value = OpenLocationCode.encode(map.places[i].getPosition().lat(), map.places[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
 
