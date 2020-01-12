@@ -551,7 +551,7 @@ exports.add_pref = async(req) =>{
             username: payload['name'],
             picture:  payload['picture'],
             email: payload['email'],
-            categories: req.body.category,
+            category: req.body.category,
             audience: req.body.audience,
             language: req.body.language
 
