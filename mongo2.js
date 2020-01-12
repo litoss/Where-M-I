@@ -221,11 +221,11 @@ exports.add_review = async (req) => {
         var olc = req.body.OLC;
         var veruser = await verify(req.body.token);
 
-        var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:veruser}} ] };//controlla se esiste una recensione di questo utente di questo posto
+        var query = {$and: [{OLC:{$regex:'.*' + escapeRegExp(olc) + '.*'}} , {user:{$regex:veruser}} ] };//controlla se esiste una recensione di questo utente di questo posto
         var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
         //if the OLC of this user is not in the DB create it
-        //console.log("review user exist: " + exist);
+        console.log("review user exist: " + exist);
 
         if(exist == false){
             var v_tag;
@@ -259,22 +259,22 @@ exports.add_review = async (req) => {
         }
         else{ //if the OLC for the user is already inserted
 
-
-            var object_body = {}; //create the object with the values to update
+            var object5 = {}; //create the object with the values to update
 
             if (req.body.rating_place){
-                object.rating_place = req.body.rating_place;
+                object5.rating_place = req.body.rating_place;
 
             }
             if (req.body.visit_tag){
-               object.visit_tag = req.body.visit_tag;
+               object5.visit_tag = req.body.visit_tag;
 
             }
             if (req.body.comment){
-                object.comment = req.body.comment;
+                object5.comment = req.body.comment;
             }
 
-            var new_values = {$set: object_body};
+            var new_values = {$set: object5};
+
             var ret_update = await db.collection('review').updateOne(query, new_values); //update with the parameter that are passed trought the body
 
             client.close(); //chiudiamo il client perche' ci pensa la funzione up_star a riaprire la comunicazione con il DB
