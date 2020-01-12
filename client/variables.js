@@ -1,5 +1,5 @@
 var categories = [
-  { id:"", name:"All"},
+  { id:"all", name:"All"},
   { id:"nat", name:"Nature"},
   { id:"art", name:"Art"},
   { id:"his", name:"History"},
@@ -31,6 +31,12 @@ var audience = [
   { id:"elm", name:"Primary School"},
   { id:"mid", name:"Secondary School"},
   { id:"scl", name:"Sector Specialists"},
+];
+
+var searchTab = [
+  { icon: "map", name: "Place"},
+  { icon: "queue_music", name: "Clips"},
+  { icon: "navigation", name: "Paths"}
 ];
 
 var chartsTab = [
@@ -153,7 +159,7 @@ var simone = {
     {name:"Privacy Policy",icon:"policy"}
   ]
 
-  var defaultPrefs = { language:'it',audience:"gen",categories:'none'}
+  var defaultPrefs = { language:'it',audience:"gen",category:"all"}
 
   var searchType = [
     { name: "Place", id:'plc' },

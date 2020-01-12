@@ -552,7 +552,7 @@ exports.add_pref = async(req) =>{
             name: payload['name'],
             picture:  payload['picture'],
             email: payload['email'],
-            categories: req.body.categories,
+            categories: req.body.category,
             audience: req.body.audience,
             language: req.body.language
 
@@ -566,10 +566,9 @@ exports.add_pref = async(req) =>{
 
         else{
           var object3 = {};
-
-            if(req.body.categories)
+            if(req.body.category)
             {
-              object3.category = req.body.categories;
+              object3.category = req.body.category;
             }
             if(req.body.audience)
             {

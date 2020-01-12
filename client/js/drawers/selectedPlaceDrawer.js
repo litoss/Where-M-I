@@ -1,9 +1,19 @@
 async function selectedPlace(place){
+
+  if(map.pageDrawer) map.pageDrawer.open = false;
+
   var review = [];
 
   var audio;
 
   var content = document.createElement('div');
+
+  var addButton = new FloatingActionButton('audiotrack', 'drawer-fab');
+  content.appendChild(addButton.root_);
+
+  addButton.listen('click', () => {
+    addClipDrawer(place);
+  })
 
   var imgContainer = document.createElement('div');
   imgContainer.className = 'img-container';
@@ -52,33 +62,13 @@ async function selectedPlace(place){
 
 
   var starContainer =  document.createElement('div');
+  content.appendChild(starContainer);
 
-  xhr = new XMLHttpRequest();
-  xhr.open('POST', '/find_review');
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = function(){
-    var response = JSON.parse(xhr.response);
-    console.log(response);
-  }
-  xhr.send(JSON.stringify({OLC: place.OLC}));
-
-    var star = [];
-    for(var i=0;i<5;i++){
-      star[i] = document.createElement('div');
-      star[i].className = "material-icons";
-      star[i].innerHTML = 'star';
-      starContainer.appendChild(star[i]);
-    }
-
-    var review = new ActionButton('review');
-    starContainer.appendChild(review.root_);
-
-    content.appendChild(starContainer);
-
-    review.listen('click', () => {
-      reviewDialog(place);
-    })
-
+  starContainer.addEventListener("click", () => {
+    map.pageDrawer.open = false;
+    reviewDrawer(place.OLC);
+  })
+  setStar(place.media_rating, starContainer);
 
   var separator3 = document.createElement('hr');
   separator3.className = 'mdc-list-divider';
@@ -92,18 +82,12 @@ async function selectedPlace(place){
   what.innerHTML = "What is this?";
   content.appendChild(what);
 
-  // if(playlist[place.OLC]){
-  //   search(place.OLC).then((response) => {
-  //     console.log(response);
-  //     for(var i=0;i<response.length;i++){
-  //       var iframe = document.createElement('iframe');
-  //       iframe.width="420";
-  //       iframe.height="315";
-  //       iframe.src="https://www.youtube.com/embed/" +response[i];
-  //       what.insertAdjacentElement('afterend',iframe);
-  //     }
-  //   });
-  // }
+  if(!playlist[place.OLC]){
+    search(place.OLC, "what").then((response) => {
+        var player = new YoutubePlayer(response);
+        what.insertAdjacentElement('afterend',player);
+    });
+  }
 
   var how = document.createElement('h3');
   how.innerHTML = "How to get in?";
@@ -133,4 +117,29 @@ function loadReview(olc){
     console.log(xhr.response);
   }
   xhr.send(JSON.stringify({OLC: olc}));
+}
+
+function setStar(rating, div){
+
+  var star = [];
+  for(var i=0;i<5;i++){
+    if((rating >= (i + 0.33)) && (rating <= (i + 0.66))){
+      star[i] = document.createElement('div');
+      star[i].className = "material-icons";
+      star[i].innerHTML = 'star_half';
+      div.appendChild(star[i]);
+    }
+    else if(rating > i){
+      star[i] = document.createElement('div');
+      star[i].className = "material-icons";
+      star[i].innerHTML = 'star';
+      div.appendChild(star[i]);
+    }
+    else {
+      star[i] = document.createElement('div');
+      star[i].className = "material-icons";
+      star[i].innerHTML = 'star_border';
+      div.appendChild(star[i]);
+    }
+  }
 }

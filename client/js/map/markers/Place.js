@@ -60,8 +60,7 @@ class Place {
 
     if(place){
       card.primaryAction.addEventListener('click',() => {
-        if(!map.pageDrawer) selectedPlace(place);
-        else map.pageDrawer.open = false;
+          selectedPlace(place);
       });
       leftButtonList[0].addEventListener('click', () => {
         var card = new Card(name, null, description, image, null, null, 'about-card');
@@ -76,7 +75,7 @@ class Place {
       });
     }else{
       leftButtonList[0].addEventListener('click', () => {
-        if(profile) selectPlace(this.marker.getPosition());
+        if(profile) {selectPlace(this.marker.getPosition())}
         else {
           var snackbar = new SnackBar('You must be logged to use this function');
           snackbar.open();

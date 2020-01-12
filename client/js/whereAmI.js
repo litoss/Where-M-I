@@ -1,51 +1,72 @@
-var playlist;
-var position;
+var playlist = [];
+var position = 0;
+var distance;
 
-function start(){
+async function start(){
 
-  var [marker, distance] = findClosestMarker();
 
-  if(distance < 1000 ){
-    var olc = olc.value = OpenLocationCode.encode(marker.position.lat(), marker.position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
-
-    playlist.push(search(olc, 'who'));
-  }else{
-    //Non ci sono luoghi intorno a te!
+  while(marker){
+    playlist.push(marker);
+    var marker = await findClosestMarker(marker.getPosition().lat(), marker.getPosition().lng());
   }
+
+  console.log(playlist);
+  if(playlist.lenght){} //Non ci sono posti intorno a te!
+
+
 }
 
-function findClosestMarker(){
-  if(map.position.getMap()){
-    var lat = map.position.getPosition().lat();
-    var lng = map.position.getPosition().lng();
+async function findClosestMarker(lat, lng){
 
     var minDistance = 10000;
-    var marker = null;
+    var minMarker = null;
 
     for(var i=0; i<map.places.length; i++){
 
-      var olc = olc.value = OpenLocationCode.encode(map.places[i].getPosition().lat(), map.places[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
-
       //Se il posto non è nella playlist
-      if(!playlist.keys().includes(olc)){
+      if(!playlist.includes(map.places[i])){
+
         var distance = getDistance(lat, map.places[i].getPosition().lat(), lng, map.places[i].getPosition().lng());
 
         if(distance < minDistance){
-          marker = i;
-          distance = distance;
+          minMarker = i;
+          minDistance = distance;
         }
       }
     }
 
-    return [map.places[marker], distance];
-
-  }else{
-  } //ERROR
+    return map.places[minMarker];
 }
 
-function next(){
+async function whereAmi(){
+  var marker;
+  if(!playlist[position]){
+    marker = await findClosestMarker(map.position.getPosition().lat(), map.position.getPosition().lng());
+    playlist.push(marker);
+    search(olc, "what").then((response) => {
+      for(var i in response)
+        clips.push(response[i]);
+    });
+    search(olc, "who").then((response) => {
+      for(var i in response)
+        clips.push(response[i]);
+    });
+    search(olc, "why").then((response) => {
+      for(var i in response)
+        clips.push(response[i]);
+    });
+
+  }else{
+    marker = playlist[posion];
+  }
+
+  var olc = OpenLocationCode.encode(marker.getPosition().lat(), marker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
 
 
+}
+
+async function next(){
+  pauseVideo();
 }
 
 function previous(){
