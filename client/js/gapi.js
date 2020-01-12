@@ -37,7 +37,7 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
     profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-    preferences = getPreferences(token);
+    preferences = getPreferences();
 
     map.topBar.authorizeButton.root_.style.display = "none";
     map.topBar.signoutButton.root_.style.display = "block";
@@ -75,21 +75,28 @@ function handleSignoutClick(event) {
   preferences = defaultPrefs;
 }
 
-function getPreferences(token) {
+function getPreferences() {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_preference');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
     var response = JSON.parse(xhr.response);
+    console.log(response);
     if (response[0]){
       preferences = response[0];
       if(!response[0].category) preferences.category = 'all';
     }
-    else preferences = defaultPrefs;
+    else setPreferences();
   };
   xhr.send(JSON.stringify({token: token}));
 }
 
-function getUser(userid){
-  console.log(gapi.auth2);
+function setPreferences() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/add_preference');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    console.log(xhr.response);
+  };
+  xhr.send(JSON.stringify({token: token, category: defaultPrefs.category, audience: defaultPrefs.audience, language:defaultPrefs.language}));
 }

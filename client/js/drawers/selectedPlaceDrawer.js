@@ -82,12 +82,12 @@ async function selectedPlace(place){
   what.innerHTML = "What is this?";
   content.appendChild(what);
 
-  if(!playlist[place.OLC]){
-    search(place.OLC, "what").then((response) => {
-        var player = new YoutubePlayer(response);
-        what.insertAdjacentElement('afterend',player);
-    });
-  }
+  // if(!playlist[place.OLC]){
+  //   search(place.OLC, "what").then((response) => {
+  //       var player = new YoutubePlayer(response);
+  //       what.insertAdjacentElement('afterend',player);
+  //   });
+  // }
 
   var how = document.createElement('h3');
   how.innerHTML = "How to get in?";

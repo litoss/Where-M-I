@@ -45,7 +45,6 @@ function openSettings(){
     });
 
     preferences = selected;
-    console.log(preferences);
 
     if(profile){
 
