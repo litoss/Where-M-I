@@ -40,6 +40,21 @@ verify = async(token) => {
     //const domain = payload['hd'];
 }
 
+
+user_info = async(token) => {
+
+    const ticket = await client_user.verifyIdToken({
+        idToken: token,
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    return payload;
+    // If request specified a G Suite domain:
+    //const domain = payload['hd'];
+}
+
 exports.add_one = async (req) => { //creazione di un nuovo luogo
 
     var m_rating = 0; // alla creazione di un nuovo luogo settiamo la media a 0 dato non ci sono ancora recensioni
@@ -526,15 +541,20 @@ exports.add_pref = async(req) =>{
         const db = client.db("webdb");
 
         var veruser = await verify(req.body.token);
+        var payload = await user_info(req.body.token);
         var query = {user : veruser};
         var exist = await db.collection('preferences').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
         if(exist == false){
         let doc = {_id: new ObjectID(),
-            user: veruser,
+            user_id: veruser,
+            username: payload['name'],
+            picture:  payload['picture'],
+            email: payload['email'],
             categories: req.body.categories,
             audience: req.body.audience,
             language: req.body.language
+
             //se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
             //visualizzati anche tutti i percorsi dove quest'ultimo e' una tappa
         };
@@ -632,5 +652,9 @@ Possibilita' modifica route e aggiunta degli user
 
 10)FATTO
 Ricerca tramite user delle route
+
+11)FATTO
+richiesta nella verify dei dati dell'utente
+
 
 */
