@@ -1,6 +1,5 @@
-async function reviewDialog(place){
+async function reviewDialog(olc){
 
-  console.log(place);
   var content = document.createElement("div");
 
   var dialogTitle = 'Add a review for this place.';
@@ -64,14 +63,23 @@ async function reviewDialog(place){
         document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
       });
       return;
+    }else {
+      var snackbar = new SnackBar('Review Added succesfully');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
+      dialog.close();
+      map.pageDrawer.open = false;
     }
+
     xhr = new XMLHttpRequest();
     xhr.open('POST', '/new_review');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function(){
       console.log(xhr.response);
     }
-    xhr.send(JSON.stringify({token: token, OLC: place.OLC, rating_place: value, comment:reviewForm.value}))
+    xhr.send(JSON.stringify({token: token, OLC: olc, rating_place: value, comment:reviewForm.value}))
   })
 
   var dialog = new Dialog(content,footer,dialogTitle);

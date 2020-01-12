@@ -14,6 +14,7 @@ class PageDrawer extends Drawer{
 
     clear.listen('click', () => {
       this.open = false;
+      document.querySelector('.mdc-drawer--dismissible').remove();
     })
 
     contentcontent.appendChild(topBarDrawer.root_);
@@ -24,7 +25,7 @@ class PageDrawer extends Drawer{
 
   this.listen('MDCDrawer:closed', () => {
     document.querySelector('.mdc-drawer--dismissible').remove();
-    map.pageDrawer = null;
+    //map.pageDrawer = null;
   });
   }
 

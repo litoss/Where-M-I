@@ -17,10 +17,12 @@ class SnackBar extends mdc.snackbar.MDCSnackbar{
         actions.className = "mdc-snackbar__actions";
         surface.appendChild(actions);
 
-        if(button){
-          var button = but;
-          button.className += " mdc-snackbar__action";
-          actions.appendChild(button);
+        if(but){
+          for(var i in but){
+            var button = but[i];
+            button.className += " mdc-snackbar__action";
+            actions.appendChild(button);
+          }
         }
         var parent = document.querySelector('#map');
         parent.appendChild(item);

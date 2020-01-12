@@ -2,6 +2,9 @@ function openSettings(){
 
   var content = document.createElement('div');
 
+  var addButton = new FloatingActionButton('edit', 'drawer-fab');
+  content.appendChild(addButton.root_);
+
   //audience
   var listAud = new List();
   for (var i in audience) listAud.add(new SelectList(audience[i].name,audience[i].id));
@@ -21,20 +24,20 @@ function openSettings(){
   var listCat = new List();
   for (var i in categories) listCat.add(new SelectList(categories[i].name,categories[i].id));
   var catSel = new Select("Category",listCat.root_,'form-field');
-  catSel.setValue(preferences.categories);
+  catSel.setValue(preferences.category);
   content.appendChild(catSel.root_);
 
   map.pageDrawer = new PageDrawer('Settings', content);
   map.pageDrawer.open = true;
 
-  map.pageDrawer.listen( "MDCDrawer:closed", () => {
+  addButton.listen( "click", () => {
+    console.log('ciao');
+
     var form = new FormData();
     form.append('token', token);
-    if(lang.value)form.append('language', lang.value);
-    if(aud.value)form.append('audience', aud.value);
-
-    if(catSel.value)form.append('categories',catSel.value);
-    else form.append('categories', 'none');
+    form.append('language', lang.value);
+    form.append('audience', aud.value);
+    form.append('category',catSel.value);
 
     var selected = {};
     form.forEach(function(value, key){
@@ -42,12 +45,15 @@ function openSettings(){
     });
 
     preferences = selected;
+    console.log(preferences);
 
     if(profile){
+
       xhr = new XMLHttpRequest();
       xhr.open('POST', '/add_preference');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = function() {
+          console.log(xhr.response);
           if (xhr.status !== 200) {
             var snackbar = new SnackBar('Something went wrong please try again');
             snackbar.open();
@@ -58,7 +64,12 @@ function openSettings(){
       };
       xhr.send(JSON.stringify(preferences));
     };
-
+    var snackbar = new SnackBar('Preferences updated successfully');
+    snackbar.open();
+    snackbar.listen("MDCSnackbar:closed",() => {
+      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+    });
+    if(map.pageDrawer) map.pageDrawer.open = false;
   })
 
 }

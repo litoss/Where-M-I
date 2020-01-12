@@ -532,7 +532,7 @@ exports.add_pref = async(req) =>{
         if(exist == false){
         let doc = {_id: new ObjectID(),
             user: veruser,
-            categories: req.body.categories,
+            category: req.body.category,
             audience: req.body.audience,
             language: req.body.language
             //se non si salva anche l'olc di partenza, quando si fa la find e si ricerca un OLC vengono
@@ -545,9 +545,9 @@ exports.add_pref = async(req) =>{
 
         else{
           var object3 = {};
-            if(req.body.categories)
+            if(req.body.category)
             {
-              object3.category = req.body.categories;
+              object3.category = req.body.category;
             }
             if(req.body.audience)
             {

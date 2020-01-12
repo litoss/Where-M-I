@@ -1,4 +1,9 @@
-async function createEditDialog(place){
+var dialog;
+var place;
+
+async function createEditDialog(plac){
+
+  place = plac;
   var content = document.createElement("div");
 
   var dialogTitle = 'Edit this place.';
@@ -47,7 +52,7 @@ async function createEditDialog(place){
   var button = new IconButton(dialogIcon,"mdc-button--raised mdc-image__circular");
   footer.appendChild(button.root_);
 
-  var dialog = new Dialog(content,footer,dialogTitle);
+  dialog = new Dialog(content,footer,dialogTitle);
   document.getElementById('map').appendChild(dialog.root_);
   dialog.open();
   //descrForm.input.focus();
@@ -128,18 +133,48 @@ async function createEditDialog(place){
       });
       return;
     }
-
-    submit(form);
+    verify(form);
   });
 
   dialog.listen('MDCDialog:closing', function() {
-  document.getElementById('map').removeChild(dialog.root_);
-});
+    document.getElementById('map').removeChild(dialog.root_);
+  });
+}
+
+function verify(form){
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', '/find_place');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    var response = JSON.parse(xhr.response);
+    if(!response[0]) submit(form);
+    else if(response[0].user != profile.Eea){
+      var snackbar = new SnackBar('Place already added from another User');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
+    }else {
+      var edit = new ActionButton('edit');
+      var close = new IconButton('close');
+      var snackbar = new SnackBar('You are edit a place already added',[edit.root_,close.root_]);
+      snackbar.open();
+      edit.listen('click', () => {
+        submit(form);
+      })
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
+    }
+  }
+  xhr.send(JSON.stringify({OLC: place.OLC}));
+}
+
 
 function submit(form){
-  var place = {};
+  var object = {};
   form.forEach(function(value, key){
-      place[key] = value;
+      object[key] = value;
   });
 
   xhr = new XMLHttpRequest();
@@ -153,10 +188,12 @@ function submit(form){
           document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
         });
           var addedPlace = new Place(place);
+          console.log(place);
           map.places.push(addedPlace);
+          console.log(map.places);
           map.closeAllWindow();
           dialog.close();
-          map.pageDrawer.open = false;
+          if(map.pageDrawer) map.pageDrawer.open = false;
           var snackbar = new SnackBar('Place added Successfully');
           snackbar.open();
           snackbar.listen("MDCSnackbar:closed",() => {
@@ -169,6 +206,5 @@ function submit(form){
       }
   };
 
-  xhr.send(JSON.stringify(place));
-}
+  xhr.send(JSON.stringify(object));
 }
