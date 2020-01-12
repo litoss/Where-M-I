@@ -227,7 +227,7 @@ exports.add_review = async (req) => {
 
     //console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
     //console.log('\n');
-
+2
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
@@ -239,6 +239,7 @@ exports.add_review = async (req) => {
         var query = {$and: [{OLC:{$regex:'.*' + escapeRegExp(olc) + '.*'}} , {user:{$regex:veruser}} ] };//controlla se esiste una recensione di questo utente di questo posto
         var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
+      //  var query = {$and: [{OLC:{$regex:'.*' + escapeRegExp(olc) + '.*'}} , {user:{$regex:veruser}} ] };
         //if the OLC of this user is not in the DB create it
         console.log("review user exist: " + exist);
 
@@ -547,8 +548,8 @@ exports.add_pref = async(req) =>{
 
         if(exist == false){
         let doc = {_id: new ObjectID(),
-            user_id: veruser,
-            username: payload['name'],
+            user: veruser,
+            name: payload['name'],
             picture:  payload['picture'],
             email: payload['email'],
             category: req.body.category,
@@ -577,6 +578,8 @@ exports.add_pref = async(req) =>{
             {
               object3.language = req.body.language;
             }
+          object3.picture = payload['picture'];
+
           var new_values = {$set: object3};
           var ret_update = await db.collection('preferences').updateOne(query, new_values); //update with the parameter that are passed trought the body
           client.close();
