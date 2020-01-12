@@ -1,30 +1,111 @@
 function openSearch(){
 
   var isOpen= false;
-
+  console.log(preferences);
   var searchSettings = preferences;
-  var prefOpen = false;
+  var object;
+  var uri;
+  var activated;
 
   var content = document.createElement('div');
 
+  var tabBar = new TabBar(searchTab.map(o => o['name']), searchTab.map( o => o['icon']));
+
   var search = new TextField("What", "search");
   search.required = true;
-  content.appendChild(search.root_);
 
-  var button = new IconButton('search');
-  content.appendChild(button.root_);
-
-  var listEl = new List();
-  for (var i in searchType) listEl.add(new SelectList(searchType[i].name,searchType[i].id));
-  var selectType = new Select("Where",listEl.root_,'form-field');
-  selectType.required = true;
-  content.appendChild(selectType.root_);
+  var searchButton = new IconButton('search');
 
   var settingsButton = new IconButton('settings');
-  content.appendChild(settingsButton.root_);
 
+  var searchHeader = document.createElement('div');
+  searchHeader.appendChild(search.root_);
   var searchDiv = document.createElement('div');
+
+
+  tabBar.listen("MDCTabBar:activated", (event) => {
+
+    switch (event.detail.index) {
+      case 0:
+        searchHeader.appendChild(searchButton.root_);
+        searchHeader.appendChild(settingsButton.root_);
+        // if(searchSettings.category == 'all') var cat = ' ';
+        // else var cat = searchSettings.category;
+        // object = {name:search.value, category:cat};
+        // uri = '/find_place';
+        activated = 0;
+        break;
+      case 1:
+        searchHeader.appendChild(searchButton.root_);
+        searchHeader.appendChild(settingsButton.root_);
+        // var snackbar = new SnackBar('Implementare ricerca youtube');
+        // snackbar.open();
+        // snackbar.listen("MDCSnackbar:closed",() => {
+        //   document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+        // });
+        activated = 1;
+        break;
+      case 2:
+        searchHeader.appendChild(searchButton.root_);
+        searchHeader.appendChild(settingsButton.root_);
+        // object = {namer:search.value};
+        // uri = "/find_route";
+        // activated = 2;
+        break;
+    }
+  });
+
+  tabBar.activateTab(0);
+  activated = 0;
+  content.appendChild(tabBar.root_);
+  content.appendChild(searchHeader);
   content.appendChild(searchDiv);
+
+
+  // button.listen('click', () => {
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.open('POST', uri);
+  //   xhr.setRequestHeader('Content-Type', 'application/json');
+  //   xhr.onload = async function(){
+  //     searchDiv.innerHTML = '';
+  //     var response = JSON.parse(xhr.response);
+  //     if(!response[0]){
+  //       var errorText = document.createElement('h3');
+  //       errorText.innerHTML = 'No results in category selected: '+ searchSettings.category;
+  //       searchDiv.appendChild(errorText);
+  //     }
+  //     for(var i in response) {
+  //       if(activated == 0){
+  //         var place = response[i];
+  //         var name = place.name;
+  //         var img = await decode64(place.image);
+  //       }else{
+  //         var route = response [i];
+  //         var name = route.namer;
+  //         var img = null;
+  //       }
+  //       var card = new Card(name,null,null, img,null,null,'about-card');
+  //       searchDiv.appendChild(card.root_);
+  //
+  //       var addListener = function(index){
+  //         card.primaryAction.addEventListener("click", () => {
+  //           if(activated == 0){
+  //             var place = response[index];
+  //             map.pageDrawer.open = false;
+  //             selectedPlace(place);
+  //           }else{
+  //             var path =  response[index];
+  //             map.pageDrawer.open = false;
+  //             selectedPath(path);
+  //           }
+  //         });
+  //       }
+  //       addListener(i);
+  //     }
+  //   }
+  //   console.log(object);
+  //   xhr.send(JSON.stringify(object));
+  // });
 
   settingsButton.listen('click', () => {
 
@@ -49,11 +130,11 @@ function openSearch(){
       lang.setValue(searchSettings.language);
       container.appendChild(lang.root_);
 
-      //categories
+      //category
 
       var listCat = new List();
       for (var i in categories) listCat.add(new SelectList(categories[i].name,categories[i].id));
-      var catSel = new Select("Category",listCat.root_,'form-field');
+      var catSel = new Select("category",listCat.root_,'form-field');
       catSel.setValue(searchSettings.category);
       container.appendChild(catSel.root_);
 
@@ -80,74 +161,6 @@ function openSearch(){
       settingsButton.root_.nextElementSibling.remove();
       isOpen = false;
     }
-  })
-
-  button.listen('click', () => {
-    if (selectType.value == '') {
-      var snackbar = new SnackBar('You forgot to choice where you want to search');
-      snackbar.open();
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
-      return;
-    }
-    else if(selectType.value == 'plc'){
-      console.log(searchSettings.category);
-       var object = {name:search.value, category:searchSettings.category};
-       var uri = '/find_place';
-    }
-    else if(selectType.value == 'clp') {
-      alert('Implementare ricerca youtube');
-      return;
-    }
-    else if(selectType.value == 'pth') {
-      var object = {namer:search.value};
-      var uri = "/find_route";
-    }
-    console.log(uri);
-    console.log(object);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', uri);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = async function(){
-      searchDiv.innerHTML = '';
-      var response = JSON.parse(xhr.response);
-      if(!response[0]){
-        var errorText = document.createElement('h3');
-        errorText.innerHTML = 'No results in category selected: '+ searchSettings.category;
-        searchDiv.appendChild(errorText);
-      }
-      for(var i in response) {
-        if(selectType.value == 'plc'){
-          var place = response[i];
-          var name = place.name;
-          var img = await decode64(place.image);
-        }else{
-          var route = response [i];
-          var name = route.namer;
-          var img = null;
-        }
-        var card = new Card(name,null,null, img,null,null,'about-card');
-        searchDiv.appendChild(card.root_);
-
-        var addListener = function(index){
-          card.primaryAction.addEventListener("click", () => {
-            if(selectType.value == 'plc'){
-              var place = response[index];
-              map.pageDrawer.open = false;
-              selectedPlace(place);
-            }else{
-              var path =  response[index];
-              map.pageDrawer.open = false;
-              selectedPath(path);
-            }
-          });
-        }
-        addListener(i);
-      }
-    }
-
-    xhr.send(JSON.stringify(object));
   });
 
   map.pageDrawer = new PageDrawer('Search', content);

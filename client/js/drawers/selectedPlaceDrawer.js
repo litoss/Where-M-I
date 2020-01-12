@@ -1,8 +1,19 @@
 async function selectedPlace(place){
 
+  if(map.pageDrawer) map.pageDrawer.open = false;
+
+  var review = [];
+
   var audio;
 
   var content = document.createElement('div');
+
+  var addButton = new FloatingActionButton('audiotrack', 'drawer-fab');
+  content.appendChild(addButton.root_);
+
+  addButton.listen('click', () => {
+    addClipDrawer(place);
+  })
 
   var imgContainer = document.createElement('div');
   imgContainer.className = 'img-container';
@@ -49,29 +60,15 @@ async function selectedPlace(place){
   separator2.className = 'mdc-list-divider';
   content.appendChild(separator2);
 
+
   var starContainer =  document.createElement('div');
-  var star = [];
-  for(var i=0;i<5;i++){
-    star[i] = document.createElement('div');
-    star[i].className = "material-icons";
-    star[i].innerHTML = 'star';
-    starContainer.appendChild(star[i]);
-  }
-
-  var review = new ActionButton('review');
-  starContainer.appendChild(review.root_);
-
   content.appendChild(starContainer);
 
-  var olc = document.createElement('p');
-  olc.innerHTML = "Open location code: " + place.OLC;
-  content.appendChild(olc);
-
-
-
-  review.listen('click', () => {
-    reviewDialog(place);
+  starContainer.addEventListener("click", () => {
+    map.pageDrawer.open = false;
+    reviewDrawer(place.OLC);
   })
+  setStar(place.media_rating, starContainer);
 
   var separator3 = document.createElement('hr');
   separator3.className = 'mdc-list-divider';
@@ -109,4 +106,40 @@ async function selectedPlace(place){
       audio = null;
     }
   });
+}
+
+function loadReview(olc){
+  console.log(olc);
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', '/find_route');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    console.log(xhr.response);
+  }
+  xhr.send(JSON.stringify({OLC: olc}));
+}
+
+function setStar(rating, div){
+
+  var star = [];
+  for(var i=0;i<5;i++){
+    if((rating >= (i + 0.33)) && (rating <= (i + 0.66))){
+      star[i] = document.createElement('div');
+      star[i].className = "material-icons";
+      star[i].innerHTML = 'star_half';
+      div.appendChild(star[i]);
+    }
+    else if(rating > i){
+      star[i] = document.createElement('div');
+      star[i].className = "material-icons";
+      star[i].innerHTML = 'star';
+      div.appendChild(star[i]);
+    }
+    else {
+      star[i] = document.createElement('div');
+      star[i].className = "material-icons";
+      star[i].innerHTML = 'star_border';
+      div.appendChild(star[i]);
+    }
+  }
 }

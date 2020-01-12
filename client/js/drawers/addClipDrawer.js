@@ -1,4 +1,4 @@
-function addClipDrawer(position){
+function addClipDrawer(place){
   var audios = [];
 
   var div = document.createElement('div');
@@ -10,7 +10,7 @@ function addClipDrawer(position){
   var olc = new TextField("Open Location Code");
   olc.required = true;
   olc.disabled = true;
-  olc.value = OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
+  olc.value = place.OLC;
   div.appendChild(olc.root_);
   div.appendChild(document.createElement('br'));
 

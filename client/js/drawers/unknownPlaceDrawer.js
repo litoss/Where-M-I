@@ -1,6 +1,6 @@
-function selectPlace(position) {
+async function selectPlace(position) {
 
-  if(!map.pageDrawer){
+    if(map.pageDrawer) map.pageDrawer.open = false;
 
     var div = document.createElement('div');
 
@@ -60,5 +60,4 @@ function selectPlace(position) {
 
     map.pageDrawer = new PageDrawer('Select your Place', div);
     map.pageDrawer.open = true;
-  }
 }

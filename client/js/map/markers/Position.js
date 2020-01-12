@@ -16,11 +16,10 @@ class Position {
       strokeOpacity: 0.25
     });
 
-    var addClip = new IconButton('audiotrack');
     var search = new IconButton('search');
 
     this.infoWindow = new google.maps.InfoWindow({
-        content: new Card(yourPlace.title, null, yourPlace.description, null, [addClip.root_, search.root_]).root_,
+        content: new Card(yourPlace.title, null, yourPlace.description, null, [search.root_]).root_,
         maxWidth: 400
     });
 
@@ -28,9 +27,7 @@ class Position {
     this.marker.addListener("click", () => {
       this.infoWindow.open(map,this.marker);
     })
-    addClip.listen('click', () => {
-      addClipDrawer(this.marker.getPosition());
-    })
+
     search.listen('click', () => {
       var xhr = new XMLHttpRequest();
       xhr.open('POST', '/find_place');

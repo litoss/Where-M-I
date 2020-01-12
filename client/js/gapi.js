@@ -49,6 +49,7 @@ function updateSigninStatus(isSignedIn) {
   } else {
 
     preferences = defaultPrefs;
+    console.log(preferences);
 
     map.topBar.icon.setImage("content/photo.png");
     map.topBar.loginCard.setTitle("Guest");
@@ -76,7 +77,10 @@ function getPreferences(token) {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
     var response = JSON.parse(xhr.response);
-    if (response[0]) preferences = response[0];
+    if (response[0]){
+      preferences = response[0];
+      if(!response[0].category) preferences.category = 'all';
+    }
     else preferences = defaultPrefs;
   };
   xhr.send(JSON.stringify({token: token}));

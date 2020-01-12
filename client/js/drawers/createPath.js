@@ -47,7 +47,8 @@ function createPath(){
               if(!route.includes(response[index].OLC)){
                 route.push(response[index].OLC);
                 var image = decode64(response[index].image, "image/jpg");
-                var card = new Card(response[index].name, null, null,image,null,null,'about-card');
+                var removeButton = new IconButton('delete');
+                var card = new Card(response[index].name, null, null,image,null,[removeButton.root_],'about-card');
                 pathSelected.appendChild(card.root_);
               }else {
                 var snackbar = new SnackBar('This Place is already on your selected Path');
@@ -80,23 +81,51 @@ function createPath(){
         });
         return;
       }
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/new_route');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onload = function(){
-        //se cerco di aggiungere un nuovo percorso con la stessa partenza equivale alla modifica del percorso
-        //DEVE CHIEDERE CONFERMA!!!
-        var snackbar = new SnackBar('Your Path is correctly Added');
-        snackbar.open();
-        snackbar.listen("MDCSnackbar:closed",() => {
-          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-        });
-      }
-      console.log(route);
-      xhr.send(JSON.stringify({namer: namer, route: route, token: token}));
+
+      verifyRoute(route, namer);
 
     })
 
     map.pageDrawer = new PageDrawer('Create new Path', content);
     map.pageDrawer.open = true;
+}
+
+function verifyRoute(route, name){
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', '/find_route');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    var response = JSON.parse(xhr.responseText);
+    if(!response[0]) submitRoute(route, name);
+    else {
+      var edit = new ActionButton('edit');
+      var close = new IconButton('close');
+      var snackbar = new SnackBar('You already have a route started from this place',[edit.root_,close.root_]);
+      snackbar.open();
+      edit.listen('click', () => {
+        submitRoute(route, name);
+      })
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
+    }
+  }
+  xhr.send(JSON.stringify({OLC: route[0]}));
+}
+
+function submitRoute(route, name){
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/new_route');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    //se cerco di aggiungere un nuovo percorso con la stessa partenza equivale alla modifica del percorso
+    //DEVE CHIEDERE CONFERMA!!!
+    var snackbar = new SnackBar('Your Path is correctly Added');
+    snackbar.open();
+    snackbar.listen("MDCSnackbar:closed",() => {
+      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+    });
+  }
+  xhr.send(JSON.stringify({namer: name, route: route, token: token}));
+
 }

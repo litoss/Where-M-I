@@ -6,7 +6,7 @@ async function openCharts(){
   var list = document.createElement('div');
   list.style.padding = '20px';
 
-  var clips = await getTopClips();
+  //var clips = await getTopClips();
 
 
   tabBar.listen("MDCTabBar:activated", (event) => {
@@ -15,13 +15,13 @@ async function openCharts(){
 
     switch (event.detail.index) {
       case 0:
-        var listclips = new List("mdc-list--two-line");
-        console.log(clips);
-        for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
-        list.appendChild(listclips.root_);
-        list.listen('click',(event) => {
-
-        })
+        // var listclips = new List("mdc-list--two-line");
+        // console.log(clips);
+        // for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
+        // list.appendChild(listclips.root_);
+        // list.listen('click',(event) => {
+        //
+        // })
         break;
       case 1:
         var vloggers = new List();
@@ -37,6 +37,8 @@ async function openCharts(){
   });
 
   tabBar.activateTab(0);
+
+
 
   content.appendChild(tabBar.root_);
   content.appendChild(list);
