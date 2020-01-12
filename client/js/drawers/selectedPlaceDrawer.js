@@ -63,18 +63,15 @@ async function selectedPlace(place){
 
   content.appendChild(starContainer);
 
-<<<<<<< HEAD
   var olc = document.createElement('p');
   olc.innerHTML = "Open location code: " + place.OLC;
   content.appendChild(olc);
-=======
 
 
 
   review.listen('click', () => {
     reviewDialog(place);
   })
->>>>>>> c576ba0b0b10c00c8879cce26ab3accdece42add
 
   var separator3 = document.createElement('hr');
   separator3.className = 'mdc-list-divider';
@@ -88,16 +85,10 @@ async function selectedPlace(place){
   what.innerHTML = "What is this?";
   content.appendChild(what);
 
-  if(playlist[place.OLC]){
-    search(place.OLC).then((response) => {
-      console.log(response);
-      for(var i=0;i<response.length;i++){
-        var iframe = document.createElement('iframe');
-        iframe.width="420";
-        iframe.height="315";
-        iframe.src="https://www.youtube.com/embed/" +response[i];
-        what.insertAdjacentElement('afterend',iframe);
-      }
+  if(!playlist[place.OLC]){
+    search(place.OLC, "what").then((response) => {
+        var player = new YoutubePlayer(response);
+        what.insertAdjacentElement('afterend',player);
     });
   }
 

@@ -50,7 +50,7 @@ class Position {
   }
 
   getMap(){
-    this.marker.getMap();
+    return this.marker.getMap();
   }
 
   getPosition(){

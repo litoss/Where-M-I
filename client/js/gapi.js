@@ -81,3 +81,7 @@ function getPreferences(token) {
   };
   xhr.send(JSON.stringify({token: token}));
 }
+
+function getUser(userid){
+  console.log(gapi.auth2);
+}
