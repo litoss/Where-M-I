@@ -19,6 +19,9 @@ body {
   height: 100%;
 }
 
+#player {
+  display: none;
+}
 
 .mdc-top-app-bar--dense .mdc-top-app-bar__title {
   font-family: 'where-m-i';
@@ -109,11 +112,6 @@ body {
   margin: 10px;
   border-radius: 50%;
 }
-}
-/*login menu*/
-.mdc-image__circular{
-  border-radius: 50%;
-}
 
 .login-menu {
   width: 300px;
@@ -185,9 +183,9 @@ body {
 }
 
 .drawer-fab {
-  position: fixed;
+  position: absolute;
   bottom: 1rem;
-  left: 400px;
+  right: 1rem;
 }
 
 .mdc-fab {

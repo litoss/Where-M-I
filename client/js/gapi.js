@@ -39,6 +39,8 @@ function updateSigninStatus(isSignedIn) {
     profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
     preferences = getPreferences(token);
 
+    map.topBar.authorizeButton.root_.style.display = "none";
+    map.topBar.signoutButton.root_.style.display = "block";
     map.topBar.icon.setImage(profile.getImageUrl());
     map.topBar.loginCard.setTitle(profile.getName());
     map.topBar.loginCard.setImage(profile.getImageUrl());
@@ -51,6 +53,8 @@ function updateSigninStatus(isSignedIn) {
     preferences = defaultPrefs;
     console.log(preferences);
 
+    map.topBar.authorizeButton.root_.style.display = "block";
+    map.topBar.signoutButton.root_.style.display = "none";
     map.topBar.icon.setImage("content/photo.png");
     map.topBar.loginCard.setTitle("Guest");
     map.topBar.loginCard.setImage("content/photo.png");
