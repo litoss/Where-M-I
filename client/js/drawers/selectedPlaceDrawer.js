@@ -1,4 +1,5 @@
 async function selectedPlace(place){
+  var review = [];
 
   var audio;
 
@@ -49,32 +50,35 @@ async function selectedPlace(place){
   separator2.className = 'mdc-list-divider';
   content.appendChild(separator2);
 
+
   var starContainer =  document.createElement('div');
-  var star = [];
-  for(var i=0;i<5;i++){
-    star[i] = document.createElement('div');
-    star[i].className = "material-icons";
-    star[i].innerHTML = 'star';
-    starContainer.appendChild(star[i]);
+
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', '/find_review');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    var response = JSON.parse(xhr.response);
+    console.log(response);
   }
+  xhr.send(JSON.stringify({OLC: place.OLC}));
 
-  var review = new ActionButton('review');
-  starContainer.appendChild(review.root_);
+    var star = [];
+    for(var i=0;i<5;i++){
+      star[i] = document.createElement('div');
+      star[i].className = "material-icons";
+      star[i].innerHTML = 'star';
+      starContainer.appendChild(star[i]);
+    }
 
-  content.appendChild(starContainer);
+    var review = new ActionButton('review');
+    starContainer.appendChild(review.root_);
 
-<<<<<<< HEAD
-  var olc = document.createElement('p');
-  olc.innerHTML = "Open location code: " + place.OLC;
-  content.appendChild(olc);
-=======
+    content.appendChild(starContainer);
 
+    review.listen('click', () => {
+      reviewDialog(place);
+    })
 
-
-  review.listen('click', () => {
-    reviewDialog(place);
-  })
->>>>>>> c576ba0b0b10c00c8879cce26ab3accdece42add
 
   var separator3 = document.createElement('hr');
   separator3.className = 'mdc-list-divider';
@@ -88,18 +92,18 @@ async function selectedPlace(place){
   what.innerHTML = "What is this?";
   content.appendChild(what);
 
-  if(playlist[place.OLC]){
-    search(place.OLC).then((response) => {
-      console.log(response);
-      for(var i=0;i<response.length;i++){
-        var iframe = document.createElement('iframe');
-        iframe.width="420";
-        iframe.height="315";
-        iframe.src="https://www.youtube.com/embed/" +response[i];
-        what.insertAdjacentElement('afterend',iframe);
-      }
-    });
-  }
+  // if(playlist[place.OLC]){
+  //   search(place.OLC).then((response) => {
+  //     console.log(response);
+  //     for(var i=0;i<response.length;i++){
+  //       var iframe = document.createElement('iframe');
+  //       iframe.width="420";
+  //       iframe.height="315";
+  //       iframe.src="https://www.youtube.com/embed/" +response[i];
+  //       what.insertAdjacentElement('afterend',iframe);
+  //     }
+  //   });
+  // }
 
   var how = document.createElement('h3');
   how.innerHTML = "How to get in?";
@@ -118,4 +122,15 @@ async function selectedPlace(place){
       audio = null;
     }
   });
+}
+
+function loadReview(olc){
+  console.log(olc);
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', '/find_route');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    console.log(xhr.response);
+  }
+  xhr.send(JSON.stringify({OLC: olc}));
 }

@@ -131,6 +131,10 @@ exports.del_one = async (req) => {
     }
 }
 
+function escapeRegExp (string) {
+    if (string) return string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
 exports.find_place = async(req) => { //ritorna il documento ricercato
 
     try{
@@ -148,7 +152,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
             var str = req.body.OLC;
             //var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
             var olc = append.concat(req.body.OLC);
-            expression.push({OLC:{$regex:str,$options:'i'},});
+            expression.push({OLC:{$regex:'.*' + escapeRegExp(str) + '.*', $options:'i'},});
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
@@ -306,6 +310,7 @@ exports.del_review = async (req) => {
 //ricerca delle recensioni collezione review
 exports.find_review = async(req) => {
     try{
+        console.log(req.body);
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         /*
@@ -318,8 +323,8 @@ exports.find_review = async(req) => {
         var expression = [];
 
         if (req.body.OLC){
-            var olc = append.concat(req.body.OLC);
-            expression.push({OLC:{$regex:olc}});
+            var olc = req.body.OLC;
+            expression.push({OLC:{$regex:'.*' + escapeRegExp(olc) + '.*'}});
         }
 
         if (req.body.token){
