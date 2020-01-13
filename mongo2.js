@@ -136,6 +136,10 @@ exports.del_one = async (req) => {
     }
 }
 
+function escapeRegExp (string) {
+    if (string) return string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
 exports.find_place = async(req) => { //ritorna il documento ricercato
 
     try{
@@ -153,7 +157,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
             var str = req.body.OLC;
             //var n = str.substring(0, str.indexOf("0")); //ripuliamo OLC dagli zeri quando viene eseguita una ricerca per area
             var olc = append.concat(req.body.OLC);
-            expression.push({OLC:{$regex:str,$options:'i'},});
+            expression.push({OLC:{$regex:'.*' + escapeRegExp(str) + '.*',$options:'i'},});
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
@@ -222,7 +226,7 @@ exports.add_review = async (req) => {
         var olc = req.body.OLC;
         var veruser = await verify(req.body.token);
 
-        var query = {$and: [{OLC:{$regex:olc}} , {user:{$regex:veruser}} ] };//controlla se esiste una recensione di questo utente di questo posto
+        var query = {$and: [{OLC:{$regex:'.*' + escapeRegExp(olc) + '.*'}} , {user:{$regex:veruser}} ] };//controlla se esiste una recensione di questo utente di questo posto
         var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
       //if the OLC of this user is not in the DB create it
@@ -262,20 +266,20 @@ exports.add_review = async (req) => {
         else{ //if the OLC for the user is already inserted
 
 
-            var object_body = {}; //create the object with the values to update
+            var object5 = {}; //create the object with the values to update
 
             if (req.body.rating_place){
-                object.rating_place = req.body.rating_place;
+                object5.rating_place = req.body.rating_place;
             }
             if (req.body.visit_tag != undefined){
                object5.visit_tag = req.body.visit_tag;
 
             }
             if (req.body.comment){
-                object.comment = req.body.comment;
+                object5.comment = req.body.comment;
             }
 
-            var new_values = {$set: object_body};
+            var new_values = {$set: object5};
             var ret_update = await db.collection('review').updateOne(query, new_values); //update with the parameter that are passed trought the body
 
               client.close(); //chiudiamo il client perche' ci pensa la funzione up_star a riaprire la comunicazione con il DB
@@ -300,7 +304,8 @@ exports.del_review = async (req) => {
       let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
       const db = client.db("webdb");
       var veruser = await verify(req.body.token);
-      var query = {$and: [{ OLC:req.body.OLC } , { user:veruser }]};
+      var olc = req.body.olc;
+      var query = {$and: [{ $regex:'.*' + escapeRegExp(olc) + '.*'} , { user:veruser }]};
       var can = await db.collection('review').deleteOne(query);
       client.close();
       up_star(req);//dopo l'eliminazione di una recensione deve essere riaggiornato la media rating
@@ -326,8 +331,8 @@ exports.find_review = async(req) => {
         var expression = [];
 
         if (req.body.OLC){
-            var olc = append.concat(req.body.OLC);
-            expression.push({OLC:{$regex:olc}});
+            var olc = req.body.OLC;
+            expression.push({OLC:{$regex:'.*' + escapeRegExp(olc) + '.*',}});
         }
 
         if (req.body.token){
