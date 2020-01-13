@@ -10,6 +10,5 @@ async function translate(text, source, target){
     format: 'text'
   });;
 
-  let result = response.result.data.translations[0].translatedText;
-  return result;
+  return response.result.data.translations[0].translatedText;
 }
