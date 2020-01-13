@@ -98,7 +98,6 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
             };
 
             let ret = await db.collection('place').insertOne(doc);
-            console.log("adding new place \n" + JSON.stringify(doc)) // display the inserted information
             client.close();
             return JSON.stringify(ret);
         }
@@ -173,7 +172,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
-            //console.log("veruser" + veruser);
+            
             var utente = append.concat(veruser);
             expression.push({user:{$regex:utente}});
         }
@@ -229,7 +228,7 @@ exports.add_review = async (req) => {
 
     //console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
     //console.log('\n');
-    console.log(req.body.token);
+
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
@@ -243,7 +242,7 @@ exports.add_review = async (req) => {
 
       //  var query = {$and: [{OLC:{$regex:'.*' + escapeRegExp(olc) + '.*'}} , {user:{$regex:veruser}} ] };
         //if the OLC of this user is not in the DB create it
-        console.log("review user exist: " + exist);
+
 
         if(exist == false){
             var v_tag;
@@ -263,8 +262,7 @@ exports.add_review = async (req) => {
                         comment: req.body.comment
                     }
             let ret_new = await db.collection('review').insertOne(doc);
-            //console.log("review added");
-            //console.log(ret_new.result);
+
 
         client.close();
 
@@ -309,7 +307,7 @@ exports.add_review = async (req) => {
         }
     }
     catch(err){
-        //console.log(err);
+
         return (err);
     }
 }
@@ -428,10 +426,6 @@ up_star = async(req) => {
         object.media_rating = star[0].rating_place
         var new_values = {$set : object};
         var rate_update_place = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
-
-            //console.log(JSON.stringify("rating_place totale aggiornato: " + star[0].rating_place));
-            //console.log(rate_update_place.result);
-
 
         client.close();
         return ("rate place update: " + rate_update_place.result + "   rate audio update: " + rate_update_audio.result);
