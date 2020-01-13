@@ -7,7 +7,7 @@ async function openCharts(){
   list.style.padding = '20px';
 
   //var clips = await getTopClips();
-
+  //var paths = await getTopPaths();
 
   tabBar.listen("MDCTabBar:activated", (event) => {
 
@@ -29,6 +29,7 @@ async function openCharts(){
         list.appendChild(vloggers.root_);
         break;
       case 2:
+
         var paths = new List();
         for(var i in example) paths.add(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
         list.appendChild(paths.root_);
