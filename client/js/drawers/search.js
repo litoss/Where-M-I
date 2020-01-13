@@ -50,7 +50,7 @@ function openSearch(){
         searchHeader.appendChild(settingsButton.root_);
         // object = {namer:search.value};
         // uri = "/find_route";
-        // activated = 2;
+        activated = 2;
         break;
     }
   });
@@ -62,50 +62,79 @@ function openSearch(){
   content.appendChild(searchDiv);
 
 
-  // button.listen('click', () => {
-  //   var xhr = new XMLHttpRequest();
-  //   xhr.open('POST', uri);
-  //   xhr.setRequestHeader('Content-Type', 'application/json');
-  //   xhr.onload = async function(){
-  //     searchDiv.innerHTML = '';
-  //     var response = JSON.parse(xhr.response);
-  //     if(!response[0]){
-  //       var errorText = document.createElement('h3');
-  //       errorText.innerHTML = 'No results in category selected: '+ searchSettings.category;
-  //       searchDiv.appendChild(errorText);
-  //     }
-  //     for(var i in response) {
-  //       if(activated == 0){
-  //         var place = response[i];
-  //         var name = place.name;
-  //         var img = await decode64(place.image);
-  //       }else{
-  //         var route = response [i];
-  //         var name = route.namer;
-  //         var img = null;
-  //       }
-  //       var card = new Card(name,null,null, img,null,null,'about-card');
-  //       searchDiv.appendChild(card.root_);
-  //
-  //       var addListener = function(index){
-  //         card.primaryAction.addEventListener("click", () => {
-  //           if(activated == 0){
-  //             var place = response[index];
-  //             map.pageDrawer.open = false;
-  //             selectedPlace(place);
-  //           }else{
-  //             var path =  response[index];
-  //             map.pageDrawer.open = false;
-  //             selectedPath(path);
-  //           }
-  //         });
-  //       }
-  //       addListener(i);
-  //     }
-  //   }
-  //   console.log(object);
-  //   xhr.send(JSON.stringify(object));
-  // });
+  searchButton.listen('click', () => {
+    if (activated == 0){
+      if(searchSettings.category == 'all') var cat = '';
+      else var cat = searchSettings.category;
+      object = {name:search.value, category:cat};
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/find_place');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = async function(){
+        searchDiv.innerHTML = '';
+        var response = JSON.parse(xhr.response);
+        console.log(response);
+        if(!response[0]){
+          var errorText = document.createElement('h3');
+          errorText.innerHTML = 'No results in category selected: '+ searchSettings.category;
+          searchDiv.appendChild(errorText);
+        }
+        for(var i in response) {
+          var place = response[i];
+          var name = place.name;
+          var img = await decode64(place.image);
+          var card = new Card(name,null,null, img,null,null,'about-card');
+          searchDiv.appendChild(card.root_);
+
+          var addListener = function(index){
+            card.primaryAction.addEventListener("click", () => {
+              var place = response[index];
+              map.pageDrawer.open = false;
+              selectedPlace(place);
+            });
+          }
+          addListener(i);
+        }
+      }
+      console.log(object);
+      xhr.send(JSON.stringify(object));
+    }
+    if (activated == 2){
+      object = {namer:search.value};
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/find_route');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = async function(){
+        searchDiv.innerHTML = '';
+        var response = JSON.parse(xhr.response);
+        console.log(response);
+        if(!response[0]){
+          var errorText = document.createElement('h3');
+          errorText.innerHTML = 'No results in category selected: '+ searchSettings.category;
+          searchDiv.appendChild(errorText);
+        }
+        for(var i in response) {
+          var route = response[i];
+          var name = route.namer;
+          var card = new Card(name,null,null, null ,null,null,'about-card');
+          searchDiv.appendChild(card.root_);
+
+          var addListener = function(index){
+            card.primaryAction.addEventListener("click", () => {
+              var route = response[index];
+              map.pageDrawer.open = false;
+              selectedPath(route);
+            });
+          }
+          addListener(i);
+        }
+      }
+      console.log(object);
+      xhr.send(JSON.stringify(object));
+    }
+  });
 
   settingsButton.listen('click', () => {
 

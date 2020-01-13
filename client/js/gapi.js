@@ -37,8 +37,10 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
     profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-    preferences = getPreferences(token);
+    getPreferences();
 
+    map.topBar.authorizeButton.root_.style.display = "none";
+    map.topBar.signoutButton.root_.style.display = "block";
     map.topBar.icon.setImage(profile.getImageUrl());
     map.topBar.loginCard.setTitle(profile.getName());
     map.topBar.loginCard.setImage(profile.getImageUrl());
@@ -51,6 +53,8 @@ function updateSigninStatus(isSignedIn) {
     preferences = defaultPrefs;
     console.log(preferences);
 
+    map.topBar.authorizeButton.root_.style.display = "block";
+    map.topBar.signoutButton.root_.style.display = "none";
     map.topBar.icon.setImage("content/photo.png");
     map.topBar.loginCard.setTitle("Guest");
     map.topBar.loginCard.setImage("content/photo.png");
@@ -71,21 +75,30 @@ function handleSignoutClick(event) {
   preferences = defaultPrefs;
 }
 
-function getPreferences(token) {
+function getPreferences() {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_preference');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
     var response = JSON.parse(xhr.response);
+    console.log(response);
     if (response[0]){
       preferences = response[0];
       if(!response[0].category) preferences.category = 'all';
+    }else {
+      setPreferences();
+      preferences = defaultPrefs;
     }
-    else preferences = defaultPrefs;
   };
-  xhr.send(JSON.stringify({token: token}));
+  xhr.send(JSON.stringify({id: profile.getId()}));
 }
 
-function getUser(userid){
-  console.log(gapi.auth2);
+function setPreferences() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/add_preference');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    console.log(xhr.response);
+  };
+  xhr.send(JSON.stringify({token: token, category: defaultPrefs.category, audience: defaultPrefs.audience, language:defaultPrefs.language}));
 }

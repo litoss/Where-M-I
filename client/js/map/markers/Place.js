@@ -15,7 +15,8 @@ class Place {
       var decode = OpenLocationCode.decode(place.OLC);
       latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
       name = place.name;
-      description = place.description;
+      if(place.description.length > 100) description = place.description.substring(0,100)+"...";
+      else description = place.description;
       image = decode64(place.image, "image/jpg");
 
     }else{

@@ -1,3 +1,5 @@
+var visited = false;
+
 async function selectedPlace(place){
 
   if(map.pageDrawer) map.pageDrawer.open = false;
@@ -30,8 +32,13 @@ async function selectedPlace(place){
     imgContainer.appendChild(openingHours);
   }
 
-  var visited = new IconButton('check_box_ouline_blank');
+  var visited = new IconButton('favorite_border');
   content.appendChild(visited.root_);
+  checkVisited(place.OLC, visited);
+
+  visited.listen('click', () => {
+    setVisited(place.OLC, visited);
+  })
 
   var separator1 = document.createElement('hr');
   separator1.className = 'mdc-list-divider';
@@ -82,12 +89,12 @@ async function selectedPlace(place){
   what.innerHTML = "What is this?";
   content.appendChild(what);
 
-  if(!playlist[place.OLC]){
-    search(place.OLC, "what").then((response) => {
-        var player = new YoutubePlayer(response);
-        what.insertAdjacentElement('afterend',player);
-    });
-  }
+  // if(!playlist[place.OLC]){
+  //   search(place.OLC, "what").then((response) => {
+  //       var player = new YoutubePlayer(response);
+  //       what.insertAdjacentElement('afterend',player);
+  //   });
+  // }
 
   var how = document.createElement('h3');
   how.innerHTML = "How to get in?";
@@ -105,18 +112,8 @@ async function selectedPlace(place){
       audio.pause();
       audio = null;
     }
+    visited = false;
   });
-}
-
-function loadReview(olc){
-  console.log(olc);
-  xhr = new XMLHttpRequest();
-  xhr.open('POST', '/find_route');
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = function(){
-    console.log(xhr.response);
-  }
-  xhr.send(JSON.stringify({OLC: olc}));
 }
 
 function setStar(rating, div){
@@ -142,4 +139,35 @@ function setStar(rating, div){
       div.appendChild(star[i]);
     }
   }
+}
+
+function checkVisited(olc, but){
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', '/find_review');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    var response =JSON.parse(xhr.response);
+    console.log(response);
+    if (!response[0]) return;
+    else if (!response[0].visit_tag) return;
+    else but.setIcon('favorite');
+    visited = true;
+  }
+  xhr.send(JSON.stringify({OLC: olc, token: token}));
+}
+
+function setVisited(olc, but){
+  visited = !visited;
+  console.log(visited);
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', '/new_review');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    console.log(xhr.response);
+    if(visited) but.setIcon('favorite');
+    else{
+       but.setIcon('favorite_border');
+    }
+  };
+  xhr.send(JSON.stringify({OLC: olc, token: token, visit_tag: visited}));
 }

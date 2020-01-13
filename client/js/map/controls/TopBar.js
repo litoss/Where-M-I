@@ -2,19 +2,13 @@ class TopBar {
   constructor(){
     this.menu = new IconButton('menu',"mdc-top-app-bar__navigation-icon");
     this.icon = new ImageButton('content/photo.png');
-
-    var settingsButton = new IconButton('settings');
-    settingsButton.listen('click',openSettings);
-    this.loginCard = new Card("Guest",null,null,"content/photo.png",null,[settingsButton.root_],'login-card');
-
     this.authorizeButton = new ActionButton('Accedi');
     this.signoutButton = new ActionButton('Disconnetti');
+    var settingsButton = new IconButton('settings');
 
-    var list = new List();
-    list.add(this.loginCard.root_);
-    list.add(this.authorizeButton.root_);
-    list.add(this.signoutButton.root_);
-    this.menus = new Menu(list.root_, 'login-menu');
+    this.loginCard = new Card("Guest",null,null,"content/photo.png",[this.authorizeButton.root_, this.signoutButton.root_],[settingsButton.root_],'login-card');
+
+    this.menus = new Menu(this.loginCard.root_, 'login-menu');
     this.menus.setAbsolutePosition(-250,48);
 
     var anchor = document.createElement('div');
@@ -25,11 +19,16 @@ class TopBar {
     this.topBar = new TopAppBar('Where M I ?', this.menu.root_, anchor, "mdc-top-app-bar--relative mdc-top-app-bar--dense main-topbar");
 
     this.icon.listen('click', () => {
-      this.menus.open= !this.menus.open;
+      this.menus.open = !this.menus.open;
+      if(this.menus.open){
+        map.menus.focus();
+      }
     })
 
     this.topBar.listen('MDCTopAppBar:nav', () => {
       map.menuDrawer.open = true;
     });
+
+    settingsButton.listen('click',openSettings);
   }
 }

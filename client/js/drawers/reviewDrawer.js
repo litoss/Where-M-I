@@ -8,18 +8,22 @@ async function reviewDrawer(olc){
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_review');
   xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = function(){
+  xhr.onload = async function(){
     var response = JSON.parse(xhr.response);
     for(var i in response){
-
+      var user = await findUser(response[i].user);
       var div = document.createElement('div');
 
       var separator1 = document.createElement('hr');
       separator1.className = 'mdc-list-divider';
       div.appendChild(separator1);
 
+      var img = document.createElement('img');
+      img.src = user.picture;
+      div.appendChild(img);
+
       var id = document.createElement('div');
-      id.innerHTML = "ID: " + response[i].user;
+      id.innerHTML = user.name;
       div.appendChild(id);
       setStar(response[i].rating_place, div);
       var comment = document.createElement('div');
@@ -70,4 +74,15 @@ function setStar(rating, div){
       div.appendChild(star[i]);
     }
   }
+}
+
+function findUser(id){
+  return new Promise((resolve,reject) =>{
+    xhr.open('POST', '/find_preference');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function(){
+      resolve(JSON.parse(xhr.response)[0]);
+    }
+    xhr.send(JSON.stringify({id: id}));
+  })
 }
