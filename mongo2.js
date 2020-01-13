@@ -58,6 +58,7 @@ user_info = async(token) => {
 exports.add_one = async (req) => { //creazione di un nuovo luogo
 
     var m_rating = 0; // alla creazione di un nuovo luogo settiamo la media a 0 dato non ci sono ancora recensioni
+    var init_ncomment = 0; //alla creazione il numero dei commenti e' settato a zero
     try {
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
 
@@ -74,7 +75,7 @@ exports.add_one = async (req) => { //creazione di un nuovo luogo
         DB viene creata la struttura e i parametri che non vengono inseriti nel json sono semplicemente settati a undefined ed
         eventualmente modificati nel futuro. */
 
-/*
+/*{OLC : req.body.OLC};
 Il controllo se l'utente puo' modificare il luogo se e' il creatore viene eseguito direttamente lato client, visto che viene eseguita
 la richiesta di trovare il luogo prima di farela richiesta di creazione.
 */
@@ -90,9 +91,11 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
                 name: req.body.name,                //nome del posto
                 category: req.body.category,        // categoria del luogo(es. pizzeria, museo)
                 media_rating: m_rating,             //media rating a zero alla creazione del luogo
+                ncomment : init_ncomment,
                 opening: req.body.opening,          // orari di apertura del luogo
                 description: req.body.description,  // descrizione del luogo
                 image: req.body.image
+
             };
 
             let ret = await db.collection('place').insertOne(doc);
@@ -227,7 +230,7 @@ exports.add_review = async (req) => {
 
     //console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
     //console.log('\n');
-2
+
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
@@ -239,9 +242,8 @@ exports.add_review = async (req) => {
         var query = {$and: [{OLC:{$regex:'.*' + escapeRegExp(olc) + '.*'}} , {user:{$regex:veruser}} ] };//controlla se esiste una recensione di questo utente di questo posto
         var exist = await db.collection('review').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
 
-      //  var query = {$and: [{OLC:{$regex:'.*' + escapeRegExp(olc) + '.*'}} , {user:{$regex:veruser}} ] };
-        //if the OLC of this user is not in the DB create it
-        console.log("review user exist: " + exist);
+      //if the OLC of this user is not in the DB create it
+        //console.log("review user exist: " + exist);
 
         if(exist == false){
             var v_tag;
@@ -265,6 +267,7 @@ exports.add_review = async (req) => {
             //console.log(ret_new.result);
 
         client.close();
+        up_review(req);
 
         if (req.body.rating_place){
             up_star(req); //with the OLC we update the media of rating of the place
@@ -287,13 +290,16 @@ exports.add_review = async (req) => {
             }
             if (req.body.comment){
                 object5.comment = req.body.comment;
+
             }
 
             var new_values = {$set: object5};
-
             var ret_update = await db.collection('review').updateOne(query, new_values); //update with the parameter that are passed trought the body
 
-            client.close(); //chiudiamo il client perche' ci pensa la funzione up_star a riaprire la comunicazione con il DB
+              client.close(); //chiudiamo il client perche' ci pensa la funzione up_star a riaprire la comunicazione con il DB
+
+                  up_review(req);
+
             if (req.body.rating_place){
                   up_star(req);
             }
@@ -434,6 +440,31 @@ up_star = async(req) => {
     catch(err){
         return err;
     }
+}
+
+up_review = async(req) => {
+    try{
+
+        let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
+        const db = client.db("webdb");
+        var query = {$and: [{OLC:{$regex:'.*' + escapeRegExp(olc) + '.*'}} , {comment:{$ne:null}} ]};
+        var qplace = {OLC : req.body.OLC};
+        console.log('prova')
+        var rev_count = await db.collection('review').find(query).count();
+        console.log(rev_count);
+          var object6 = {};
+          object.ncomment = rev_count;
+          var new_values = {$set : object6};
+          var comment_update_place = await db.collection('place').updateOne(qplace, new_values); //update with the parameter that are passed trought the body
+          client.close();
+          return(rev)
+      }
+
+    catch(err){
+        return (err);
+    }
+
+
 }
 
 //aggiunge un percorso preferito alla collezione route
