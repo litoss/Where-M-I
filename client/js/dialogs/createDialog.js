@@ -124,7 +124,7 @@ async function createEditDialog(plac){
       var blob= input.files[0];
       img64 = await encode64(blob);
     }
-    if(img64) form.append('image', img64);
+    if(img64)form.append('image', img64);
     else {
       var snackbar = new SnackBar('Select an Image');
       snackbar.open();
@@ -187,10 +187,8 @@ function submit(form){
         snackbar.listen("MDCSnackbar:closed",() => {
           document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
         });
-          var addedPlace = new Place(place);
-          console.log(place);
+          var addedPlace = new Place(object);
           map.places.push(addedPlace);
-          console.log(map.places);
           map.closeAllWindow();
           dialog.close();
           if(map.pageDrawer) map.pageDrawer.open = false;

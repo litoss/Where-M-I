@@ -227,7 +227,6 @@ exports.add_review = async (req) => {
 
     //console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
     //console.log('\n');
-2
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
@@ -281,7 +280,7 @@ exports.add_review = async (req) => {
                 object5.rating_place = req.body.rating_place;
 
             }
-            if (req.body.visit_tag){
+            if (req.body.visit_tag != undefined){
                object5.visit_tag = req.body.visit_tag;
 
             }
@@ -326,7 +325,6 @@ exports.del_review = async (req) => {
 //ricerca delle recensioni collezione review
 exports.find_review = async(req) => {
     try{
-        console.log(req.body);
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         /*
@@ -344,11 +342,9 @@ exports.find_review = async(req) => {
         }
 
         if (req.body.token){
-            var veruser = await verify(req.body.token);
-            var nome = append.concat(veruser);
-            expression.push({name:{$regex:nome}});
+            var veruser = await verify(req.body.token);;
+            expression.push({user:{$regex:veruser}});
         }
-
         var query;
             if(expression.length >  1){query = {$and:expression};}
             if(expression.length == 1){query = expression[0]}
@@ -596,9 +592,10 @@ exports.find_pref = async(req) =>{
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        var veruser = await verify(req.body.token);
+        var id = req.body.id;
+        //var veruser = await verify(req.body.token);
 
-        var query = {user: veruser};
+        var query = {user: id};
         var items = await db.collection('preferences').find(query).project({_id:0}).toArray();
         client.close();
         return items;
