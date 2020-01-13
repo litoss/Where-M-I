@@ -37,7 +37,7 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
     profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-    preferences = getPreferences();
+    getPreferences();
 
     map.topBar.authorizeButton.root_.style.display = "none";
     map.topBar.signoutButton.root_.style.display = "block";
@@ -85,10 +85,12 @@ function getPreferences() {
     if (response[0]){
       preferences = response[0];
       if(!response[0].category) preferences.category = 'all';
+    }else {
+      setPreferences();
+      preferences = defaultPrefs;
     }
-    else setPreferences();
   };
-  xhr.send(JSON.stringify({token: token}));
+  xhr.send(JSON.stringify({id: profile.getId()}));
 }
 
 function setPreferences() {
