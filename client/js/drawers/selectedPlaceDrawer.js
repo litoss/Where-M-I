@@ -32,14 +32,6 @@ async function selectedPlace(place){
     imgContainer.appendChild(openingHours);
   }
 
-  var visited = new IconButton('favorite_border');
-  content.appendChild(visited.root_);
-  checkVisited(place.OLC, visited);
-
-  visited.listen('click', () => {
-    setVisited(place.OLC, visited);
-  })
-
   var separator1 = document.createElement('hr');
   separator1.className = 'mdc-list-divider';
   content.appendChild(separator1);
@@ -50,7 +42,7 @@ async function selectedPlace(place){
   else description.innerHTML = place.description;
   content.appendChild(description);
 
-  var texttospeechButton = new IconButton('speaker_notes');
+  var texttospeechButton = new IconButton('speaker_notes', 'mdc-button--raised mdc-image__circular');
   content.appendChild(texttospeechButton.root_);
   texttospeechButton.listen('click', async() => {
     if(audio) {
@@ -63,6 +55,14 @@ async function selectedPlace(place){
     }
   });
 
+  var visited = new IconButton('favorite_border', 'mdc-button--raised mdc-image__circular');
+  content.appendChild(visited.root_);
+  checkVisited(place.OLC, visited);
+
+  visited.listen('click', () => {
+    setVisited(place.OLC, visited);
+  })
+
   var separator2 = document.createElement('hr');
   separator2.className = 'mdc-list-divider';
   content.appendChild(separator2);
@@ -71,11 +71,15 @@ async function selectedPlace(place){
   var starContainer =  document.createElement('div');
   content.appendChild(starContainer);
 
-  starContainer.addEventListener("click", () => {
+  setStar(place.media_rating, starContainer);
+  var reviewButton = new IconButton('rate_review','mdc-button--raised mdc-image__circular');
+  starContainer.appendChild(reviewButton.root_);
+
+  reviewButton.listen("click", () => {
     map.pageDrawer.open = false;
     reviewDrawer(place.OLC);
   })
-  setStar(place.media_rating, starContainer);
+
 
   var separator3 = document.createElement('hr');
   separator3.className = 'mdc-list-divider';

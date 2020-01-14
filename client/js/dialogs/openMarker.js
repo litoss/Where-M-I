@@ -10,11 +10,11 @@ function openMarker() {
   content.appendChild(alert);
 
   var buttonContainer = document.createElement('div');
-  var geolocate = new ActionButton('Insert Marker');
+  var geolocate = new ActionButton('Insert Marker', 'mdc-button--raised');
   var back = new ActionButton('back');
 
-  buttonContainer.appendChild(geolocate.root_);
   buttonContainer.appendChild(back.root_);
+  buttonContainer.appendChild(geolocate.root_);
 
   var markerDialog = new Dialog(content, buttonContainer, "Attention!");
 

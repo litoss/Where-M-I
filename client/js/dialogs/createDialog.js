@@ -14,10 +14,12 @@ async function createEditDialog(plac){
   if(place.image) {
     imgUri = decode64(place.image, "image/jpg");
     img64 = place.image;
-  }else{
-    imgUri = 'content/no_street.png';
-  }
-  var  exampleCard = new Card(place.name, place.category, place.description, imgUri, null, null, 'about-card');
+  }else imgUri = 'content/no_street.png';
+
+  if(place.description.length > 100) description = place.description.substring(0,100)+"...";
+  else description = place.description;
+
+  var  exampleCard = new Card(place.name, place.category, description, imgUri, null, null, 'about-card');
 
   exampleCard.id = "place-card";
   content.appendChild(exampleCard.root_);
@@ -74,7 +76,10 @@ async function createEditDialog(plac){
 
 
   descrForm.input.addEventListener('input', () => {
-  exampleCard.setSecondary(descrForm.value);
+    var descr;
+    if(descrForm.value.length > 100) descr = descrForm.value.substring(0,100)+"...";
+    else descr = descrForm.value;
+    exampleCard.setSecondary(descr);
   })
 
   cat.listen('MDCSelect:change', () => {
@@ -94,7 +99,7 @@ async function createEditDialog(plac){
       });
       return;
     }
-    else if(nameForm.value.length > 30){
+    else if(nameForm.value.length > 40){
       var snackbar = new SnackBar('name is too long');
       snackbar.open();
       snackbar.listen("MDCSnackbar:closed",() => {
@@ -181,7 +186,7 @@ function submit(form){
   xhr.open('POST', '/new_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
-      if (xhr.status === 200 ) {
+      if (xhr.status ==  200 ) {
         var snackbar = new SnackBar('Successfully added');
         snackbar.open();
         snackbar.listen("MDCSnackbar:closed",() => {

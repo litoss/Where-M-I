@@ -11,8 +11,8 @@ function openWelcome() {
   content.appendChild(descr);
 
   var buttonContainer = document.createElement('div');
-  var geolocate = new ActionButton('geolocate');
-  var insert = new ActionButton('insert');
+  var geolocate = new ActionButton('geolocate', 'mdc-button--raised');
+  var insert = new ActionButton('search');
 
   buttonContainer.appendChild(geolocate.root_);
   buttonContainer.appendChild(insert.root_);
