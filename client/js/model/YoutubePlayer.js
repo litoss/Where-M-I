@@ -7,7 +7,7 @@ class YoutubePlayer{
     var play = new IconButtonToggle('pause', 'play_arrow', 'mdc-button--raised');
     var next = new IconButton('chevron_right', 'mdc-button--raised');
     var description = document.createElement('p');
-
+    description.innerHTML = videos[0].snippet.description;
 
     div.appendChild(prev.root_);
     div.appendChild(play.root_);
@@ -16,7 +16,7 @@ class YoutubePlayer{
 
     play.listen('MDCIconButtonToggle:change', async (event) => {
       if(event.detail.isOn){
-        newPlayer(videos[current]);
+        newPlayer(videos[current].id.videoId);
       }else{
         pauseVideo();
       }
