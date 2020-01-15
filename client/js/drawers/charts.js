@@ -6,33 +6,17 @@ async function openCharts(){
   var list = document.createElement('div');
   list.style.padding = '20px';
 
-  //var clips = await getTopClips();
   //var paths = await getTopPaths();
-
   tabBar.listen("MDCTabBar:activated", (event) => {
 
     list.innerHTML = '';
 
     switch (event.detail.index) {
-      case 0:
-        // var listclips = new List("mdc-list--two-line");
-        // console.log(clips);
-        // for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
-        // list.appendChild(listclips.root_);
-        // list.listen('click',(event) => {
-        //
-        // })
+      case 0: getTopClips(list);
         break;
-      case 1:
-        var vloggers = new List();
-        for(var i in example) vloggers.add(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-        list.appendChild(vloggers.root_);
+      case 1: getTopVlogger(list);
         break;
-      case 2:
-
-        var paths = new List();
-        for(var i in example) paths.add(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-        list.appendChild(paths.root_);
+      case 2: getTopPaths(list);
         break;
     }
   });
@@ -47,4 +31,50 @@ async function openCharts(){
   map.pageDrawer = new PageDrawer('Charts', content);
   map.pageDrawer.open = true;
 
+}
+
+async function getTopPaths(list){
+  var paths = new List("mdc-list--two-line");
+  for(var i in example) paths.add(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
+  list.appendChild(paths.root_);
+}
+
+async function getTopVlogger(list){
+  var clips = await search("id, snippet", "8FPHF800+:*", null, 50);
+
+  var channels = [];
+  for(var i in clips){
+    var index;
+    if((index = channels.findIndex(o => o.channelId === clips[i].snippet.channelId)) != -1){
+      channels[index].count++;
+    }else{
+      channels.push({channelId: clips[i].snippet.channelId, count: 1 })
+    }
+  }
+
+  var compare = function(a, b){
+    return a.count - b.count;
+  }
+
+  channels.sort(compare);
+  channels.reverse();
+
+  var listVloggers = new List("mdc-list--two-line mdc-list--avatar-list")
+
+  for(var i in channels){
+    channelInfo = await getChannelInfo(channels[i].channelId)
+    console.log(channelInfo);
+    listVloggers.add(new ImageList(channelInfo.title, channels[i].count + " Clips", channelInfo.thumbnails.default.url));
+  }
+  list.appendChild(listVloggers.root_);
+}
+
+async function getTopClips(list){
+  // var clips = await search("id, snippet", "8FPHF800+:*", "relevance", 10)
+  // var listclips = new List("mdc-list--two-line");
+  // for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
+  // list.appendChild(listclips.root_);
+  // list.listen('click',(event) => {
+  //
+  // })
 }

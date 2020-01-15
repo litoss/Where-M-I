@@ -43,6 +43,7 @@ async function whereAmi(){
   if(!playlist[position]){
     marker = await findClosestMarker(map.position.getPosition().lat(), map.position.getPosition().lng());
     playlist.push(marker);
+
     search(olc, "what").then((response) => {
       for(var i in response)
         clips.push(response[i]);

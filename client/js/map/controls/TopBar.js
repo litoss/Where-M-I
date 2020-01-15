@@ -7,8 +7,9 @@ class TopBar {
     var settingsButton = new IconButton('settings');
 
     this.loginCard = new Card("Guest",null,null,"content/photo.png",[this.authorizeButton.root_, this.signoutButton.root_],[settingsButton.root_],'login-card');
-
-    this.menus = new Menu(this.loginCard.root_, 'login-menu');
+    var list = new List();
+    list.add(this.loginCard.root_);
+    this.menus = new Menu(list.root_, 'login-menu');
     this.menus.setAbsolutePosition(-250,48);
 
     var anchor = document.createElement('div');
@@ -20,9 +21,6 @@ class TopBar {
 
     this.icon.listen('click', () => {
       this.menus.open = !this.menus.open;
-      if(this.menus.open){
-        map.menus.focus();
-      }
     })
 
     this.topBar.listen('MDCTopAppBar:nav', () => {
