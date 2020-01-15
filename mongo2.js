@@ -445,8 +445,10 @@ up_star = async(req) => {
 
 count_star = async(req) => {
     try{
+
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
+        
         var query = {OLC : req.body.OLC};
         var rev_count = await db.collection('review').find(query).count();
         var object7 = {};
@@ -461,8 +463,6 @@ count_star = async(req) => {
         return err;
     }
 }
-
-
 
 
 //aggiunge un percorso preferito alla collezione route

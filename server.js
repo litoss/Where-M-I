@@ -8,7 +8,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const {Readable} = require('stream');
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-app.use(redirect([/localhost:8000/]));
+app.use(redirect([/localhost:8000/])); 
 app.use(express.urlencoded({extended : true}));
 app.use(express.json({limit: '16mb'}));
 
