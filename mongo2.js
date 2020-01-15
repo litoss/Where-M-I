@@ -102,6 +102,8 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
 
             let ret = await db.collection('place').insertOne(doc);
             client.close();
+            up_star(req); //with the OLC we update the media of rating of the place
+            count_star(req);
             return JSON.stringify(ret);
         }
 
@@ -434,7 +436,7 @@ up_star = async(req) => {
         var rate_update_place = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
 
         client.close();
-        return ("rate place update: " + rate_update_place.result + "   rate audio update: " + rate_update_audio.result);
+        return rate_update_place.result ;
     }
     catch(err){
         return err;
@@ -518,12 +520,12 @@ exports.del_route = async(req) =>{
       const db = client.db("webdb");
       var query;
 
-      var veruser = await verify(req.body.token);
+      //var veruser = await verify(req.body.token);
       if(req.body.route){
-        query = {$and: [{ route : req.body.route } , { user:veruser }]};
+        query = {$and: [{ route : req.body.route }]};
       }
       else{
-        query ={$and: [{ namer : req.body.namer } , { user:veruser }]};
+        query ={$and: [{ namer : req.body.namer }]};
       }
       var can = await db.collection('routes').deleteOne(query);
       client.close();
