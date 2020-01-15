@@ -70,11 +70,11 @@ async function getTopVlogger(list){
 }
 
 async function getTopClips(list){
-  // var clips = await search("id, snippet", "8FPHF800+:*", "relevance", 10)
-  // var listclips = new List("mdc-list--two-line");
-  // for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
-  // list.appendChild(listclips.root_);
-  // list.listen('click',(event) => {
-  //
-  // })
+  var clips = await search("id, snippet", "8FPHF800+:*", "relevance", 10)
+  var listclips = new List("mdc-list--two-line");
+  for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
+  list.appendChild(listclips.root_);
+  list.listen('click',(event) => {
+
+   })
 }

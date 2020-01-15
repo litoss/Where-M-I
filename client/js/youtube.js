@@ -9,7 +9,7 @@ async function search(part, q, order, maxResults){
   query.q = q;
   if(order) query.order = order;
   if(maxResults) query.maxResults = maxResults;
-
+  console.log(query);
   let request = await gapi.client.youtube.search.list(query);
   return request.result.items;
 }

@@ -93,13 +93,9 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
                 name: req.body.name,                //nome del posto
                 category: req.body.category,        // categoria del luogo(es. pizzeria, museo)
                 media_rating: m_rating,             //media rating a zero alla creazione del luogo
-<<<<<<< HEAD
                 count_rating: init_count_rate,      //conteggio numero recensioni date al luogo dagli utenti(recensioni e/o stelle)
-                opening: req.body.opening,          // orari di apertura del luogo
-=======
                 opening: Number(req.body.opening),          // orario di apertura del luogo
                 closing: Number(req.body.closing),          //orario di chiusura
->>>>>>> 2c6db749ec66ca9fadf3a1779dd48f118de0b868
                 description: req.body.description,  // descrizione del luogo
                 image: req.body.image
             };
@@ -182,7 +178,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
-            
+
             var utente = append.concat(veruser);
             expression.push({user:{$regex:utente}});
         }
