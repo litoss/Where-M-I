@@ -15,7 +15,7 @@ class Place {
       var decode = OpenLocationCode.decode(place.OLC);
       latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
       name = place.name;
-      if(place.description.length > 100) description = place.description.substring(0,100)+"...";
+      if(place.description.length > 80) description = place.description.substring(0,80)+"...";
       else description = place.description;
       image = decode64(place.image, "image/jpg");
 
@@ -117,6 +117,10 @@ class Place {
 
   getMap(){
     return this.marker.getMap();
+  }
+
+  setMap(map){
+    this.marker.setMap(map);
   }
 
   setPosition(position){

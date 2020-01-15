@@ -30,7 +30,10 @@ async function selectPlace(position) {
 
         addListener(i);
 
-        var placeCard = new Card(jsonResponse.results.bindings[i].name.value,null,jsonResponse.results.bindings[i].abstract.value,jsonResponse.results.bindings[i].img.value,[button.root_]).root_;
+        if(jsonResponse.results.bindings[i].abstract.value.length > 80) descr = jsonResponse.results.bindings[i].abstract.value.substring(0,80)+"...";
+        else descr = jsonResponse.results.bindings[i].abstract.value;
+
+        var placeCard = new Card(jsonResponse.results.bindings[i].name.value,null, descr, jsonResponse.results.bindings[i].img.value,[button.root_]).root_;
         placeCard.className += ' about-card';
         div.appendChild(placeCard);
       };
@@ -43,6 +46,7 @@ async function selectPlace(position) {
       addBut.listen("click", async () =>{
         var place = {};
         place['OLC'] = OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
+        place['description'] = "Insert description here";
         if(profile) {
           createEditDialog(place);
         }else {

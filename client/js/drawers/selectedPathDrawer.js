@@ -27,7 +27,9 @@ function searchPlace(olc){
   xhr.onload = async function(){
     var response = JSON.parse(xhr.response);
     var image = await decode64(response[0].image, "image/jpg");
-    var card = new Card (response[0].name, null, response[0].description, image, null,null,'about-card');
+    if(response[0].description.length > 100) descr = response[0].description.substring(0,100)+"...";
+    else descr = response[0].description;
+    var card = new Card (response[0].name, null, descr, image, null,null,'about-card');
     document.querySelector("#content").appendChild(card.root_);
   }
   xhr.send(JSON.stringify({OLC: olc}));

@@ -73,6 +73,15 @@ function createPath(){
     createButton.listen('click', () => {
       var namer = nameField.value;
 
+      if(namer.length == 0){
+        var snackbar = new SnackBar('Insert a name for your Path');
+        snackbar.open();
+        snackbar.listen("MDCSnackbar:closed",() => {
+          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+        });
+        return;
+      }
+
       if(route.length < 2){
         var snackbar = new SnackBar('You have to add at least two Places to your Path');
         snackbar.open();
@@ -96,14 +105,17 @@ function verifyRoute(route, name){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function(){
     var response = JSON.parse(xhr.responseText);
-    if(!response[0]) submitRoute(route, name);
-    else {
+    if(!response[0]) {
+      submitRoute(route, name);
+      map.pageDrawer.open = false;
+    }else {
       var edit = new ActionButton('edit');
       var close = new IconButton('close');
       var snackbar = new SnackBar('You already have a route started from this place',[edit.root_,close.root_]);
       snackbar.open();
       edit.listen('click', () => {
         submitRoute(route, name);
+        map.pageDrawer.open = false;
       })
       snackbar.listen("MDCSnackbar:closed",() => {
         document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
