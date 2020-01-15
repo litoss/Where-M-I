@@ -1,13 +1,12 @@
 // Youtube Data API
 // https://developers.google.com/youtube/v3/docs
 
-async function search(part, q, order, maxResults){
+async function search(part, q, maxResults){
 
   var query = {};
   query.part = part;
   query.type = "video";
   query.q = q;
-  if(order) query.order = order;
   if(maxResults) query.maxResults = maxResults;
   console.log(query);
   let request = await gapi.client.youtube.search.list(query);
@@ -24,15 +23,23 @@ async function listVideos(){
   return request.result.items;
 }
 
-async function getChannelInfo(channelId){
+async function getChannel(channelId){
   var request = await gapi.client.youtube.channels.list({
     part: "id, snippet",
     id: channelId
   });
 
-  return request.result.items[0].snippet;
+  return request.result.items[0];
 }
 
+async function getVideo(videoId){
+  var request = await gapi.client.youtube.videos.list({
+    part: "id, snippet, statistics",
+    id: videoId
+  });
+
+  return request.result.items[0];
+}
 
 async function insertClip(title, description, privacyStatus, readStream){
 

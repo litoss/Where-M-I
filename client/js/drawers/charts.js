@@ -3,52 +3,49 @@ async function openCharts(){
   var content = document.createElement('div');
 
   var tabBar = new TabBar(chartsTab.map(o => o['name']), chartsTab.map( o => o['icon']));
-  var list = document.createElement('div');
-  list.style.padding = '20px';
+  var div = document.createElement('div');
+  div.style.padding = '20px';
 
-  //var paths = await getTopPaths();
   tabBar.listen("MDCTabBar:activated", (event) => {
 
-    list.innerHTML = '';
+    div.innerHTML = '';
 
     switch (event.detail.index) {
-      case 0: getTopClips(list);
+      case 0: getTopClips(div);
         break;
-      case 1: getTopVlogger(list);
+      case 1: getTopVlogger(div);
         break;
-      case 2: getTopPaths(list);
+      case 2: getTopPaths(div);
         break;
     }
   });
 
   tabBar.activateTab(0);
 
-
-
   content.appendChild(tabBar.root_);
-  content.appendChild(list);
+  content.appendChild(div);
 
   map.pageDrawer = new PageDrawer('Charts', content);
   map.pageDrawer.open = true;
-
 }
 
-async function getTopPaths(list){
+async function getTopPaths(div){
   var paths = new List("mdc-list--two-line");
+
   for(var i in example) paths.add(new ElementList(example[i].primaryText, example[i].secondaryText, 'music_note'));
-  list.appendChild(paths.root_);
+  div.appendChild(paths.root_);
 }
 
-async function getTopVlogger(list){
-  var clips = await search("id, snippet", "8FPHF800+:*", null, 50);
+async function getTopVlogger(div){
+  var list = await search("id, snippet", "8FPHF800+:*", 50);
 
   var channels = [];
-  for(var i in clips){
+  for(var i in list){
     var index;
-    if((index = channels.findIndex(o => o.channelId === clips[i].snippet.channelId)) != -1){
+    if((index = channels.findIndex(o => o.channelId === list[i].snippet.channelId)) != -1){
       channels[index].count++;
     }else{
-      channels.push({channelId: clips[i].snippet.channelId, count: 1 })
+      channels.push({channelId: list[i].snippet.channelId, count: 1 })
     }
   }
 
@@ -62,19 +59,39 @@ async function getTopVlogger(list){
   var listVloggers = new List("mdc-list--two-line mdc-list--avatar-list")
 
   for(var i in channels){
-    channelInfo = await getChannelInfo(channels[i].channelId)
-    console.log(channelInfo);
-    listVloggers.add(new ImageList(channelInfo.title, channels[i].count + " Clips", channelInfo.thumbnails.default.url));
+    channelInfo = await getChannel(channels[i].channelId)
+    listVloggers.add(new ImageList(channelInfo.snippet.title, channels[i].count + " Clips", channelInfo.snippet.thumbnails.default.url));
   }
-  list.appendChild(listVloggers.root_);
+
+  listVloggers.listen('MDCList:action', (event) => {
+    window.open("https://www.youtube.com/channel/" + channels[event.detail.index].channelId, '_blank');
+  });
+
+  div.appendChild(listVloggers.root_);
 }
 
-async function getTopClips(list){
-  var clips = await search("id, snippet", "8FPHF800+:*", "relevance", 10)
-  var listclips = new List("mdc-list--two-line");
-  for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
-  list.appendChild(listclips.root_);
-  list.listen('click',(event) => {
+async function getTopClips(div){
+  var list = await search("id", "8FPHF800+:*", 50);
 
-   })
+  var clips = [];
+
+  for(var i in list){
+    var clip = await getVideo(list[i].id.videoId);
+    clips.push(clip);
+  }
+  var compare = function(a,b){
+    return a.statistics.likeCount - b.statistics.likeCount;
+  }
+
+  clips.sort(compare);
+  clips.reverse();
+
+  var listclips = new List("mdc-list--two-line");
+  for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].statistics.likeCount + " likes", 'music_note'));
+
+  listclips.listen('MDCList:action',(event) => {
+    window.open("https://www.youtube.com/watch?v=" + list[event.detail.index].id.videoId, '_blank');
+  });
+
+  div.appendChild(listclips.root_);
 }
