@@ -15,10 +15,10 @@ function openSearch(){
   content.appendChild(container);
 
   tabBar.listen("MDCTabBar:activated", (event) => {
+    container.innerHTML = '';
 
     switch (event.detail.index) {
       case 0:
-        container.innerHTML = '';
         isOpen = false;
 
         var searchText= new TextField("What", "search");
@@ -131,13 +131,13 @@ function openSearch(){
         searchText.required = true;
         searchText.input.value = "8FPH";
 
-        var searchClips = new IconButton('search');
+        var search = new IconButton('search');
         var settingsClips = new IconButton('settings');
         var searchHeader = document.createElement('div');
         var searchDiv = document.createElement('div');
 
         searchHeader.appendChild(searchText.root_);
-        searchHeader.appendChild(searchClips.root_);
+        searchHeader.appendChild(search.root_);
         searchHeader.appendChild(settingsClips.root_);
 
         container.appendChild(searchHeader);
@@ -213,15 +213,10 @@ function openSearch(){
           }
         });
 
-        searchClips.listen('click', async() => {
-          var geoloc = searchText.value;
-          var purpose = searchSettings.purpose;
-          var language = searchSettings.language;
-          var content = searchSettings.category;
-          var audience = searchSettings.audience;
-          var description = geoloc + ":" + purpose + ":" + language + ":" + content + ":A" + audience ;
+        search.listen('click', async() => {
+
           //console.log(description);
-          var clips = await search("id, snippet", description, "relevance", 10);
+          var clips = await searchClips(searchText.value, searchSettings.purpose, searchSettings.language, searchSettings.language, searchSettings.category, searchSettings.audience);
           //console.log(clips);
           var listclips = new List("mdc-list--two-line");
           for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
@@ -293,4 +288,8 @@ function openSearch(){
 
   map.pageDrawer = new PageDrawer('Search', content);
   map.pageDrawer.open = true;
+}
+
+function searchVideo(){
+
 }
