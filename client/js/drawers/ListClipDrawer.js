@@ -146,6 +146,17 @@ function openClips(){
               console.log(blobs);
               var con =  await appendBuffer(blobs[0],blobs[1]);
               var blob = new Blob([con.buffer], {type:"audio/webm"})
+//              insertClip('titolo','descrizione','public',blob);
+              var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/audio_to_video');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onload = async function(){
+                      var url = await decode64(this.responseText, "video/webm");
+                      var blob = await getimageBlob(url);
+
+                      insertClip('titolo.value', 'description', 'public', blob);
+                    };
+                    xhr.send(JSON.stringify({chunks: encode64(blob)}));
               console.log(await encode64(blob));
               console.log(URL.createObjectURL(blob))
               // var bufferF = con.buffer;

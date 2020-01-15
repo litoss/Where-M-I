@@ -40,17 +40,17 @@ function openVideoDialog(audiosrc){
   return new Promise((resolve, reject) => {
     save.listen('click', async () => {
       dialog.close();
-      var blob = await getimageBlob(audiosrc);
+      var blob = await getimageBlob(audio.src);
       var base64 = await convertBlobToBase64(blob);
-
+      console.log(base64);
       var xhr = new XMLHttpRequest();
       xhr.open('POST', '/modify_video');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = async function(){
-        var url = await decode64(this.responseText, "video/webm");
+        var url = decode64(this.responseText, "video/webm");
         resolve(url);
       };
-      xhr.send(JSON.stringify({chunks: base64}));
+      xhr.send(JSON.stringify({chunks: base64,start: start.value,end:end.value,volume:volume.value}));
     });
   });
 }

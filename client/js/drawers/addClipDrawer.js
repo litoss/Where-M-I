@@ -109,16 +109,16 @@ function addClipDrawer(place){
   audiodiv.appendChild(cancel.root_);
 
   var privacy = document.createElement('h2');
-  privacy.innerHTML = 'Privacy Status';
+//  privacy.innerHTML = 'Privacy Status';
   div.appendChild(privacy);
 
-  var listE3 = new List();
+/*  var listE3 = new List();
   listE3.add(new SelectList('Private', 'private'));
   listE3.add(new SelectList('Public', 'public'));
 
   var selectE3 = new Select("Privacy", listE3.root_);
   div.appendChild(selectE3.root_);
-
+*/
   var salva = new ActionButton('Salva Clip');
    div.appendChild(salva.root_);
 
