@@ -11,6 +11,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 function newPlayer(vid){
+  console.log(vid);
   player.loadVideoById({
     'videoId': vid,
   //  'startSeconds': 5,

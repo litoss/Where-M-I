@@ -54,28 +54,21 @@ function insertClip(title, description, privacyStatus, readStream){
     }
   }
 
+  var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
+  var form = new FormData();
+  form.append('dati', meta)
+  form.append('video',readStream);
 
-   var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
-
-
-   var form = new FormData();
-
-   form.append('dati', meta)
-   form.append('video',readStream);
-
-
-
-
-   $.ajax({
-      url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token=' + encodeURIComponent(auth) + '&part=snippet,status',
-      data: form,
-      cache: false,
-      contentType: false,
-      processData: false,
-      //metadata:metadata,
-      method: 'POST',
-      success:function(data) {
+  $.ajax({
+    url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token=' + encodeURIComponent(auth) + '&part=snippet,status',
+    data: form,
+    cache: false,
+    contentType: false,
+    processData: false,
+    //metadata:metadata,
+    method: 'POST',
+    success:function(data) {
       alert("Il video è stato inserito sul tuo canale Youtube!!!");
-      }
-      });
-  }
+    }
+  });
+}
