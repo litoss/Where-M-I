@@ -3,8 +3,6 @@ var position = 0;
 var distance;
 
 async function start(){
-
-
   while(marker){
     playlist.push(marker);
     var marker = await findClosestMarker(marker.getPosition().lat(), marker.getPosition().lng());
@@ -12,8 +10,6 @@ async function start(){
 
   console.log(playlist);
   if(playlist.lenght){} //Non ci sono posti intorno a te!
-
-
 }
 
 async function findClosestMarker(lat, lng){
@@ -44,6 +40,7 @@ async function whereAmi(){
     marker = await findClosestMarker(map.position.getPosition().lat(), map.position.getPosition().lng());
     playlist.push(marker);
 
+    var q = olc + "";
     search(olc, "what").then((response) => {
       for(var i in response)
         clips.push(response[i]);
@@ -67,7 +64,7 @@ async function whereAmi(){
 }
 
 async function next(){
-  pauseVideo();
+
 }
 
 function previous(){

@@ -1,10 +1,11 @@
 // Google API
 
-var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
-var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
-// var CLIENT_ID = '425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com';
-// var API_KEY = 'AIzaSyAISXxNTs9hhEZ2dt2N-pt77lLpolf8Usc';
-
+//var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
+//var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
+//var CLIENT_ID = '425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com';
+//var API_KEY = 'AIzaSyAISXxNTs9hhEZ2dt2N-pt77lLpolf8Usc';
+var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
+var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
 
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
@@ -32,7 +33,7 @@ function initClient() {
     map.topBar.signoutButton.listen('click', handleSignoutClick);
   });
 
-  gapi.client.load('youtube', 'v3');
+  gapi.client.load('youtube', 'v3', init);
   gapi.client.load('texttospeech', 'v1');
   gapi.client.load('translate', 'v2');
 }

@@ -5,10 +5,11 @@ const port = 8000;
 const myModule = require('./mongo2.js');
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
+var ytdl = require('ytdl-core');
 const {Readable} = require('stream');
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-app.use(redirect([/localhost:8000/])); 
+app.use(redirect([/localhost:8000/]));
 app.use(express.urlencoded({extended : true}));
 app.use(express.json({limit: '16mb'}));
 
@@ -258,21 +259,21 @@ app.post('/audio_to_video', async (req,res)=>{
 });
 
 app.post('/modify_video', async (req,res)=>{
-
-    // console.log('totrim',req.body.chunks);
     var buffer = Buffer.from(req.body.chunks, 'base64');
     var readable = new Readable();
     readable._read = () => {} // _read is required but you can noop it
     readable.push(buffer);
     readable.push(null)
 
-    var command = ffmpeg("https://m8BIIC4i2lA-focus-opensocial.googleusercontent.com/gadgets/proxy?container=none&url=https%3A%2F%2Fwww.youtube.com%2Fget_video_info%3Fvideo_id%3Dm8BIIC4i2lA")
+    var command = ffmpeg(readable)
       .format('webm')
-      .outputOptions([
-        '-ss 00:00:01',
-        '-t 00:00:03',
-    ])
-      .audioFilters('volume=5')
+    //   .outputOptions([
+    //     '-ss 00:00:01',
+    //     '-t 00:00:03',
+    // ])
+      .setStartTime(req.body.start)
+      .setDuration(req.body.end-req.body.start)
+      .audioFilters('volume=' + (req.body.volume/10))
       .on('end', function() {
         console.log('file has been modified succesfully');
       })
@@ -280,7 +281,28 @@ app.post('/modify_video', async (req,res)=>{
         console.log('an error happened: ' + err.message);
       });
 
-    var ffstream = await command.pipe();
+    var ffstream = command.pipe();
+    var chunks = [];
+    ffstream.on('data', function(chunk) {
+      chunks.push(chunk);
+    });
+    ffstream.on('end', function() {
+      var result = Buffer.concat(chunks);
+      res.send(result.toString('base64'));
+    });
+  });
+
+  app.post('/audio_from_yt', async (req,res)=>{
+    var id = req.body.id;
+    // console.log(id);
+    res.setHeader('Content-disposition', 'attachment; filename=test.pdf');
+    res.set('Content-Type', 'application/json');
+    var yta = ytdl('https://www.youtube.com/watch?v='+id,{filter:"audioonly"});
+    var command = ffmpeg()
+    .input(yta)
+    .format('webm');
+
+    var ffstream = command.pipe();
     var chunks = [];
     ffstream.on('data', function(chunk) {
       chunks.push(chunk);
