@@ -102,6 +102,8 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
 
             let ret = await db.collection('place').insertOne(doc);
             client.close();
+            up_star(req); //with the OLC we update the media of rating of the place
+            count_star(req);
             return JSON.stringify(ret);
         }
 
@@ -130,6 +132,8 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
             var ret_update = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
             //console.log(ret_update.result);
             client.close();
+            up_star(req);
+            count_star(req);
             return (JSON.stringify(ret_update));
         }
     }
@@ -431,7 +435,7 @@ up_star = async(req) => {
         var rate_update_place = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
 
         client.close();
-        return ("rate place update: " + rate_update_place.result + "   rate audio update: " + rate_update_audio.result);
+        return rate_update_place.result ;
     }
     catch(err){
         return err;
@@ -440,10 +444,12 @@ up_star = async(req) => {
 
 count_star = async(req) => {
     try{
-
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6a18f3231625831f120a89c7339f8a245b2850d
         var query = {OLC : req.body.OLC};
         var rev_count = await db.collection('review').find(query).count();
         var object7 = {};
@@ -458,6 +464,8 @@ count_star = async(req) => {
         return err;
     }
 }
+
+
 
 
 //aggiunge un percorso preferito alla collezione route
@@ -515,12 +523,12 @@ exports.del_route = async(req) =>{
       const db = client.db("webdb");
       var query;
 
-      var veruser = await verify(req.body.token);
+      //var veruser = await verify(req.body.token);
       if(req.body.route){
-        query = {$and: [{ route : req.body.route } , { user:veruser }]};
+        query = {$and: [{ route : req.body.route }]};
       }
       else{
-        query ={$and: [{ namer : req.body.namer } , { user:veruser }]};
+        query ={$and: [{ namer : req.body.namer }]};
       }
       var can = await db.collection('routes').deleteOne(query);
       client.close();
@@ -545,7 +553,11 @@ exports.find_route = async(req) =>{
           query =  {user:veruser};
         }
         if(req.body.namer){
+<<<<<<< HEAD
           query = { namer : {$regex:req.body.namer, $options:'i'}};
+=======
+          query = { namer :{$regex: req.body.namer, $options:'i'}};
+>>>>>>> a6a18f3231625831f120a89c7339f8a245b2850d
         }
         var items = await db.collection('routes').find(query).project({_id:0,OLC:0}).toArray();
         //facciamo la project anche di OLC che al client non serve, serve solo al server per fare la find

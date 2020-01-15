@@ -56,7 +56,8 @@ function deletePlace(place){
   xhr.open('POST', '/del_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
-    var routes = deleteRoutes(place.OLC);
+    deleteRoutes(place.OLC);
+    //deleteReviews(place.OLC);
     for(var i in map.places){
       var olc = OpenLocationCode.encode(map.places[i].getPosition().lat(), map.places[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
       if (olc == place.OLC){
@@ -84,4 +85,20 @@ function deleteRoutes(olc){
     }
   }
   xhr.send(JSON.stringify({OLC: ''}));
+}
+
+function deleteReviews(olc){
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', '/del_review');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    var response = JSON.parse(xhr.response);
+    console.log(response);
+    // for(var i in response){
+    //   for(var j in response[i].route){
+    //     if (olc == response[i].route[j]) deletePath(response[i].namer);
+    //   }
+    // }
+  }
+  xhr.send(JSON.stringify({OLC: olc}));
 }
