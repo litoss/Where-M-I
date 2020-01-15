@@ -10,7 +10,7 @@ async function selectedPlace(place){
 
   var content = document.createElement('div');
 
-  var addButton = new FloatingActionButton('audiotrack', 'drawer-fab');
+  var addButton = new FloatingActionButton('keyboard_voice', 'drawer-fab');
   content.appendChild(addButton.root_);
 
   addButton.listen('click', () => {
@@ -42,7 +42,7 @@ async function selectedPlace(place){
   else description.innerHTML = place.description;
   content.appendChild(description);
 
-  var texttospeechButton = new IconButton('speaker_notes', 'mdc-button--raised mdc-image__circular');
+  var texttospeechButton = new IconButton('audiotrack', 'mdc-button--raised mdc-image__circular');
   content.appendChild(texttospeechButton.root_);
   texttospeechButton.listen('click', async() => {
     if(audio) {

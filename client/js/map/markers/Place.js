@@ -107,7 +107,11 @@ class Place {
         });
     }else{
       //Non hai la geolocalizzazione attiva!
-      window.alert('Non hai la geolocalizzazione attiva');
+      var snackbar = new SnackBar('Geolocalization is not active');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
     }
   }
 
