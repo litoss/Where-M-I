@@ -16,8 +16,8 @@ const mongo = require('mongodb');
 
 const MongoClient = mongo.MongoClient;
 const ObjectID = mongo.ObjectID; //serve per poter passare i parametri in name e price dentro ObjectID
-//const url = 'mongodb://localhost:27017';
-const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
+const url = 'mongodb://localhost:27017';
+//const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
 //const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
@@ -103,6 +103,8 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
 
             let ret = await db.collection('place').insertOne(doc);
             client.close();
+            up_star(req); //with the OLC we update the media of rating of the place
+            count_star(req);
             return JSON.stringify(ret);
         }
 
@@ -131,6 +133,8 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
             var ret_update = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
             //console.log(ret_update.result);
             client.close();
+            up_star(req);
+            count_star(req);
             return (JSON.stringify(ret_update));
         }
     }
@@ -164,7 +168,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         /*
-        inserendo la stringa append davanti al carattere ricercato significa che il $regret (che serve a ricercare il nome anche avendo il nome parziale)
+        inserendo la stringa append davanti al carattere ricercato significa che il $regrex (che serve a ricercare il nome anche avendo il nome parziale)
         ricerchiamo il nome parziale ma deve essere nell'ordine che lo scriviamo, senza lui se cercassimo la lettera S troverebbe anche ad esempio la parola
         test anche se la S è al centro della parola, con append verrebbe fuori solo la parola Sam che ha la S davanti.
         */
@@ -179,14 +183,11 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
-
             var utente = append.concat(veruser);
             expression.push({user:{$regex:utente}});
         }
         if (req.body.name){
-            // var nome = append.concat(req.body.name);
-            // expression.push({name:{$regex:nome}});
-            expression.push({name:{$regex:req.body.name}});
+            expression.push({name:{$regex:req.body.name, $options:'i'}});
         }
         if (req.body.category){
             var categoria = append.concat(req.body.category);
@@ -435,7 +436,7 @@ up_star = async(req) => {
         var rate_update_place = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
 
         client.close();
-        return ("rate place update: " + rate_update_place.result + "   rate audio update: " + rate_update_audio.result);
+        return rate_update_place.result ;
     }
     catch(err){
         return err;
@@ -519,12 +520,12 @@ exports.del_route = async(req) =>{
       const db = client.db("webdb");
       var query;
 
-      var veruser = await verify(req.body.token);
+      //var veruser = await verify(req.body.token);
       if(req.body.route){
-        query = {$and: [{ route : req.body.route } , { user:veruser }]};
+        query = {$and: [{ route : req.body.route }]};
       }
       else{
-        query ={$and: [{ namer : req.body.namer } , { user:veruser }]};
+        query ={$and: [{ namer : req.body.namer }]};
       }
       var can = await db.collection('routes').deleteOne(query);
       client.close();
@@ -549,7 +550,7 @@ exports.find_route = async(req) =>{
           query =  {user:veruser};
         }
         if(req.body.namer){
-          query = { namer : req.body.namer}
+          query = { namer :{$regex: req.body.namer, $options:'i'}};
         }
         var items = await db.collection('routes').find(query).project({_id:0,OLC:0}).toArray();
         //facciamo la project anche di OLC che al client non serve, serve solo al server per fare la find

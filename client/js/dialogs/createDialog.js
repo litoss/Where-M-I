@@ -211,7 +211,7 @@ function submit(form, place){
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/new_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = function() {
+  xhr.onload = async function() {
       if (xhr.status ==  200 ) {
         var snackbar = new SnackBar('Successfully added');
         snackbar.open();
@@ -219,7 +219,11 @@ function submit(form, place){
           document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
         });
           var addedPlace = new Place(object);
+
+
+          addedPlace.place.media_rating = await getRating(addedPlace.place.OLC);
           map.places.push(addedPlace);
+
           map.closeAllWindow();
           dialog.close();
           if(map.pageDrawer) map.pageDrawer.open = false;

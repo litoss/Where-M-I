@@ -1,6 +1,7 @@
 class Place {
   constructor(place){
 
+    this.place = place;
     var rightButtonList = [];
     var leftButtonList = [];
     var latLng = null;
