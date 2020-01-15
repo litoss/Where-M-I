@@ -31,7 +31,7 @@ class Card{
     this.secondary.className = "mdc-typography mdc-typography--body2";
     this.secondary.innerHTML = secondaryText;
     primary.appendChild(this.secondary);
-  
+
     if(actionButtons || actionIcons){
       var actions = document.createElement('div');
       actions.className = "mdc-card__actions";

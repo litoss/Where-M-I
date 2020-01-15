@@ -10,12 +10,13 @@ function openGeocode() {
   selectContent.appendChild(num.root_);
 
   var footer = document.createElement('div');
-  var selectOnMap = new ActionButton('Select on map');
+  var selectOnMap = new ActionButton('Select on map', 'mdc-button--raised');
   var back = new ActionButton('Back');
-  var add = new ActionButton('add');
+  var add = new ActionButton('Search', 'mdc-button--raised');
 
-  footer.appendChild(add.root_);
+
   footer.appendChild(back.root_);
+  footer.appendChild(add.root_);
   footer.appendChild(selectOnMap.root_);
 
   var geocodeDialog = new Dialog(selectContent, footer, "Add some informations");

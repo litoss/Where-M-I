@@ -20,7 +20,9 @@ const url = 'mongodb://localhost:27017';
 //const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
-const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
+//const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
+const CLIENT_ID = "425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com"
+
 const {OAuth2Client} = require('google-auth-library');
 const client_user = new OAuth2Client(CLIENT_ID);
 
@@ -91,8 +93,13 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
                 name: req.body.name,                //nome del posto
                 category: req.body.category,        // categoria del luogo(es. pizzeria, museo)
                 media_rating: m_rating,             //media rating a zero alla creazione del luogo
+<<<<<<< HEAD
                 count_rating: init_count_rate,      //conteggio numero recensioni date al luogo dagli utenti(recensioni e/o stelle)
                 opening: req.body.opening,          // orari di apertura del luogo
+=======
+                opening: Number(req.body.opening),          // orario di apertura del luogo
+                closing: Number(req.body.closing),          //orario di chiusura
+>>>>>>> 2c6db749ec66ca9fadf3a1779dd48f118de0b868
                 description: req.body.description,  // descrizione del luogo
                 image: req.body.image
             };
@@ -112,7 +119,10 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
                     object2.category = req.body.category;
                 }
                 if (req.body.opening){
-                    object2.opening = req.body.opening;
+                    object2.opening = Number(req.body.opening);
+                }
+                if (req.body.closing){
+                    object2.closing = Number(req.body.closing);
                 }
                 if (req.body.description){
                     object2.description = req.body.description;
@@ -189,11 +199,11 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
             var m_rating = append.concat(req.body.media_rating);
             expression.push({media_rating:{$regex:m_rating}});
         }
-        if (req.body.opening){
-            var apertura = append.concat(req.body.opening);
-            expression.push({opening:{$regex:apertura}});
+        if (req.body.time){
+            expression.push({opening:{$lte:req.body.time}});
+            expression.push({closing:{$gt:req.body.time}});
         }
-
+        //console.log(expression);
         var query;
             if(expression.length >  1){query = {$and:expression};}
             if(expression.length == 1){query = expression[0]}
@@ -617,12 +627,15 @@ exports.find_pref = async(req) =>{
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        var id = req.body.id;
-        //var veruser = await verify(req.body.token);
 
-        var query = {user: id};
-        var items = await db.collection('preferences').find(query).project({_id:0}).toArray();
+        var items;
+        if(req.body.id)
+          items = await db.collection('preferences').find({user: req.body.id}).project({_id:0}).toArray();
+        else
+          items = await db.collection('preferences').find().project({_id:0}).toArray();
+
         client.close();
+        console.log(items);
         return items;
     }
     catch(err){

@@ -20,7 +20,7 @@ class Position {
 
     this.infoWindow = new google.maps.InfoWindow({
         content: new Card(yourPlace.title, null, yourPlace.description, null, [search.root_]).root_,
-        maxWidth: 400
+        maxWidth: 600
     });
 
     this.marker.bindTo("position", this.circle, "center");

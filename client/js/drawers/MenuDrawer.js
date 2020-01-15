@@ -66,11 +66,11 @@ class MenuDrawer extends Drawer{
         break;
       case 6: openCheckListBrowser();
         break;
-      case 8: openAbout();
+      case 7: openAbout();
         break;
-      case 9: openSettings();
+      case 8: openSettings();
         break;
-      case 10: openPrivacy();
+      case 9: openPrivacy();
         break;
     }
   });

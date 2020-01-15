@@ -8,20 +8,37 @@ function openPlaces(){
     xhr.onload = function(){
       var response = JSON.parse(xhr.responseText);
       for(var i in response){
-          var editButton = new IconButton('edit');
-          editButton.root_.id = i;
-          editButton.listen('click', (event) => {
-            createEditDialog(response[event.srcElement.id]);
-          });
+          var editButton = new IconButton('edit', 'mdc-button--raised mdc-image__circular');
+          var deleteButton = new IconButton('delete');
           var image = decode64(response[i].image, "image/jpg");
-          var card = new Card (response[i].name, null, response[i].description, image, null,[editButton.root_],'about-card');
+
+          if(response[i].description.length > 100) descr = response[i].description.substring(0,100)+"...";
+          else descr = response[i].description;
+
+          var card = new Card (response[i].name, null, descr, image, null,[editButton.root_,deleteButton.root_],'about-card');
           content.appendChild(card.root_);
 
           var addListener = function(index){
+            var place = response[index];
             card.primaryAction.addEventListener("click", () => {
-              var place = response[index];
               map.pageDrawer.open = false;
               selectedPlace(place);
+            });
+            editButton.listen('click', (event) => {
+              createEditDialog(place);
+            });
+            deleteButton.listen('click', (event) => {
+              var edit = new ActionButton('Delete');
+              var close = new IconButton('close');
+              var snackbar = new SnackBar('You will delete paths deleting this place, Are you sure?',[edit.root_,close.root_]);
+              snackbar.open();
+              edit.listen('click', () => {
+                deletePlace(place);
+                map.pageDrawer.open = false;
+              })
+              snackbar.listen("MDCSnackbar:closed",() => {
+                document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+              });
             });
           }
           addListener(i);
@@ -32,4 +49,39 @@ function openPlaces(){
 
     map.pageDrawer = new PageDrawer('Your Places', content);
     map.pageDrawer.open = true;
+}
+
+function deletePlace(place){
+  var xhr = new XMLHttpRequest;
+  xhr.open('POST', '/del_place');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    var routes = deleteRoutes(place.OLC);
+    for(var i in map.places){
+      var olc = OpenLocationCode.encode(map.places[i].getPosition().lat(), map.places[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
+      if (olc == place.OLC){
+        map.places[i].setMap(null);
+        map.places.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  xhr.send(JSON.stringify({OLC: place.OLC, token: token}))
+
+}
+
+function deleteRoutes(olc){
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', '/find_route');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    var response = JSON.parse(xhr.response);
+    for(var i in response){
+      for(var j in response[i].route){
+        if (olc == response[i].route[j]) deletePath(response[i].namer);
+      }
+    }
+  }
+  xhr.send(JSON.stringify({OLC: ''}));
 }

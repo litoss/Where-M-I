@@ -153,7 +153,6 @@ var simone = {
 
   var otherElements = [
     {name:"Checklist",icon:"check_circle"},
-    {name:"How it works",icon:"emoji_objects"},
     {name:"About Us",icon:"emoji_people"},
     {name:"Settings",icon:"settings_applications"},
     {name:"Privacy Policy",icon:"policy"}

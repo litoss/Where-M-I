@@ -1,9 +1,7 @@
 var dialog;
-var place;
 
-async function createEditDialog(plac){
+async function createEditDialog(place){
 
-  place = plac;
   var content = document.createElement("div");
 
   var dialogTitle = 'Edit this place.';
@@ -14,10 +12,12 @@ async function createEditDialog(plac){
   if(place.image) {
     imgUri = decode64(place.image, "image/jpg");
     img64 = place.image;
-  }else{
-    imgUri = 'content/no_street.png';
-  }
-  var  exampleCard = new Card(place.name, place.category, place.description, imgUri, null, null, 'about-card');
+  }else imgUri = 'content/no_street.png';
+
+  if(place.description.length > 100) description = place.description.substring(0,100)+"...";
+  else description = place.description;
+
+  var  exampleCard = new Card(place.name, place.category, description, imgUri, null, null, 'about-card');
 
   exampleCard.id = "place-card";
   content.appendChild(exampleCard.root_);
@@ -28,7 +28,6 @@ async function createEditDialog(plac){
   input.id = 'image-input';
   imgUpload.root_.appendChild(input);
 
-
   var nameForm = new TextField("Name","emoji_flags");
   nameForm.input.setAttribute('value', place.name);
   content.appendChild(nameForm.root_);
@@ -37,9 +36,6 @@ async function createEditDialog(plac){
   var descrForm = new TextField(null, "subject", 'mdc-text-field--textarea');
   descrForm.input.value = place.description;
   content.appendChild(descrForm.root_);
-
-  var opHoForm = new TextField("Opening Hours", "schedule");
-  content.appendChild(opHoForm.root_);
 
   var listEl = new List();
   for (var i in categories) listEl.add(new SelectList(categories[i].name,categories[i].id));
@@ -58,6 +54,28 @@ async function createEditDialog(plac){
   //descrForm.input.focus();
   nameForm.input.focus();
 
+  var opening =  document.createElement('div');
+  var open = document.createElement('h4');
+  open.innerHTML = 'Open at : '
+  opening.appendChild(open);
+  var slider1 = new Slider();
+  slider1.min = 0;
+  slider1.max = 24;
+  slider1.value = 0;
+  opening.appendChild(slider1.root_);
+  content.appendChild(opening);
+
+  var closing =  document.createElement('div');
+  var close = document.createElement('h4');
+  close.innerHTML = 'Close at : '
+  closing.appendChild(close);
+  var slider2 =  new Slider();
+  slider2.min = 0;
+  slider2.max = 24;
+  slider2.value = 24;
+  closing.appendChild(slider2.root_);
+  content.appendChild(closing);
+
   imgUpload.listen('click', () => {
     input.click();
   });
@@ -74,7 +92,10 @@ async function createEditDialog(plac){
 
 
   descrForm.input.addEventListener('input', () => {
-  exampleCard.setSecondary(descrForm.value);
+    var descr;
+    if(descrForm.value.length > 100) descr = descrForm.value.substring(0,100)+"...";
+    else descr = descrForm.value;
+    exampleCard.setSecondary(descr);
   })
 
   cat.listen('MDCSelect:change', () => {
@@ -94,7 +115,7 @@ async function createEditDialog(plac){
       });
       return;
     }
-    else if(nameForm.value.length > 30){
+    else if(nameForm.value.length > 40){
       var snackbar = new SnackBar('name is too long');
       snackbar.open();
       snackbar.listen("MDCSnackbar:closed",() => {
@@ -106,7 +127,11 @@ async function createEditDialog(plac){
 
     form.append('category', cat.value);
 
-    form.append('opening', opHoForm.value);
+    var opening = slider1.value;
+    form.append('opening', opening);
+
+    var closing = slider2.value;
+    form.append('closing', closing);
 
     if(descrForm.value.length == 0) {
           if(place.description) form.append('description', place.description);
@@ -133,15 +158,20 @@ async function createEditDialog(plac){
       });
       return;
     }
-    verify(form);
+    verify(form, place);
   });
 
   dialog.listen('MDCDialog:closing', function() {
     document.getElementById('map').removeChild(dialog.root_);
   });
+
+  dialog.listen('MDCDialog:opened', function() {
+    slider1.layout();
+    slider2.layout();
+  });
 }
 
-function verify(form){
+function verify(form, place){
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -171,17 +201,19 @@ function verify(form){
 }
 
 
-function submit(form){
+function submit(form, place){
   var object = {};
   form.forEach(function(value, key){
       object[key] = value;
   });
 
+  console.log(object);
+
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/new_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
-      if (xhr.status === 200 ) {
+      if (xhr.status ==  200 ) {
         var snackbar = new SnackBar('Successfully added');
         snackbar.open();
         snackbar.listen("MDCSnackbar:closed",() => {
@@ -203,6 +235,5 @@ function submit(form){
           alert('Request failed.  Returned status of ' + xhr.status);
       }
   };
-
   xhr.send(JSON.stringify(object));
 }

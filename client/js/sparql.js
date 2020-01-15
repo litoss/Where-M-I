@@ -1,4 +1,4 @@
-var approx= 0.001;
+var approx=0.001;
 var queryUrl;
 
 function setQuery(position, approx){

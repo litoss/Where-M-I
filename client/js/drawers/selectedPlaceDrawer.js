@@ -32,25 +32,18 @@ async function selectedPlace(place){
     imgContainer.appendChild(openingHours);
   }
 
-  var visited = new IconButton('favorite_border');
-  content.appendChild(visited.root_);
-  checkVisited(place.OLC, visited);
-
-  visited.listen('click', () => {
-    setVisited(place.OLC, visited);
-  })
-
   var separator1 = document.createElement('hr');
   separator1.className = 'mdc-list-divider';
   content.appendChild(separator1);
 
   var description = document.createElement('p');
   description.className = 'descr';
-  if(preferences.language != 'en') description.innerHTML = await translate(place.description, 'en', preferences.language );
+  var src = await detect(place.description);
+  if(src != preferences.language) description.innerHTML = await translate(place.description, src, preferences.language);
   else description.innerHTML = place.description;
   content.appendChild(description);
 
-  var texttospeechButton = new IconButton('speaker_notes');
+  var texttospeechButton = new IconButton('speaker_notes', 'mdc-button--raised mdc-image__circular');
   content.appendChild(texttospeechButton.root_);
   texttospeechButton.listen('click', async() => {
     if(audio) {
@@ -63,6 +56,14 @@ async function selectedPlace(place){
     }
   });
 
+  var visited = new IconButton('favorite_border', 'mdc-button--raised mdc-image__circular');
+  content.appendChild(visited.root_);
+  checkVisited(place.OLC, visited);
+
+  visited.listen('click', () => {
+    setVisited(place.OLC, visited);
+  })
+
   var separator2 = document.createElement('hr');
   separator2.className = 'mdc-list-divider';
   content.appendChild(separator2);
@@ -71,11 +72,15 @@ async function selectedPlace(place){
   var starContainer =  document.createElement('div');
   content.appendChild(starContainer);
 
-  starContainer.addEventListener("click", () => {
+  setStar(place.media_rating, starContainer);
+  var reviewButton = new IconButton('rate_review','mdc-button--raised mdc-image__circular');
+  starContainer.appendChild(reviewButton.root_);
+
+  reviewButton.listen("click", () => {
     map.pageDrawer.open = false;
     reviewDrawer(place.OLC);
   })
-  setStar(place.media_rating, starContainer);
+
 
   var separator3 = document.createElement('hr');
   separator3.className = 'mdc-list-divider';
@@ -147,7 +152,6 @@ function checkVisited(olc, but){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function(){
     var response =JSON.parse(xhr.response);
-    console.log(response);
     if (!response[0]) return;
     else if (!response[0].visit_tag) return;
     else but.setIcon('favorite');
