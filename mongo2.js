@@ -20,8 +20,8 @@ const url = 'mongodb://localhost:27017';
 //const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
-//const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
-const CLIENT_ID = "425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com"
+const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
+//const CLIENT_ID = "425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com"
 
 const {OAuth2Client} = require('google-auth-library');
 const client_user = new OAuth2Client(CLIENT_ID);
@@ -93,13 +93,9 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
                 name: req.body.name,                //nome del posto
                 category: req.body.category,        // categoria del luogo(es. pizzeria, museo)
                 media_rating: m_rating,             //media rating a zero alla creazione del luogo
-<<<<<<< HEAD
                 count_rating: init_count_rate,      //conteggio numero recensioni date al luogo dagli utenti(recensioni e/o stelle)
-                opening: req.body.opening,          // orari di apertura del luogo
-=======
                 opening: Number(req.body.opening),          // orario di apertura del luogo
                 closing: Number(req.body.closing),          //orario di chiusura
->>>>>>> 2c6db749ec66ca9fadf3a1779dd48f118de0b868
                 description: req.body.description,  // descrizione del luogo
                 image: req.body.image
             };

@@ -51,7 +51,6 @@ async function createEditDialog(place){
   dialog = new Dialog(content,footer,dialogTitle);
   document.getElementById('map').appendChild(dialog.root_);
   dialog.open();
-  //descrForm.input.focus();
   nameForm.input.focus();
 
   var opening =  document.createElement('div');
