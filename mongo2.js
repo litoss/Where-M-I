@@ -446,10 +446,6 @@ count_star = async(req) => {
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-<<<<<<< HEAD
-
-=======
->>>>>>> a6a18f3231625831f120a89c7339f8a245b2850d
         var query = {OLC : req.body.OLC};
         var rev_count = await db.collection('review').find(query).count();
         var object7 = {};
@@ -553,11 +549,7 @@ exports.find_route = async(req) =>{
           query =  {user:veruser};
         }
         if(req.body.namer){
-<<<<<<< HEAD
-          query = { namer : {$regex:req.body.namer, $options:'i'}};
-=======
           query = { namer :{$regex: req.body.namer, $options:'i'}};
->>>>>>> a6a18f3231625831f120a89c7339f8a245b2850d
         }
         var items = await db.collection('routes').find(query).project({_id:0,OLC:0}).toArray();
         //facciamo la project anche di OLC che al client non serve, serve solo al server per fare la find
