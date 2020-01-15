@@ -73,15 +73,14 @@ async function getTopPaths(div){
 }
 
 async function getTopVlogger(div){
-  var list = await search("id, snippet", "8FPHF800+:*", 50);
 
   var channels = [];
-  for(var i in list){
+  for(var i in clips){
     var index;
-    if((index = channels.findIndex(o => o.channelId === list[i].snippet.channelId)) != -1){
+    if((index = channels.findIndex(o => o.channelId === clips[i].snippet.channelId)) != -1){
       channels[index].count++;
     }else{
-      channels.push({channelId: list[i].snippet.channelId, count: 1 })
+      channels.push({channelId: clips[i].snippet.channelId, count: 1 })
     }
   }
 
@@ -107,26 +106,14 @@ async function getTopVlogger(div){
 }
 
 async function getTopClips(div){
-  var list = await search("id", "8FPHF800+:*", 50);
 
-  var clips = [];
-
-  for(var i in list){
-    var clip = await getVideo(list[i].id.videoId);
-    clips.push(clip);
-  }
-  var compare = function(a,b){
-    return a.statistics.likeCount - b.statistics.likeCount;
-  }
-
-  clips.sort(compare);
-  clips.reverse();
-
+  var orderedClips = await orderClips();
+console.log(orderedClips);
   var listclips = new List("mdc-list--two-line");
-  for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].statistics.likeCount + " likes", 'music_note'));
+  for(var i in orderedClips) listclips.add(new ElementList(orderedClips[i].snippet.title, orderedClips[i].statistics.likeCount + " likes", 'music_note'));
 
   listclips.listen('MDCList:action',(event) => {
-    window.open("https://www.youtube.com/watch?v=" + list[event.detail.index].id.videoId, '_blank');
+    window.open("https://www.youtube.com/watch?v=" + orderedClips[event.detail.index].id.videoId, '_blank');
   });
 
   div.appendChild(listclips.root_);

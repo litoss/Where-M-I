@@ -1,7 +1,6 @@
 var visited = false;
 
 async function selectedPlace(place){
-
   if(map.pageDrawer) map.pageDrawer.open = false;
 
   var review = [];
@@ -26,11 +25,21 @@ async function selectedPlace(place){
   img.className = 'selected-place-img'
   imgContainer.appendChild(img);
 
-  if (place.opening) {
-    var openingHours = document.createElement('h5');
-    openingHours.innerHTML = 'Opening Hours: ' + place.opening;
-    imgContainer.appendChild(openingHours);
-  }
+  var openingHours = document.createElement('h5');
+  openingHours.innerHTML = 'Opening hours: ' + place.opening + ":00/" + place.closing + ":00";
+  content.appendChild(openingHours);
+
+  var visitedDiv =  document.createElement('div');
+  visitedDiv.innerHTML = "Visited :"
+  var visited = new IconButton('check_circle_outline', 'mdc-button--raised mdc-image__circular');
+  content.appendChild(visitedDiv);
+  visitedDiv.appendChild(visited.root_);
+  checkVisited(place.OLC, visited);
+
+  visited.listen('click', () => {
+    setVisited(place.OLC, visited);
+  })
+
 
   var separator1 = document.createElement('hr');
   separator1.className = 'mdc-list-divider';
@@ -56,14 +65,6 @@ async function selectedPlace(place){
     }
   });
 
-  var visited = new IconButton('favorite_border', 'mdc-button--raised mdc-image__circular');
-  content.appendChild(visited.root_);
-  checkVisited(place.OLC, visited);
-
-  visited.listen('click', () => {
-    setVisited(place.OLC, visited);
-  })
-
   var separator2 = document.createElement('hr');
   separator2.className = 'mdc-list-divider';
   content.appendChild(separator2);
@@ -81,10 +82,14 @@ async function selectedPlace(place){
     reviewDrawer(place.OLC);
   })
 
-
   var separator3 = document.createElement('hr');
   separator3.className = 'mdc-list-divider';
   content.appendChild(separator3);
+
+  var creator = await getUser(place.user);
+  var creatorList = new List("mdc-list--two-line mdc-list--avatar-list");
+  creatorList.add(new ImageList(creator.name, "Creator", creator.picture ));
+  content.appendChild(creatorList.root_);
 
   var clipTitle = document.createElement('h3');
   clipTitle.innerHTML = "Clip Audio";
@@ -154,7 +159,7 @@ function checkVisited(olc, but){
     var response =JSON.parse(xhr.response);
     if (!response[0]) return;
     else if (!response[0].visit_tag) return;
-    else but.setIcon('favorite');
+    else but.setIcon('check_circle');
     visited = true;
   }
   xhr.send(JSON.stringify({OLC: olc, token: token}));
@@ -162,16 +167,26 @@ function checkVisited(olc, but){
 
 function setVisited(olc, but){
   visited = !visited;
-  console.log(visited);
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/new_review');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function(){
-    console.log(xhr.response);
-    if(visited) but.setIcon('favorite');
+    if(visited) but.setIcon('check_circle');
     else{
-       but.setIcon('favorite_border');
+       but.setIcon('check_circle_outline');
     }
   };
   xhr.send(JSON.stringify({OLC: olc, token: token, visit_tag: visited}));
+}
+
+function getUser(id) {
+  return new Promise((resolve,reject) => {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/find_preference');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+      resolve(JSON.parse(xhr.response)[0]);
+    };
+    xhr.send(JSON.stringify({id: id}));
+  });
 }

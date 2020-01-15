@@ -56,7 +56,7 @@ function deletePlace(place){
   xhr.open('POST', '/del_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
-    var routes = deleteRoutes(place.OLC);
+    deleteRoutes(place.OLC);
     for(var i in map.places){
       var olc = OpenLocationCode.encode(map.places[i].getPosition().lat(), map.places[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
       if (olc == place.OLC){

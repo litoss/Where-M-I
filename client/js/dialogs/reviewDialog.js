@@ -76,8 +76,13 @@ async function reviewDialog(olc){
     xhr = new XMLHttpRequest();
     xhr.open('POST', '/new_review');
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function(){
-      console.log(xhr.response);
+    xhr.onload = async function(){
+      for(var i in map.places){
+        var olcR = OpenLocationCode.encode(map.places[i].getPosition().lat(), map.places[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
+        if (olcR == olc){
+          map.places[i].place.media_rating = await getRating(olc);
+        }
+      }
     }
     xhr.send(JSON.stringify({token: token, OLC: olc, rating_place: value, comment:reviewForm.value}))
   })
@@ -86,4 +91,15 @@ async function reviewDialog(olc){
   document.getElementById('map').appendChild(dialog.root_);
   dialog.open();
 
+}
+
+function getRating(olc){
+  return new Promise((resolve,reject) =>{
+    xhr.open('POST', '/find_place');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function(){
+      resolve(JSON.parse(xhr.response)[0].media_rating);
+    }
+    xhr.send(JSON.stringify({OLC: olc}));
+  })
 }
