@@ -19,10 +19,11 @@ var categories = [
 ];
 
 var languages = [
-  { name: 'Italiano', tag:'it'},
-  { name: 'English', tag:'en'},
-  { name: 'French', tag:'fr'},
-  { name: 'Spanish', tag:'es'}
+  { name: 'Italiano', tag:'it', iso:'ita'},
+  { name: 'English', tag:'en', iso:'eng'},
+  { name: 'Deutsch', tag:'de', iso:'deu'},
+  { name: 'French', tag:'fr', iso:'fra'},
+  { name: 'Spanish', tag:'es', iso:'esp'}
 ];
 
 var audience = [

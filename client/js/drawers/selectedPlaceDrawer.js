@@ -73,8 +73,9 @@ async function selectedPlace(place){
   var starContainer =  document.createElement('div');
   content.appendChild(starContainer);
 
-  setStar(place.media_rating, starContainer);
+  var stars = setStar(place.media_rating, starContainer);
   var reviewButton = new IconButton('rate_review','mdc-button--raised mdc-image__circular');
+  starContainer.appendChild(stars);
   starContainer.appendChild(reviewButton.root_);
 
   reviewButton.listen("click", () => {
@@ -99,20 +100,46 @@ async function selectedPlace(place){
   what.innerHTML = "What is this?";
   content.appendChild(what);
 
-  // if(!playlist[place.OLC]){
-  //   search(place.OLC, "what").then((response) => {
-  //       var player = new YoutubePlayer(response);
-  //       what.insertAdjacentElement('afterend',player);
-  //   });
-  // }
+  searchClips(place.OLC, "what", preferences.language, preferences.category, preferences.audience).then((response) => {
+      if(!response.length){
+        var empty = document.createElement('p');
+        empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
+        what.insertAdjacentElement('afterend',empty);
+      }else{
+        var player = new YoutubePlayer(response);
+        what.insertAdjacentElement('afterend',player);
+      }
+  });
 
   var how = document.createElement('h3');
   how.innerHTML = "How to get in?";
   content.appendChild(how);
 
+  searchClips(place.OLC, "how", preferences.language, preferences.category, preferences.audience).then((response) => {
+      if(!response.length){
+        var empty = document.createElement('p');
+        empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
+        how.insertAdjacentElement('afterend',empty);
+      }else{
+        var player = new YoutubePlayer(response);
+        how.insertAdjacentElement('afterend',player);
+      }
+  });
+
   var why = document.createElement('h3');
   why.innerHTML = "What about this?";
   content.appendChild(why);
+
+  searchClips(place.OLC, "why", preferences.language, preferences.category, preferences.audience).then((response) => {
+      if(!response.length){
+        var empty = document.createElement('p');
+        empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
+        why.insertAdjacentElement('afterend',empty);
+      }else{
+        var player = new YoutubePlayer(response);
+        why.insertAdjacentElement('afterend',player);
+      }
+  });
 
   map.pageDrawer  = new PageDrawer(place.name, content);
   map.pageDrawer.open = true;

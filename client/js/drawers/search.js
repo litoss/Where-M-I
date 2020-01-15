@@ -215,9 +215,8 @@ function openSearch(){
 
         search.listen('click', async() => {
 
-          //console.log(description);
-          var clips = await searchClips(searchText.value, searchSettings.purpose, searchSettings.language, searchSettings.language, searchSettings.category, searchSettings.audience);
-          //console.log(clips);
+          searchDiv.innerHTML = '';
+          var clips = await searchClips(searchText.value, searchSettings.purpose, searchSettings.language, searchSettings.category, searchSettings.audience);
           var listclips = new List("mdc-list--two-line");
           for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
           searchDiv.appendChild(listclips.root_);

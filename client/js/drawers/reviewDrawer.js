@@ -10,34 +10,37 @@ async function reviewDrawer(olc){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = async function(){
     var response = JSON.parse(xhr.response);
+    var reviews = [];
+    var review = new List("mdc-list--two-line mdc-list--avatar-list");
+
     for(var i in response){
       if(response[i].rating_place){
+
         var user = await findUser(response[i].user);
+
+        reviews[i] = user;
         var div = document.createElement('div');
 
-        var separator1 = document.createElement('hr');
-        separator1.className = 'mdc-list-divider';
-        div.appendChild(separator1);
+        for(var i in reviews){
+          var separator1 = document.createElement('hr');
+          separator1.className = 'mdc-list-divider';
+          review.add(separator1);
 
-        var img = document.createElement('img');
-        img.src = user.picture;
-        div.appendChild(img);
+          review.add(new ImageList(reviews[i].name, reviews[i].email, reviews[i].picture ));
 
-        var id = document.createElement('div');
-        id.innerHTML = user.name;
-        div.appendChild(id);
-        setStar(response[i].rating_place, div);
-        var comment = document.createElement('div');
-        comment.innerHTML = response[i].comment;
-        div.appendChild(comment);
+          var star = setStar(response[i].rating_place, div);
+          review.add(star);
 
-        var separator2 = document.createElement('hr');
-        separator2.className = 'mdc-list-divider';
-        div.appendChild(separator2);
+          var comment = document.createElement('div');
+          comment.innerHTML = response[i].comment;
+          review.add(comment);
 
+          var separator2 = document.createElement('hr');
+          separator1.className = 'mdc-list-divider';
+          review.add(separator2);
 
-        content.appendChild(div);
-
+          content.appendChild(review.root_);
+        }
       }
     }
   }
@@ -54,8 +57,8 @@ async function reviewDrawer(olc){
 
 }
 
-function setStar(rating, div){
-
+function setStar(rating){
+  var div = document.createElement('div');
   var star = [];
   for(var i=0;i<5;i++){
     if((rating >= (i + 0.33)) && (rating <= (i + 0.66))){
@@ -77,6 +80,7 @@ function setStar(rating, div){
       div.appendChild(star[i]);
     }
   }
+  return div;
 }
 
 function findUser(id){

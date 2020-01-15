@@ -30,7 +30,6 @@ async function openCharts(){
 }
 
 async function getTopPaths(div){
-  var paths = new List("mdc-list--two-line");
 
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_route');
@@ -41,7 +40,7 @@ async function getTopPaths(div){
     for(var i in response){
       var sum = 0;
       for (var j in response[i].route){
-        place = await getRating(response[i].route[j]);
+        place = await getPlace(response[i].route[j]);;
         sum += place.media_rating;
         if(j == 0) {
           var image = decode64(place.image);
@@ -119,7 +118,7 @@ console.log(orderedClips);
   div.appendChild(listclips.root_);
 }
 
-function getRating(olc){
+function getPlace(olc){
   return new Promise((resolve,reject) =>{
     var xhr = new XMLHttpRequest;
     xhr.open('POST', '/find_place');
