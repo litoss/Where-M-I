@@ -73,8 +73,9 @@ async function selectedPlace(place){
   var starContainer =  document.createElement('div');
   content.appendChild(starContainer);
 
-  setStar(place.media_rating, starContainer);
+  var stars = setStar(place.media_rating, starContainer);
   var reviewButton = new IconButton('rate_review','mdc-button--raised mdc-image__circular');
+  starContainer.appendChild(stars);
   starContainer.appendChild(reviewButton.root_);
 
   reviewButton.listen("click", () => {
