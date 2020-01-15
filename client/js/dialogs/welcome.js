@@ -1,3 +1,5 @@
+var welcomeDialog;
+
 function openWelcome() {
   var content = document.createElement('div');
   var img = document.createElement('img');
@@ -17,7 +19,7 @@ function openWelcome() {
   buttonContainer.appendChild(geolocate.root_);
   buttonContainer.appendChild(insert.root_);
 
-  var welcomeDialog = new Dialog(content, buttonContainer, "");
+  welcomeDialog = new Dialog(content, buttonContainer, "");
 
   document.getElementById('map').appendChild(welcomeDialog.root_);
   welcomeDialog.open();
@@ -25,7 +27,7 @@ function openWelcome() {
   welcomeDialog.escapeKeyAction = '';
 
   geolocate.listen('click',() => {
-    welcomeDialog.close();
+    //welcomeDialog.close();
     localize();
   });
 

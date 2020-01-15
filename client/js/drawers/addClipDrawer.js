@@ -144,7 +144,11 @@ function addClipDrawer(place){
       };
       xhr.send(JSON.stringify({chunks: base64}));
     }else{
-      alert("Mancano dati");
+      var snackbar = new SnackBar('Missing data');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
     }
   });
 
@@ -154,7 +158,11 @@ function addClipDrawer(place){
         audio.src = response;
       });
     }else {
-      alert("non hai registrato nessun audio");
+      var snackbar = new SnackBar('Please record an audio.');
+      snackbar.open();
+      snackbar.listen("MDCSnackbar:closed",() => {
+        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
     }
   });
 

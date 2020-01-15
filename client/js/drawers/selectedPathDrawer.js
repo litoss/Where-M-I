@@ -54,11 +54,15 @@ function showRoute(path){
       }, function(response, status) {
         // Route the directions and pass the response to a function to create
         // markers for each step.
-        if (status === 'OK') {
+        if (status == 'OK') {
           map.directionsRenderer.setDirections(response);
-          console.log(response);
+          //console.log(response);
         } else {
-          window.alert('Directions request failed due to ' + status);
+          var snackbar = new SnackBar('Directions request failed due to ' + status);
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+          });
         }
       });
 

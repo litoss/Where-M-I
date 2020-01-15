@@ -5,6 +5,7 @@ function createPath(){
     var content = document.createElement('div');
 
     var nameField = new TextField("Insert name for new route");
+    nameField.required = true;
 
     content.appendChild(nameField.root_);
 
@@ -47,8 +48,7 @@ function createPath(){
               if(!route.includes(response[index].OLC)){
                 route.push(response[index].OLC);
                 var image = decode64(response[index].image, "image/jpg");
-                var removeButton = new IconButton('delete');
-                var card = new Card(response[index].name, null, null,image,null,[removeButton.root_],'about-card');
+                var card = new Card(response[index].name, null, null,image,null,null,'about-card');
                 pathSelected.appendChild(card.root_);
               }else {
                 var snackbar = new SnackBar('This Place is already on your selected Path');

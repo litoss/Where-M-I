@@ -11,31 +11,33 @@ async function reviewDrawer(olc){
   xhr.onload = async function(){
     var response = JSON.parse(xhr.response);
     for(var i in response){
-      var user = await findUser(response[i].user);
-      var div = document.createElement('div');
+      if(response[i].rating_place){
+        var user = await findUser(response[i].user);
+        var div = document.createElement('div');
 
-      var separator1 = document.createElement('hr');
-      separator1.className = 'mdc-list-divider';
-      div.appendChild(separator1);
+        var separator1 = document.createElement('hr');
+        separator1.className = 'mdc-list-divider';
+        div.appendChild(separator1);
 
-      var img = document.createElement('img');
-      img.src = user.picture;
-      div.appendChild(img);
+        var img = document.createElement('img');
+        img.src = user.picture;
+        div.appendChild(img);
 
-      var id = document.createElement('div');
-      id.innerHTML = user.name;
-      div.appendChild(id);
-      setStar(response[i].rating_place, div);
-      var comment = document.createElement('div');
-      comment.innerHTML = response[i].comment;
-      div.appendChild(comment);
+        var id = document.createElement('div');
+        id.innerHTML = user.name;
+        div.appendChild(id);
+        setStar(response[i].rating_place, div);
+        var comment = document.createElement('div');
+        comment.innerHTML = response[i].comment;
+        div.appendChild(comment);
 
-      var separator2 = document.createElement('hr');
-      separator2.className = 'mdc-list-divider';
-      div.appendChild(separator2);
+        var separator2 = document.createElement('hr');
+        separator2.className = 'mdc-list-divider';
+        div.appendChild(separator2);
 
 
-      content.appendChild(div);
+        content.appendChild(div);
+      }
     }
   }
   xhr.send(JSON.stringify({OLC: olc}));

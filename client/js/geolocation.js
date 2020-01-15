@@ -1,19 +1,22 @@
 var geolocator;
 
-function localize(){
+async function localize(){
   var options = {enableHighAccuracy: true,timeout: 5000,maximumAge: 0};
   geolocator = navigator.geolocation.watchPosition(watch, error, options);
+  //welcomeDialog.close();
 }
 
-function watch(position){
+async function watch(position){
   if(!map.position.getPosition){
     map.setCenter(latLng);
+    //welcomeDialog.close();
   }
 
   if(position.coords.accuracy){
     var latLng = {lat: position.coords.latitude, lng: position.coords.longitude};
     map.position.setPosition(latLng);
-    map.position.setAccuracy(position.coords.accuracy);
+    await map.position.setAccuracy(position.coords.accuracy);
+    welcomeDialog.close();
   }else error();
 }
 
@@ -29,6 +32,11 @@ function error(err) {
     map.draggableMarker.marker.setMap(null);
     map.draggableMarker = null;
   }
-  alert('Geolocation error, please try again or use another method');
+  var snackbar = new SnackBar('Geolocation error, please try again or use another method');
+  snackbar.open();
+  snackbar.listen("MDCSnackbar:closed",() => {
+    document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+  });
+  map.menuDrawer.open = false;
   openWelcome();
 }
