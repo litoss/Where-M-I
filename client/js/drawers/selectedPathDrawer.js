@@ -56,7 +56,13 @@ function showRoute(path){
         // markers for each step.
         if (status == 'OK') {
           map.directionsRenderer.setDirections(response);
-          //console.log(response);
+          map.pageDrawer.open = false;
+          var closeDirection = new IconButton('explore_off','mdc-button--raised mdc-image__circular');
+          map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(closeDirection.root_);
+          closeDirection.listen('click', () => {
+          map.directionsRenderer.setMap(null);
+          map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].pop();
+          })
         } else {
           var snackbar = new SnackBar('Directions request failed due to ' + status);
           snackbar.open();
