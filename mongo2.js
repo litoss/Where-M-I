@@ -132,6 +132,8 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
             var ret_update = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
             //console.log(ret_update.result);
             client.close();
+            up_star(req);
+            count_star(req);
             return (JSON.stringify(ret_update));
         }
     }
@@ -185,9 +187,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
             expression.push({user:{$regex:utente}});
         }
         if (req.body.name){
-            // var nome = append.concat(req.body.name);
-            // expression.push({name:{$regex:nome}});
-            expression.push({name:{$regex:req.body.name}});
+            expression.push({name:{$regex:req.body.name, $options:'i'}});
         }
         if (req.body.category){
             var categoria = append.concat(req.body.category);
@@ -445,10 +445,8 @@ up_star = async(req) => {
 
 count_star = async(req) => {
     try{
-
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        
         var query = {OLC : req.body.OLC};
         var rev_count = await db.collection('review').find(query).count();
         var object7 = {};
@@ -463,6 +461,8 @@ count_star = async(req) => {
         return err;
     }
 }
+
+
 
 
 //aggiunge un percorso preferito alla collezione route
@@ -550,7 +550,7 @@ exports.find_route = async(req) =>{
           query =  {user:veruser};
         }
         if(req.body.namer){
-          query = { namer : req.body.namer}
+          query = { namer :{$regex: req.body.namer, $options:'i'}};
         }
         var items = await db.collection('routes').find(query).project({_id:0,OLC:0}).toArray();
         //facciamo la project anche di OLC che al client non serve, serve solo al server per fare la find
