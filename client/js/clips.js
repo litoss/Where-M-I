@@ -23,15 +23,21 @@ async function orderClips(){
   return orderedClips;
 }
 
-async function searchClips(olc, purp, lang, cont, aud, det){
+async function searchClips(olc, purp, lang, cont, aud){
   var result = clips;
+  console.log(olc);
+  console.log(purp);
+  console.log(lang);
+  console.log(cont);
+  console.log(aud);
 
   if(olc){
-    async function contains(element){
+    function contains(element){
       return element.meta.split(':')[0].includes(olc);
     }
-
     result = result.filter(contains);
+    console.log("Takeshi's Castle 1 Prova: " + result.length)
+    console.log(result)
   }
 
   if(purp){
@@ -39,23 +45,29 @@ async function searchClips(olc, purp, lang, cont, aud, det){
   }
 
   if(lang){
-    async function equals(element){
-      return element.meta.split(':')[2] == lang;
+    var language = languages.find(o => o['tag'] == lang).iso;
+    console.log(language);
+    function equals(element){
+      console.log(element.meta.split(':')[2] == language);
+      return element.meta.split(':')[2] == language;
     }
     result = result.filter(equals);
+    console.log("Takeshi's Castle 2 Prova: " + result.length)
   }
 
-  if(cont){
-    async function equals(element){
+  if(cont && cont != "all"){
+    function equals(element){
       return element.meta.split(':')[3] == cont;
     }
     result = result.filter(equals);
+    console.log("Takeshi's Castle 3 Prova: " + result.length)
   }
-  if(audience){
-    async function equals(element){
+  if(aud && aud != "gen"){
+    function equals(element){
       return element.meta.split(':')[4] == audience;
     }
     result = result.filter(equals);
+    console.log("Takeshi's Castle 4 Prova: " + result.length)
   }
 
   console.log(result);

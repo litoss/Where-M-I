@@ -55,3 +55,21 @@ function getDistance(x1,x2,y1,y2){
   var deltaY = Math.abs(y1 - y2)
   return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 }
+function decode64BLOB(string, type){
+  var byteCharacters = atob(string);
+  var byteNumbers = new Array(byteCharacters.length);
+  for (var j = 0; j < byteCharacters.length; j++) {
+    byteNumbers[j] = byteCharacters.charCodeAt(j);
+  }
+  var byteArray = new Uint8Array(byteNumbers);
+  var blob = new Blob([byteArray], {type: type});
+  return blob;
+}
+
+async function appendBuffer(buffer1, buffer2) {
+  console.log(buffer1,buffer2);
+  var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
+  tmp.set( new Uint8Array(buffer1), 0);
+  tmp.set( new Uint8Array(buffer2), buffer1.byteLength);
+  return tmp;
+}

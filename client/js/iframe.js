@@ -4,10 +4,10 @@
 var player;
 
 function onYouTubeIframeAPIReady() {
-  // player = new YT.Player('player', {
-  //   height: '360',
-  //   width: '640',
-  // });
+  player = new YT.Player('player', {
+    height: '360',
+    width: '640',
+  });
 }
 
 function newPlayer(vid){
