@@ -119,6 +119,10 @@ class Place {
     return this.marker.getMap();
   }
 
+  setMap(map){
+    this.marker.setMap(map);
+  }
+
   setPosition(position){
     this.marker.setPosition(position);
     this.marker.setMap(map);

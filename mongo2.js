@@ -90,7 +90,8 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
                 name: req.body.name,                //nome del posto
                 category: req.body.category,        // categoria del luogo(es. pizzeria, museo)
                 media_rating: m_rating,             //media rating a zero alla creazione del luogo
-                opening: req.body.opening,          // orari di apertura del luogo
+                opening: Number(req.body.opening),          // orario di apertura del luogo
+                closing: Number(req.body.closing),          //orario di chiusura
                 description: req.body.description,  // descrizione del luogo
                 image: req.body.image
             };
@@ -111,7 +112,10 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
                     object2.category = req.body.category;
                 }
                 if (req.body.opening){
-                    object2.opening = req.body.opening;
+                    object2.opening = Number(req.body.opening);
+                }
+                if (req.body.closing){
+                    object2.closing = Number(req.body.closing);
                 }
                 if (req.body.description){
                     object2.description = req.body.description;
@@ -188,11 +192,11 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
             var m_rating = append.concat(req.body.media_rating);
             expression.push({media_rating:{$regex:m_rating}});
         }
-        if (req.body.opening){
-            var apertura = append.concat(req.body.opening);
-            expression.push({opening:{$regex:apertura}});
+        if (req.body.time){
+            expression.push({opening:{$lte:req.body.time}});
+            expression.push({closing:{$gt:req.body.time}});
         }
-
+        //console.log(expression);
         var query;
             if(expression.length >  1){query = {$and:expression};}
             if(expression.length == 1){query = expression[0]}

@@ -48,7 +48,7 @@ function openPaths(){
             var snackbar = new SnackBar('Are you sure?',[edit.root_,close.root_]);
             snackbar.open();
             edit.listen('click', () => {
-              deletePath(path);
+              deletePath(path.namer);
               map.pageDrawer.open = false;
             })
             snackbar.listen("MDCSnackbar:closed",() => {
@@ -67,6 +67,7 @@ function openPaths(){
 
 function firstPlace(olc){
   return new Promise((resolve,reject) =>{
+    var xhr = new XMLHttpRequest;
     xhr.open('POST', '/find_place');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function(){
@@ -76,13 +77,13 @@ function firstPlace(olc){
   })
 }
 
-function deletePath(path){
+function deletePath(namer){
   var xhr = new XMLHttpRequest;
   xhr.open('POST', '/del_route');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
     console.log(xhr.response);
   }
-  xhr.send(JSON.stringify({namer: path.namer, token: token}))
+  xhr.send(JSON.stringify({namer: namer, token: token}))
 
 }

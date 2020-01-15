@@ -151,7 +151,6 @@ function checkVisited(olc, but){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function(){
     var response =JSON.parse(xhr.response);
-    console.log(response);
     if (!response[0]) return;
     else if (!response[0].visit_tag) return;
     else but.setIcon('favorite');
