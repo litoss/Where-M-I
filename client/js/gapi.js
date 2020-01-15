@@ -4,6 +4,8 @@
 //var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
 //var CLIENT_ID = '425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com';
 //var API_KEY = 'AIzaSyAISXxNTs9hhEZ2dt2N-pt77lLpolf8Usc';
+//var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
 var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
 var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
 
