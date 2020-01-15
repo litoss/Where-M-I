@@ -230,47 +230,8 @@ app.post("/find_preference", async (req, res) => {
     }
 });
 
-app.get("/create_video", async (req, res) => {
-
-  // make sure you set the correct path to your video file
-  var proc = ffmpeg('carlo.jpg')
-    // loop for 5 seconds
-    .loop(5)
-    // using 25 fps
-    .fps(25)
-    // setup event handlers
-    .on('end', function() {
-      console.log('file has been converted succesfully');
-    })
-    .on('error', function(err) {
-      console.log('an error happened: ' + err.message);
-    })
-    // save to file
-    .save('your_target.m4v');
-});
-
-app.get('/prova',(req,res)=>{
-
-  //var outStream = fs.createWriteStream('output.wav');
-
-  var command = ffmpeg('test.avi')
-    .videoCodec('libx264')
-    .audioCodec('libmp3lame')
-    .size('320x240')
-    .format('m4v')
-    .on('error', function(err) {
-      console.log('An error occurred: ' + err.message);
-    })
-    .on('end', function() {
-      console.log('Processing finished !');
-    });
-
-  var ffstream = command.pipe();
-  ffstream.on('data', function(chunk) {
-    console.log('ffmpeg just wrote ' + chunk.length + ' bytes');
-  });
-});
-
+// Genera un video dato un'audio passato come parametro, utilizzando un immagine di sfondo unica per tutti i video,
+// viene ritornata al chiamante
 app.post('/audio_to_video', async (req,res)=>{
 
   var buffer = Buffer.from(req.body.chunks, 'base64');
@@ -294,32 +255,6 @@ app.post('/audio_to_video', async (req,res)=>{
     var result = Buffer.concat(chunks);
     res.send(result.toString('base64'));
   });
-});
-
-app.post('/video_to_audio', async (req,res)=>{
-
-  var buffer = Buffer.from(req.body.chunks, 'base64');
-  console.log(req.body.chunks);
-  var readable = new Readable();
-  readable._read = () => {} // _read is required but you can noop it
-  readable.push(buffer);
-  readable.push(null)
-
-  var command = ffmpeg()
-    .input(readable)
-    .inputFormat('webm')
-    .noVideo()
-    .save('test.mp3');
-
-  /*var ffstream = await command.pipe();
-  var chunks = [];
-  ffstream.on('data', function(chunk) {
-    chunks.push(chunk);
-  });
-  ffstream.on('end', function() {
-    var result = Buffer.concat(chunks);
-    res.send(result.toString('base64'));
-  });*/
 });
 
 app.post('/modify_video', async (req,res)=>{

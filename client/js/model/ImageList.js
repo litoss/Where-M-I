@@ -1,15 +1,15 @@
-class ElementList{
-    constructor(primaryText, secondaryText, icon, options) {
+class ImageList{
+    constructor(primaryText, secondaryText, src, options) {
 
       var li = document.createElement('li');
       li.className = "mdc-list-item";
       if(options) li.className += " " + options;
 
-      if(icon){
-        var iconSpan = document.createElement('span');
-        iconSpan.className = "mdc-list-item__graphic material-icons";
-        iconSpan.innerHTML = icon;
-        li.appendChild(iconSpan);
+      if(src){
+        var image = document.createElement('img');
+        image.className = "mdc-list-item__graphic";
+        image.src = src;
+        li.appendChild(image);
       }
 
       var textSpan = document.createElement('span');

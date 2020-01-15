@@ -1,49 +1,38 @@
 // Youtube Data API
 // https://developers.google.com/youtube/v3/docs
 
-async function search(olc, purpose){
-  q = olc + ":" + purpose + ":ita:*";
+async function search(part, q, order, maxResults){
 
-  let request = await gapi.client.youtube.search.list({
-    q: q,
-    part: 'id'
-  });
-  console.log(request.result);
-  return request.result.items.map(o => o['id']).map(o => o['videoId']);
-}
+  var query = {};
+  query.part = part;
+  query.type = "video";
+  query.q = q;
+  if(order) query.order = order;
+  if(maxResults) query.maxResults = maxResults;
 
-async function getTopClips(){
-  let response = await gapi.client.youtube.search.list({
-    q: '8FPHF800+:*',
-    order: 'relevance',
-    maxResults: 10,
-    part: 'id, snippet'
-  });
-
-  return response.result.items;
-}
-
-async function getTopVlogger(){
-
-  let response = await gapi.client.youtube.search.list({
-    q: '8FPHF800+:*',
-    order: 'rating',
-    maxResults: 10,
-    part: 'id'
-  });
-
-  console.log(response);
+  let request = await gapi.client.youtube.search.list(query);
+  return request.result.items;
 }
 
 async function listVideos(){
-  let response = await gapi.client.youtube.search.list({
+  let request = await gapi.client.youtube.search.list({
     part: "id, snippet",
     forMine: true,
     type: "video",
     q: "8FPHF800+:*"
   });
-  return response.result.items;
+  return request.result.items;
 }
+
+async function getChannelInfo(channelId){
+  var request = await gapi.client.youtube.channels.list({
+    part: "id, snippet",
+    id: channelId
+  });
+
+  return request.result.items[0].snippet;
+}
+
 
 async function insertClip(title, description, privacyStatus, readStream){
 
