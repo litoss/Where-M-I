@@ -163,7 +163,7 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         /*
-        inserendo la stringa append davanti al carattere ricercato significa che il $regret (che serve a ricercare il nome anche avendo il nome parziale)
+        inserendo la stringa append davanti al carattere ricercato significa che il $regrex (che serve a ricercare il nome anche avendo il nome parziale)
         ricerchiamo il nome parziale ma deve essere nell'ordine che lo scriviamo, senza lui se cercassimo la lettera S troverebbe anche ad esempio la parola
         test anche se la S è al centro della parola, con append verrebbe fuori solo la parola Sam che ha la S davanti.
         */
@@ -178,14 +178,11 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
         }
         if (req.body.token){
             var veruser = await verify(req.body.token);
-
             var utente = append.concat(veruser);
             expression.push({user:{$regex:utente}});
         }
         if (req.body.name){
-            // var nome = append.concat(req.body.name);
-            // expression.push({name:{$regex:nome}});
-            expression.push({name:{$regex:req.body.name}});
+            expression.push({name:{$regex:req.body.name, $options:'i'}});
         }
         if (req.body.category){
             var categoria = append.concat(req.body.category);
@@ -446,7 +443,7 @@ count_star = async(req) => {
 
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
-        
+
         var query = {OLC : req.body.OLC};
         var rev_count = await db.collection('review').find(query).count();
         var object7 = {};
@@ -548,7 +545,7 @@ exports.find_route = async(req) =>{
           query =  {user:veruser};
         }
         if(req.body.namer){
-          query = { namer : req.body.namer}
+          query = { namer : {$regex:req.body.namer, $options:'i'}};
         }
         var items = await db.collection('routes').find(query).project({_id:0,OLC:0}).toArray();
         //facciamo la project anche di OLC che al client non serve, serve solo al server per fare la find
