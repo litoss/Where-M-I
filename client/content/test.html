@@ -18,19 +18,59 @@
 </head>
 
 <body class="mdc-typography">
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <audio id="youtube" autoplay controls loop></audio>
-
+  <audio id="player" controls></audio>
+  <a id="download">Download</a>
+  <button id="stop">Stop</button>
   <script>
-    var vid = "cfe8Mw3UIW0",
-      audio_streams = {},
-      audio_tag = document.getElementById('youtube');
+    let shouldStop = false;
+    let stopped = false;
+    const downloadLink = document.getElementById('download');
+    const stopButton = document.getElementById('stop');
 
-    fetch("https://" + vid + "-focus-opensocial.googleusercontent.com/gadgets/proxy?container=none&url=https%3A%2F%2Fwww.youtube.com%2Fget_video_info%3Fvideo_id%3D" + vid).then(response => {
-      console.log(response);
+    stopButton.addEventListener('click', function() {
+      shouldStop = true;
     });
-  </script>
 
+    const handleSuccess = function(stream) {
+      const options = {
+        mimeType: 'audio/webm'
+      };
+      const recordedChunks = [];
+      const mediaRecorder = new MediaRecorder(stream, options);
+
+      mediaRecorder.addEventListener('dataavailable', function(e) {
+        if (e.data.size > 0) {
+          recordedChunks.push(e.data);
+          console.log("pushed" + e.data + " chunks");
+        }
+
+        if (shouldStop === true && stopped === false) {
+          mediaRecorder.stop();
+          stopped = true;
+        }
+      });
+
+      mediaRecorder.addEventListener('stop', function() {
+        console.log(URL.createObjectURL(new Blob(recordedChunks)))
+      });
+
+      mediaRecorder.start();
+    };
+
+    navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: false
+      })
+      .then(handleSuccess);
+
+    const player = document.getElementById('player');
+
+    navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: false
+      })
+      .then(handleSuccess);
+  </script>
 
 </body>
 

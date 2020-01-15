@@ -41,7 +41,9 @@ function getDatafromURL(blob){
     const reader = new FileReader();
 
     reader.onload = function(e) {
-      resolve(e.target.result);
+      var dataUrl = e.target.result;
+      var base64 = dataUrl.split(',')[1]
+      resolve(base64);
     };
 
     reader.readAsDataURL(blob);
