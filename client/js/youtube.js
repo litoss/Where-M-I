@@ -34,7 +34,7 @@ async function getChannel(channelId){
 
 async function getVideo(videoId){
   var request = await gapi.client.youtube.videos.list({
-    part: "id, snippet, statistics",
+    part: "id, snippet, statistics, status",
     id: videoId
   });
 

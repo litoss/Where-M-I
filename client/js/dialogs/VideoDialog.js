@@ -35,11 +35,14 @@ function openVideoDialog(audiosrc){
   dialog.scrimClickAction = '';
   dialog.escapeKeyAction = '';
   dialog.open();
-  volume.layout();
 
   del.listen('click',()=>{
     dialog.close();
   })
+
+  dialog.listen('MDCDialog:opened', function() {
+    volume.layout();
+  });
   return new Promise((resolve, reject) => {
     save.listen('click', async () => {
       if((start.value) && (end.value) && volume.value){
