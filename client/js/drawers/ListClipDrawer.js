@@ -1,6 +1,3 @@
-// var context = new BaseAudioContext();
-var baseAudioContext = new AudioContext();
-
 function openClips(){
 
   var content = document.createElement('div');

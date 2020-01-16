@@ -16,11 +16,11 @@ const mongo = require('mongodb');
 
 const MongoClient = mongo.MongoClient;
 const ObjectID = mongo.ObjectID; //serve per poter passare i parametri in name e price dentro ObjectID
-const url = 'mongodb://localhost:27017';
-//const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
+//const url = 'mongodb://localhost:27017';
+const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
-var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com'
+var CLIENT_ID = '3509248503-o0bph5l62gp1vsu39cjbaqngv98k69sv.apps.googleusercontent.com'
 
 const {OAuth2Client} = require('google-auth-library');
 const client_user = new OAuth2Client(CLIENT_ID);
@@ -79,7 +79,6 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
         var query = {OLC : req.body.OLC};
         var exist = await db.collection('place').find(query).count() > 0; // aggiungendo il .count() > 0 ritorna true se e' presente nel database else false
         var veruser = await verify(req.body.token);
-
         if(exist == false){
 
             let doc = {_id: new ObjectID(),

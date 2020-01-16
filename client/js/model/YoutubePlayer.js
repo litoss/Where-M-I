@@ -12,30 +12,34 @@ class YoutubePlayer{
     clipRemaning.innerHTML = (videos.length - current - 1) + " Videos Remaning";
 
     div.appendChild(prev.root_);
-    div.appendChild(play.root_);
+    div.appendChild(button.root_);
     div.appendChild(next.root_);
     div.appendChild(description);
     div.appendChild(clipRemaning);
 
-    play.listen('MDCIconButtonToggle:change', async (event) => {
-      if(event.detail.isOn){
-        newPlayer(videos[current].id, play);
+    button.listen('click', async () => {
+
+      if(button.getIcon() == "play_arrow" ){
+        button.setIcon("pause");
+        newPlayer(videos[current].id, button);
       }else{
+        button.setIcon("play_arrow");
         pauseVideo();
       }
     });
 
     prev.listen('click',() => {
       if(current > 0){
-        play.on = false;
+        button.setIcon = "play_arrow";
         current--;
         clipRemaning.innerHTML = (videos.length - current - 1) + " Videos Remaning";
         description.innerHTML = videos[current].snippet.description;
       }
-    })
+    });
+
     next.listen('click',() => {
       if(current < videos.length - 1){
-        play.on = false;
+        button.setIcon = "play_arrow";
         current++;
         clipRemaning.innerHTML = (videos.length - current - 1) + " Videos Remaning";
         description.innerHTML = videos[current].snippet.description;

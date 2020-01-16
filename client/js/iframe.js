@@ -18,7 +18,10 @@ function newPlayer(vid, button){
   //  'endSeconds': 60,
   });
   player.addEventListener('onStateChange', (event) => {
-
+    console.log(event);
+    if(event == 0){
+      button.setIcon('back');
+    }
   })
 }
 
