@@ -1,11 +1,9 @@
 // Google API
 
-//var CLIENT_ID = '650091961358-28mn3iavp6phc93db7tdl7echrco5v8b.apps.googleusercontent.com';
-//var API_KEY = 'AIzaSyCaDN2KU-H2zGma9R8lArEjn79U49ja7XI';
-var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com'
-var API_KEY = 'AIzaSyCaDN2KU-H2zGma9R8lArEjn79U49ja7XI'
- var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
- var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
+var CLIENT_ID = '3509248503-o0bph5l62gp1vsu39cjbaqngv98k69sv.apps.googleusercontent.com'
+var API_KEY = 'AIzaSyCNLY2lo64olcD8Of2zzAVghskmmKvB8OU'
+var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
+var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
 var profile, token, preferences;
 
