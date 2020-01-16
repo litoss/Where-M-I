@@ -16,8 +16,8 @@
 //var API_KEY = 'AIzaSyDRnf3RoLioJ9weXiwblNZPs_cKIkVlZnA'
 //var CLIENT_ID = '790908265476-je3s0tr3pbqrrobrkkogc871h06oghpo.apps.googleusercontent.com'
 //var API_KEY = 'AIzaSyC1Qfs0gXY8eYKJc-TT5SKhrKng_XAROzc'
-var CLIENT_ID = '474238952739-idgt8e59feko6m6671vvrpnle7he7grp.apps.googleusercontent.com'
-var API_KEY = 'AIzaSyBTJIp43L6T_xE4bCCXZQcP9wG2ydUtjts'
+var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com';
+var API_KEY = 'AIzaSyCaDN2KU-H2zGma9R8lArEjn79U49ja7XI';
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
