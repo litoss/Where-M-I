@@ -20,7 +20,7 @@ const url = 'mongodb://localhost:27017';
 //const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
-//const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
+const CLIENT_ID = "588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com"
 //const CLIENT_ID = "425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com"
 //var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
 //var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
@@ -29,7 +29,8 @@ const url = 'mongodb://localhost:27017';
 //var CLIENT_ID = '89516997926-spbe706tb53hkkad7foujjs8f9nu3lds.apps.googleusercontent.com'
 //var CLIENT_ID = '239403724325-l9fa3mhgki0a2eqchi6bgap7ofn6de1s.apps.googleusercontent.com'
 //var CLIENT_ID = '474238952739-idgt8e59feko6m6671vvrpnle7he7grp.apps.googleusercontent.com'
-var CLIENT_ID = '245385918096-qhi78mqf1hi8nrvsflvs9up12o41gb78.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyBTJIp43L6T_xE4bCCXZQcP9wG2ydUtjts'
+//var CLIENT_ID = '790908265476-je3s0tr3pbqrrobrkkogc871h06oghpo.apps.googleusercontent.com'
 
 const {OAuth2Client} = require('google-auth-library');
 const client_user = new OAuth2Client(CLIENT_ID);

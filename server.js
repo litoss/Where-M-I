@@ -257,20 +257,17 @@ app.post('/audio_to_video', async (req,res)=>{
     res.send(result.toString('base64'));
   });
 });
-
+//Permette di apportare delle modifiche all'audio passato come paramentro e successivamente ritorna l'audio modificato
+//al chiamante
 app.post('/modify_video', async (req,res)=>{
     var buffer = Buffer.from(req.body.chunks, 'base64');
     var readable = new Readable();
-    readable._read = () => {} // _read is required but you can noop it
+    readable._read = () => {}
     readable.push(buffer);
     readable.push(null)
 
     var command = ffmpeg(readable)
       .format('webm')
-    //   .outputOptions([
-    //     '-ss 00:00:01',
-    //     '-t 00:00:03',
-    // ])
       .setStartTime(req.body.start)
       .setDuration(req.body.end-req.body.start)
       .audioFilters('volume=' + (req.body.volume/10))
@@ -292,15 +289,18 @@ app.post('/modify_video', async (req,res)=>{
     });
   });
 
+//permette di scaricare un video da youtube (in questo caso solo audio poichè viene applicato il filtro 'audioonly')
+//inoltre tramite l'ausilio di fluent-ffmpeg questo viene convertito in formato webm
   app.post('/audio_from_yt', async (req,res)=>{
     var id = req.body.id;
-    // console.log(id);
+     console.log(id);
     res.setHeader('Content-disposition', 'attachment; filename=test.pdf');
     res.set('Content-Type', 'application/json');
     var yta = ytdl('https://www.youtube.com/watch?v='+id,{filter:"audioonly"});
+
     var command = ffmpeg()
     .input(yta)
-    .format('webm');
+    .format('webm'); //da provare come weba
 
     var ffstream = command.pipe();
     var chunks = [];
