@@ -40,6 +40,8 @@ function openClips(){
      secondaryText.innerHTML = clips[i].snippet.description;
      span.appendChild(secondaryText);
 
+
+
     /* var likes = document.createElement('span');
      likes.className = 'mdc-list-item__likes';
      likes.innerHTML = 'likes:'+clips[i].statistics.likeCount;
@@ -89,6 +91,13 @@ function openClips(){
     });
 
     modify.listen('click',()=>{
+      var count = 0;
+      for(var c in yourVideo){
+        if(document.getElementById("check-"+c).checked){
+          count++;
+        }
+      }
+      if(count == 1){
       for(var i in yourVideo){
         if(document.getElementById("check-"+i).checked){
           var id = yourVideo[i].id.videoId;
@@ -107,6 +116,14 @@ function openClips(){
         xhr.send(JSON.stringify({id:id}));
       }
     }
+  }
+  else{
+    var snackbar = new SnackBar('Select only one video please');
+    snackbar.open();
+    snackbar.listen("MDCSnackbar:closed",() => {
+      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
+  }
   })
 
 

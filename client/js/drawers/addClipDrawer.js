@@ -195,7 +195,7 @@ if(titolo.value && testo.value && (what.input.checked || how.input.checked || wh
     var blob = await getimageBlob(url);
 
     console.log(titolo.value,description, privacyStatus, blob);
-    //insertClip(titolo, description, privacyStatus, blob);
+    insertClip(titolo.value, description, privacyStatus, blob);
     };
     xhr.send(JSON.stringify({chunks: base64}));
   }

@@ -18,9 +18,8 @@ async function listVideos(){
     part: "id,snippet",
     forMine: true,
     type: "video",
-
-    //maxResults: 50
-    //q: "8FPHF800+:*"
+    maxResults: 50,
+    q: "8FPHF800"
   });
   return request.result.items;
 }
@@ -36,7 +35,7 @@ async function getChannel(channelId){
 
 async function getVideo(videoId){
   var request = await gapi.client.youtube.videos.list({
-    part: "id, snippet, statistics",
+    part: "id, snippet",
     id: videoId
   });
 
@@ -86,10 +85,10 @@ function insertClip(title, description, privacyStatus, readStream){
     cache: false,
     contentType: false,
     processData: false,
-    //metadata:metadata,
     method: 'POST',
     success:function(data) {
       alert("Il video è stato inserito sul tuo canale Youtube!!!");
     }
   });
+
 }
