@@ -15,10 +15,12 @@ async function search(part, q, maxResults){
 
 async function listVideos(){
   let request = await gapi.client.youtube.search.list({
-    part: "id, snippet",
+    part: "id,snippet",
     forMine: true,
     type: "video",
-//    q: "8FPHF800+:*"
+
+    //maxResults: 50
+    //q: "8FPHF800+:*"
   });
   return request.result.items;
 }
@@ -41,6 +43,25 @@ async function getVideo(videoId){
   return request.result.items[0];
 }
 
+async function removeVideo(videoId){
+  return gapi.client.youtube.videos.delete({
+      "id": videoId
+    }).then(()=>{
+      console.log('Il tuo video è stato correttamente rimosso')
+    });;
+}
+
+async function updateVideo(videoId){
+  return gapi.client.youtube.videos.update({
+         id: videoId,
+         part: 'status',
+         status: {
+             privacyStatus: 'public'
+           }
+     }).then(()=>{
+       console.log('Il tuo video è stato correttamente pubblicato')
+     });
+}
 function insertClip(title, description, privacyStatus, readStream){
 
   var metadata = {
