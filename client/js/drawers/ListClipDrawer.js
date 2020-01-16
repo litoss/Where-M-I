@@ -41,7 +41,6 @@ function openClips(){
      span.appendChild(secondaryText);
 
 
-
     /* var likes = document.createElement('span');
      likes.className = 'mdc-list-item__likes';
      likes.innerHTML = 'likes:'+clips[i].statistics.likeCount;
@@ -73,6 +72,13 @@ function openClips(){
     var public = new ActionButton('Pubblica bozza');
     content.appendChild(public.root_);
 
+    var playlistName = new TextField('Playlist Name',document.querySelector('.mdc-text-field'));
+    content.appendChild(playlistName.root_);
+
+    var mUpload = new ActionButton('Create Playlist with your video');
+    content.appendChild(mUpload.root_);
+
+
     remove.listen('click',()=>{
       for(var i in yourVideo){
         if(document.getElementById("check-"+i).checked){
@@ -87,6 +93,33 @@ function openClips(){
         if(document.getElementById("check-"+i).checked){
           updateVideo(yourVideo[i].id.videoId);
         }
+      }
+    });
+    mUpload.listen('click',()=>{
+      for(var i in yourVideo){
+        if(document.getElementById("check-"+i).checked){
+          if(playlistName.value){
+            createPlaylist(playlistName.value).then((response)=>{
+              console.log(response,yourVideo[i].id.videoId);
+              insertClipInPlaylist(response.result.id,yourVideo[i].id.videoId);
+            });
+
+          }
+          else {
+            var snackbar = new SnackBar('Insert playlist name');
+            snackbar.open();
+            snackbar.listen("MDCSnackbar:closed",() => {
+              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+              });
+          }
+        }
+    /*    else{
+          var snackbar = new SnackBar('Insert some video to add to your playlist');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+            });
+        }*/
       }
     });
 

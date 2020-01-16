@@ -61,6 +61,39 @@ async function updateVideo(videoId){
        console.log('Il tuo video è stato correttamente pubblicato')
      });
 }
+
+function createPlaylist(name){
+  return gapi.client.youtube.playlists.insert({
+      "part": "id,snippet,status",
+      "resource": {
+        "snippet": {
+          "title": name
+        },
+        "status":{
+          "privacyStatus":'public'
+        }
+      }
+    });
+}
+
+function insertClipInPlaylist(playlistId,clipId){
+  return gapi.client.youtube.playlistItems.insert({
+     "part": "snippet",
+     "resource": {
+       "snippet": {
+         "playlistId": playlistId,
+         "position": 0,
+         "resourceId": {
+           "kind": "youtube#video",
+           "videoId": clipId
+         }
+       }
+     }
+   }).then((response)=>{
+     console.log(response)
+   });
+}
+
 function insertClip(title, description, privacyStatus, readStream){
 
   var metadata = {
