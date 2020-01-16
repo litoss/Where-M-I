@@ -151,9 +151,7 @@ function openClips(){
           xhr.send(JSON.stringify({id:id}));
         }
       }
-    }
-  }
-  else{
+    }else{
     var snackbar = new SnackBar('Select only one video please');
     snackbar.open();
     snackbar.listen("MDCSnackbar:closed",() => {
@@ -161,29 +159,8 @@ function openClips(){
       });
   }
   })
-<<<<<<< HEAD
 
-=======
->>>>>>> 2abad41203a485a61460edc3fcc6dc4f575b0d17
     map.pageDrawer = new PageDrawer('Your Clips', content);
     map.pageDrawer.open = true;
   });
 }
-<<<<<<< HEAD
-=======
-
-function readProva(base64){
-  return new Promise((resolve,reject)=>{
-    console.log(base64)
-    var blob = decode64BLOB(base64,"audio/webm");
-    // var blob = await getimageBlob(url);
-    let fileReader = new FileReader();
-
-    fileReader.onloadend = () => {
-        resolve(fileReader.result);
-    }
-
-  fileReader.readAsArrayBuffer(blob);
-  })
-}
->>>>>>> 2abad41203a485a61460edc3fcc6dc4f575b0d17

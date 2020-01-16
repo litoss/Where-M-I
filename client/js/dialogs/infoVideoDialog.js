@@ -35,6 +35,6 @@ function openInfoVideo(statistics) {
   });
 
   dialog.listen('MDCDialog:closing', function() {
-    document.getElementById('map').removeChild(welcomeDialog.root_);
+    document.getElementById('map').removeChild(dialog.root_);
   });
 }
