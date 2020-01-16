@@ -72,7 +72,14 @@ function openClips(){
     var public = new ActionButton('Pubblica bozza');
     content.appendChild(public.root_);
 
-    remove.listen('click', ()=>{
+    var playlistName = new TextField('Playlist Name',document.querySelector('.mdc-text-field'));
+    content.appendChild(playlistName.root_);
+
+    var mUpload = new ActionButton('Create Playlist with your video');
+    content.appendChild(mUpload.root_);
+
+
+    remove.listen('click',()=>{
       for(var i in yourVideo){
         if(document.getElementById("check-"+i).checked){
         removeVideo(yourVideo[i].id.videoId);
@@ -88,8 +95,42 @@ function openClips(){
         }
       }
     });
+    mUpload.listen('click',()=>{
+      for(var i in yourVideo){
+        if(document.getElementById("check-"+i).checked){
+          if(playlistName.value){
+            createPlaylist(playlistName.value).then((response)=>{
+              console.log(response,yourVideo[i].id.videoId);
+              insertClipInPlaylist(response.result.id,yourVideo[i].id.videoId);
+            });
+
+          }
+          else {
+            var snackbar = new SnackBar('Insert playlist name');
+            snackbar.open();
+            snackbar.listen("MDCSnackbar:closed",() => {
+              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+              });
+          }
+        }
+    /*    else{
+          var snackbar = new SnackBar('Insert some video to add to your playlist');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+            });
+        }*/
+      }
+    });
 
     modify.listen('click',()=>{
+      var count = 0;
+      for(var c in yourVideo){
+        if(document.getElementById("check-"+c).checked){
+          count++;
+        }
+      }
+      if(count == 1){
       for(var i in yourVideo){
         if(document.getElementById("check-"+i).checked){
           var id = yourVideo[i].id;
@@ -110,7 +151,16 @@ function openClips(){
           xhr.send(JSON.stringify({id:id}));
         }
       }
-    });
+    }
+  }
+  else{
+    var snackbar = new SnackBar('Select only one video please');
+    snackbar.open();
+    snackbar.listen("MDCSnackbar:closed",() => {
+      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
+  }
+  })
 
     map.pageDrawer = new PageDrawer('Your Clips', content);
     map.pageDrawer.open = true;
