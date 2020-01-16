@@ -6,10 +6,10 @@ function openClips(){
   title.innerHTML = "Clip Disponibili";
   content.appendChild(title);
 
-  var yourVideo = [];
+  var clips = [];
+
   listVideos().then(async function(response){
 
-    var clips = [];
     for(var i in response){
       var clip = await getVideo(response[i].id.videoId);
       clips.push(clip);
@@ -20,7 +20,6 @@ function openClips(){
 
     for(var i in clips){
 
-      console.log(clips[i]);
       var li = document.createElement('li');
       li.className = "mdc-list-item";
 
@@ -57,7 +56,7 @@ function openClips(){
       info(i);
 
       list.add(li);
-      yourVideo.push(clips[i]);
+      clips.push(clips[i]);
     }
 
     var modify = new ActionButton('Modifica Clip');
@@ -77,28 +76,38 @@ function openClips(){
 
 
     remove.listen('click',()=>{
-      for(var i in yourVideo){
+      for(var i in clips){
         if(document.getElementById("check-"+i).checked){
-        removeVideo(yourVideo[i].id.videoId);
+        removeVideo(clips[i].id);
         document.getElementById("check-"+i).disabled = true;
         }
       }
     });
 
     public.listen('click',()=>{
-      for(var i in yourVideo){
+      for(var i in clips){
+        console.log(document.getElementById("check-"+i));
+
         if(document.getElementById("check-"+i).checked){
-          updateVideo(yourVideo[i].id.videoId);
+          console.log(clips[i])
+          if(clips[i].status.privacyStatus == 'unlisted') updateVideo(clips[i].id);
+          else{
+            var snackbar = new SnackBar('Select a draft video');
+            snackbar.open();
+            snackbar.listen("MDCSnackbar:closed",() => {
+              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+            });
+          }
         }
       }
     });
     mUpload.listen('click',()=>{
-      for(var i in yourVideo){
+      for(var i in clips){
         if(document.getElementById("check-"+i).checked){
           if(playlistName.value){
             createPlaylist(playlistName.value).then((response)=>{
-              console.log(response,yourVideo[i].id.videoId);
-              insertClipInPlaylist(response.result.id,yourVideo[i].id.videoId);
+              console.log(response,clips[i].id);
+              insertClipInPlaylist(response.result.id,clips[i].id);
             });
 
           }
@@ -122,15 +131,15 @@ function openClips(){
 
     modify.listen('click',()=>{
       var count = 0;
-      for(var c in yourVideo){
+      for(var c in clips){
         if(document.getElementById("check-"+c).checked){
           count++;
         }
       }
       if(count == 1){
-      for(var i in yourVideo){
+      for(var i in clips){
         if(document.getElementById("check-"+i).checked){
-          var id = yourVideo[i].id;
+          var id = clips[i].id;
           console.log(id);
           var xhr = new XMLHttpRequest();
           xhr.open('POST','/audio_from_yt',false);
@@ -141,7 +150,7 @@ function openClips(){
 
           openVideoDialog(url).then(async (response) => {
             var blob = await getimageBlob(response);
-            insertClip(yourVideo[i].snippet.title,yourVideo[i].snippet.description,'public',blob);
+            insertClip(clips[i].snippet.title,clips[i].snippet.description,'public',blob);
             });
           }
 

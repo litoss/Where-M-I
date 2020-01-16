@@ -2,6 +2,7 @@
 
 var CLIENT_ID = '3509248503-o0bph5l62gp1vsu39cjbaqngv98k69sv.apps.googleusercontent.com'
 var API_KEY = 'AIzaSyCNLY2lo64olcD8Of2zzAVghskmmKvB8OU'
+
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
@@ -52,6 +53,7 @@ function updateSigninStatus(isSignedIn) {
   } else {
 
     preferences = defaultPrefs;
+    console.log(preferences);
 
     map.topBar.authorizeButton.root_.style.display = "block";
     map.topBar.signoutButton.root_.style.display = "none";
@@ -81,7 +83,7 @@ function getPreferences() {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
     var response = JSON.parse(xhr.response);
-
+    console.log(response);
     if (response[0]){
       preferences = response[0];
       if(!response[0].category) preferences.category = 'all';
@@ -97,5 +99,8 @@ function setPreferences() {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/add_preference');
   xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    console.log(xhr.response);
+  };
   xhr.send(JSON.stringify({token: token, category: defaultPrefs.category, audience: defaultPrefs.audience, language:defaultPrefs.language}));
 }

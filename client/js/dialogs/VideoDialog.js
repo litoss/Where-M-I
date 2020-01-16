@@ -19,6 +19,9 @@ function openVideoDialog(audiosrc){
   content.appendChild(end.root_);
 
   var volume = new Slider();
+  volume.start = 0;
+  volume.end = 50;
+  volume.value = 10;
   content.appendChild(volume.root_);
 
   var buttonContainer = document.createElement('div');
@@ -35,25 +38,20 @@ function openVideoDialog(audiosrc){
   dialog.scrimClickAction = '';
   dialog.escapeKeyAction = '';
   dialog.open();
-  volume.layout();
 
   del.listen('click',()=>{
     dialog.close();
   })
+
+dialog.listen('MDCDialog:opened', function() {
+    volume.layout();
+  });
   return new Promise((resolve, reject) => {
     save.listen('click', async () => {
       if((start.value) && (end.value) && volume.value){
-        if(!isNaN(start.value) || !isNaN(end.value)){
-          var snackbar = new SnackBar('Insert numbers please');
-          snackbar.open();
-          snackbar.listen("MDCSnackbar:closed",() => {
-            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
-          }
       dialog.close();
       var blob = await getimageBlob(audio.src);
       var base64 = await convertBlobToBase64(blob);
-      console.log(base64);
       var xhr = new XMLHttpRequest();
       xhr.open('POST', '/modify_video');
       xhr.setRequestHeader('Content-Type', 'application/json');

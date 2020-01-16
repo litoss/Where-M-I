@@ -35,7 +35,7 @@ function addClipDrawer(place) {
     div.appendChild(why.root_);
 
     var listE0 = new List();
-    for (var i in languages) listE0.add(new SelectList(languages[i].name, languages[i].tag));
+    for (var i in languages) listE0.add(new SelectList(languages[i].name, languages[i].iso));
     var lang = new Select("Language", listE0.root_, 'form-field');
     div.appendChild(lang.root_);
 
@@ -182,8 +182,6 @@ function addClipDrawer(place) {
             xhr.onload = async function () {
                 var url = await decode64(this.responseText, "video/webm");
                 var blob = await getimageBlob(url);
-
-                console.log(titolo.value, description, privacyStatus, blob);
                 insertClip(titolo.value, description, privacyStatus, blob);
             };
             xhr.send(JSON.stringify({ chunks: base64 }));
