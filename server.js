@@ -237,7 +237,7 @@ app.post('/audio_to_video', async (req,res)=>{
 
   var buffer = Buffer.from(req.body.chunks, 'base64');
   var readable = new Readable();
-  readable._read = () => {} // _read is required but you can noop it
+  readable._read = () => {}
   readable.push(buffer);
   readable.push(null)
 
