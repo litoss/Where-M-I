@@ -2,7 +2,6 @@
 // https://cloud.google.com/translate/docs/
 
 async function detect(text){
-  console.log(gapi.client.language.detections.detect);
 
   let response = await gapi.client.language.detections.detect({
     q: text

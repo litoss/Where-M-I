@@ -41,11 +41,9 @@ function showRoute(path){
     var destination = decodeOlc(path[path.length - 1]);
     var waypoints = [];
     for(var i=1; i<path.length -1; i++){
-      console.log(i);
       var point = {location: decodeOlc(path[i])};
       waypoints.push(point);
     }
-    console.log(waypoints);
     map.directionsService.route({
         origin: origin,
         destination: destination,

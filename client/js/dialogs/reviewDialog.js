@@ -98,7 +98,8 @@ function getRating(olc){
     xhr.open('POST', '/find_place');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function(){
-      resolve(JSON.parse(xhr.response)[0].media_rating);
+      console.log(JSON.parse(xhr.response))
+        resolve(JSON.parse(xhr.response)[0].media_rating);
     }
     xhr.send(JSON.stringify({OLC: olc}));
   })

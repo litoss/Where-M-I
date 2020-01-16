@@ -48,7 +48,6 @@ function next(){
 }
 
 function search(marker){
-  console.log(marker);
   var olc = OpenLocationCode.encode(marker.getPosition().lat(), marker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
   var response = searchClips(olc, null, preferences.language, preferences.category, preferences.audience);
 
@@ -57,7 +56,6 @@ function search(marker){
   }else{
     alert("ciao");
     playlistClip = response;
-    console.log(playlistClip)
     currentClip = 0;
   }
 }
@@ -68,7 +66,6 @@ function previous(){
 }
 
 function pla(){
-  console.log(playlistClip);
   newPlayer(playlistClip[currentClip].id);
 }
 

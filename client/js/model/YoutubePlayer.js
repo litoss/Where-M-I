@@ -4,7 +4,7 @@ class YoutubePlayer{
     var div = document.createElement('div');
 
     var prev = new IconButton('chevron_left', 'mdc-button--raised');
-    var play = new IconButtonToggle('pause', 'play_arrow', 'mdc-button--raised');
+    var button = new IconButton('play_arrow', 'mdc-button--raised');
     var next = new IconButton('chevron_right', 'mdc-button--raised');
     var description = document.createElement('p');
     description.innerHTML = videos[current].snippet.description;
@@ -19,8 +19,7 @@ class YoutubePlayer{
 
     play.listen('MDCIconButtonToggle:change', async (event) => {
       if(event.detail.isOn){
-        console.log(videos[current]);
-        newPlayer(videos[current].id);
+        newPlayer(videos[current].id, play);
       }else{
         pauseVideo();
       }

@@ -7,16 +7,19 @@ function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
     height: '360',
     width: '640',
+    videoId: null
   });
 }
 
-function newPlayer(vid){
-  console.log(vid);
+function newPlayer(vid, button){
   player.loadVideoById({
     'videoId': vid,
   //  'startSeconds': 5,
   //  'endSeconds': 60,
   });
+  player.addEventListener('onStateChange', (event) => {
+
+  })
 }
 
 function pauseVideo(){

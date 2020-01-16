@@ -107,12 +107,11 @@ async function getTopVlogger(div){
 async function getTopClips(div){
 
   var orderedClips = await orderClips();
-console.log(orderedClips);
   var listclips = new List("mdc-list--two-line");
   for(var i in orderedClips) listclips.add(new ElementList(orderedClips[i].snippet.title, orderedClips[i].statistics.likeCount + " likes", 'music_note'));
 
   listclips.listen('MDCList:action',(event) => {
-    window.open("https://www.youtube.com/watch?v=" + orderedClips[event.detail.index].id.videoId, '_blank');
+    window.open("https://www.youtube.com/watch?v=" + orderedClips[event.detail.index].id, '_blank');
   });
 
   div.appendChild(listclips.root_);

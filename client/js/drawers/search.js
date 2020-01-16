@@ -96,7 +96,7 @@ function openSearch(){
           xhr.onload = async function(){
             searchDiv.innerHTML = '';
             var response = JSON.parse(xhr.response);
-            console.log(response);
+
             if(!response[0]){
               var errorText = document.createElement('h3');
               errorText.innerHTML = 'No results in category selected: '+ searchSettings.category;
@@ -119,7 +119,7 @@ function openSearch(){
               addListener(i);
             }
           }
-          console.log(JSON.stringify(object));
+
           xhr.send(JSON.stringify(object));
         });
         break;

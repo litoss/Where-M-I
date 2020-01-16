@@ -206,8 +206,6 @@ function submit(form, place){
       object[key] = value;
   });
 
-  console.log(object);
-
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/new_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -215,7 +213,7 @@ function submit(form, place){
       if (xhr.status ==  200 ) {
           var addedPlace = new Place(object);
 
-          addedPlace.place.media_rating = await getRating(addedPlace.place.OLC);
+          //addedPlace.place.media_rating = await getRating(addedPlace.place.OLC);
           map.places.push(addedPlace);
 
           map.closeAllWindow();

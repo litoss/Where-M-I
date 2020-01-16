@@ -9,11 +9,13 @@ class Card{
     this.primaryAction.setAttribute('tabindex','0');
     this.root_.appendChild(this.primaryAction);
 
-    this.media = document.createElement('div');
-    this.media.className = "mdc-card__media";
-    this.media.style.backgroundImage = "url('" + img + "')";
-    this.primaryAction.appendChild(this.media);
-
+    if(img){
+      this.media = document.createElement('div');
+      this.media.className = "mdc-card__media";
+      this.media.style.backgroundImage = "url('" + img + "')";
+      this.primaryAction.appendChild(this.media);
+    }
+    
     var primary = document.createElement('div');
     primary.className = "mdc-card__primary";
     this.primaryAction.appendChild(primary);

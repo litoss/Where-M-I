@@ -55,7 +55,6 @@ class Mappa extends google.maps.Map{
   updateMap(position){
     var olc = OpenLocationCode.encode(position.lat, position.lng, OpenLocationCode.CODE_PRECISION_NORMAL);
     var area = olc.substring(0, 4);
-    console.log(area);
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/find_place');
     xhr.setRequestHeader('Content-Type', 'application/json');

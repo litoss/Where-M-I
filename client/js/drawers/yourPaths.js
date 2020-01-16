@@ -82,7 +82,7 @@ function deletePath(namer){
   xhr.open('POST', '/del_route');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
-    console.log(xhr.response);
+    //
   }
   xhr.send(JSON.stringify({namer: namer, token: token}))
 

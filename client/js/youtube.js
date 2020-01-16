@@ -8,14 +8,13 @@ async function youtubeSearch(part, q, maxResults){
   query.type = "video";
   query.q = q;
   if(maxResults) query.maxResults = maxResults;
-  console.log(query);
   let request = await gapi.client.youtube.search.list(query);
   return request.result.items;
 }
 
 async function listVideos(){
   let request = await gapi.client.youtube.search.list({
-    part: "id,snippet",
+    part: "id",
     forMine: true,
     type: "video",
 

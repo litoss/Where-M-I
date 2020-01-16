@@ -100,46 +100,43 @@ async function selectedPlace(place){
   what.innerHTML = "What is this?";
   content.appendChild(what);
 
-  searchClips(place.OLC, "what", preferences.language, preferences.category, preferences.audience).then((response) => {
-      if(!response.length){
-        var empty = document.createElement('p');
-        empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
-        what.insertAdjacentElement('afterend',empty);
-      }else{
-        var player = new YoutubePlayer(response);
-        what.insertAdjacentElement('afterend',player);
-      }
-  });
+  response = searchClips(place.OLC, "what", preferences.language, preferences.category, preferences.audience)
+  if(!response.length){
+    var empty = document.createElement('p');
+    empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
+    what.insertAdjacentElement('afterend',empty);
+  }else{
+    var player = new YoutubePlayer(response);
+    what.insertAdjacentElement('afterend',player);
+  }
 
   var how = document.createElement('h3');
   how.innerHTML = "How to get in?";
   content.appendChild(how);
 
-  searchClips(place.OLC, "how", preferences.language, preferences.category, preferences.audience).then((response) => {
-      if(!response.length){
-        var empty = document.createElement('p');
-        empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
-        how.insertAdjacentElement('afterend',empty);
-      }else{
-        var player = new YoutubePlayer(response);
-        how.insertAdjacentElement('afterend',player);
-      }
-  });
+  response = searchClips(place.OLC, "how", preferences.language, preferences.category, preferences.audience)
+  if(!response.length){
+    var empty = document.createElement('p');
+    empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
+    how.insertAdjacentElement('afterend',empty);
+  }else{
+    var player = new YoutubePlayer(response);
+    how.insertAdjacentElement('afterend',player);
+  }
 
   var why = document.createElement('h3');
   why.innerHTML = "What about this?";
   content.appendChild(why);
 
-  searchClips(place.OLC, "why", preferences.language, preferences.category, preferences.audience).then((response) => {
-      if(!response.length){
-        var empty = document.createElement('p');
-        empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
-        why.insertAdjacentElement('afterend',empty);
-      }else{
-        var player = new YoutubePlayer(response);
-        why.insertAdjacentElement('afterend',player);
-      }
-  });
+  response = searchClips(place.OLC, "why", preferences.language, preferences.category, preferences.audience)
+  if(!response.length){
+    var empty = document.createElement('p');
+    empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
+    why.insertAdjacentElement('afterend',empty);
+  }else{
+    var player = new YoutubePlayer(response);
+    why.insertAdjacentElement('afterend',player);
+  }
 
   map.pageDrawer  = new PageDrawer(place.name, content);
   map.pageDrawer.open = true;

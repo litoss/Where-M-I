@@ -24,7 +24,6 @@ async function startRecord(){
     mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
     mediaRecorder.addEventListener('dataavailable', function(e) {
       if (e.data.size > 0) {
-        console.log("pushed");
         recordedChunks.push(e.data);
       }
     });

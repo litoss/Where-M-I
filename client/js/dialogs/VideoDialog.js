@@ -42,7 +42,7 @@ function openVideoDialog(audiosrc){
       dialog.close();
       var blob = await getimageBlob(audio.src);
       var base64 = await convertBlobToBase64(blob);
-      console.log(base64);
+
       var xhr = new XMLHttpRequest();
       xhr.open('POST', '/modify_video');
       xhr.setRequestHeader('Content-Type', 'application/json');

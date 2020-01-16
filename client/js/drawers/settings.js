@@ -31,7 +31,6 @@ function openSettings(){
   map.pageDrawer.open = true;
 
   addButton.listen( "click", () => {
-    console.log('ciao');
 
     var form = new FormData();
     form.append('token', token);
@@ -52,7 +51,6 @@ function openSettings(){
       xhr.open('POST', '/add_preference');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = function() {
-          console.log(xhr.response);
           if (xhr.status !== 200) {
             var snackbar = new SnackBar('Something went wrong please try again');
             snackbar.open();

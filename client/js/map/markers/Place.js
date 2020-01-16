@@ -101,7 +101,6 @@ class Place {
           // markers for each step.
           if (status === 'OK') {
             map.directionsRenderer.setDirections(response);
-            console.log(response);
           } else {
             window.alert('Directions request failed due to ' + status);
           }
