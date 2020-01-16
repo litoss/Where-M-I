@@ -3,8 +3,7 @@ class Player{
     var div = document.createElement('div');
     div.className = "mdc-theme--primary-bg mdc-theme--on-secondary";
     var back = new IconButton('arrow_back');
-    back.disabled = true;
-    var play = new IconButtonToggle('pause', 'play_arrow');
+    var play = new IconButton('play_arrow');
     var next = new IconButton('chevron_right');
     var forward = new IconButton('arrow_forward');
 
@@ -17,11 +16,15 @@ class Player{
         console.log("ciao");
     });
 
-    play.listen('MDCIconButtonToggle:change', (event) => {
-      if(event.detail.isOn){
-        whereAmi();
-      }else{
+    play.listen('click', (event) => {
+      if(play.getIcon() == 'play_arrow' && !playlistPlace.length){
+        start();
+      }else if (play.getIcon() == 'play_arrow' && playlistPlace.length){
+        pla();
+      }else if(play.getIcon() == 'pause'){
         pauseVideo();
+      }else if(play.getIcon() == 'replay'){
+        playVideo();
       }
     });
 

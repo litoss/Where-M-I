@@ -1,7 +1,7 @@
 // Youtube Data API
 // https://developers.google.com/youtube/v3/docs
 
-async function search(part, q, maxResults){
+async function youtubeSearch(part, q, maxResults){
 
   var query = {};
   query.part = part;

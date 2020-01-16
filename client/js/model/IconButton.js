@@ -12,4 +12,8 @@ class IconButton extends mdc.ripple.MDCRipple{
     setIcon(icon){
       this.root_.innerHTML = icon;
     }
+
+    getIcon(){
+      return this.root_.innerHTML;
+    }
 }

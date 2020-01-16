@@ -16,7 +16,6 @@ function newPlayer(vid){
     'videoId': vid,
   //  'startSeconds': 5,
   //  'endSeconds': 60,
-  //  'suggestedQuality': 'large'
   });
 }
 
