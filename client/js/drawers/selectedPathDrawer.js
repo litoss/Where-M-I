@@ -64,9 +64,6 @@ function showRoute(path){
         } else {
           var snackbar = new SnackBar('Directions request failed due to ' + status);
           snackbar.open();
-          snackbar.listen("MDCSnackbar:closed",() => {
-            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-          });
         }
       });
 

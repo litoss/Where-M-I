@@ -12,7 +12,7 @@ class Place {
     if(place){
       var editButton = new IconButton('edit','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
       leftButtonList.push(editButton.root_);
-
+      console.log(place);
       var decode = OpenLocationCode.decode(place.OLC);
       latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
       name = place.name;
@@ -70,9 +70,6 @@ class Place {
         else {
           var snackbar = new SnackBar('You must be logged to use this function');
           snackbar.open();
-          snackbar.listen("MDCSnackbar:closed",() => {
-            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-          });
         }
       });
     }else{
@@ -81,9 +78,6 @@ class Place {
         else {
           var snackbar = new SnackBar('You must be logged to use this function');
           snackbar.open();
-          snackbar.listen("MDCSnackbar:closed",() => {
-            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-          });
         }
       });
     }
@@ -92,26 +86,12 @@ class Place {
 
   showDirection(){
     if(map.position.getPosition()){
-        map.directionsService.route({
-          origin: map.position.getPosition(),
-          destination: this.marker.getPosition(),
-          travelMode: 'WALKING'
-        }, function(response, status) {
-          // Route the directions and pass the response to a function to create
-          // markers for each step.
-          if (status === 'OK') {
-            map.directionsRenderer.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        });
+      drivingDirections(map.position, this.marker);
+
     }else{
       //Non hai la geolocalizzazione attiva!
       var snackbar = new SnackBar('Geolocalization is not active');
       snackbar.open();
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
     }
   }
 

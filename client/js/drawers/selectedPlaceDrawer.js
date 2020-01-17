@@ -1,6 +1,7 @@
 var visited = false;
 
 async function selectedPlace(place){
+
   if(map.pageDrawer) map.pageDrawer.open = false;
 
   var review = [];
@@ -47,21 +48,35 @@ async function selectedPlace(place){
 
   var description = document.createElement('p');
   description.className = 'descr';
-  var src = await detect(place.description);
-  if(src != preferences.language) description.innerHTML = await translate(place.description, src, preferences.language);
-  else description.innerHTML = place.description;
+  description.innerHTML = place.description;
   content.appendChild(description);
+
+  if(gapi.client.language){
+    detect(place.description).then((src) => {
+      if(src != preferences.language){
+        description.innerHTML = await translate(place.description, src, preferences.language);
+      }
+    });
+  }else{
+    var snackbar = new SnackBar('Translation is not Available');
+    snackbar.open();
+  }
 
   var texttospeechButton = new IconButton('audiotrack', 'mdc-button--raised mdc-image__circular');
   content.appendChild(texttospeechButton.root_);
   texttospeechButton.listen('click', async() => {
-    if(audio) {
-      audio.pause();
-      audio = null;
-    }else {
-      var speech = await texttospeech(document.querySelector('.descr').innerHTML, preferences.language);
-      audio = new Audio("data:audio/mp3;base64," + speech);
-      audio.play();
+    if(gapi.texttospeech){
+      if(!audio) {
+        var speech = await texttospeech(document.querySelector('.descr').innerHTML, preferences.language);
+        audio = new Audio("data:audio/mp3;base64," + speech);
+        audio.play();
+      }else {
+        audio.pause();
+        audio = null;
+      }
+    }else{
+      var snackbar = new SnackBar('Text-To-Speech is not Available');
+      snackbar.open();
     }
   });
 

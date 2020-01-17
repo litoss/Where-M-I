@@ -32,5 +32,4 @@ function openAbout() {
 
   map.pageDrawer = new PageDrawer('About Us',content);
   map.pageDrawer.open = true;
-
 }

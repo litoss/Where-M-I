@@ -1,7 +1,5 @@
 function addClipDrawer(place) {
 
-    //  var audios = [];
-
     var div = document.createElement('div');
 
     var newClip = document.createElement('h2');
@@ -106,8 +104,6 @@ function addClipDrawer(place) {
         selectE3.root_.style.display = 'none';
     });
 
-
-
     register.listen('MDCIconButtonToggle:change', async () => {
         function incrementSeconds() {
             seconds++;
@@ -115,6 +111,7 @@ function addClipDrawer(place) {
             date.setSeconds(seconds); // specify value for SECONDS here
             label.innerHTML = date.toISOString().substr(11, 8);
         }
+
         if (event.detail.isOn) {
             startRecord();
             interval = setInterval(incrementSeconds, 1000);
@@ -159,7 +156,6 @@ function addClipDrawer(place) {
     map.pageDrawer = new PageDrawer('New Clip', div);
     map.pageDrawer.open = true;
 
-
     async function saveVideo(privacyStatus) {
         if (titolo.value && testo.value && (what.input.checked || how.input.checked || why.input.checked) && lang.value && selectE1.value && selectE2.value && audio.src) {
             var geoloc = olc.value.substring(0, 6) + "00+-" + olc.value.substring(0, 9) + "-" + olc.value;
@@ -189,9 +185,6 @@ function addClipDrawer(place) {
         else {
             var snackbar = new SnackBar('Missing data');
             snackbar.open();
-            snackbar.listen("MDCSnackbar:closed", () => {
-                document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
         }
     }
 };

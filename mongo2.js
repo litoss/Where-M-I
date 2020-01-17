@@ -16,11 +16,11 @@ const mongo = require('mongodb');
 
 const MongoClient = mongo.MongoClient;
 const ObjectID = mongo.ObjectID; //serve per poter passare i parametri in name e price dentro ObjectID
-//const url = 'mongodb://localhost:27017';
-const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
+const url = 'mongodb://localhost:27017';
+//const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
-var CLIENT_ID = '3509248503-o0bph5l62gp1vsu39cjbaqngv98k69sv.apps.googleusercontent.com'
+var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com'
 
 const {OAuth2Client} = require('google-auth-library');
 const client_user = new OAuth2Client(CLIENT_ID);

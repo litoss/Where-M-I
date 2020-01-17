@@ -13,14 +13,22 @@ class Player{
     div.appendChild(forward.root_)
 
     forward.listen('click', () => {
-        console.log("ciao");
+      next();
     });
 
+    back.listen('click', () => {
+      previous();
+    })
+
+    next.listen('click', () => {
+      more();
+    })
+
     play.listen('click', (event) => {
-      if(play.getIcon() == 'play_arrow' && !playlistPlace.length){
+      if(play.getIcon() == 'play_arrow' && !playlistPlace.lenght){
         start();
-      }else if (play.getIcon() == 'play_arrow' && playlistPlace.length){
-        pla();
+      }else if (play.getIcon() == 'play_arrow' && playlistPlace.lenght){
+        play();
       }else if(play.getIcon() == 'pause'){
         pauseVideo();
       }else if(play.getIcon() == 'replay'){

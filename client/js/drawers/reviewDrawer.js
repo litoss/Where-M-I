@@ -46,15 +46,12 @@ async function reviewDrawer(olc){
   }
   xhr.send(JSON.stringify({OLC: olc}));
 
-
   map.pageDrawer  = new PageDrawer('Reviews', content);
   map.pageDrawer.open = true;
 
   addButton.listen('click', () => {
     reviewDialog(olc);
-  })
-
-
+  });
 }
 
 function setStar(rating){

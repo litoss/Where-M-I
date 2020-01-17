@@ -17,10 +17,13 @@ class YoutubePlayer{
     div.appendChild(description);
     div.appendChild(clipRemaning);
 
-    button.listen('click', async () => {
+    button.listen('click', () => {
 
       if(button.getIcon() == "play_arrow" ){
+        console.log(button)
         button.setIcon("pause");
+        console.log(videos);
+        console.log(videos[current].id)
         newPlayer(videos[current].id, button);
       }else{
         button.setIcon("play_arrow");

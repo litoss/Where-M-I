@@ -54,18 +54,12 @@ function openSettings(){
           if (xhr.status !== 200) {
             var snackbar = new SnackBar('Something went wrong please try again');
             snackbar.open();
-            snackbar.listen("MDCSnackbar:closed",() => {
-              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
           }
       };
       xhr.send(JSON.stringify(preferences));
     };
     var snackbar = new SnackBar('Preferences updated successfully');
     snackbar.open();
-    snackbar.listen("MDCSnackbar:closed",() => {
-      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-    });
     if(map.pageDrawer) map.pageDrawer.open = false;
   })
 

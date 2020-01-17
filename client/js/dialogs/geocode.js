@@ -38,9 +38,6 @@ function openGeocode() {
       } else {
         var snackbar = new SnackBar('Please submit a valid Address');
         snackbar.open();
-        snackbar.listen("MDCSnackbar:closed",() => {
-          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-        });
       }
     });
   })

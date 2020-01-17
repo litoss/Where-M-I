@@ -43,31 +43,29 @@ function openVideoDialog(audiosrc){
     dialog.close();
   })
 
-dialog.listen('MDCDialog:opened', function() {
+  dialog.listen('MDCDialog:opened', function() {
     volume.layout();
   });
+
   return new Promise((resolve, reject) => {
+
     save.listen('click', async () => {
       if((start.value) && (end.value) && volume.value){
-      dialog.close();
-      var blob = await getimageBlob(audio.src);
-      var base64 = await convertBlobToBase64(blob);
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/modify_video');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onload = async function(){
-        var url = decode64(this.responseText, "video/webm");
-        resolve(url);
-      };
-      xhr.send(JSON.stringify({chunks: base64,start: start.value,end:end.value,volume:volume.value}));
-      }
-      else {
+        dialog.close();
+        var blob = await getimageBlob(audio.src);
+        var base64 = await convertBlobToBase64(blob);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/modify_video');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = async function(){
+          var url = decode64(this.responseText, "video/webm");
+          resolve(url);
+        };
+        xhr.send(JSON.stringify({chunks: base64,start: start.value,end:end.value,volume:volume.value}));
+      }else{
         var snackbar = new SnackBar('Missing data');
         snackbar.open();
-        snackbar.listen("MDCSnackbar:closed",() => {
-          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-          });
-        }
+      }
     });
   });
 }

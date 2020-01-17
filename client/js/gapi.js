@@ -1,8 +1,7 @@
 // Google API
 
-var CLIENT_ID = '3509248503-o0bph5l62gp1vsu39cjbaqngv98k69sv.apps.googleusercontent.com'
-var API_KEY = 'AIzaSyCNLY2lo64olcD8Of2zzAVghskmmKvB8OU'
-
+var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com'
+var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU'
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 

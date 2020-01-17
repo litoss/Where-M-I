@@ -50,7 +50,14 @@ function getDatafromURL(blob){
   });
 }
 
-function getDistance(x1,x2,y1,y2){
+function getDistance(marker1, marker2){
+
+  var x1 = marker1.getPosition().lat();
+  var x2 = marker2.getPosition().lat();
+  var y1 = marker2.getPosition().lng();
+  var y2 = marker2.getPosition().lng();
+
+
   var deltaX = Math.abs(x1 - x2);
   var deltaY = Math.abs(y1 - y2)
   return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));

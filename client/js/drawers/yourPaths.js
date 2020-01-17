@@ -50,9 +50,6 @@ function openPaths(){
             edit.listen('click', () => {
               deletePath(path.namer);
               map.pageDrawer.open = false;
-            })
-            snackbar.listen("MDCSnackbar:closed",() => {
-              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
             });
           })
         }

@@ -31,15 +31,13 @@ function searchClips(olc, purp, lang, cont, aud){
     }
     result = result.filter(contains);
   }
-  console.log(result);
-  console.log(purp);
+
   if(purp){
     function equals(element){
       return element.meta.split(':')[1] == purp;
     }
     result = result.filter(equals);
   }
-  console.log(result);
 
   if(lang){
     var language = languages.find(o => o['tag'] == lang).iso;
@@ -49,7 +47,6 @@ function searchClips(olc, purp, lang, cont, aud){
     }
     result = result.filter(equals);
   }
-  console.log(result);
 
   if(cont && cont != "all"){
     function equals(element){

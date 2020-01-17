@@ -4,7 +4,7 @@ var currentClip;
 var currentPlace = -1;
 var distance;
 
-function findClosestMarker(lat, lng){
+function findClosestMarker(marker){
 
     var minDistance = 10000;
     var minMarker;
@@ -12,7 +12,7 @@ function findClosestMarker(lat, lng){
     for(var i=0; i<map.places.length; i++){
       //Se il posto non è nella playlist
       if(!playlistPlace.includes(map.places[i])){
-        var distance = getDistance(lat, map.places[i].getPosition().lat(), lng, map.places[i].getPosition().lng());
+        var distance = getDistance(marker, map.places[i]);
 
         if(distance < minDistance){
           minMarker = i;
@@ -27,22 +27,31 @@ function findClosestMarker(lat, lng){
 
 function start(){
   next();
+
   if(playlistPlace[currentPlace]){
-    pla();
+    var distance = getDistance(map.position, playlistPlace[currentPlace]);
+    if(distance < 0.0002){
+      play();
+    }else {
+      drivingDirections(map.position, playlistPlace[currentPlace]);
+    }
   }
 }
 
 function next(){
   currentPlace++;
   if(!playlistPlace[currentPlace]){
-    var marker = findClosestMarker(map.position.getPosition().lat(), map.position.getPosition().lng());
+    var marker = findClosestMarker(map.position);
     if(!marker){
-      alert('Non ci sono audio nelle vicinanze');
+      alert('Non ci sono luoghi nelle vicinanze con clip inerenti alle tue preferenze');
     }else{
       playlistPlace.push(marker);
+      console.log(playlistPlace[currentPlace]);
+
       search(playlistPlace[currentPlace]);
     }
   }else{
+    console.log(playlistPlace[currentPlace]);
     search(playlistPlace[currentPlace]);
   }
 }
@@ -54,19 +63,20 @@ function search(marker){
   if(!response.lenght){
     next();
   }else{
-    alert("ciao");
     playlistClip = response;
     currentClip = 0;
   }
 }
 
-function previous(){
-  currentPlace--;
-  search(playlistPlace[currentPlace]);
+function play(){
+  newPlayer(playlistClip[currentClip].id);
 }
 
-function pla(){
-  newPlayer(playlistClip[currentClip].id);
+function previous(){
+    if(currentPlace > 0){
+    currentPlace--;
+    search(playlistPlace[currentPlace]);
+  }
 }
 
 function more(){

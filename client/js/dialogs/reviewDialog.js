@@ -59,16 +59,10 @@ async function reviewDialog(olc){
     if(value == null){
       var snackbar = new SnackBar('Please add a star rating.');
       snackbar.open();
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
       return;
     }else {
       var snackbar = new SnackBar('Review Added succesfully');
       snackbar.open();
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
       dialog.close();
       map.pageDrawer.open = false;
     }

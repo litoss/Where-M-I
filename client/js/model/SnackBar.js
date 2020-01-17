@@ -28,5 +28,9 @@ class SnackBar extends mdc.snackbar.MDCSnackbar{
         parent.appendChild(item);
 
         super(item);
+
+        this.listen("MDCSnackbar:closed", () => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+        });
     }
 }

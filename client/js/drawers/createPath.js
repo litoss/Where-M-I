@@ -53,9 +53,6 @@ function createPath(){
               }else {
                 var snackbar = new SnackBar('This Place is already on your selected Path');
                 snackbar.open();
-                snackbar.listen("MDCSnackbar:closed",() => {
-                  document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-                });
               }
             });
           }
@@ -76,18 +73,12 @@ function createPath(){
       if(namer.length == 0){
         var snackbar = new SnackBar('Insert a name for your Path');
         snackbar.open();
-        snackbar.listen("MDCSnackbar:closed",() => {
-          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-        });
         return;
       }
 
       if(route.length < 2){
         var snackbar = new SnackBar('You have to add at least two Places to your Path');
         snackbar.open();
-        snackbar.listen("MDCSnackbar:closed",() => {
-          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-        });
         return;
       }
 
@@ -117,9 +108,6 @@ function verifyRoute(route, name){
         submitRoute(route, name);
         map.pageDrawer.open = false;
       })
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
     }
   }
   xhr.send(JSON.stringify({OLC: route[0]}));
@@ -134,9 +122,6 @@ function submitRoute(route, name){
     //DEVE CHIEDERE CONFERMA!!!
     var snackbar = new SnackBar('Your Path is correctly Added');
     snackbar.open();
-    snackbar.listen("MDCSnackbar:closed",() => {
-      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-    });
   }
   xhr.send(JSON.stringify({namer: name, route: route, token: token}));
 

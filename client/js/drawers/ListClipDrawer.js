@@ -7,6 +7,7 @@ function openClips(){
   content.appendChild(title);
 
   var clips = [];
+  var checkboxes = [];
 
   listVideos().then(async function(response){
 
@@ -31,6 +32,7 @@ function openClips(){
       var checkbox = new Checkbox("check-"+i);
       // checkbox.checked = true;
       // checkbox.disabled = true;
+      checkboxes.push(checkbox);
       li.appendChild(checkbox.root_);
 
       var infoButton = new IconButton('info');
@@ -43,7 +45,6 @@ function openClips(){
 
       var secondaryText = document.createElement('span')
       secondaryText.className = "mdc-list-item__secondary-text";
-      console.log(clips[i].statistics)
       secondaryText.innerHTML = clips[i].snippet.description;
       span.appendChild(secondaryText);
 
@@ -52,11 +53,8 @@ function openClips(){
           openInfoVideo(clips[i].statistics);
         });
       }
-
       info(i);
-
       list.add(li);
-      clips.push(clips[i]);
     }
 
     var modify = new ActionButton('Modifica Clip');
@@ -74,12 +72,11 @@ function openClips(){
     var mUpload = new ActionButton('Create Playlist with your video');
     content.appendChild(mUpload.root_);
 
-
     remove.listen('click',()=>{
       for(var i in clips){
-        if(document.getElementById("check-"+i).checked){
-        removeVideo(clips[i].id);
-        document.getElementById("check-"+i).disabled = true;
+        if(checkboxes[i].checked){
+          removeVideo(clips[i].id);
+          document.getElementById("check-"+i).disabled = true;
         }
       }
     });
@@ -88,22 +85,19 @@ function openClips(){
       for(var i in clips){
         console.log(document.getElementById("check-"+i));
 
-        if(document.getElementById("check-"+i).checked){
+        if(checkboxes[i].checked){
           console.log(clips[i])
           if(clips[i].status.privacyStatus == 'unlisted') updateVideo(clips[i].id);
           else{
             var snackbar = new SnackBar('Select a draft video');
             snackbar.open();
-            snackbar.listen("MDCSnackbar:closed",() => {
-              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
           }
         }
       }
     });
     mUpload.listen('click',()=>{
       for(var i in clips){
-        if(document.getElementById("check-"+i).checked){
+        if(checkboxes[i].checked){
           if(playlistName.value){
             createPlaylist(playlistName.value).then((response)=>{
               console.log(response,clips[i].id);
@@ -114,59 +108,46 @@ function openClips(){
           else {
             var snackbar = new SnackBar('Insert playlist name');
             snackbar.open();
-            snackbar.listen("MDCSnackbar:closed",() => {
-              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-              });
           }
         }
-    /*    else{
-          var snackbar = new SnackBar('Insert some video to add to your playlist');
-          snackbar.open();
-          snackbar.listen("MDCSnackbar:closed",() => {
-            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
-        }*/
       }
     });
 
-    modify.listen('click',()=>{
+    modify.listen('click', () => {
       var count = 0;
       for(var c in clips){
         if(document.getElementById("check-"+c).checked){
           count++;
         }
       }
-      if(count == 1){
-      for(var i in clips){
-        if(document.getElementById("check-"+i).checked){
-          var id = clips[i].id;
-          console.log(id);
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST','/audio_from_yt',false);
-          xhr.setRequestHeader('Content-Type', 'application/json');
-          xhr.onload = function(){
-          var base64 = this.responseText;
-          var url = decode64(base64);
 
-          openVideoDialog(url).then(async (response) => {
-            var blob = await getimageBlob(response);
-            insertClip(clips[i].snippet.title,clips[i].snippet.description,'public',blob);
-            });
-          }
+      if(count == 1){
+        for(var i in clips){
+          if(document.getElementById("check-"+i).checked){
+            var id = clips[i].id;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST','/audio_from_yt',false);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function(){
+            var base64 = this.responseText;
+            var url = decode64(base64);
+
+            openVideoDialog(url).then(async (response) => {
+              var blob = await getimageBlob(response);
+                insertClip(clips[i].snippet.title,clips[i].snippet.description,'public',blob);
+              });
+            }
 
           xhr.send(JSON.stringify({id:id}));
         }
       }
-    }else{
-    var snackbar = new SnackBar('Select only one video please');
-    snackbar.open();
-    snackbar.listen("MDCSnackbar:closed",() => {
-      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
-  }
-  })
+      }else{
+        var snackbar = new SnackBar('Select only one video please');
+        snackbar.open();
+      }
+    });
 
     map.pageDrawer = new PageDrawer('Your Clips', content);
     map.pageDrawer.open = true;
-  });
+    });
 }
