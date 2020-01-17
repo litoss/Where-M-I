@@ -54,7 +54,9 @@ async function selectedPlace(place){
   if(gapi.client.language){
     detect(place.description).then((src) => {
       if(src != preferences.language){
-        description.innerHTML = await translate(place.description, src, preferences.language);
+        translate(place.description, src, preferences.language).then((translation) => {
+          description.innerHTML = translation;
+        });
       }
     });
   }else{
@@ -102,11 +104,12 @@ async function selectedPlace(place){
   separator3.className = 'mdc-list-divider';
   content.appendChild(separator3);
 
-  var creator = await getUser(place.user);
-  var creatorList = new List("mdc-list--two-line mdc-list--avatar-list");
-  creatorList.add(new ImageList(creator.name, "Creator", creator.picture ));
-  content.appendChild(creatorList.root_);
-
+  getUser(place.user).then(() => {
+    var creatorList = new List("mdc-list--two-line mdc-list--avatar-list");
+    creatorList.add(new ImageList(creator.name, "Creator", creator.picture ));
+    separator3.insertAdjacentElement('afterend',creatorList);
+  })
+  
   var clipTitle = document.createElement('h3');
   clipTitle.innerHTML = "Clip Audio";
   content.appendChild(clipTitle);
