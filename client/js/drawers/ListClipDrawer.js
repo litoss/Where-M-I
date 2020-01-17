@@ -140,8 +140,40 @@ function openClips(){
         }
       }
       if(count == 1){
-      for(var i in clips){
-        if(checkboxes[i].checked){
+      //for(var i in clips){
+        clips.forEach((e, i) => {
+          if(checkboxes[i].checked){
+            var id = e.id;
+            console.log(id);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST','/audio_from_yt',false);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = async function(){
+              var url = await decode64(this.responseText, "video/webm");
+              console.log(i);
+            openVideoDialog(url).then(async (response) => {
+                  var blob = await getimageBlob(response);
+                  var base644 = await convertBlobToBase64(blob);
+                  console.log(i);
+                  var req = new XMLHttpRequest();
+                  req.open('POST','/audio_to_video');
+                  req.setRequestHeader('Content-Type', 'application/json');
+                  req.onload = async function(){
+                    var base64 = await this.responseText;
+                    var url = await decode64(this.responseText,"video/webm")
+                    var blob = await decode64BLOB(base64);
+                    console.log(i);
+                    insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+                  }
+                  req.send(JSON.stringify({ chunks: base644 }));
+                /// insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+              })
+            }
+            xhr.send(JSON.stringify({id:id}));
+          }
+        });
+
+      /*  if(checkboxes[i].checked){
           var id = clips[i].id;
           console.log(id);
           var xhr = new XMLHttpRequest();
@@ -149,10 +181,11 @@ function openClips(){
           xhr.setRequestHeader('Content-Type', 'application/json');
           xhr.onload = async function(){
             var url = await decode64(this.responseText, "video/webm");
+            console.log(i);
           openVideoDialog(url).then(async (response) => {
                 var blob = await getimageBlob(response);
                 var base644 = await convertBlobToBase64(blob);
-
+                console.log(i);
                 var req = new XMLHttpRequest();
                 req.open('POST','/audio_to_video');
                 req.setRequestHeader('Content-Type', 'application/json');
@@ -160,42 +193,24 @@ function openClips(){
                   var base64 = await this.responseText;
                   var url = await decode64(this.responseText,"video/webm")
                   var blob = await decode64BLOB(base64);
-                  console.log(blob);
-                  console.log()
-                  insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+                  console.log(i);
+                  //insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
                 }
                 req.send(JSON.stringify({ chunks: base644 }));
               /// insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
             })
-/*          var base64 = await this.responseText;
-          var req = new XMLHttpRequest();
-          req.open('POST','/audio_to_video');
-          req.setRequestHeader('Content-Type', 'application/json');
-          req.onload = async function(){
-            var base64 = await this.responseText;
-            var blob = decode64BLOB(base64);
-            await insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
           }
-    */      /*openVideoDialog(url).then(async (response) => {
-              var blob = await getimageBlob(response);
-              console.log(blob);
-              console.log(URL.createObjectURL(blob));
-            // insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
-
-          })*/
-          }
-
           xhr.send(JSON.stringify({id:id}));
-        }
+        }*/
       }
-    }else{
+    else{
     var snackbar = new SnackBar('Select only one video please');
     snackbar.open();
     snackbar.listen("MDCSnackbar:closed",() => {
       document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
       });
   }
-  })
+})
 
     map.pageDrawer = new PageDrawer('Your Clips', content);
     map.pageDrawer.open = true;
