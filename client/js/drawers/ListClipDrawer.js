@@ -9,6 +9,7 @@ function openClips(){
 
   var clips = [];
 
+
   listVideos().then(async function(response){
 
     for(var i in response){
@@ -19,6 +20,7 @@ function openClips(){
     var list = new List("mdc-list--two-line");
     content.appendChild(list.root_);
 
+    var checkboxes = [];
     for(var i in clips){
 
       var li = document.createElement('li');
@@ -30,8 +32,9 @@ function openClips(){
 
       //     if(clips[i].status.privacyStatus != 'public'){
       var checkbox = new Checkbox("check-"+i);
-      // checkbox.checked = true;
+      //checkbox.checked = false;
       // checkbox.disabled = true;
+      checkboxes.push(checkbox);
       li.appendChild(checkbox.root_);
 
       var infoButton = new IconButton('info');
@@ -57,7 +60,6 @@ function openClips(){
       info(i);
 
       list.add(li);
-      clips.push(clips[i]);
     }
 
     var modify = new ActionButton('Modifica Clip');
@@ -78,20 +80,20 @@ function openClips(){
 
     remove.listen('click',()=>{
       for(var i in clips){
-        if(document.getElementById("check-"+i).checked){
+        if(checkboxes[i].checked){
         removeVideo(clips[i].id);
-        document.getElementById("check-"+i).disabled = true;
+      checkboxes[i].disabled = true;
         }
       }
     });
 
     public.listen('click',()=>{
-      for(var i in clips){
-        console.log(document.getElementById("check-"+i));
 
-        if(document.getElementById("check-"+i).checked){
-          console.log(clips[i])
-          if(clips[i].status.privacyStatus == 'unlisted') updateVideo(clips[i].id);
+      for(var i in clips){
+
+        if(checkboxes[i].checked){
+          console.log(clips[i].status.privacyStatus);
+          if(clips[i].status.privacyStatus != 'public') updateVideo(clips[i].id);
           else{
             var snackbar = new SnackBar('Select a draft video');
             snackbar.open();
@@ -104,7 +106,7 @@ function openClips(){
     });
     mUpload.listen('click',()=>{
       for(var i in clips){
-        if(document.getElementById("check-"+i).checked){
+        if(checkboxes[i].checked){
           if(playlistName.value){
             createPlaylist(playlistName.value).then((response)=>{
               console.log(response,clips[i].id);
@@ -133,26 +135,54 @@ function openClips(){
     modify.listen('click',()=>{
       var count = 0;
       for(var c in clips){
-        if(document.getElementById("check-"+c).checked){
+        if(checkboxes[c].checked){
           count++;
         }
       }
       if(count == 1){
       for(var i in clips){
-        if(document.getElementById("check-"+i).checked){
+        if(checkboxes[i].checked){
           var id = clips[i].id;
           console.log(id);
           var xhr = new XMLHttpRequest();
           xhr.open('POST','/audio_from_yt',false);
           xhr.setRequestHeader('Content-Type', 'application/json');
-          xhr.onload = function(){
-          var base64 = this.responseText;
-          var url = decode64(base64);
-
+          xhr.onload = async function(){
+            var url = await decode64(this.responseText, "video/webm");
           openVideoDialog(url).then(async (response) => {
-            var blob = await getimageBlob(response);
-            insertClip(clips[i].snippet.title,clips[i].snippet.description,'public',blob);
-            });
+                var blob = await getimageBlob(response);
+                var base644 = await convertBlobToBase64(blob);
+
+                var req = new XMLHttpRequest();
+                req.open('POST','/audio_to_video');
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.onload = async function(){
+                  var base64 = await this.responseText;
+                  var url = await decode64(this.responseText,"video/webm")
+                  var blob = await decode64BLOB(base64);
+                  console.log(blob);
+                  console.log()
+                  insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+                }
+                req.send(JSON.stringify({ chunks: base644 }));
+              /// insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+            })
+/*          var base64 = await this.responseText;
+          var req = new XMLHttpRequest();
+          req.open('POST','/audio_to_video');
+          req.setRequestHeader('Content-Type', 'application/json');
+          req.onload = async function(){
+            var base64 = await this.responseText;
+            var blob = decode64BLOB(base64);
+            await insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+          }
+    */      /*openVideoDialog(url).then(async (response) => {
+              var blob = await getimageBlob(response);
+              console.log(blob);
+              console.log(URL.createObjectURL(blob));
+            // insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+
+          })*/
           }
 
           xhr.send(JSON.stringify({id:id}));

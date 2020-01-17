@@ -117,6 +117,7 @@ function insertClip(title, description, privacyStatus, readStream){
     cache: false,
     contentType: false,
     processData: false,
+    metadata: metadata,
     method: 'POST',
     success:function(data) {
       alert("Il video è stato inserito sul tuo canale Youtube!!!");

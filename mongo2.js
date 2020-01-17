@@ -21,8 +21,13 @@ const url = 'mongodb://localhost:27017';
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
 //var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com'
-var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com'
+//var CLIENT_ID = '563938826751-hckhc1tn144qesuo3vfeladfs7sa657d.apps.googleusercontent.com'
+//var CLIENT_ID = '425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com';
+// var API_KEY = 'AIzaSyAISXxNTs9hhEZ2dt2N-pt77lLpolf8Usc';
+//var CLIENT_ID = '77613294594-37odu8ke37gjoeebo2rfhlocf0thdgb9.apps.googleusercontent.com'
+var CLIENT_ID = '239403724325-l9fa3mhgki0a2eqchi6bgap7ofn6de1s.apps.googleusercontent.com'
 
+//var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com';
 const {OAuth2Client} = require('google-auth-library');
 const client_user = new OAuth2Client(CLIENT_ID);
 

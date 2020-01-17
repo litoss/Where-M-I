@@ -1,6 +1,41 @@
 function addClipDrawer(place) {
 
     //  var audios = [];
+        async function saveVideo(privacyStatus) {
+            if (titolo.value && testo.value && (what.input.checked || how.input.checked || why.input.checked) && lang.value && selectE1.value && selectE2.value && audio.src) {
+                var geoloc = olc.value.substring(0, 6) + "00+-" + olc.value.substring(0, 9) + "-" + olc.value;
+                var purpose = what.input.checked ? "who" : how.input.checked ? "how" : "why";
+                var language = lang.value;
+                var content = selectE1.value;
+                var audience = selectE2.value;
+                var description = geoloc + ":" + purpose + ":" + language + ":" + content + ":A" + audience;//+ ":P" + detail;
+                if (why.input.checked && selectE3.value) {
+                    var detail = selectE3.value;
+                    console.log(selectE3);
+                    description = description + detail;
+                };
+                description = description + '#' + testo.value;
+                var blob = await getimageBlob(audio.src);
+                var base64 = await convertBlobToBase64(blob);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/audio_to_video');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onload = async function () {
+                    var url = await decode64(this.responseText, "video/webm");
+                    var blob = await getimageBlob(url);
+                    insertClip(titolo.value, description, privacyStatus, blob);
+                };
+                xhr.send(JSON.stringify({ chunks: base64 }));
+            }
+            else {
+                var snackbar = new SnackBar('Missing data');
+                snackbar.open();
+                snackbar.listen("MDCSnackbar:closed", () => {
+                    document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+                });
+            }
+        }
 
     var div = document.createElement('div');
 
@@ -169,38 +204,4 @@ function addClipDrawer(place) {
     map.pageDrawer.open = true;
 
 
-    async function saveVideo(privacyStatus) {
-        if (titolo.value && testo.value && (what.input.checked || how.input.checked || why.input.checked) && lang.value && selectE1.value && selectE2.value && audio.src) {
-            var geoloc = olc.value.substring(0, 6) + "00+-" + olc.value.substring(0, 9) + "-" + olc.value;
-            var purpose = what.input.checked ? "who" : how.input.checked ? "how" : "why";
-            var language = lang.value;
-            var content = selectE1.value;
-            var audience = selectE2.value;
-            var description = geoloc + ":" + purpose + ":" + language + ":" + content + ":A" + audience;//+ ":P" + detail;
-            if (why.input.checked && selectE3.value) {
-                var detail = selectE3.value;
-                console.log(selectE3);
-                description = description + detail;
-            };
-            var blob = await getimageBlob(audio.src);
-            var base64 = await convertBlobToBase64(blob);
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/audio_to_video');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = async function () {
-                var url = await decode64(this.responseText, "video/webm");
-                var blob = await getimageBlob(url);
-                insertClip(titolo.value, description, privacyStatus, blob);
-            };
-            xhr.send(JSON.stringify({ chunks: base64 }));
-        }
-        else {
-            var snackbar = new SnackBar('Missing data');
-            snackbar.open();
-            snackbar.listen("MDCSnackbar:closed", () => {
-                document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
-        }
-    }
 };
