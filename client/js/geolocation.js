@@ -34,9 +34,7 @@ function error(err) {
   }
   var snackbar = new SnackBar('Geolocation error, please try again or use another method');
   snackbar.open();
-  snackbar.listen("MDCSnackbar:closed",() => {
-    document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-  });
+
   map.menuDrawer.open = false;
   openWelcome();
 }

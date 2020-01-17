@@ -37,7 +37,7 @@ function openWelcome() {
   });
 
   welcomeDialog.listen('MDCDialog:closing', function() {
-  document.getElementById('map').removeChild(welcomeDialog.root_);
+    document.getElementById('map').removeChild(welcomeDialog.root_);
   });
 
 }

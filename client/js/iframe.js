@@ -14,11 +14,14 @@ function onYouTubeIframeAPIReady() {
 function newPlayer(vid, button){
   player.loadVideoById({
     'videoId': vid,
-  //  'startSeconds': 5,
-  //  'endSeconds': 60,
   });
-  player.addEventListener('onStateChange', (event) => {
+  player.setVolume(50);
 
+  player.addEventListener('onStateChange', (event) => {
+    console.log(event);
+    if(event.data == 0){
+      button.setIcon('replay');
+    }
   })
 }
 

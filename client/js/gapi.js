@@ -18,6 +18,9 @@
 //var API_KEY = 'AIzaSyC1Qfs0gXY8eYKJc-TT5SKhrKng_XAROzc'
 var CLIENT_ID = '239403724325-l9fa3mhgki0a2eqchi6bgap7ofn6de1s.apps.googleusercontent.com'
 var API_KEY = 'AIzaSyAcsOxkEj7ANFwWY-qJuUgUbNMUl1epZso'
+
+//var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU'
 //var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com';
 //var API_KEY = 'AIzaSyCaDN2KU-H2zGma9R8lArEjn79U49ja7XI';
 //var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com'

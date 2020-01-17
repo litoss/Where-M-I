@@ -109,17 +109,11 @@ async function createEditDialog(place){
     if(nameForm.value.length == 0) {
       var snackbar = new SnackBar('No input on name');
       snackbar.open();
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
       return;
     }
     else if(nameForm.value.length > 40){
       var snackbar = new SnackBar('name is too long');
       snackbar.open();
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
       return;
     }
     form.append('name',nameForm.value);
@@ -137,9 +131,6 @@ async function createEditDialog(place){
           else {
             var snackbar = new SnackBar('Please insert a short description');
             snackbar.open();
-            snackbar.listen("MDCSnackbar:closed",() => {
-              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
           }
         }
     else form.append('description', descrForm.value);
@@ -152,9 +143,6 @@ async function createEditDialog(place){
     else {
       var snackbar = new SnackBar('Select an Image');
       snackbar.open();
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
       return;
     }
     verify(form, place);
@@ -180,9 +168,6 @@ function verify(form, place){
     else if(response[0].user != profile.Eea){
       var snackbar = new SnackBar('Place already added from another User');
       snackbar.open();
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
     }else {
       var edit = new ActionButton('edit');
       var close = new IconButton('close');
@@ -191,9 +176,6 @@ function verify(form, place){
       edit.listen('click', () => {
         submit(form);
       })
-      snackbar.listen("MDCSnackbar:closed",() => {
-        document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
     }
   }
   xhr.send(JSON.stringify({OLC: place.OLC}));
@@ -211,9 +193,10 @@ function submit(form, place){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = async function() {
       if (xhr.status ==  200 ) {
+        console.log(xhr.response);
           var addedPlace = new Place(object);
 
-          //addedPlace.place.media_rating = await getRating(addedPlace.place.OLC);
+          addedPlace.place.media_rating = await getRating(addedPlace.place.OLC);
           map.places.push(addedPlace);
 
           map.closeAllWindow();
@@ -221,9 +204,6 @@ function submit(form, place){
           if(map.pageDrawer) map.pageDrawer.open = false;
           var snackbar = new SnackBar('Place added Successfully');
           snackbar.open();
-          snackbar.listen("MDCSnackbar:closed",() => {
-            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-          });
 
       }
       else if (xhr.status !== 200) {

@@ -36,9 +36,6 @@ function openPlaces(){
                 deletePlace(place);
                 map.pageDrawer.open = false;
               })
-              snackbar.listen("MDCSnackbar:closed",() => {
-                document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-              });
             });
           }
           addListener(i);

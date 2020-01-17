@@ -52,9 +52,6 @@ async function selectPlace(position) {
         }else {
           var snackbar = new SnackBar('You must be logged in to use this function');
           snackbar.open();
-          snackbar.listen("MDCSnackbar:closed",() => {
-            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-          });
         }
       });
 

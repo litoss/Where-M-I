@@ -1,11 +1,10 @@
 var clips = [];
 
 async function init(){
-  var list = await youtubeSearch("id", "8FPHF800", 50);
+  var list = await youtubeSearch("id, snippet", "8FPHF800", 50);
   for(var i in list){
     var clip = await getVideo(list[i].id.videoId);
     clip.meta = clip.snippet.description.split('#')[0];
-    clip.start = clip.snippet.description.split('#')[2];
     clip.snippet.description = clip.snippet.description.split('#')[1];
     clips.push(clip);
   }
@@ -35,7 +34,7 @@ function searchClips(olc, purp, lang, cont, aud){
 
   if(purp){
     function equals(element){
-      return element.meta.split(':')[2] == purp;
+      return element.meta.split(':')[1] == purp;
     }
     result = result.filter(equals);
   }
