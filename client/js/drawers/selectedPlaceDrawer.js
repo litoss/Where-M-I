@@ -104,14 +104,11 @@ async function selectedPlace(place){
   separator3.className = 'mdc-list-divider';
   content.appendChild(separator3);
 
-  var creator = await getUser(place.user).then(() => {
+  getUser(place.user).then(() => {
     var creatorList = new List("mdc-list--two-line mdc-list--avatar-list");
     creatorList.add(new ImageList(creator.name, "Creator", creator.picture ));
     separator3.insertAdjacentElement('afterend',creatorList);
   })
-
-
-
 
   var clipTitle = document.createElement('h3');
   clipTitle.innerHTML = "Clip Audio";

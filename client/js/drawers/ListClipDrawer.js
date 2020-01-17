@@ -1,3 +1,4 @@
+
 function openClips(){
 
   var content = document.createElement('div');
@@ -7,7 +8,7 @@ function openClips(){
   content.appendChild(title);
 
   var clips = [];
-  var checkboxes = [];
+
 
   listVideos().then(async function(response){
 
@@ -19,6 +20,7 @@ function openClips(){
     var list = new List("mdc-list--two-line");
     content.appendChild(list.root_);
 
+    var checkboxes = [];
     for(var i in clips){
 
       var li = document.createElement('li');
@@ -30,7 +32,7 @@ function openClips(){
 
       //     if(clips[i].status.privacyStatus != 'public'){
       var checkbox = new Checkbox("check-"+i);
-      // checkbox.checked = true;
+      //checkbox.checked = false;
       // checkbox.disabled = true;
       checkboxes.push(checkbox);
       li.appendChild(checkbox.root_);
@@ -45,6 +47,7 @@ function openClips(){
 
       var secondaryText = document.createElement('span')
       secondaryText.className = "mdc-list-item__secondary-text";
+      console.log(clips[i].statistics)
       secondaryText.innerHTML = clips[i].snippet.description;
       span.appendChild(secondaryText);
 
@@ -53,7 +56,9 @@ function openClips(){
           openInfoVideo(clips[i].statistics);
         });
       }
+
       info(i);
+
       list.add(li);
     }
 
@@ -72,25 +77,29 @@ function openClips(){
     var mUpload = new ActionButton('Create Playlist with your video');
     content.appendChild(mUpload.root_);
 
+
     remove.listen('click',()=>{
       for(var i in clips){
         if(checkboxes[i].checked){
-          removeVideo(clips[i].id);
-          document.getElementById("check-"+i).disabled = true;
+        removeVideo(clips[i].id);
+      checkboxes[i].disabled = true;
         }
       }
     });
 
     public.listen('click',()=>{
+
       for(var i in clips){
-        console.log(document.getElementById("check-"+i));
 
         if(checkboxes[i].checked){
-          console.log(clips[i])
-          if(clips[i].status.privacyStatus == 'unlisted') updateVideo(clips[i].id);
+          console.log(clips[i].status.privacyStatus);
+          if(clips[i].status.privacyStatus != 'public') updateVideo(clips[i].id);
           else{
             var snackbar = new SnackBar('Select a draft video');
             snackbar.open();
+            snackbar.listen("MDCSnackbar:closed",() => {
+              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+            });
           }
         }
       }
@@ -108,46 +117,87 @@ function openClips(){
           else {
             var snackbar = new SnackBar('Insert playlist name');
             snackbar.open();
+            snackbar.listen("MDCSnackbar:closed",() => {
+              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+              });
           }
         }
+    /*    else{
+          var snackbar = new SnackBar('Insert some video to add to your playlist');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+            });
+        }*/
       }
     });
 
-    modify.listen('click', () => {
+    modify.listen('click',()=>{
       var count = 0;
       for(var c in clips){
-        if(document.getElementById("check-"+c).checked){
+        if(checkboxes[c].checked){
           count++;
         }
       }
-
       if(count == 1){
-        for(var i in clips){
-          if(document.getElementById("check-"+i).checked){
-            var id = clips[i].id;
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST','/audio_from_yt',false);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function(){
-            var base64 = this.responseText;
-            var url = decode64(base64);
+      for(var i in clips){
+        if(checkboxes[i].checked){
+          var id = clips[i].id;
+          console.log(id);
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST','/audio_from_yt',false);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.onload = async function(){
+            var url = await decode64(this.responseText, "video/webm");
+          openVideoDialog(url).then(async (response) => {
+                var blob = await getimageBlob(response);
+                var base644 = await convertBlobToBase64(blob);
 
-            openVideoDialog(url).then(async (response) => {
+                var req = new XMLHttpRequest();
+                req.open('POST','/audio_to_video');
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.onload = async function(){
+                  var base64 = await this.responseText;
+                  var url = await decode64(this.responseText,"video/webm")
+                  var blob = await decode64BLOB(base64);
+                  console.log(blob);
+                  console.log()
+                  insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+                }
+                req.send(JSON.stringify({ chunks: base644 }));
+              /// insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+            })
+/*          var base64 = await this.responseText;
+          var req = new XMLHttpRequest();
+          req.open('POST','/audio_to_video');
+          req.setRequestHeader('Content-Type', 'application/json');
+          req.onload = async function(){
+            var base64 = await this.responseText;
+            var blob = decode64BLOB(base64);
+            await insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+          }
+    */      /*openVideoDialog(url).then(async (response) => {
               var blob = await getimageBlob(response);
-                insertClip(clips[i].snippet.title,clips[i].snippet.description,'public',blob);
-              });
-            }
+              console.log(blob);
+              console.log(URL.createObjectURL(blob));
+            // insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
+
+          })*/
+          }
 
           xhr.send(JSON.stringify({id:id}));
         }
       }
-      }else{
-        var snackbar = new SnackBar('Select only one video please');
-        snackbar.open();
-      }
-    });
+    }else{
+    var snackbar = new SnackBar('Select only one video please');
+    snackbar.open();
+    snackbar.listen("MDCSnackbar:closed",() => {
+      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+      });
+  }
+  })
 
     map.pageDrawer = new PageDrawer('Your Clips', content);
     map.pageDrawer.open = true;
-    });
+  });
 }

@@ -1,7 +1,32 @@
 // Google API
 
-var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com'
-var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU'
+//var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
+//var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
+//var CLIENT_ID = '425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com';
+//var API_KEY = 'AIzaSyAISXxNTs9hhEZ2dt2N-pt77lLpolf8Usc';
+//var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
+//var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
+// var CLIENT_ID = '994221343844-jmkofcj9l4k17n8e3digbhjdh4oggiph.apps.googleusercontent.com'
+// var API_KEY = 'AIzaSyCbF7xg-9CdeDEOp2SHd9pJtpN-Ll-o8gk'
+//var CLIENT_ID = '77613294594-37odu8ke37gjoeebo2rfhlocf0thdgb9.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyBdv1s6rNFG-UIymqWKLa9Yb6djNj-tlxs'
+//var CLIENT_ID = '89516997926-spbe706tb53hkkad7foujjs8f9nu3lds.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyBrQAvETwgUyILRWGN4zT5hotJWByJXS5M'
+//var CLIENT_ID = '563938826751-hckhc1tn144qesuo3vfeladfs7sa657d.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyC1Qfs0gXY8eYKJc-TT5SKhrKng_XAROzc'
+var CLIENT_ID = '239403724325-l9fa3mhgki0a2eqchi6bgap7ofn6de1s.apps.googleusercontent.com'
+var API_KEY = 'AIzaSyAcsOxkEj7ANFwWY-qJuUgUbNMUl1epZso'
+
+//var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU'
+//var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com';
+//var API_KEY = 'AIzaSyCaDN2KU-H2zGma9R8lArEjn79U49ja7XI';
+//var CLIENT_ID = '650091961358-df2k61aubrve187s4ph2lmibfrcg0l2q.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyCaDN2KU-H2zGma9R8lArEjn79U49ja7XI'
+//var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
