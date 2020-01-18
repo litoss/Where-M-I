@@ -197,7 +197,7 @@ function submit(form, place){
           var addedPlace = new Place(object);
 
           addedPlace.place.media_rating = await getRating(addedPlace.place.OLC);
-          map.places.push(addedPlace);
+          markerPlaces.push(addedPlace);
 
           map.closeAllWindow();
           dialog.close();

@@ -1,3 +1,7 @@
+var places = [];
+var markerPlaces = [];
+var markerClips = [];
+
 class Mappa extends google.maps.Map{
   constructor() {
 
@@ -29,7 +33,6 @@ class Mappa extends google.maps.Map{
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation.root_);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
 
-    this.places = [];
     this.noPlace;
     this.position = new Position();
     this.draggableMarker;
@@ -53,7 +56,8 @@ class Mappa extends google.maps.Map{
   }
 
   updateMap(position){
-    var olc = OpenLocationCode.encode(position.lat, position.lng, OpenLocationCode.CODE_PRECISION_NORMAL);
+    var positionOlc = OpenLocationCode.encode(position.lat, position.lng, OpenLocationCode.CODE_PRECISION_NORMAL);
+
     var area = olc.substring(0, 6);
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/find_place');
@@ -71,8 +75,8 @@ class Mappa extends google.maps.Map{
       close = 1;
     }
 
-    for(var i in this.places) if(this.places[i].isWindowOpen()){
-       this.places[i].closeWindow();
+    for(var i in markerPlaces) if(markerPlaces[i].isWindowOpen()){
+       markerPlaces[i].closeWindow();
        close = 1;
     }
 
@@ -82,7 +86,7 @@ class Mappa extends google.maps.Map{
   addPlace(){
     var response = JSON.parse(this.responseText);
     for(var i in response){
-       map.places.push(new Place(response[i]));
+       markerPlaces.push(new Place(response[i]));
      }
   }
 }
