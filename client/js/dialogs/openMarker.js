@@ -3,6 +3,7 @@ function openMarker() {
   var content = document.createElement('div');
   var descr = document.createElement('h3');
   descr.innerHTML = 'You can set your position by moving the appropriate marker created on the map';
+
   var alert = document.createElement('h4');
   alert.innerHTML = 'You can always return to other methods by clicking the geolocation button in right-bottom corner';
 

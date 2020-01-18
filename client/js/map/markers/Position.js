@@ -57,6 +57,7 @@ class Position {
   setPosition(latLng){
     this.marker.setMap(map);
     this.marker.setPosition(latLng);
+    map.updateMap(latLng);
   }
 
   remove(){

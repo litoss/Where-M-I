@@ -20,6 +20,7 @@ class DraggableMarker {
       var latLng = marker.latLng;
       map.position.setPosition(latLng);
       map.setCenter(latLng);
+      map.updateMap(latLng);
     });
 
 

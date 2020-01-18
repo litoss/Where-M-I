@@ -10,7 +10,6 @@ function openVideoDialog(audiosrc){
 
   var start = new TextField("Start");
   start.required = true;
-  //start.value = "0";
   content.appendChild(start.root_);
 
   var end = new TextField("End");
@@ -48,7 +47,6 @@ function openVideoDialog(audiosrc){
   });
 
   return new Promise((resolve, reject) => {
-
     save.listen('click', async () => {
       if((start.value) && (end.value) && volume.value){
         dialog.close();
