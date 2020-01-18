@@ -1,6 +1,5 @@
 // Google API
 
-<<<<<<< HEAD
 //var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
 //var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
 //var CLIENT_ID = '425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com';
@@ -8,8 +7,8 @@
 //var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
 //var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
 //var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
-var API_KEY = 'AIzaSyCRJ3AcDLybAnRdr-z9JpoXRLKPjQXsBUk'
- var CLIENT_ID = '589163450681-b8d43caisapa34kdfrm9rdib7lngj3c5.apps.googleusercontent.com'
+//var API_KEY = 'AIzaSyCRJ3AcDLybAnRdr-z9JpoXRLKPjQXsBUk'
+ //var CLIENT_ID = '589163450681-b8d43caisapa34kdfrm9rdib7lngj3c5.apps.googleusercontent.com'
 // var API_KEY = 'AIzaSyCbF7xg-9CdeDEOp2SHd9pJtpN-Ll-o8gk'
 //var CLIENT_ID = '77613294594-37odu8ke37gjoeebo2rfhlocf0thdgb9.apps.googleusercontent.com'
 //var API_KEY = 'AIzaSyBdv1s6rNFG-UIymqWKLa9Yb6djNj-tlxs'
@@ -28,10 +27,9 @@ var API_KEY = 'AIzaSyCRJ3AcDLybAnRdr-z9JpoXRLKPjQXsBUk'
 //var API_KEY = 'AIzaSyCaDN2KU-H2zGma9R8lArEjn79U49ja7XI'
 //var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
 //var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
-=======
 var CLIENT_ID = '239403724325-l9fa3mhgki0a2eqchi6bgap7ofn6de1s.apps.googleusercontent.com'
 var API_KEY = 'AIzaSyAcsOxkEj7ANFwWY-qJuUgUbNMUl1epZso'
->>>>>>> 0608d132c0af78f710aca536f703997f2663c605
+
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
