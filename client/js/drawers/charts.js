@@ -3,27 +3,42 @@ async function openCharts(){
   var content = document.createElement('div');
 
   var tabBar = new TabBar(chartsTab.map(o => o['name']), chartsTab.map( o => o['icon']));
-  var div = document.createElement('div');
-  div.style.padding = '20px';
+  content.appendChild(tabBar.root_);
+
+  var tab1 = document.createElement('div');
+  tab1.style.display = 'none';
+  content.appendChild(tab1);
+
+  var tab2 = document.createElement('div');
+  tab2.style.display = 'none';
+  content.appendChild(tab2);
+
+  var tab3 = document.createElement('div');
+  tab3.style.display = 'none';
+  content.appendChild(tab3);
+
+  getTopClips(tab1);
+  getTopVlogger(tab2);
+  getTopPaths(tab3);
 
   tabBar.listen("MDCTabBar:activated", (event) => {
-
-    div.innerHTML = '';
-
     switch (event.detail.index) {
-      case 0: getTopClips(div);
+      case 0:tab2.style.display = 'none';
+        tab3.style.display = 'none';
+        tab1.style.display = 'block';
         break;
-      case 1: getTopVlogger(div);
+      case 1:tab1.style.display = 'none';
+        tab3.style.display = 'none';
+        tab2.style.display = 'block';
         break;
-      case 2: getTopPaths(div);
+      case 2:tab1.style.display = 'none';
+        tab2.style.display = 'none';
+        tab3.style.display = 'block';
         break;
     }
   });
+  tabBar.activateTab(0);
 
-  tabBar.activateTab(2);
-
-  content.appendChild(tabBar.root_);
-  content.appendChild(div);
 
   map.pageDrawer = new PageDrawer('Charts', content);
   map.pageDrawer.open = true;

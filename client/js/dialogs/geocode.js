@@ -31,9 +31,8 @@ function openGeocode() {
     var geocoder = new google.maps.Geocoder;
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        var latLng = {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()};
-        map.position.setPosition(latLng);
-        map.setCenter(latLng);
+        map.position.setPosition(results[0].geometry.location);
+        map.setCenter(results[0].geometry.location);
         geocodeDialog.close();
       } else {
         var snackbar = new SnackBar('Please submit a valid Address');

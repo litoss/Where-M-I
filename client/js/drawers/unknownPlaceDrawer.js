@@ -1,62 +1,48 @@
 async function selectPlace(position) {
 
-    if(map.pageDrawer) map.pageDrawer.open = false;
-
     var div = document.createElement('div');
 
-    setQuery(position,approx);
-
-    fetch(queryUrl).then(function(response){
-      return response.json();
-    }).then(function(jsonResponse){
-      for(var i in jsonResponse.results.bindings){
+    dbpediaSearch(position, 0.001).then(function(results){
+      for(var i in results.bindings){
         var button = new ActionButton('select');
 
-        var addListener = function(index){
+        (function(i){
           button.listen("click", async () => {
             var place = {};
-            place['name'] = jsonResponse.results.bindings[index].name.value;
-            place['description'] = jsonResponse.results.bindings[index].abstract.value;
-            var lat = jsonResponse.results.bindings[index].lat.value;
-            var long = jsonResponse.results.bindings[index].long.value;
-            place['OLC'] = OpenLocationCode.encode(lat, long, OpenLocationCode.CODE_PRECISION_NORMAL);
+            place.name = results.bindings[i].name.value;
+            place.description = results.bindings[i].abstract.value;
+            place.OLC = OpenLocationCode.encode(results.bindings[i].lat.value, results.bindings[i].long.value, OpenLocationCode.CODE_PRECISION_NORMAL);
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
-            var src = await getimageBlob(proxyurl + jsonResponse.results.bindings[index].img.value);
-            var image = await encode64(src);
-            place['image'] = image ;
+            var src = await getimageBlob(proxyurl + results.bindings[i].img.value);
+            place.image = await encode64(src);;
             createEditDialog(place);
           });
-        }
+        })(i);
 
-        addListener(i);
+        if(results.bindings[i].abstract.value.length > 80) descr = results.bindings[i].abstract.value.substring(0,80)+"...";
+        else descr = results.bindings[i].abstract.value;
 
-        if(jsonResponse.results.bindings[i].abstract.value.length > 80) descr = jsonResponse.results.bindings[i].abstract.value.substring(0,80)+"...";
-        else descr = jsonResponse.results.bindings[i].abstract.value;
-
-        var placeCard = new Card(jsonResponse.results.bindings[i].name.value,null, descr, jsonResponse.results.bindings[i].img.value,[button.root_]).root_;
+        var placeCard = new Card(results.bindings[i].name.value,null, descr, results.bindings[i].img.value,[button.root_]).root_;
         placeCard.className += ' about-card';
         div.appendChild(placeCard);
-      };
+      }
 
-      var notHere = document.createElement('div');
-      notHere.className = "notListedPlace";
-      notHere.innerHTML = "<h5>Place not listed?</h5>";
+      var notHere = document.createElement('h5');
+      notHere.innerHTML = "Place not listed?";
+      div.appendChild(notHere);
 
       var addBut = new ActionButton('Create It');
+      div.appendChild(addBut.root_);
       addBut.listen("click", async () =>{
-        var place = {};
-        place['OLC'] = OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
-        place['description'] = "Insert description here";
         if(profile) {
+          var place = {};
+          place.OLC= OpenLocationCode.encode(position.lat(), position.lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
           createEditDialog(place);
         }else {
           var snackbar = new SnackBar('You must be logged in to use this function');
           snackbar.open();
         }
       });
-
-      notHere.appendChild(addBut.root_);
-      div.appendChild(notHere);
     });
 
     map.pageDrawer = new PageDrawer('Select your Place', div);
