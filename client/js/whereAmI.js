@@ -9,10 +9,10 @@ function findClosestMarker(marker){
     var minDistance = 10000;
     var minMarker;
 
-    for(var i=0; i<map.places.length; i++){
+    for(var i=0; i<markerPlaces.length; i++){
       //Se il posto non è nella playlist
-      if(!playlistPlace.includes(map.places[i])){
-        var distance = getDistance(marker, map.places[i]);
+      if(!playlistPlace.includes(markerPlaces[i])){
+        var distance = getDistance(marker, markerPlaces[i]);
 
         if(distance < minDistance){
           minMarker = i;
@@ -22,7 +22,7 @@ function findClosestMarker(marker){
     }
 
     if(!minMarker) return null;
-    return map.places[minMarker];
+    return markerPlaces[minMarker];
 }
 
 function start(){

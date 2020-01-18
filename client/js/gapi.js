@@ -1,5 +1,6 @@
 // Google API
 
+<<<<<<< HEAD
 //var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
 //var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
 //var CLIENT_ID = '425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com';
@@ -27,6 +28,10 @@ var API_KEY = 'AIzaSyCRJ3AcDLybAnRdr-z9JpoXRLKPjQXsBUk'
 //var API_KEY = 'AIzaSyCaDN2KU-H2zGma9R8lArEjn79U49ja7XI'
 //var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
 //var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
+=======
+var CLIENT_ID = '239403724325-l9fa3mhgki0a2eqchi6bgap7ofn6de1s.apps.googleusercontent.com'
+var API_KEY = 'AIzaSyAcsOxkEj7ANFwWY-qJuUgUbNMUl1epZso'
+>>>>>>> 0608d132c0af78f710aca536f703997f2663c605
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
@@ -53,7 +58,7 @@ function initClient() {
     map.topBar.signoutButton.listen('click', handleSignoutClick);
   });
 
-  gapi.client.load('youtube', 'v3', init);
+  gapi.client.load('youtube', 'v3');
   gapi.client.load('texttospeech', 'v1');
   gapi.client.load('translate', 'v2');
 }
@@ -99,32 +104,4 @@ function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
   profile = null;
   preferences = defaultPrefs;
-}
-
-function getPreferences() {
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/find_preference');
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = function() {
-    var response = JSON.parse(xhr.response);
-    console.log(response);
-    if (response[0]){
-      preferences = response[0];
-      if(!response[0].category) preferences.category = 'all';
-    }else {
-      setPreferences();
-      preferences = defaultPrefs;
-    }
-  };
-  xhr.send(JSON.stringify({id: profile.getId()}));
-}
-
-function setPreferences() {
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/add_preference');
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = function() {
-    console.log(xhr.response);
-  };
-  xhr.send(JSON.stringify({token: token, category: defaultPrefs.category, audience: defaultPrefs.audience, language:defaultPrefs.language}));
 }

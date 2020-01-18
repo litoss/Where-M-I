@@ -1,7 +1,6 @@
 class Place {
   constructor(place){
 
-    this.place = place;
     var rightButtonList = [];
     var leftButtonList = [];
     var latLng = null;
@@ -12,7 +11,6 @@ class Place {
     if(place){
       var editButton = new IconButton('edit','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
       leftButtonList.push(editButton.root_);
-      console.log(place);
       var decode = OpenLocationCode.decode(place.OLC);
       latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
       name = place.name;
@@ -22,8 +20,7 @@ class Place {
 
     }else{
 
-        var searchButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-        leftButtonList.push(searchButton.root_);
+
 
 
       name = luogoSconosciuto.title;
@@ -53,7 +50,12 @@ class Place {
     }});
 
     directionButton.listen('click', () => {
-      this.showDirection();
+      if(map.position.getPosition()){
+        drivingDirections(map.position, this.marker);
+      }else{
+        var snackbar = new SnackBar('Geolocalization is not active');
+        snackbar.open();
+      }
     });
 
     this.marker.addListener('click', () => {
@@ -73,25 +75,6 @@ class Place {
         }
       });
     }else{
-      leftButtonList[0].addEventListener('click', () => {
-        if(profile) {selectPlace(this.marker.getPosition())}
-        else {
-          var snackbar = new SnackBar('You must be logged to use this function');
-          snackbar.open();
-        }
-      });
-    }
-  }
-
-
-  showDirection(){
-    if(map.position.getPosition()){
-      drivingDirections(map.position, this.marker);
-
-    }else{
-      //Non hai la geolocalizzazione attiva!
-      var snackbar = new SnackBar('Geolocalization is not active');
-      snackbar.open();
     }
   }
 
@@ -128,5 +111,9 @@ class Place {
 
   openWindow(){
     this.infoWindow.open(map, this.marker);
+  }
+
+  setRating(rating){
+
   }
 }

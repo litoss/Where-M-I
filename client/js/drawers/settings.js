@@ -20,7 +20,6 @@ function openSettings(){
   content.appendChild(lang.root_);
 
   //categories
-
   var listCat = new List();
   for (var i in categories) listCat.add(new SelectList(categories[i].name,categories[i].id));
   var catSel = new Select("Category",listCat.root_,'form-field');
@@ -30,23 +29,18 @@ function openSettings(){
   map.pageDrawer = new PageDrawer('Settings', content);
   map.pageDrawer.open = true;
 
-  addButton.listen( "click", () => {
+  addButton.listen("click", () => {
 
-    var form = new FormData();
-    form.append('token', token);
-    form.append('language', lang.value);
-    form.append('audience', aud.value);
-    form.append('category',catSel.value);
+    preferences = {
+      token: token,
+      language: lang.value,
+      audience: aud.value,
+      category: catSel.value
+    };
 
-    var selected = {};
-    form.forEach(function(value, key){
-        selected[key] = value;
-    });
-
-    preferences = selected;
+    map.pageDrawer.open = false;
 
     if(profile){
-
       xhr = new XMLHttpRequest();
       xhr.open('POST', '/add_preference');
       xhr.setRequestHeader('Content-Type', 'application/json');
@@ -54,13 +48,12 @@ function openSettings(){
           if (xhr.status !== 200) {
             var snackbar = new SnackBar('Something went wrong please try again');
             snackbar.open();
+          }else{
+            var snackbar = new SnackBar('Preferences updated successfully');
+            snackbar.open();
           }
       };
       xhr.send(JSON.stringify(preferences));
     };
-    var snackbar = new SnackBar('Preferences updated successfully');
-    snackbar.open();
-    if(map.pageDrawer) map.pageDrawer.open = false;
-  })
-
+  });
 }

@@ -1,13 +1,18 @@
-var clips = [];
-
-async function init(){
-  var list = await youtubeSearch("id, snippet", "8FPHF800", 50);
+async function getClips(area){
+  var list = await youtubeSearch("id, snippet", area + '-', 50);
+  var clips = [];
   for(var i in list){
-    var clip = await getVideo(list[i].id.videoId);
-    clip.meta = clip.snippet.description.split('#')[0];
-    clip.snippet.description = clip.snippet.description.split('#')[1];
-    clips.push(clip);
+    list[i].olc = list[i].snippet.description.split('#')[0].split(':')[0].split('-')[2];
+    list[i].purpose = list[i].snippet.description.split('#')[0].split(':')[1];
+    list[i].language = list[i].snippet.description.split('#')[0].split(':')[2];
+    list[i].content = list[i].snippet.description.split('#')[0].split(':')[3];
+    list[i].audience = list[i].snippet.description.split('#')[0].split(':')[4];;
+    list[i].detail = list[i].snippet.description.split('#')[0].split(':')[5];
+    list[i].description = list[i].snippet.description.split('#')[1];
+
+    if(list[i].olc && list[i].purpose && list[i].language && list[i].content) clips.push(list[i]);
   }
+  return clips;
 }
 
 function orderClips(){

@@ -1,18 +1,23 @@
+// Google Maps Directions API
+// https://developers.google.com/maps/documentation/directions/start
+
+var interval;
 
 function drivingDirections(origin, destination){
 
   var check = function(){
     var distance = getDistance(origin, destination);
-    console.log(distance)
+
     route(origin, destination);
     if(distance < 0.0002){
-      clearInterval(cancel);
+      clearInterval(interval);
       map.directionsRenderer.setMap(null);
-      alert("Sei arrivato a destinazione");
+      var snackbar = new SnackBar('You have arrived at your destination');
+      snackbar.open();
     }
   }
 
-  var cancel = setInterval(check, 1000);
+  interval = setInterval(check, 1000);
 }
 
 function route(origin, destination){
@@ -21,13 +26,14 @@ function route(origin, destination){
     destination: destination.getPosition(),
     travelMode: 'WALKING'
   }, function(response, status) {
-    // Route the directions and pass the response to a function to create
-    // markers for each step.
+
     if (status === 'OK') {
       map.directionsRenderer.setDirections(response);
+      map.directionsRenderer.setMap(map);
     } else {
-      window.alert('Directions request failed due to ' + status);
+      map.directionsRenderer.setMap(null);
+      var snackbar = new SnackBar('Directions request failed due to ' + status);
+      clearInterval(interval);
     }
-
-});
+  });
 }

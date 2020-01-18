@@ -13,7 +13,7 @@ async function watch(position){
   }
 
   if(position.coords.accuracy){
-    var latLng = {lat: position.coords.latitude, lng: position.coords.longitude};
+    var latLng = new google.maps.LatLng({lat: position.coords.latitude, lng: position.coords.longitude});
     map.position.setPosition(latLng);
     await map.position.setAccuracy(position.coords.accuracy);
     welcomeDialog.close();

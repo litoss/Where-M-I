@@ -54,11 +54,11 @@ function deletePlace(place){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
     deleteRoutes(place.OLC);
-    for(var i in map.places){
-      var olc = OpenLocationCode.encode(map.places[i].getPosition().lat(), map.places[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
+    for(var i in markerPlaces){
+      var olc = OpenLocationCode.encode(markerPlaces[i].getPosition().lat(), markerPlaces[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
       if (olc == place.OLC){
-        map.places[i].setMap(null);
-        map.places.splice(i, 1);
+        markerPlaces[i].setMap(null);
+        markerPlaces.splice(i, 1);
         break;
       }
     }
