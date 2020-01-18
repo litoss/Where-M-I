@@ -5,13 +5,8 @@ async function getimageBlob(url){
   return result;
 }
 
-function encode64(file) {
-  var to64 = convertBlobToBase64(file);
-  return to64;
-}
-
-function convertBlobToBase64(blob){
-    var convertPromise = new Promise(function(resolve, reject){
+function encode64(blob){
+    return new Promise(function(resolve, reject){
       var fileReader = new FileReader();
       fileReader.onload = function() {
           var dataUrl = this.result;
@@ -21,8 +16,6 @@ function convertBlobToBase64(blob){
 
       fileReader.readAsDataURL(blob);
     });
-
-    return convertPromise;
   }
 
 function decode64(string, type){

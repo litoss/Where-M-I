@@ -2,14 +2,26 @@
 // https://developers.google.com/youtube/v3/docs
 
 async function youtubeSearch(part, q, maxResults){
-
   var query = {};
   query.part = part;
   query.type = "video";
   query.q = q;
   if(maxResults) query.maxResults = maxResults;
-  let request = await gapi.client.youtube.search.list(query);
-  return request.result.items;
+
+  if(q == '8FPHF800+-'){
+    return new Promise((resolve, reject) => {
+      var request = new XMLHttpRequest();
+      request.open("GET", "js/youtube.json", false);
+      request.onload = function(){
+        resolve(JSON.parse(request.responseText).s);
+      }
+      request.send();
+    });
+  }else{
+    return null;
+  }
+  //let request = await gapi.client.youtube.search.list(query);
+  //return request.result.items;
 }
 
 async function listVideos(){

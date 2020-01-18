@@ -12,12 +12,17 @@ async function createEditDialog(place){
   if(place.image) {
     imgUri = decode64(place.image, "image/jpg");
     img64 = place.image;
-  }else imgUri = 'content/no_street.png';
+  }else{
+    imgUri = 'content/no_street.png';
+    //img64 = await encode64('content/no_street.png');
+  }
 
-  if(place.description.length > 100) description = place.description.substring(0,100)+"...";
-  else description = place.description;
+  if(place.description){
+    if(place.description.length > 100) description = place.description.substring(0,100)+"...";
+    else description = place.description;
+  }
 
-  var exampleCard = new Card(place.name, place.category, description, imgUri, null, null, 'about-card');
+  var exampleCard = new Card(place.name, place.category, place.description, imgUri, null, null, 'about-card');
 
   exampleCard.id = "place-card";
   content.appendChild(exampleCard.root_);
@@ -57,6 +62,7 @@ async function createEditDialog(place){
   var open = document.createElement('h4');
   open.innerHTML = 'Open at : '
   opening.appendChild(open);
+
   var slider1 = new Slider();
   slider1.min = 0;
   slider1.max = 24;
@@ -68,6 +74,7 @@ async function createEditDialog(place){
   var close = document.createElement('h4');
   close.innerHTML = 'Close at : '
   closing.appendChild(close);
+
   var slider2 =  new Slider();
   slider2.min = 0;
   slider2.max = 24;
@@ -84,11 +91,9 @@ async function createEditDialog(place){
     exampleCard.setImage(url);
   })
 
-
   nameForm.input.addEventListener('input', () => {
     exampleCard.setTitle(nameForm.value);
   })
-
 
   descrForm.input.addEventListener('input', () => {
     var descr;
@@ -98,54 +103,38 @@ async function createEditDialog(place){
   })
 
   cat.listen('MDCSelect:change', () => {
-  exampleCard.setSubTitle( 'Category: ' + cat.selectedText.innerHTML);
+    exampleCard.setSubTitle( 'Category: ' + cat.selectedText.innerHTML);
   })
 
   button.listen("click", async function validate(){
-    var form = new FormData();
-    form.append('OLC', place.OLC);
-    form.append('token', token);
+
+    place.token = token;
 
     if(nameForm.value.length == 0) {
       var snackbar = new SnackBar('No input on name');
       snackbar.open();
-      return;
-    }
-    else if(nameForm.value.length > 40){
+    }else if(nameForm.value.length > 40){
       var snackbar = new SnackBar('name is too long');
       snackbar.open();
-      return;
-    }
-    form.append('name',nameForm.value);
-
-    form.append('category', cat.value);
-
-    var opening = slider1.value;
-    form.append('opening', opening);
-
-    var closing = slider2.value;
-    form.append('closing', closing);
-
-    if(descrForm.value.length == 0) {
-          if(place.description) form.append('description', place.description);
-          else {
-            var snackbar = new SnackBar('Please insert a short description');
-            snackbar.open();
-          }
-        }
-    else form.append('description', descrForm.value);
-
-    if(input.files[0]) {
-      var blob= input.files[0];
-      img64 = await encode64(blob);
-    }
-    if(img64)form.append('image', img64);
-    else {
-      var snackbar = new SnackBar('Select an Image');
+    }else if(descrForm.value.length == 0){
+      var snackbar = new SnackBar('Please insert a short description');
       snackbar.open();
-      return;
+    }else{
+
+      place.name = nameForm.value;
+      place.category = cat.value;
+      place.opening = slider1.value;
+      place.closing = slider2.value;
+      place.description = descrForm.value;
+
+      if(input.files[0]) {
+        console.log(input.files[0]);
+        place.image = await encode64(input.files[0]);
+      }else{
+        place.image = img64;
+      }
+      verify(place);
     }
-    verify(form, place);
   });
 
   dialog.listen('MDCDialog:closing', function() {
@@ -158,13 +147,13 @@ async function createEditDialog(place){
   });
 }
 
-function verify(form, place){
+function verify(place){
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
     var response = JSON.parse(xhr.response);
-    if(!response[0]) submit(form);
+    if(!response[0]) submit(place);
     else if(response[0].user != profile.Eea){
       var snackbar = new SnackBar('Place already added from another User');
       snackbar.open();
@@ -174,7 +163,7 @@ function verify(form, place){
       var snackbar = new SnackBar('You are edit a place already added',[edit.root_,close.root_]);
       snackbar.open();
       edit.listen('click', () => {
-        submit(form);
+        submit(place);
       })
     }
   }
@@ -182,33 +171,41 @@ function verify(form, place){
 }
 
 
-function submit(form, place){
-  var object = {};
-  form.forEach(function(value, key){
-      object[key] = value;
-  });
+function submit(place){
+
+  map.closeAllWindow();
+  dialog.close();
+  map.pageDrawer.open = false;
 
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/new_place');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = async function() {
-      if (xhr.status ==  200 ) {
-        console.log(xhr.response);
-          var addedPlace = new Place(object);
+    if (xhr.status ==  200 ) {
 
-          addedPlace.place.media_rating = await getRating(addedPlace.place.OLC);
-          markerPlaces.push(addedPlace);
+      for(var i in markerClips){
+        var olc = OpenLocationCode.encode(markerClips[i].getPosition().lat(), markerClips[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
 
-          map.closeAllWindow();
-          dialog.close();
-          if(map.pageDrawer) map.pageDrawer.open = false;
-          var snackbar = new SnackBar('Place added Successfully');
-          snackbar.open();
-
+        if (olc == place.OLC){
+          console.log("ciao");
+          markerClips[i].setMap(null);
+          markerClips.splice(i, 1);
+          break;
+        }
       }
-      else if (xhr.status !== 200) {
-          alert('Request failed.  Returned status of ' + xhr.status);
-      }
+
+      markerPlaces.push(new Place(place));
+
+      markerCluster.clearMarkers();
+      markerCluster = new MarkerClusterer(map, markerClips.concat(markerPlaces));
+
+      var snackbar = new SnackBar('Place added Successfully');
+      snackbar.open();
+    }
+    else if (xhr.status !== 200) {
+      var snackbar = new SnackBar('Request failed.  Returned status of ' + xhr.status);
+      snackbar.open();
+    }
   };
-  xhr.send(JSON.stringify(object));
+  xhr.send(JSON.stringify(place));
 }

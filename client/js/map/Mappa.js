@@ -1,6 +1,9 @@
+var area = [];
 var places = [];
 var markerPlaces = [];
 var markerClips = [];
+
+var markerCluster;
 
 class Mappa extends google.maps.Map{
   constructor() {
@@ -33,7 +36,6 @@ class Mappa extends google.maps.Map{
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation.root_);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
 
-    this.noPlace;
     this.position = new Position();
     this.draggableMarker;
 
@@ -44,36 +46,28 @@ class Mappa extends google.maps.Map{
       this.clickOnMap(event);
     });
     openWelcome();
-    this.updateMap(position);
   }
 
   clickOnMap(event){
     if(!this.closeAllWindow()) {
-      this.noPlace = new Place();
-      this.noPlace.setPosition(event.latLng);
-      this.noPlace.openWindow();
     }
   }
 
   updateMap(position){
-    var positionOlc = OpenLocationCode.encode(position.lat, position.lng, OpenLocationCode.CODE_PRECISION_NORMAL);
-
-    var area = olc.substring(0, 6);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/find_place');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = this.addPlace;
-    xhr.send(JSON.stringify({OLC: area}));
+    var approx = 0.04;
+    for(var i=-1;i<=1;i++){
+      for(var j=-1;j<=1;j++){
+        var olc = OpenLocationCode.encode(position.lat() + (i*approx) , position.lng() + (j*approx), 6);
+        if(!area.includes(olc)){
+          area.push(olc);
+          this.addPlace(olc);
+        }
+      }
+    }
   }
 
   closeAllWindow(){
     var close = 0;
-
-    if(this.noPlace) {
-      this.noPlace.removePosition();
-      this.noPlace = null;
-      close = 1;
-    }
 
     for(var i in markerPlaces) if(markerPlaces[i].isWindowOpen()){
        markerPlaces[i].closeWindow();
@@ -83,10 +77,33 @@ class Mappa extends google.maps.Map{
     return close;
   }
 
-  addPlace(){
-    var response = JSON.parse(this.responseText);
-    for(var i in response){
-       markerPlaces.push(new Place(response[i]));
-     }
+  addPlace(olc){
+    getPlaces(olc.substring(0,6)).then((response) => {
+      for(var i in response){
+        places[response[i].OLC] = [];
+        markerPlaces.push(new Place(response[i]));
+      }
+      this.addClips(olc);
+    });
+  }
+
+  addClips(olc){
+    getClips(olc).then((response) => {
+      var newOlc = [];
+      for(var i in response){
+        if(places[response[i].olc] == undefined){
+          console.log("test");
+          places[response[i].olc] = [];
+          newOlc.push(response[i].olc);
+        }
+        places[response[i].olc].push(response[i]);
+      }
+
+      for(var i in newOlc){
+        markerClips.push(new ClipMarker(places[newOlc[i]]));
+      }
+
+      markerCluster = new MarkerClusterer(this, markerClips.concat(markerPlaces));
+    });
   }
 }
