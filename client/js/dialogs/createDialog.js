@@ -17,7 +17,7 @@ async function createEditDialog(place){
   if(place.description.length > 100) description = place.description.substring(0,100)+"...";
   else description = place.description;
 
-  var  exampleCard = new Card(place.name, place.category, description, imgUri, null, null, 'about-card');
+  var exampleCard = new Card(place.name, place.category, description, imgUri, null, null, 'about-card');
 
   exampleCard.id = "place-card";
   content.appendChild(exampleCard.root_);

@@ -74,7 +74,7 @@ class Place {
       });
     }else{
       leftButtonList[0].addEventListener('click', () => {
-        if(profile) {selectPlace(this.marker.getPosition())}
+        if(true) {selectPlace(this.marker.getPosition())}
         else {
           var snackbar = new SnackBar('You must be logged to use this function');
           snackbar.open();
@@ -87,9 +87,7 @@ class Place {
   showDirection(){
     if(map.position.getPosition()){
       drivingDirections(map.position, this.marker);
-
     }else{
-      //Non hai la geolocalizzazione attiva!
       var snackbar = new SnackBar('Geolocalization is not active');
       snackbar.open();
     }

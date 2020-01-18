@@ -1,12 +1,10 @@
-var approx=0.001;
-var queryUrl;
+// DBpedia Rest API
+// https://dbpedia.org/sparql
 
-function setQuery(position, approx){
+function dbpediaSearch(position, approx){
 
   var lat = position.lat();
   var long = position.lng();
-
-  const url="https://dbpedia.org/sparql";
 
   var queryPlaces = [
   "  PREFIX dbo: <http://dbpedia.org/ontology/>",
@@ -29,5 +27,15 @@ function setQuery(position, approx){
   " limit 50"
   ].join(" ");
 
-  queryUrl = url+"?query="+ encodeURIComponent(queryPlaces) +"&format=json";
+  var url = 'https://dbpedia.org/sparql';
+  var query = '?query=' + encodeURIComponent(queryPlaces) + '&format=json';
+
+  return new Promise((resolve, reject) => {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url + query);
+    xhr.onload = function(){
+      resolve(JSON.parse(xhr.response).results);
+    }
+    xhr.send();
+  });
 }
