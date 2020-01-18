@@ -7,6 +7,8 @@
 //var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
 //var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E'
 //var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
+var API_KEY = 'AIzaSyCRJ3AcDLybAnRdr-z9JpoXRLKPjQXsBUk'
+ var CLIENT_ID = '589163450681-b8d43caisapa34kdfrm9rdib7lngj3c5.apps.googleusercontent.com'
 // var API_KEY = 'AIzaSyCbF7xg-9CdeDEOp2SHd9pJtpN-Ll-o8gk'
 //var CLIENT_ID = '77613294594-37odu8ke37gjoeebo2rfhlocf0thdgb9.apps.googleusercontent.com'
 //var API_KEY = 'AIzaSyBdv1s6rNFG-UIymqWKLa9Yb6djNj-tlxs'
