@@ -58,16 +58,9 @@ function getDatafromURL(blob){
   });
 }
 
-function getDistance(marker1, marker2){
-
-  var x1 = marker1.getPosition().lat();
-  var x2 = marker2.getPosition().lat();
-  var y1 = marker2.getPosition().lng();
-  var y2 = marker2.getPosition().lng();
-
-
-  var deltaX = Math.abs(x1 - x2);
-  var deltaY = Math.abs(y1 - y2)
+function getDistance(pos1, pos2){
+  var deltaX = Math.abs(pos1.lat() - pos2.lat());
+  var deltaY = Math.abs(pos1.lng() - pos2.lng());
   return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 }
 
@@ -85,5 +78,5 @@ function decode64BLOB(string, type){
 
 function decodeOlc(olc){
   var decode = OpenLocationCode.decode(olc);
-  return {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
+  return new google.maps.LatLng({lat: decode.latitudeCenter, lng: decode.longitudeCenter});
 }

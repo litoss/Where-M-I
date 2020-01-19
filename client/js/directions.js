@@ -10,7 +10,7 @@ function drivingDirections(origin, destination){
     console.log(map.player)
     map.player.navigation.root_.style.display = 'inline';
     interval = setInterval(function(){
-      var distance = getDistance(origin, destination);
+      var distance = getDistance(origin.getPosition(), destination.getPosition());
 
       if(distance < 0.0002){
         stopNavigation();

@@ -11,7 +11,7 @@ async function youtubeSearch(part, q, maxResults){
   if(q == '8FPHF800+-'){
     return new Promise((resolve, reject) => {
       var request = new XMLHttpRequest();
-      request.open("GET", "js/youtube.json", false);
+      request.open("GET", "js/youtube.json");
       request.onload = function(){
         resolve(JSON.parse(request.responseText).s);
       }

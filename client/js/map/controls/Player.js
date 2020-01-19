@@ -3,19 +3,20 @@ class Player{
     this.root_ = document.createElement('div');
     this.root_.className = "mdc-theme--primary-bg mdc-theme--on-secondary";
     var back = new IconButton('arrow_back');
-    var play = new IconButton('play_arrow');
+    var playButton = new IconButton('play_arrow');
     this.navigation = new IconButton('explore_off');
     this.navigation.root_.style.display = "none";
-    var next = new IconButton('chevron_right');
+    var nextButton = new IconButton('chevron_right');
     var forward = new IconButton('arrow_forward');
 
     this.root_.appendChild(back.root_)
-    this.root_.appendChild(play.root_);
+    this.root_.appendChild(playButton.root_);
     this.root_.appendChild(this.navigation.root_);
-    this.root_.appendChild(next.root_);
+    this.root_.appendChild(nextButton.root_);
     this.root_.appendChild(forward.root_)
 
     forward.listen('click', () => {
+      console.log("ciao");
       next();
     });
 
@@ -27,18 +28,18 @@ class Player{
       previous();
     })
 
-    next.listen('click', () => {
+    nextButton.listen('click', () => {
       more();
     })
 
-    play.listen('click', (event) => {
-      if(play.getIcon() == 'play_arrow' && !playlistPlace.lenght){
+    playButton.listen('click', (event) => {
+      if(playButton.getIcon() == 'play_arrow' && (!playlist.lenght && !free)){
         start();
-      }else if (play.getIcon() == 'play_arrow' && playlistPlace.lenght){
+      }else if (playButton.getIcon() == 'play_arrow'){
         play();
-      }else if(play.getIcon() == 'pause'){
+      }else if(playButton.getIcon() == 'pause'){
         pauseVideo();
-      }else if(play.getIcon() == 'replay'){
+      }else if(playButton.getIcon() == 'replay'){
         playVideo();
       }
     });
