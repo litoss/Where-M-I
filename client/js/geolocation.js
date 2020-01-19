@@ -20,7 +20,10 @@ async function watch(position){
 
 function clear(){
   geolocator = navigator.geolocation.clearWatch(geolocator);
-  map.position.remove();
+  if(map.position){
+    map.position.remove();
+    map.position = null;
+  }
 }
 
 function error(err) {
