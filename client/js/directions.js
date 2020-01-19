@@ -8,7 +8,11 @@ function drivingDirections(origin, destination){
   if(!interval){
     route(origin, destination);
     console.log(map.player)
+<<<<<<< HEAD
     map.player.navigation.root_.style.display = 'block';
+=======
+    map.player.navigation.root_.style.display = 'inline';
+>>>>>>> 79ace0dfc80b2b07d7f9c885e37b67885321f926
     interval = setInterval(function(){
       var distance = getDistance(origin, destination);
 

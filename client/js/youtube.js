@@ -55,10 +55,25 @@ async function getVideo(videoId){
 
 async function removeVideo(videoId){
   return gapi.client.youtube.videos.delete({
-      "id": videoId
-    }).then(()=>{
-      console.log('Il tuo video è stato correttamente rimosso')
-    });;
+    "id": videoId
+  }).then(()=>{
+    console.log('Il tuo video è stato correttamente rimosso')
+  });
+}
+
+async function getRating(videoId){
+  var request = await gapi.client.youtube.videos.getRating({
+    id: videoId;
+  })
+
+  return request.result.items[0].rating;
+}
+
+async function rate(videoId, rating){
+  gapi.client.youtube.videos.rate({
+    id: videoId,
+    rating: rating
+  });
 }
 
 async function updateVideo(videoId){

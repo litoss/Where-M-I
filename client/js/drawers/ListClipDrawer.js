@@ -1,4 +1,3 @@
-
 function openClips(){
 
   var content = document.createElement('div');
@@ -47,17 +46,14 @@ function openClips(){
 
       var secondaryText = document.createElement('span')
       secondaryText.className = "mdc-list-item__secondary-text";
-      console.log(clips[i].statistics)
       secondaryText.innerHTML = clips[i].snippet.description;
       span.appendChild(secondaryText);
 
-      var info = function(i){
+      (function(i){
         infoButton.listen('click', () => {
           openInfoVideo(clips[i].statistics);
         });
-      }
-
-      info(i);
+      })(i);
 
       list.add(li);
     }
@@ -77,7 +73,6 @@ function openClips(){
     var mUpload = new ActionButton('Create Playlist with your video');
     content.appendChild(mUpload.root_);
 
-
     remove.listen('click',()=>{
       for(var i in clips){
         if(checkboxes[i].checked){
@@ -90,9 +85,7 @@ function openClips(){
     public.listen('click',()=>{
 
       for(var i in clips){
-
         if(checkboxes[i].checked){
-          console.log(clips[i].status.privacyStatus);
           if(clips[i].status.privacyStatus != 'public') updateVideo(clips[i].id);
           else{
             var snackbar = new SnackBar('Select a draft video');
@@ -106,14 +99,15 @@ function openClips(){
     });
 
     mUpload.listen('click',async ()=>{
-    var count = 0;
-    var playlistId;
-    var vidToInsert = [];
+      var count = 0;
+      var playlistId;
+      var vidToInsert = [];
       for(var i in clips){
         if(checkboxes[i].checked){
           count++;
         }
       }
+<<<<<<< HEAD
         if(count > 0){
           if(playlistName.value){
            createPlaylist(playlistName.value).then(async(response)=>{
@@ -132,6 +126,26 @@ function openClips(){
               });
           }
         });
+=======
+      if(count > 0){
+        if(playlistName.value){
+          createPlaylist(playlistName.value).then((response)=>{
+            for(var i in clips){
+              if(checkboxes[i].checked) {
+                await insertClipInPlaylist(response.result.id, clips[i].id);
+              }
+            };
+          });
+        }else{
+          var snackbar = new SnackBar('Insert playlist name');
+          snackbar.open();
+          snackbar.listen("MDCSnackbar:closed",() => {
+            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+          });
+        }
+      }
+    });
+>>>>>>> 79ace0dfc80b2b07d7f9c885e37b67885321f926
 
     modify.listen('click',()=>{
       var count = 0;
@@ -211,15 +225,14 @@ function openClips(){
           }
           xhr.send(JSON.stringify({id:id}));
         }*/
+      }else{
+        var snackbar = new SnackBar('Select only one video please');
+        snackbar.open();
+        snackbar.listen("MDCSnackbar:closed",() => {
+          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
+        });
       }
-    else{
-    var snackbar = new SnackBar('Select only one video please');
-    snackbar.open();
-    snackbar.listen("MDCSnackbar:closed",() => {
-      document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-      });
-  }
-})
+    })
 
     map.pageDrawer = new PageDrawer('Your Clips', content);
     map.pageDrawer.open = true;

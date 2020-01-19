@@ -1,4 +1,4 @@
-function addClipDrawer(place) {
+function addClipDrawer(openLocationCode) {
 
     //  var audios = [];
         async function saveVideo(privacyStatus) {
@@ -46,7 +46,7 @@ function addClipDrawer(place) {
     var olc = new TextField("Open Location Code");
     olc.required = true;
     olc.disabled = true;
-    olc.value = place.OLC;
+    olc.value = openLocationCode;
     div.appendChild(olc.root_);
     div.appendChild(document.createElement('br'));
 

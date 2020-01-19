@@ -17,9 +17,10 @@ class Position {
     });
 
     var search = new IconButton('search');
+    var addClip = new IconButton('mic');
 
     this.infoWindow = new google.maps.InfoWindow({
-        content: new Card(yourPlace.title, null, yourPlace.description, null, [search.root_]).root_,
+        content: new Card(yourPlace.title, null, yourPlace.description, null, [search.root_, addClip.root_]).root_,
         maxWidth: 600
     });
 
@@ -34,7 +35,17 @@ class Position {
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = this.addPlace;
       xhr.send(JSON.stringify({OLC: area}));
-    })
+    });
+
+    addClip.listen('click', () => {
+      if(profile){
+        var olc = OpenLocationCode.encode(this.marker.getPosition().lat(), this.marker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
+        addClipDrawer(olc);
+      }else{
+        var snackbar = new SnackBar('You must be logged to use this function');
+        snackbar.open();
+      }
+    });
   }
 
   setAccuracy(accuracy){

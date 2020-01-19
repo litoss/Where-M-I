@@ -46,7 +46,10 @@ class Place {
     });
 
     editButton.listen('click', () => {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 79ace0dfc80b2b07d7f9c885e37b67885321f926
       if(profile){
         createEditDialog(place);
       }else{
