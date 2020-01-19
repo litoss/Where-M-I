@@ -26,10 +26,10 @@ class Mappa extends google.maps.Map{
     this.geolocation = new Geolocation();
     this.topBar = new TopBar();
     this.menuDrawer = new MenuDrawer();
-    this.audio = new Player();
+    this.player = new Player();
     this.pageDrawer;
 
-    this.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(this.audio);
+    this.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(this.player.root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new Zoom(-1).root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new Zoom(1).root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation.root_);
@@ -39,7 +39,7 @@ class Mappa extends google.maps.Map{
     this.draggableMarker;
 
     this.directionsService = new google.maps.DirectionsService;
-    this.directionsRenderer = new google.maps.DirectionsRenderer({map: this});
+    this.directionsRenderer = new google.maps.DirectionsRenderer({map: this, preserveViewport: true, suppressMarkers: true});
 
     this.addListener('click', (event) => {
       this.clickOnMap(event);

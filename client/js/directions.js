@@ -1,23 +1,26 @@
 // Google Maps Directions API
 // https://developers.google.com/maps/documentation/directions/start
 
-var interval;
+var interval = false;
 
 function drivingDirections(origin, destination){
 
-  var check = function(){
-    var distance = getDistance(origin, destination);
-
+  if(!interval){
     route(origin, destination);
-    if(distance < 0.0002){
-      clearInterval(interval);
-      map.directionsRenderer.setMap(null);
-      var snackbar = new SnackBar('You have arrived at your destination');
-      snackbar.open();
-    }
-  }
+    console.log(map.player)
+    map.player.navigation.root_.style.display = 'block';
+    interval = setInterval(function(){
+      var distance = getDistance(origin, destination);
 
-  interval = setInterval(check, 1000);
+      if(distance < 0.0002){
+        stopNavigation();
+        var snackbar = new SnackBar('You have arrived at your destination');
+        snackbar.open();
+      }else{
+        route(origin, destination);
+      }
+    }, 3000);
+  }
 }
 
 function route(origin, destination){
@@ -36,4 +39,11 @@ function route(origin, destination){
       clearInterval(interval);
     }
   });
+}
+
+function stopNavigation(){
+  clearInterval(interval);
+  interval = false;
+  map.directionsRenderer.setMap(null);
+  map.player.navigation.root_.style.display = 'none';
 }

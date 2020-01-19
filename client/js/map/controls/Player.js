@@ -1,20 +1,27 @@
 class Player{
   constructor(){
-    var div = document.createElement('div');
-    div.className = "mdc-theme--primary-bg mdc-theme--on-secondary";
+    this.root_ = document.createElement('div');
+    this.root_.className = "mdc-theme--primary-bg mdc-theme--on-secondary";
     var back = new IconButton('arrow_back');
     var play = new IconButton('play_arrow');
+    this.navigation = new IconButton('explore_off');
+    this.navigation.root_.style.display = "none";
     var next = new IconButton('chevron_right');
     var forward = new IconButton('arrow_forward');
 
-    div.appendChild(back.root_)
-    div.appendChild(play.root_);
-    div.appendChild(next.root_);
-    div.appendChild(forward.root_)
+    this.root_.appendChild(back.root_)
+    this.root_.appendChild(play.root_);
+    this.root_.appendChild(this.navigation.root_);
+    this.root_.appendChild(next.root_);
+    this.root_.appendChild(forward.root_)
 
     forward.listen('click', () => {
       next();
     });
+
+    this.navigation.listen('click', () => {
+      stopNavigation();
+    })
 
     back.listen('click', () => {
       previous();
@@ -35,7 +42,5 @@ class Player{
         playVideo();
       }
     });
-
-    return div;
   }
 }

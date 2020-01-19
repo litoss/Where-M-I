@@ -66,3 +66,9 @@ function decode64BLOB(string, type){
   var blob = new Blob([byteArray], {type: type});
   return blob;
 }
+
+
+function decodeOlc(olc){
+  var decode = OpenLocationCode.decode(olc);
+  return {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
+}

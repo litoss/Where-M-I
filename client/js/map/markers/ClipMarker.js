@@ -1,6 +1,5 @@
 class ClipMarker {
   constructor(videos){
-
     var searchButton = new IconButton('search','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
     var directionButton = new IconButton('navigation','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
 
@@ -11,8 +10,7 @@ class ClipMarker {
       maxWidth: 400,
     });
 
-    var decode = OpenLocationCode.decode(videos[0].olc);
-    var latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
+    var latLng = decodeOlc(videos[0].olc);
 
     this.marker = new google.maps.Marker({
       position: latLng,
@@ -29,6 +27,7 @@ class ClipMarker {
     });
 
     directionButton.listen('click', () => {
+      this.infoWindow.close();
       if(map.position.getPosition()){
         drivingDirections(map.position, this.marker);
       }else{
@@ -44,6 +43,10 @@ class ClipMarker {
           var snackbar = new SnackBar('You must be logged to use this function');
           snackbar.open();
         }
+    });
+
+    card.primaryAction.addEventListener('click',() => {
+      clipDrawer(videos);
     });
   }
 
