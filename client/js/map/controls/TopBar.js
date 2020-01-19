@@ -3,7 +3,9 @@ class TopBar {
     this.menu = new IconButton('menu',"mdc-top-app-bar__navigation-icon");
     this.icon = new ImageButton('content/photo.png');
     this.authorizeButton = new ActionButton('Accedi');
+    this.authorizeButton.root_.style.display = "none";
     this.signoutButton = new ActionButton('Disconnetti');
+    this.signoutButton.root_.style.display = "none";
     var settingsButton = new IconButton('settings');
 
     this.loginCard = new Card("Guest",null,null,"content/photo.png",[this.authorizeButton.root_, this.signoutButton.root_],[settingsButton.root_],'login-card');

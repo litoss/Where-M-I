@@ -1,5 +1,6 @@
 // Google API
 
+<<<<<<< HEAD
 //var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
 //var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
 //var CLIENT_ID = '425721672816-j6su7djeahtu76tieu0kq7jq46mtqk60.apps.googleusercontent.com';
@@ -31,6 +32,10 @@ var CLIENT_ID = '790908265476-je3s0tr3pbqrrobrkkogc871h06oghpo.apps.googleuserco
 var API_KEY = 'AIzaSyC1Qfs0gXY8eYKJc-TT5SKhrKng_XAROzc'
 
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"];
+=======
+var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
+var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
+>>>>>>> 934bbc8a5ede5cbdd0d99511bbada8d417147bfc
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
 var profile, token, preferences;
@@ -44,7 +49,6 @@ function initClient() {
   gapi.client.init({
     apiKey: API_KEY,
     clientId: CLIENT_ID,
-    discoveryDocs: DISCOVERY_DOCS,
     scope: SCOPES
   }).then(function () {
     // Listen for sign-in state changes.
@@ -59,6 +63,7 @@ function initClient() {
   gapi.client.load('youtube', 'v3');
   gapi.client.load('texttospeech', 'v1');
   gapi.client.load('translate', 'v2');
+  console.log(gapi.auth2);
 }
 
 function updateSigninStatus(isSignedIn) {

@@ -15,55 +15,29 @@ async function getClips(area){
   return clips;
 }
 
-function orderClips(){
+function orderClips(clips){
   var compare = function(a,b){
     return a.statistics.likeCount - b.statistics.likeCount;
   }
 
-  var orderedClips = clips;
-  orderedClips.sort(compare);
-  orderedClips.reverse();
+  clips.sort(compare);
+  clips.reverse();
 
-  return orderedClips;
+  return clips;
 }
 
-function searchClips(olc, purp, lang, cont, aud){
+function filterClips(clips, language, content, audience){
   var result = clips;
+  
+  language = languages.find(o => o.tag == language).iso;
+  result = result.filter(o => o.language == language);
 
-  if(olc){
-    function contains(element){
-      return element.meta.split(':')[0].includes(olc);
-    }
-    result = result.filter(contains);
+  if(content && content != "all"){
+    result = result.filter(o => o.content == content);
   }
 
-  if(purp){
-    function equals(element){
-      return element.meta.split(':')[1] == purp;
-    }
-    result = result.filter(equals);
-  }
-
-  if(lang){
-    var language = languages.find(o => o['tag'] == lang).iso;
-
-    function equals(element){
-      return element.meta.split(':')[2] == language;
-    }
-    result = result.filter(equals);
-  }
-
-  if(cont && cont != "all"){
-    function equals(element){
-      return element.meta.split(':')[3] == cont;
-    }
-    result = result.filter(equals);
-  }
-  if(aud && aud != "gen"){
-    function equals(element){
-      return element.meta.split(':')[4] == audience;
-    }
-    result = result.filter(equals);
+  if(audience && audience != "gen"){
+    result = result.filter(o => o.audience == audience);
   }
 
   return result;
