@@ -1,4 +1,4 @@
-function openCheckListBrowser(){
+function openCheckList(){
   var content = document.createElement('div');
 
   var list = new List();
@@ -21,6 +21,6 @@ function openCheckListBrowser(){
 
   content.appendChild(list.root_);
 
-  map.pageDrawer = new PageDrawer('Browser - Check List', content);
+  map.pageDrawer = new PageDrawer('Check List', content);
   map.pageDrawer.open = true;
 }

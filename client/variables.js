@@ -109,7 +109,7 @@ var simone = {
 
  var yourPlace = {
    title: "Tu sei qui",
-   description: "Premi il pulsante 'cerca nei dintorni' per cercare locazioni"
+   description: "Premi il pulsante 'cerca nei dintorni' per cercare locazioni o premi sul pulsante 'registra clip' per registrare una clip nel luogo in cui sei"
  }
 
  var browserList = [
