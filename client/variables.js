@@ -140,6 +140,12 @@ var simone = {
    {description:"Accesso ai contenuti di Wikipedia: cercare il contenuto di DBPedia relativo al luogo nella lingua richiesta e riprodurre il contenuto della descrizione iniziale con sintesi vocale", check:true},
    {description:"Implementare un meccanismo di acquisizione feedback dall’utente e visualizzare tale feedback sulla mappa.", check:true}
  ]
+
+ var editorList = [
+   {description:"Editing della clip (ad esempio rimuovere dall'inizio o dalla fine della traccia, comporre clip separate, modificare volume o altri parametri) (20 pt)", check:true},
+   {description:"Composizione di più clip in un itinerario comune (un singolo upload su Youtube). Il browser deve comunque essere in grado di cercarle separatamente e riprodurle separatamente. (20 pt)", check:false},
+   {description:"Visualizzazione dell’elenco dei feedback ricevuti dagli utenti e di statistiche sulle visualizzazioni. (5 pt)", check:true}
+ ]
   var browserElements = [
     {name:"Map",icon:"map"},
     {name:"Search",icon:"search"},
@@ -166,6 +172,3 @@ var simone = {
     { name: "Clip", id:'clp' },
     { name: "Path", id:'pth' }
   ]
-
-  var example = [];
-  for(var i=0;i<10;i++) example.push({primaryText: "Ciccio Pasticcio", secondaryText: "2225 Contributi"});

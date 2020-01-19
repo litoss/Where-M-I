@@ -46,7 +46,6 @@ class Place {
     });
 
     editButton.listen('click', () => {
-
       if(profile){
         createEditDialog(place);
       }else{

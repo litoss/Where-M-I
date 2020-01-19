@@ -14,8 +14,8 @@ async function selectedPlace(place){
   content.appendChild(addButton.root_);
 
   addButton.listen('click', () => {
-    addClipDrawer(place);
-  })
+    addClipDrawer(place.OLC);
+  });
 
   var imgContainer = document.createElement('div');
   imgContainer.className = 'img-container';
