@@ -107,7 +107,6 @@ function openClips(){
           count++;
         }
       }
-<<<<<<< HEAD
         if(count > 0){
           if(playlistName.value){
            createPlaylist(playlistName.value).then(async(response)=>{
@@ -126,26 +125,6 @@ function openClips(){
               });
           }
         });
-=======
-      if(count > 0){
-        if(playlistName.value){
-          createPlaylist(playlistName.value).then((response)=>{
-            for(var i in clips){
-              if(checkboxes[i].checked) {
-                await insertClipInPlaylist(response.result.id, clips[i].id);
-              }
-            };
-          });
-        }else{
-          var snackbar = new SnackBar('Insert playlist name');
-          snackbar.open();
-          snackbar.listen("MDCSnackbar:closed",() => {
-            document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-          });
-        }
-      }
-    });
->>>>>>> 79ace0dfc80b2b07d7f9c885e37b67885321f926
 
     modify.listen('click',()=>{
       var count = 0;

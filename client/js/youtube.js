@@ -63,7 +63,7 @@ async function removeVideo(videoId){
 
 async function getRating(videoId){
   var request = await gapi.client.youtube.videos.getRating({
-    id: videoId;
+    id: videoId
   })
 
   return request.result.items[0].rating;
