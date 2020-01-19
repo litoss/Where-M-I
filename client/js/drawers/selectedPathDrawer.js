@@ -68,9 +68,3 @@ function showRoute(path){
       });
 
 }
-
-function decodeOlc(olc){
-  var decode = OpenLocationCode.decode(olc);
-  latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
-  return latLng
-}

@@ -1,38 +1,17 @@
 class Place {
   constructor(place){
 
-    var rightButtonList = [];
-    var leftButtonList = [];
-    var latLng = null;
-    var name;
-    var description;
-    var image;
-
-    if(place){
-      var editButton = new IconButton('edit','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
-      leftButtonList.push(editButton.root_);
-      var decode = OpenLocationCode.decode(place.OLC);
-      latLng = {lat: decode.latitudeCenter, lng: decode.longitudeCenter};
-      name = place.name;
-      if(place.description.length > 80) description = place.description.substring(0,80)+"...";
-      else description = place.description;
-      image = decode64(place.image, "image/jpg");
-
-    }else{
-
-
-
-
-      name = luogoSconosciuto.title;
-      description = luogoSconosciuto.description;
-      image = luogoSconosciuto.media;
-    }
-
+    var editButton = new IconButton('edit','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
     var directionButton = new IconButton('navigation','mdc-elevation--z2 mdc-image__circular mdc-button--raised');
 
-    rightButtonList.push(directionButton.root_);
+    var description;
+    if(place.description.length > 80){
+      description = place.description.substring(0,80)+"...";
+    }else{
+      description = place.description;
+    }
 
-    var card = new Card(name, null, description, image, leftButtonList, rightButtonList, 'infoWindow-card');
+    var card = new Card(place.name, null, place.description, decode64(place.image, "image/jpg"), [editButton.root_], [directionButton.root_], 'infoWindow-card');
 
     this.infoWindow = new google.maps.InfoWindow({
       content: card.root_,
@@ -40,7 +19,7 @@ class Place {
     });
 
     this.marker = new google.maps.Marker({
-      position: latLng,
+      position: decodeOlc(place.OLC),
       map: map,
       icon: {
         url: 'content/nearby.svg',
@@ -62,20 +41,19 @@ class Place {
       this.infoWindow.open(map, this.marker);
     });
 
-    if(place){
-      card.primaryAction.addEventListener('click',() => {
-          selectedPlace(place);
-      });
-      leftButtonList[0].addEventListener('click', () => {
-        var card = new Card(name, null, description, image, null, null, 'about-card');
-        if(profile) createEditDialog(place);
-        else {
-          var snackbar = new SnackBar('You must be logged to use this function');
-          snackbar.open();
-        }
-      });
-    }else{
-    }
+    card.primaryAction.addEventListener('click',() => {
+        selectedPlace(place);
+    });
+
+    editButton.listen('click', () => {
+
+      if(profile){
+        createEditDialog(place);
+      }else{
+        var snackbar = new SnackBar('You must be logged to use this function');
+        snackbar.open();
+      }
+    });
   }
 
   getPosition(){
@@ -111,9 +89,5 @@ class Place {
 
   openWindow(){
     this.infoWindow.open(map, this.marker);
-  }
-
-  setRating(rating){
-
   }
 }
