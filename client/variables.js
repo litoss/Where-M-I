@@ -1,21 +1,21 @@
 var categories = [
-  { id:"all", name:"All"},
-  { id:"nat", name:"Nature"},
-  { id:"art", name:"Art"},
-  { id:"his", name:"History"},
-  { id:"flk", name:"Folklore"},
-  { id:"mod", name:"Modern culture"},
-  { id:"rel", name:"Religion"},
-  { id:"cui", name:"Food & Drink"},
-  { id:"spo", name:"Sport"},
-  { id:"mus", name:"Music"},
-  { id:"mov", name:"Film"},
-  { id:"fas", name:"Fashion"},
-  { id:"shp", name:"Shopping"},
-  { id:"tec", name:"Tech"},
-  { id:"pop", name:"Pop culture & gossip"},
-  { id:"prs", name:"Personal experiences"},
-  { id:"oth", name:"Other"}
+  { id:"all", name:"All", icon:"content/location_city.svg"},
+  { id:"nat", name:"Nature", icon:"content/local_fiorist.svg"},
+  { id:"art", name:"Art", icon:"content/museum.svg"},
+  { id:"his", name:"History", icon:"content/history.svg"},
+  { id:"flk", name:"Folklore", icon:"content/excalibur.svg"},
+  { id:"mod", name:"Modern culture", icon:"content/fireplace.svg"},
+  { id:"rel", name:"Religion", icon:"content/cross.svg"},
+  { id:"cui", name:"Food & Drink", icon:"content/restaurant.svg"},
+  { id:"spo", name:"Sport", icon:"content/sports.svg"},
+  { id:"mus", name:"Music", icon:"content/music_note.svg"},
+  { id:"mov", name:"Film", icon:"content/local_movies.svg"},
+  { id:"fas", name:"Fashion", icon:"content/location_city.svg"},
+  { id:"shp", name:"Shopping", icon:"content/store_mall_directory.svg"},
+  { id:"tec", name:"Tech", icon:"content/computer.svg"},
+  { id:"pop", name:"Pop culture & gossip", icon:"content/camera_roll.svg"},
+  { id:"prs", name:"Personal experiences", icon:"content/toys.svg"},
+  { id:"oth", name:"Other", icon:"content/location_city.svg"}
 ];
 
 var languages = [
