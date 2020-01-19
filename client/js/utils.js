@@ -29,6 +29,21 @@ function decode64(string, type){
   return URL.createObjectURL(blob);
 }
 
+function convertBlobToBase64(blob){
+    var convertPromise = new Promise(function(resolve, reject){
+      var fileReader = new FileReader();
+      fileReader.onload = function() {
+          var dataUrl = this.result;
+          var base64 = dataUrl.split(',')[1]
+          resolve(base64);
+      };
+
+      fileReader.readAsDataURL(blob);
+    });
+
+    return convertPromise;
+  }
+
 function getDatafromURL(blob){
   return new Promise((resolve,reject) => {
     const reader = new FileReader();

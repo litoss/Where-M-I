@@ -97,31 +97,31 @@ function openClips(){
         }
       }
     });
-
-    mUpload.listen('click',()=>{
+    mUpload.listen('click',async ()=>{
+      var count = 0;
+      var playlistId;
+      var vidToInsert = [];
       for(var i in clips){
         if(checkboxes[i].checked){
-          if(playlistName.value){
-            createPlaylist(playlistName.value).then((response)=>{
-              console.log(response,clips[i].id);
-              insertClipInPlaylist(response.result.id,clips[i].id);
-            });
-          }
-          else {
-            var snackbar = new SnackBar('Insert playlist name');
-            snackbar.open();
-            snackbar.listen("MDCSnackbar:closed",() => {
-              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
-          }
+          count++;
         }
-    /*    else{
-          var snackbar = new SnackBar('Insert some video to add to your playlist');
+      }
+      if(count > 0){
+        if(playlistName.value){
+          createPlaylist(playlistName.value).then((response)=>{
+            for(var i in clips){
+              if(checkboxes[i].checked) {
+                await insertClipInPlaylist(response.result.id, clips[i].id);
+              }
+            };
+          });
+        }else{
+          var snackbar = new SnackBar('Insert playlist name');
           snackbar.open();
           snackbar.listen("MDCSnackbar:closed",() => {
             document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
-        }*/
+          });
+        }
       }
     });
 

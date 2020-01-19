@@ -102,7 +102,7 @@ function createPlaylist(name){
     });
 }
 
-function insertClipInPlaylist(playlistId,clipId){
+async function insertClipInPlaylist(playlistId,clipId){
   return gapi.client.youtube.playlistItems.insert({
      "part": "snippet",
      "resource": {
