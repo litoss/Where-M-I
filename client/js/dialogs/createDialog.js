@@ -9,20 +9,23 @@ async function createEditDialog(place){
   var imgUri;
   var img64;
 
+  if(!place.name) place.name = '';
+
+  if(place.description){
+    if(place.description.length > 100) description = place.description.substring(0,100)+"...";
+    else description = place.description;
+  }else description = place.description = '';
+
   if(place.image) {
     imgUri = decode64(place.image, "image/jpg");
     img64 = place.image;
   }else{
     imgUri = 'content/no_street.png';
-    //img64 = await encode64('content/no_street.png');
+    var imgBlob = await getimageBlob(imgUri);
+    img64 =  await encode64(imgBlob, "image/jpg");
   }
 
-  if(place.description){
-    if(place.description.length > 100) description = place.description.substring(0,100)+"...";
-    else description = place.description;
-  }
-
-  var exampleCard = new Card(place.name, place.category, place.description, imgUri, null, null, 'about-card');
+  var exampleCard = new Card(place.name, place.category, description, imgUri, null, null, 'about-card');
 
   exampleCard.id = "place-card";
   content.appendChild(exampleCard.root_);
@@ -35,10 +38,12 @@ async function createEditDialog(place){
 
   var nameForm = new TextField("Name","emoji_flags");
   nameForm.input.setAttribute('value', place.name);
+  nameForm.required = true;
   content.appendChild(nameForm.root_);
   content.appendChild(imgUpload.root_);
 
   var descrForm = new TextField(null, "subject", 'mdc-text-field--textarea');
+  descrForm.required = true;
   descrForm.input.value = place.description;
   content.appendChild(descrForm.root_);
 
@@ -46,17 +51,8 @@ async function createEditDialog(place){
   for (var i in categories) listEl.add(new SelectList(categories[i].name,categories[i].id));
 
   var cat = new Select("Category",listEl.root_,'form-field');
-  cat.listContainer.className += ''+ 'cat-list';
+  cat.listContainer.className += ' '+ 'cat-list';
   content.appendChild(cat.root_);
-
-  var footer = document.createElement('div');
-  var button = new IconButton(dialogIcon,"mdc-button--raised mdc-image__circular");
-  footer.appendChild(button.root_);
-
-  dialog = new Dialog(content,footer,dialogTitle);
-  document.getElementById('map').appendChild(dialog.root_);
-  dialog.open();
-  nameForm.input.focus();
 
   var opening =  document.createElement('div');
   var open = document.createElement('h4');
@@ -81,6 +77,15 @@ async function createEditDialog(place){
   slider2.value = 24;
   closing.appendChild(slider2.root_);
   content.appendChild(closing);
+
+  var footer = document.createElement('div');
+  var button = new IconButton(dialogIcon,"mdc-button--raised mdc-image__circular");
+  footer.appendChild(button.root_);
+
+  dialog = new Dialog(content,footer,dialogTitle);
+  document.getElementById('map').appendChild(dialog.root_);
+  dialog.open();
+  nameForm.input.focus();
 
   imgUpload.listen('click', () => {
     input.click();
@@ -118,6 +123,9 @@ async function createEditDialog(place){
       snackbar.open();
     }else if(descrForm.value.length == 0){
       var snackbar = new SnackBar('Please insert a short description');
+      snackbar.open();
+    }else if(slider1.value >= slider2.value){
+      var snackbar = new SnackBar('Please insert valid opening hours');
       snackbar.open();
     }else{
 
@@ -187,7 +195,6 @@ function submit(place){
         var olc = OpenLocationCode.encode(markerClips[i].getPosition().lat(), markerClips[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
 
         if (olc == place.OLC){
-          console.log("ciao");
           markerClips[i].setMap(null);
           markerClips.splice(i, 1);
           break;

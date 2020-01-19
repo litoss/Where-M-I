@@ -18,11 +18,20 @@ class Place {
       maxWidth: 400,
     });
 
+    if(!place.category) var icon = 'content/location_city.svg';
+    else {
+      for(var i in categories){
+        if(categories[i].id == place.category){
+          var icon = categories[i].icon;
+        }
+      }
+    }
+
     this.marker = new google.maps.Marker({
       position: decodeOlc(place.OLC),
       map: map,
       icon: {
-        url: 'content/nearby.svg',
+        url: icon,
         scaledSize: new google.maps.Size(24, 24),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(12, 12)

@@ -10,11 +10,12 @@ async function selectedPlace(place){
 
   var content = document.createElement('div');
 
-  var addButton = new FloatingActionButton('keyboard_voice', 'drawer-fab');
-  content.appendChild(addButton.root_);
+  var clipButton = new FloatingActionButton('queue_music', 'drawer-fab');
+  content.appendChild(clipButton.root_);
 
-  addButton.listen('click', () => {
-    addClipDrawer(place.OLC);
+  clipButton.listen('click', () => {
+    clipDrawer(places[place.OLC]);
+    //addClipDrawer(place.OLC);
   });
 
   var imgContainer = document.createElement('div');
@@ -26,15 +27,35 @@ async function selectedPlace(place){
   img.className = 'selected-place-img'
   imgContainer.appendChild(img);
 
-  var openingHours = document.createElement('h5');
-  openingHours.innerHTML = 'Opening hours: ' + place.opening + ":00/" + place.closing + ":00";
-  content.appendChild(openingHours);
 
-  var visitedDiv =  document.createElement('div');
-  visitedDiv.innerHTML = "Visited :"
+  var infoContainer =  document.createElement('div');
+  content.appendChild(infoContainer);
+
+
+  getMediaRating(place.OLC).then( function(mediaRating){
+    var stars = setStar(mediaRating, infoContainer);
+    infoContainer.appendChild(stars);
+  });
+
+
+
+//var stars = setStar(place.media_rating, infoContainer);
+  var reviewButton = new IconButton('rate_review','mdc-button--raised mdc-image__circular');
+
+
+  var openingHours = document.createElement('h4');
+  openingHours.innerHTML = 'Opening hours: ' + place.opening + ":00/" + place.closing + ":00";
+  infoContainer.appendChild(openingHours);
+
+
+
+
+  var buttonDiv =  document.createElement('div');
   var visited = new IconButton('check_circle_outline', 'mdc-button--raised mdc-image__circular');
-  content.appendChild(visitedDiv);
-  visitedDiv.appendChild(visited.root_);
+  content.appendChild(buttonDiv);
+  buttonDiv.appendChild(reviewButton.root_);
+
+  buttonDiv.appendChild(visited.root_);
   checkVisited(place.OLC, visited);
 
   visited.listen('click', () => {
@@ -82,19 +103,6 @@ async function selectedPlace(place){
     }
   });
 
-  var separator2 = document.createElement('hr');
-  separator2.className = 'mdc-list-divider';
-  content.appendChild(separator2);
-
-
-  var starContainer =  document.createElement('div');
-  content.appendChild(starContainer);
-
-  var stars = setStar(place.media_rating, starContainer);
-  var reviewButton = new IconButton('rate_review','mdc-button--raised mdc-image__circular');
-  starContainer.appendChild(stars);
-  starContainer.appendChild(reviewButton.root_);
-
   reviewButton.listen("click", () => {
     map.pageDrawer.open = false;
     reviewDrawer(place.OLC);
@@ -122,37 +130,11 @@ async function selectedPlace(place){
   });
 }
 
-function setStar(rating, div){
-
-  var star = [];
-  for(var i=0;i<5;i++){
-    if((rating >= (i + 0.33)) && (rating <= (i + 0.66))){
-      star[i] = document.createElement('div');
-      star[i].className = "material-icons";
-      star[i].innerHTML = 'star_half';
-      div.appendChild(star[i]);
-    }
-    else if(rating > i){
-      star[i] = document.createElement('div');
-      star[i].className = "material-icons";
-      star[i].innerHTML = 'star';
-      div.appendChild(star[i]);
-    }
-    else {
-      star[i] = document.createElement('div');
-      star[i].className = "material-icons";
-      star[i].innerHTML = 'star_border';
-      div.appendChild(star[i]);
-    }
-  }
-}
-
 function checkVisited(olc, but){
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_review');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function(){
-    console.log(xhr.response);
     var response =JSON.parse(xhr.response);
     if (!response[0]) return;
     else if (!response[0].visit_tag) return;
@@ -185,5 +167,17 @@ function getUser(id) {
       resolve(JSON.parse(xhr.response)[0]);
     };
     xhr.send(JSON.stringify({id: id}));
+  });
+}
+
+function getMediaRating(olc){
+  return new Promise((resolve,reject) => {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/find_place');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+      resolve(JSON.parse(xhr.response)[0].media_rating);
+    };
+    xhr.send(JSON.stringify({OLC: olc}));
   });
 }
