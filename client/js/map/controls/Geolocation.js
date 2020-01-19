@@ -6,9 +6,11 @@ class Geolocation extends IconButton{
       //toglie la geolocalizzazione
       if(geolocator != null) clear();
       //rimuove marker se cambio metodo di localizzazione
-      if(map.draggableMarker){
-        map.draggableMarker.marker.setMap(null);
-        map.draggableMarker = null;
+      if(map.position){
+        console.log("ciao");
+
+        map.position.remove();
+        map.position = null;
       }
       openWelcome();
     });

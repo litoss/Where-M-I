@@ -26,7 +26,7 @@ function openMarker() {
 
   geolocate.listen('click',() => {
     markerDialog.close();
-    map.draggableMarker = new DraggableMarker();
+    map.position = new Position({lat: 44.494201, lng: 11.346477}, true);
   });
 
   back.listen('click', () => {

@@ -1,12 +1,20 @@
 class Position {
-  constructor(){
+  constructor(position, draggable){
+
+    console.log(position);
+    var icon = {
+      url: "content/confusedTravolta.svg",
+      anchor: new google.maps.Point(25,50),
+      scaledSize: new google.maps.Size(50,50)
+    }
+
     this.marker = new google.maps.Marker({
-      icon: {
-        url: 'content/geomarker.svg',
-        scaledSize: new google.maps.Size(32, 32),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(16, 16)
-    }});
+      map: map,
+      draggable: true,
+      animation: google.maps.Animation.DROP,
+      position: position,
+      icon: icon
+    });
 
     this.circle = new google.maps.Circle({
       clickable: false,
@@ -24,7 +32,7 @@ class Position {
         maxWidth: 600
     });
 
-    this.marker.bindTo("position", this.circle, "center");
+    this.circle.bindTo("position", this.marker, "center");
     this.marker.addListener("click", () => {
       this.infoWindow.open(map,this.marker);
     })
@@ -45,6 +53,11 @@ class Position {
         var snackbar = new SnackBar('You must be logged to use this function');
         snackbar.open();
       }
+    });
+
+    google.maps.event.addListener(this.marker, 'dragend', function(marker) {
+      map.setCenter(marker.latLng);
+      map.updateMap(marker.latLng);
     });
   }
 

@@ -31,7 +31,10 @@ function openGeocode() {
     var geocoder = new google.maps.Geocoder;
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        map.position.setPosition(results[0].geometry.location);
+        if(!map.position) map.position = new Position(results[0].geometry.location, true);
+        else{
+          map.position.setPosition(results[0].geometry.location);
+        }
         map.setCenter(results[0].geometry.location);
         geocodeDialog.close();
       } else {

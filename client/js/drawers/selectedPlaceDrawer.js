@@ -110,52 +110,6 @@ async function selectedPlace(place){
     separator3.insertAdjacentElement('afterend',creatorList.root_);
   })
 
-  var clipTitle = document.createElement('h3');
-  clipTitle.innerHTML = "Clip Audio";
-  content.appendChild(clipTitle);
-
-  var what = document.createElement('h3');
-  what.innerHTML = "What is this?";
-  content.appendChild(what);
-
-  response = searchClips(place.OLC, "what", preferences.language, preferences.category, preferences.audience)
-  if(!response.length){
-    var empty = document.createElement('p');
-    empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
-    what.insertAdjacentElement('afterend',empty);
-  }else{
-    var player = new YoutubePlayer(response);
-    what.insertAdjacentElement('afterend',player);
-  }
-
-  var how = document.createElement('h3');
-  how.innerHTML = "How to get in?";
-  content.appendChild(how);
-
-  response = searchClips(place.OLC, "how", preferences.language, preferences.category, preferences.audience)
-  if(!response.length){
-    var empty = document.createElement('p');
-    empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
-    how.insertAdjacentElement('afterend',empty);
-  }else{
-    var player = new YoutubePlayer(response);
-    how.insertAdjacentElement('afterend',player);
-  }
-
-  var why = document.createElement('h3');
-  why.innerHTML = "What about this?";
-  content.appendChild(why);
-
-  response = searchClips(place.OLC, "why", preferences.language, preferences.category, preferences.audience)
-  if(!response.length){
-    var empty = document.createElement('p');
-    empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
-    why.insertAdjacentElement('afterend',empty);
-  }else{
-    var player = new YoutubePlayer(response);
-    why.insertAdjacentElement('afterend',player);
-  }
-
   map.pageDrawer  = new PageDrawer(place.name, content);
   map.pageDrawer.open = true;
 
@@ -198,6 +152,7 @@ function checkVisited(olc, but){
   xhr.open('POST', '/find_review');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function(){
+    console.log(xhr.response);
     var response =JSON.parse(xhr.response);
     if (!response[0]) return;
     else if (!response[0].visit_tag) return;

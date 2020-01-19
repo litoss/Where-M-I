@@ -7,15 +7,13 @@ async function localize(){
 }
 
 async function watch(position){
-  if(!map.position.getPosition){
+  var latLng = new google.maps.LatLng({lat: position.coords.latitude, lng: position.coords.longitude});
+  if(!map.position){
+    map.position = new Position(latLng, false);
     map.setCenter(latLng);
-    //welcomeDialog.close();
-  }
-
-  if(position.coords.accuracy){
-    var latLng = new google.maps.LatLng({lat: position.coords.latitude, lng: position.coords.longitude});
+  }else if(position.coords.accuracy){
     map.position.setPosition(latLng);
-    await map.position.setAccuracy(position.coords.accuracy);
+    map.position.setAccuracy(position.coords.accuracy);
     welcomeDialog.close();
   }else error();
 }

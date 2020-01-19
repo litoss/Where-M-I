@@ -63,8 +63,8 @@ async function removeVideo(videoId){
 
 async function getRating(videoId){
   var request = await gapi.client.youtube.videos.getRating({
-    id: videoId;
-  })
+    id: videoId
+  });
 
   return request.result.items[0].rating;
 }
@@ -73,7 +73,9 @@ async function rate(videoId, rating){
   gapi.client.youtube.videos.rate({
     id: videoId,
     rating: rating
-  });
+  }).then(() => {
+    console.log()
+  })
 }
 
 async function updateVideo(videoId){
@@ -102,7 +104,7 @@ function createPlaylist(name){
     });
 }
 
-async function insertClipInPlaylist(playlistId,clipId){
+function insertClipInPlaylist(playlistId,clipId){
   return gapi.client.youtube.playlistItems.insert({
      "part": "snippet",
      "resource": {

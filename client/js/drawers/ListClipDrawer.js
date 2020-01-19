@@ -111,7 +111,7 @@ function openClips(){
           createPlaylist(playlistName.value).then((response)=>{
             for(var i in clips){
               if(checkboxes[i].checked) {
-                await insertClipInPlaylist(response.result.id, clips[i].id);
+                insertClipInPlaylist(response.result.id, clips[i].id);
               }
             };
           });

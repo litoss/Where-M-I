@@ -35,7 +35,7 @@ class Mappa extends google.maps.Map{
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation.root_);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
 
-    this.position = new Position();
+    this.marker;
     this.draggableMarker;
 
     this.directionsService = new google.maps.DirectionsService;
