@@ -4,6 +4,8 @@ var pathList = [];
 var markerPlaces = [];
 var markerClips = [];
 
+var array = [];
+
 var markerCluster;
 
 class Mappa extends google.maps.Map{
@@ -82,6 +84,7 @@ class Mappa extends google.maps.Map{
         places.push(response[i]);
         places[response[i].OLC] = [];
         markerPlaces.push(new Place(response[i]));
+        array.push(response[i].OLC);
       }
       this.addPaths(olc);
       this.addClips(olc);
@@ -100,7 +103,6 @@ class Mappa extends google.maps.Map{
 
       var filter = filterClips(clips, preferences.language, preferences.category, preferences.audience);
 
-      var array = [];
       for(var i in filter)
         if(!array.includes(filter[i].olc)){
           markerClips.push(new ClipMarker(places[filter[i].olc]));

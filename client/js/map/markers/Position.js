@@ -24,11 +24,11 @@ class Position {
       strokeOpacity: 0.25
     });
 
-    var search = new IconButton('search');
+    var addPlace = new IconButton('add');
     var addClip = new IconButton('mic');
 
     this.infoWindow = new google.maps.InfoWindow({
-        content: new Card(yourPlace.title, null, yourPlace.description, null, [search.root_, addClip.root_]).root_,
+        content: new Card(yourPlace.title, null, yourPlace.description, null, [addPlace.root_, addClip.root_]).root_,
         maxWidth: 600
     });
 
@@ -40,12 +40,14 @@ class Position {
       this.infoWindow.open(map,this.marker);
     })
 
-    search.listen('click', () => {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/find_place');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onload = this.addPlace;
-      xhr.send(JSON.stringify({OLC: area}));
+    addPlace.listen('click', () => {
+      if(profile){
+        var olc = OpenLocationCode.encode(this.marker.getPosition().lat(), this.marker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
+
+      }else{
+        var snackbar = new SnackBar('You must be logged to use this function');
+        snackbar.open();
+      }
     });
 
     addClip.listen('click', () => {
