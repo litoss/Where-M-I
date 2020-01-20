@@ -29,7 +29,7 @@ function start(){
 
 function next(){
   console.log(playlist);
-  
+
   if(playlist[place+1]){
     place++;
     clip=0;
