@@ -1,7 +1,7 @@
 // Google API
 
-var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
-var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
+var CLIENT_ID = '425721672816-8gp813doa7b7ii42nef8gm73rhnk43ag.apps.googleusercontent.com';
+var API_KEY = 'AIzaSyBGG9OjwteEYu32YKLgtKilcmVLbaSdvj4';
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
 var profile, token, preferences;

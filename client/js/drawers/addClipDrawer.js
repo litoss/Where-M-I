@@ -24,7 +24,9 @@ function addClipDrawer(openLocationCode) {
                 xhr.onload = async function () {
                     var url = await decode64(this.responseText, "video/webm");
                     var blob = await getimageBlob(url);
-                    insertClip(titolo.value, description, privacyStatus, blob);
+                    console.log(url);
+                    console.log(blob);
+                  //  insertClip(titolo.value, description, privacyStatus, blob);
                 };
                 xhr.send(JSON.stringify({ chunks: base64 }));
             }
