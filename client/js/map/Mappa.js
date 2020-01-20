@@ -90,14 +90,17 @@ class Mappa extends google.maps.Map{
 
   addClips(olc){
     getClips(olc).then((response) => {
+
+      var clips = filterClips(response, preferences.language, preferences.category, preferences.audience);
+
       var newOlc = [];
-      for(var i in response){
-        if(places[response[i].olc] == undefined){
+      for(var i in clips){
+        if(places[clips[i].olc] == undefined){
           console.log("test");
-          places[response[i].olc] = [];
-          newOlc.push(response[i].olc);
+          places[clips[i].olc] = [];
+          newOlc.push(clips[i].olc);
         }
-        places[response[i].olc].push(response[i]);
+        places[clips[i].olc].push(clips[i]);
       }
 
       for(var i in newOlc){

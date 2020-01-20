@@ -47,3 +47,7 @@ function stopNavigation(){
   map.directionsRenderer.setMap(null);
   map.player.navigation.root_.style.display = 'none';
 }
+
+function isNavigating(){
+  return interval ? true : false;
+}

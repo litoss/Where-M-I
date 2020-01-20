@@ -1,10 +1,5 @@
 function clipDrawer(clips){
 
-  //filtro le clip in base alle preferenze
-  clips = filterClips(clips, preferences.language, preferences.category, preferences.audience);
-
-  var player = [];
-
   var content = document.createElement('div');
 
   var addButton = new FloatingActionButton('keyboard_voice', 'drawer-fab');
