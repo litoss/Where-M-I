@@ -33,10 +33,10 @@ class Player{
     })
 
     playButton.listen('click', (event) => {
-      if(playButton.getIcon() == 'play_arrow' && (!playlist.lenght && !free)){
+      if(playButton.getIcon() == 'play_arrow' && (!playlist.length && !free)){
         start();
       }else if (playButton.getIcon() == 'play_arrow'){
-        play();
+        play(playButton);
       }else if(playButton.getIcon() == 'pause'){
         pauseVideo();
       }else if(playButton.getIcon() == 'replay'){

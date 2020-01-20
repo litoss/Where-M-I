@@ -17,6 +17,7 @@ function openPaths(){
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = async function(){
       var response = JSON.parse(xhr.responseText);
+      console.log(response);
       if(!response[0]){
         var errorText = document.createElement('h3');
         errorText.innerHTML = 'No results';
