@@ -12,7 +12,9 @@ async function selectedPath(path){
   content.appendChild(navigationButton.root_);
 
   navigationButton.listen('click', () => {
-    showRoute(path.route);
+    playlist = path.route;
+    next();
+    map.pageDrawer.open = false;
   })
 
 
@@ -33,38 +35,5 @@ function searchPlace(olc){
     document.querySelector("#content").appendChild(card.root_);
   }
   xhr.send(JSON.stringify({OLC: olc}));
-
-}
-
-function showRoute(path){
-    var origin = decodeOlc(path[0]);
-    var destination = decodeOlc(path[path.length - 1]);
-    var waypoints = [];
-    for(var i=1; i<path.length -1; i++){
-      var point = {location: decodeOlc(path[i])};
-      waypoints.push(point);
-    }
-    map.directionsService.route({
-        origin: origin,
-        destination: destination,
-        waypoints: waypoints,
-        travelMode: 'WALKING'
-      }, function(response, status) {
-        // Route the directions and pass the response to a function to create
-        // markers for each step.
-        if (status == 'OK') {
-          map.directionsRenderer.setDirections(response);
-          map.pageDrawer.open = false;
-          var closeDirection = new IconButton('explore_off','mdc-button--raised mdc-image__circular');
-          map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(closeDirection.root_);
-          closeDirection.listen('click', () => {
-          map.directionsRenderer.setMap(null);
-          map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].pop();
-          })
-        } else {
-          var snackbar = new SnackBar('Directions request failed due to ' + status);
-          snackbar.open();
-        }
-      });
 
 }

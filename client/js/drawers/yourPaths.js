@@ -69,7 +69,6 @@ function firstPlace(olc){
     xhr.open('POST', '/find_place');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function(){
-      console.log(xhr.response);
       resolve(JSON.parse(xhr.response)[0]);
     }
     xhr.send(JSON.stringify({OLC: olc}));

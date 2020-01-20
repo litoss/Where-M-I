@@ -30,6 +30,7 @@ class Place {
     this.marker = new google.maps.Marker({
       position: decodeOlc(place.OLC),
       map: map,
+      title: place.name,
       icon: {
         url: icon,
         scaledSize: new google.maps.Size(24, 24),

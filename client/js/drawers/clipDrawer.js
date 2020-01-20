@@ -69,7 +69,4 @@ function clipDrawer(clips){
   map.pageDrawer  = new PageDrawer('Clips', content);
   map.pageDrawer.open = true;
 
-  map.pageDrawer.listen('MDCDrawer:closed', () => {
-
-  });
 }

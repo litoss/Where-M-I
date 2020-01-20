@@ -1,13 +1,11 @@
 class YoutubePlayer{
   constructor(video){
-    console.log(video);
     var li = document.createElement('li');
     li.className = "mdc-list-item";
 
     var youtubeIcon = document.createElement('img')
     youtubeIcon.className = 'mdc-list-item__graphic';
     getChannel(video.snippet.channelId).then((channel) => {
-      console.log(channel);
       youtubeIcon.src = channel.snippet.thumbnails.default.url;
     })
     li.appendChild(youtubeIcon);
@@ -29,10 +27,37 @@ class YoutubePlayer{
 
     var button = new IconButton('play_arrow', 'mdc-list-item__meta mdc-theme--primary-bg mdc-theme--on-secondary mdc-image__circular');
     li.appendChild(button.root_);
-    var like = new IconButton('thumb_up', 'mdc-button--raised mdc-image__circular');
-    li.appendChild(like.root_);
-    var dislike = new IconButton('thumb_down', 'mdc-button--raised mdc-image__circular');
-    li.appendChild(dislike.root_)
+
+
+    getRating(video.id.videoId).then((rating) => {
+
+      var like = new IconButton('thumb_up', 'mdc-image__circular');
+      var dislike = new IconButton('thumb_down', 'mdc-image__circular');
+
+      if(rating == 'like') {
+        this.like = new IconButton('thumb_up', 'mdc-liked');
+      }else this.like = new IconButton('thumb_up');
+
+      if(rating == 'dislike') {
+        this.dislike = new IconButton('thumb_down', 'mdc-image__circular mdc-disliked');
+      }else this.dislike = new IconButton('thumb_down');
+
+      li.appendChild(this.like.root_);
+      li.appendChild(this.dislike.root_);
+
+      this.like.listen('click',() => {
+        rate(video.id.videoId, 'like');
+        this.like.root_.className += ' mdc-liked';
+        this.dislike.root_.className = 'mdc-icon-button material-icons';
+      });
+
+      this.dislike.listen('click',() => {
+        rate(video.id.videoId, 'dislike');
+        this.like.root_.className = 'mdc-icon-button material-icons';
+        this.dislike.root_.className += ' mdc-disliked';
+      })
+    });
+
 
     button.listen('click', () => {
 
@@ -44,14 +69,6 @@ class YoutubePlayer{
         pauseVideo();
       }
     });
-
-    like.listen('click',() => {
-
-    });
-
-    dislike.listen('click',() => {
-
-    })
 
     return li;
   }

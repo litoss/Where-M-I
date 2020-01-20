@@ -73,9 +73,7 @@ async function rate(videoId, rating){
   gapi.client.youtube.videos.rate({
     id: videoId,
     rating: rating
-  }).then(() => {
-    console.log()
-  })
+  });
 }
 
 async function updateVideo(videoId){

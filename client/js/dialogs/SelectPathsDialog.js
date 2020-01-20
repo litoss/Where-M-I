@@ -25,7 +25,6 @@ async function openSelectPaths() {
       dialog.close();
     }else{
       playlist = pathList[event.detail.index - 1].route;
-      console.log(playlist);
       next();
       dialog.close();
     }

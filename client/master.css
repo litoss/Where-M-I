@@ -187,3 +187,18 @@ body {
 .mdc-fab {
   z-index: 99;
 }
+
+.mdc-liked{
+  color: green;
+  margin: 3px;
+}
+
+.mdc-disliked{
+  color: red;
+  margin: 3px;
+}
+
+.mdc-player{
+  border-radius: 20px;
+  margin: 10px;
+}
