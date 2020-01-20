@@ -60,13 +60,10 @@ class YoutubePlayer{
 
 
     button.listen('click', () => {
-
-      if(button.getIcon() == "play_arrow" ){
-        button.setIcon("pause");
-        newPlayer(video.id, button);
+      if(getCurrentPlayer() != video.id.videoId){
+        newPlayer(video.id.videoId, button);
       }else{
-        button.setIcon("play_arrow");
-        pauseVideo();
+        playPause();
       }
     });
 

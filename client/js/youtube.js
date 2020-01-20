@@ -120,47 +120,8 @@ function insertClipInPlaylist(playlistId,clipId){
    });
 }
 
-async function insertClip(title, description, privacyStatus, file){
+async function insertClip(title, description, privacyStatus, readStream){
 
-  var metadata = {
-    snippet: {
-      title: title,
-      description: description,
-    },
-    status: {
-      privacyStatus: privacyStatus
-    }
-  };
-
-  var uploader = new MediaUploader({
-    baseUrl: 'https://www.googleapis.com/upload/youtube/v3/videos',
-    file: file,
-    token: token,
-    metadata: metadata,
-    params: {
-      part: Object.keys(metadata).join(',')
-    }
-  });
-
-  uploader.upload();
-
-
-    /*var request = await gapi.client.youtube.videos.insert({
-      part: 'snippet, status',
-      snippet: {
-        title: title,
-        description: description
-      },
-      status: {
-        privacyStatus: 'private'
-      },
-      media:{
-        body: blob.stream()
-      }
-    });
-
-    console.log(request);
-/*
   var metadata = {
     kind: 'youtube#video',
     snippet: {
@@ -188,6 +149,5 @@ async function insertClip(title, description, privacyStatus, file){
     success:function(data) {
       alert("Il video è stato inserito sul tuo canale Youtube!!!");
     }
-  });*/
-
+  });
 }
