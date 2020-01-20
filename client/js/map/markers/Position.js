@@ -33,6 +33,9 @@ class Position {
     });
 
     this.circle.bindTo("position", this.marker, "center");
+
+    map.updateMap(this.marker.position);
+
     this.marker.addListener("click", () => {
       this.infoWindow.open(map,this.marker);
     })

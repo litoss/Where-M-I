@@ -1,7 +1,22 @@
 class Player{
   constructor(){
     this.root_ = document.createElement('div');
-    this.root_.className = "mdc-theme--primary-bg mdc-theme--on-secondary";
+    this.root_.className = "mdc-theme--primary-bg mdc-theme--on-secondary mdc-player";
+
+    var nav = document.createElement('div');
+    nav.className = 'mdc-list-item';
+
+    this.img = document.createElement('img');
+    this.img.className = 'mdc-list-item__graphic';
+    this.img.src = 'content/favicon.ico';
+    nav.appendChild(this.img);
+
+    this.title = document.createElement('h3');
+    this.title.innerHTML = 'Press play to start navigation';
+    nav.appendChild(this.title);
+
+    this.root_.appendChild(nav);
+
     var back = new IconButton('arrow_back');
     var playButton = new IconButton('play_arrow');
     this.navigation = new IconButton('explore_off');
@@ -33,15 +48,23 @@ class Player{
     })
 
     playButton.listen('click', (event) => {
-      if(playButton.getIcon() == 'play_arrow' && (!playlist.lenght && !free)){
+      if(playButton.getIcon() == 'play_arrow' && (!playlist.length && !free)){
         start();
       }else if (playButton.getIcon() == 'play_arrow'){
-        play();
+        play(playButton);
       }else if(playButton.getIcon() == 'pause'){
         pauseVideo();
       }else if(playButton.getIcon() == 'replay'){
         playVideo();
       }
     });
+  }
+
+  setTitle(div){
+    this.title.innerHTML = div;
+  }
+
+  setImg(img){
+    this.img.src = img;
   }
 }

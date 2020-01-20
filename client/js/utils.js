@@ -80,3 +80,12 @@ function decodeOlc(olc){
   var decode = OpenLocationCode.decode(olc);
   return new google.maps.LatLng({lat: decode.latitudeCenter, lng: decode.longitudeCenter});
 }
+
+function getMarkerByOlc(olc1){
+  for(var i in markerPlaces){
+    var olc2 = OpenLocationCode.encode(markerPlaces[i].getPosition().lat(), markerPlaces[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
+    if(olc1 == olc2){
+      return markerPlaces[i];
+    }
+  }
+}

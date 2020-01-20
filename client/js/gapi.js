@@ -51,7 +51,6 @@ function updateSigninStatus(isSignedIn) {
   } else {
 
     preferences = defaultPrefs;
-    console.log(preferences);
 
     map.topBar.authorizeButton.root_.style.display = "block";
     map.topBar.signoutButton.root_.style.display = "none";

@@ -4,11 +4,7 @@
 var player;
 
 function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player', {
-    height: '360',
-    width: '640',
-    videoId: null
-  });
+  player = new YT.Player('player');
 }
 
 function newPlayer(vid, button){

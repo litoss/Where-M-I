@@ -31,6 +31,9 @@ function route(origin, destination){
   }, function(response, status) {
 
     if (status === 'OK') {
+      console.log(destination);
+      map.player.setTitle('you are walking to : ' + destination.marker.title);
+      map.player.setImg(destination.marker.icon.url);
       map.directionsRenderer.setDirections(response);
       map.directionsRenderer.setMap(map);
     } else {
@@ -42,6 +45,8 @@ function route(origin, destination){
 }
 
 function stopNavigation(){
+  map.player.setTitle('Press play to start navigation');
+  map.player.setImg("content/favicon.ico");
   clearInterval(interval);
   interval = false;
   map.directionsRenderer.setMap(null);

@@ -30,7 +30,7 @@ async function listVideos(){
     forMine: true,
     type: "video",
     maxResults: 50,
-    q: "8FPHF800"
+    q: "8FPHF800+-"
   });
   return request.result.items;
 }
@@ -73,9 +73,7 @@ async function rate(videoId, rating){
   gapi.client.youtube.videos.rate({
     id: videoId,
     rating: rating
-  }).then(() => {
-    console.log()
-  })
+  });
 }
 
 async function updateVideo(videoId){
@@ -122,8 +120,47 @@ function insertClipInPlaylist(playlistId,clipId){
    });
 }
 
-function insertClip(title, description, privacyStatus, readStream){
+async function insertClip(title, description, privacyStatus, file){
 
+  var metadata = {
+    snippet: {
+      title: title,
+      description: description,
+    },
+    status: {
+      privacyStatus: privacyStatus
+    }
+  };
+
+  var uploader = new MediaUploader({
+    baseUrl: 'https://www.googleapis.com/upload/youtube/v3/videos',
+    file: file,
+    token: token,
+    metadata: metadata,
+    params: {
+      part: Object.keys(metadata).join(',')
+    }
+  });
+
+  uploader.upload();
+
+
+    /*var request = await gapi.client.youtube.videos.insert({
+      part: 'snippet, status',
+      snippet: {
+        title: title,
+        description: description
+      },
+      status: {
+        privacyStatus: 'private'
+      },
+      media:{
+        body: blob.stream()
+      }
+    });
+
+    console.log(request);
+/*
   var metadata = {
     kind: 'youtube#video',
     snippet: {
@@ -151,6 +188,6 @@ function insertClip(title, description, privacyStatus, readStream){
     success:function(data) {
       alert("Il video è stato inserito sul tuo canale Youtube!!!");
     }
-  });
+  });*/
 
 }

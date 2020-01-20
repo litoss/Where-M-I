@@ -5,30 +5,8 @@ var free = false;
 
 function findClosestMarker(position){
 
-    var nextLocation;
+    var nextLocation = {};
     var distance = 1000;
-
-    for(var i in markerPlaces){
-      var olc = OpenLocationCode.encode(markerPlaces[i].getPosition().lat(), markerPlaces[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
-      if(!playlist.includes(olc)){
-        var newDistance = getDistance(position.getPosition(), markerPlaces[i].getPosition());
-        if(newDistance < distance){
-          nextLocation.olc = olc;
-          nextLocation.marker = markerPlaces[i];
-          distance = newDistance;
-        }
-      }
-    }
-
-    return nextLocation;
-}
-
-function findClosestMarker(position){
-
-    var nextLocation = {
-      marker: null,
-      olc: null
-    }
 
     for(var i in markerPlaces){
       var olc = OpenLocationCode.encode(markerPlaces[i].getPosition().lat(), markerPlaces[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
@@ -50,10 +28,12 @@ function start(){
 }
 
 function next(){
-
+  console.log(playlist);
+  
   if(playlist[place+1]){
     place++;
     clip=0;
+    drivingDirections(map.position, getMarkerByOlc(playlist[place]));
   }else if(free){
     var location = findClosestMarker(map.position);
     if(location.marker){
@@ -68,12 +48,16 @@ function next(){
   }
 }
 
-function play(){
-  var nextLocation = findClosestMarker(map.position);
-  if(getDistance(map.position, nextLocation.marker) < 0.002){
-    newPlayer(places[playlist[place]][clip].id.videoId);
+function play(button){
+
+  if(!isNavigating()){
+    if(places[playlist[place]].length){
+      newPlayer(places[playlist[place]][clip].id.videoId, button);
+    }else{
+      alert('Non ci sono clip in questo punto di interesse');
+    }
   }else{
-    alert('Non ci sono luoghi nelle vicinanze su cui riprodurre clip');
+    alert('Devi arrivare al tuo prossimo punto per ascoltare clip');
   }
 }
 

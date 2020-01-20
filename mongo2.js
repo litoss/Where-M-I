@@ -545,8 +545,9 @@ exports.find_route = async(req) =>{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         var query;
+        console.log(req.body);
         if(req.body.OLC){
-          query =  {OLC : req.body.OLC};
+          query = {OLC:{$regex:'.*' + escapeRegExp(req.body.OLC) + '.*'}};
         }
         if(req.body.token){
           var veruser = await verify(req.body.token);
