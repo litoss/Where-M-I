@@ -41,13 +41,13 @@ class Position {
     })
 
     addPlace.listen('click', () => {
-      if(profile){
-        var olc = OpenLocationCode.encode(this.marker.getPosition().lat(), this.marker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
-
-      }else{
-        var snackbar = new SnackBar('You must be logged to use this function');
-        snackbar.open();
-      }
+      // if(profile){
+      //   var olc = OpenLocationCode.encode(this.marker.getPosition().lat(), this.marker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
+      //
+      // }else{
+      //   var snackbar = new SnackBar('You must be logged to use this function');
+      //   snackbar.open();
+      // }
     });
 
     addClip.listen('click', () => {
