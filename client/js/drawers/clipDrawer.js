@@ -6,7 +6,7 @@ function clipDrawer(clips){
   content.appendChild(addButton.root_);
 
   addButton.listen('click', () => {
-    addClipDrawer(place);
+    addClipDrawer(clips[0].olc);
   });
 
   var whatClips = [];
@@ -31,9 +31,11 @@ function clipDrawer(clips){
   }
 
   if(whatClips.length){
-    var list = new List("mdc-list--two-line mdc-list--avatar-list");
-    var player = new YoutubePlayer(whatClips);
-    what.insertAdjacentElement('afterend',player);
+    var whatList = new List("mdc-list--two-line mdc-list--avatar-list");
+    for(var i in whatClips){
+      whatList.add(new YoutubePlayer(whatClips[i]));
+    }
+    what.insertAdjacentElement('afterend',whatList.root_);
   }else{
     var empty = document.createElement('p');
     empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
@@ -41,8 +43,11 @@ function clipDrawer(clips){
   }
 
   if(howClips.length){
-    var player = new YoutubePlayer(howClips);
-    how.insertAdjacentElement('afterend',player);
+    var howList = new List("mdc-list--two-line mdc-list--avatar-list");
+    for(var i in howClips){
+      howList.add(new YoutubePlayer(howClips[i]));
+    }
+    how.insertAdjacentElement('afterend',howList.root_);
   }else{
     var empty = document.createElement('p');
     empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
@@ -50,15 +55,18 @@ function clipDrawer(clips){
   }
 
   if(whyClips.length){
-    var player = new YoutubePlayer(whyClips);
-    why.insertAdjacentElement('afterend',player);
+    var whyList = new List("mdc-list--two-line mdc-list--avatar-list");
+    for(var i in whyClips){
+      whyList.add(new YoutubePlayer(whyClips[i]));
+    }
+    why.insertAdjacentElement('afterend',whyList.root_);
   }else{
     var empty = document.createElement('p');
     empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
     why.insertAdjacentElement('afterend',empty);
   }
 
-  map.pageDrawer  = new PageDrawer('clips', content);
+  map.pageDrawer  = new PageDrawer('Clips', content);
   map.pageDrawer.open = true;
 
   map.pageDrawer.listen('MDCDrawer:closed', () => {

@@ -10,6 +10,12 @@ async function reviewDrawer(olc){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = async function(){
     var response = JSON.parse(xhr.response);
+    if(!response[0]){
+      var noReview = document.createElement('h3');
+      noReview.innerHTML = 'No reviews for this place.';
+      content.appendChild(noReview);
+      return;
+    }
     var reviews = [];
     var review = new List("mdc-list--two-line mdc-list--avatar-list");
 
