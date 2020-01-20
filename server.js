@@ -241,7 +241,7 @@ app.post('/audio_to_video', async (req,res)=>{
   readable.push(buffer);
   readable.push(null)
 
-  var command = ffmpeg('youtube.jpg')
+  var command = ffmpeg('/webapp/youtube.jpg')
     .fps(1)
     .size('1920x1080')
     .addInput(readable)
