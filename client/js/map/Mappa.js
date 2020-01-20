@@ -36,7 +36,6 @@ class Mappa extends google.maps.Map{
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
 
     this.marker;
-    this.draggableMarker;
 
     this.directionsService = new google.maps.DirectionsService;
     this.directionsRenderer = new google.maps.DirectionsRenderer({map: this, preserveViewport: true, suppressMarkers: true});
@@ -79,6 +78,7 @@ class Mappa extends google.maps.Map{
   addPlace(olc){
     getPlaces(olc.substring(0,6)).then((response) => {
       for(var i in response){
+        places.push(response[i]);
         places[response[i].OLC] = [];
         markerPlaces.push(new Place(response[i]));
       }
@@ -87,24 +87,23 @@ class Mappa extends google.maps.Map{
   }
 
   addClips(olc){
-    getClips(olc).then((response) => {
+    getClips(olc).then((clips) => {
 
-      var clips = filterClips(response, preferences.language, preferences.category, preferences.audience);
-
-      var newOlc = [];
       for(var i in clips){
-        if(places[clips[i].olc] == undefined){
-          console.log("test");
+        if(!places[clips[i].olc]){
           places[clips[i].olc] = [];
-          newOlc.push(clips[i].olc);
         }
         places[clips[i].olc].push(clips[i]);
       }
 
-      for(var i in newOlc){
-        markerClips.push(new ClipMarker(places[newOlc[i]]));
-      }
+      var filter = filterClips(clips, preferences.language, preferences.category, preferences.audience);
 
+      var array = [];
+      for(var i in filter)
+        if(!array.includes(filter[i].olc)){
+          markerClips.push(new ClipMarker(places[filter[i].olc]));
+          array.push(filter[i].olc);
+        }
       markerCluster = new MarkerClusterer(this, markerClips.concat(markerPlaces));
     });
   }

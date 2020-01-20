@@ -1,3 +1,5 @@
+var places = [];
+
 async function getClips(area){
   var list = await youtubeSearch("id, snippet", area + '-', 50);
   var clips = [];
@@ -28,7 +30,7 @@ function orderClips(clips){
 
 function filterClips(clips, language, content, audience){
   var result = clips;
-  
+
   language = languages.find(o => o.tag == language).iso;
   result = result.filter(o => o.language == language);
 
