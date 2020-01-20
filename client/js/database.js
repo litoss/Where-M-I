@@ -69,3 +69,15 @@ function setPreferences() {
   };
   xhr.send(JSON.stringify({token: token, category: defaultPrefs.category, audience: defaultPrefs.audience, language:defaultPrefs.language}));
 }
+
+function getPaths(area) {
+  return new Promise((resolve,reject) =>{
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/find_route');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+      resolve(JSON.parse(xhr.response));
+    };
+    xhr.send(JSON.stringify({OLC: area}));
+  });
+}

@@ -3,13 +3,15 @@ function clipDrawer(clips){
   //filtro le clip in base alle preferenze
   clips = filterClips(clips, preferences.language, preferences.category, preferences.audience);
 
+  var player = [];
+
   var content = document.createElement('div');
 
   var addButton = new FloatingActionButton('keyboard_voice', 'drawer-fab');
   content.appendChild(addButton.root_);
 
   addButton.listen('click', () => {
-    addClipDrawer(place);
+    addClipDrawer(clips[0].olc);
   });
 
   var whatClips = [];
@@ -34,9 +36,12 @@ function clipDrawer(clips){
   }
 
   if(whatClips.length){
-    var list = new List("mdc-list--two-line mdc-list--avatar-list");
-    var player = new YoutubePlayer(whatClips);
-    what.insertAdjacentElement('afterend',player);
+    var whatList = new List("mdc-list--two-line mdc-list--avatar-list");
+    for(var i in whatClips){
+      player[i] = new YoutubePlayer(whatClips[i]);
+      whatList.add(player[i]);
+    }
+    what.insertAdjacentElement('afterend',whatList.root_);
   }else{
     var empty = document.createElement('p');
     empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
@@ -44,8 +49,12 @@ function clipDrawer(clips){
   }
 
   if(howClips.length){
-    var player = new YoutubePlayer(howClips);
-    how.insertAdjacentElement('afterend',player);
+    var howList = new List("mdc-list--two-line mdc-list--avatar-list");
+    for(var i in howClips){
+      player[i] = new YoutubePlayer(howClips[i]);
+      howList.add(player[i]);
+    }
+    how.insertAdjacentElement('afterend',howList.root_);
   }else{
     var empty = document.createElement('p');
     empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
@@ -53,15 +62,19 @@ function clipDrawer(clips){
   }
 
   if(whyClips.length){
-    var player = new YoutubePlayer(whyClips);
-    why.insertAdjacentElement('afterend',player);
+    var whyList = new List("mdc-list--two-line mdc-list--avatar-list");
+    for(var i in whyClips){
+      player[i] = new YoutubePlayer(whyClips[i]);
+      whyList.add(player[i]);
+    }
+    why.insertAdjacentElement('afterend',whyList.root_);
   }else{
     var empty = document.createElement('p');
     empty.innerHTML = "Non ci sono clip su questo luogo o che corrispondono alle tue preferenze."
     why.insertAdjacentElement('afterend',empty);
   }
 
-  map.pageDrawer  = new PageDrawer('clips', content);
+  map.pageDrawer  = new PageDrawer('Clips', content);
   map.pageDrawer.open = true;
 
   map.pageDrawer.listen('MDCDrawer:closed', () => {

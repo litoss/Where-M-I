@@ -1,5 +1,6 @@
 var area = [];
 var places = [];
+var pathList = [];
 var markerPlaces = [];
 var markerClips = [];
 
@@ -82,6 +83,7 @@ class Mappa extends google.maps.Map{
         places[response[i].OLC] = [];
         markerPlaces.push(new Place(response[i]));
       }
+      this.addPaths(olc);
       this.addClips(olc);
     });
   }
@@ -103,6 +105,14 @@ class Mappa extends google.maps.Map{
       }
 
       markerCluster = new MarkerClusterer(this, markerClips.concat(markerPlaces));
+    });
+  }
+
+  addPaths(olc){
+    getPaths(olc.substring(0,6)).then((response) => {
+      for(var i in response){
+        pathList.push(response[i]);
+      }
     });
   }
 }
