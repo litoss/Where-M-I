@@ -33,8 +33,7 @@ function clipDrawer(clips){
   if(whatClips.length){
     var whatList = new List("mdc-list--two-line mdc-list--avatar-list");
     for(var i in whatClips){
-      player[i] = new YoutubePlayer(whatClips[i]);
-      whatList.add(player[i]);
+      whatList.add(new YoutubePlayer(whatClips[i]));
     }
     what.insertAdjacentElement('afterend',whatList.root_);
   }else{
@@ -46,8 +45,7 @@ function clipDrawer(clips){
   if(howClips.length){
     var howList = new List("mdc-list--two-line mdc-list--avatar-list");
     for(var i in howClips){
-      player[i] = new YoutubePlayer(howClips[i]);
-      howList.add(player[i]);
+      howList.add(new YoutubePlayer(howClips[i]));
     }
     how.insertAdjacentElement('afterend',howList.root_);
   }else{
@@ -59,8 +57,7 @@ function clipDrawer(clips){
   if(whyClips.length){
     var whyList = new List("mdc-list--two-line mdc-list--avatar-list");
     for(var i in whyClips){
-      player[i] = new YoutubePlayer(whyClips[i]);
-      whyList.add(player[i]);
+      whyList.add(new YoutubePlayer(whyClips[i]));
     }
     why.insertAdjacentElement('afterend',whyList.root_);
   }else{
