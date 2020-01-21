@@ -8,20 +8,28 @@ async function youtubeSearch(part, q, maxResults){
   query.q = q;
   if(maxResults) query.maxResults = maxResults;
 
-  if(q == '8FPHF800+-'){
-    return new Promise((resolve, reject) => {
-      var request = new XMLHttpRequest();
-      request.open("GET", "js/youtube.json");
-      request.onload = function(){
-        resolve(JSON.parse(request.responseText).s);
-      }
-      request.send();
-    });
-  }else{
-    return null;
+  // if(q == '8FPHF800+-'){
+  //   return new Promise((resolve, reject) => {
+  //     var request = new XMLHttpRequest();
+  //     request.open("GET", "js/youtube.json");
+  //     request.onload = function(){
+  //       resolve(JSON.parse(request.responseText).s);
+  //     }
+  //     request.send();
+  //   });
+  // }else{
+  //   return null;
+  // }
+  let request = await gapi.client.youtube.search.list(query);
+
+  var items = request.result.items;
+  while(request.result.nextPageToken){
+    query.pageToken = request.result.nextPageToken;
+    request = await gapi.client.youtube.search.list(query);
+    items = items.concat(request.result.items);
   }
-  //let request = await gapi.client.youtube.search.list(query);
-  //return request.result.items;
+
+  return items;
 }
 
 async function listVideos(){
