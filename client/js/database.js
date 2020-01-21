@@ -52,6 +52,7 @@ function getPreferences() {
     if (response[0]){
       preferences = response[0];
       if(!response[0].category) preferences.category = 'all';
+      preferences.refreshTime = '120';
     }else {
       setPreferences();
       preferences = defaultPrefs;

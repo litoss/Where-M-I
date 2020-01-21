@@ -34,6 +34,12 @@ var audience = [
   { id:"scl", name:"Sector Specialists"},
 ];
 
+var refreshTime = [
+  { id:"30", name:"30 minutes"},
+  { id:"60", name:"60 minutes"},
+  { id:"120", name:"120 minutes"}
+];
+
 var searchTab = [
   { icon: "map", name: "Place"},
   { icon: "queue_music", name: "Clips"},
@@ -108,8 +114,8 @@ var simone = {
  }
 
  var yourPlace = {
-   title: "Tu sei qui",
-   description: "Premi il pulsante 'cerca nei dintorni' per cercare locazioni o premi sul pulsante 'registra clip' per registrare una clip nel luogo in cui sei"
+   title: "You are Here",
+   description: "You can press on 'plus' to add this place or press on 'mic' to record clips for this place"
  }
 
  var browserList = [
@@ -165,7 +171,7 @@ var simone = {
     {name:"Privacy Policy",icon:"policy"}
   ]
 
-  var defaultPrefs = { language:'it',audience:"gen",category:"all"}
+  var defaultPrefs = { language:'it',audience:"gen",category:"all", refreshTime:"120"}
 
   var searchType = [
     { name: "Place", id:'plc' },

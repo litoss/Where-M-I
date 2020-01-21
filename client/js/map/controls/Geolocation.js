@@ -7,8 +7,6 @@ class Geolocation extends IconButton{
       if(geolocator != null) clear();
       //rimuove marker se cambio metodo di localizzazione
       if(map.position){
-        console.log("ciao");
-
         map.position.remove();
         map.position = null;
       }

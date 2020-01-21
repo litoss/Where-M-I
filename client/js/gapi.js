@@ -29,7 +29,6 @@ function initClient() {
   gapi.client.load('youtube', 'v3');
   gapi.client.load('texttospeech', 'v1');
   gapi.client.load('translate', 'v2');
-  console.log(gapi.auth2);
 }
 
 function updateSigninStatus(isSignedIn) {

@@ -535,7 +535,6 @@ exports.find_route = async(req) =>{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
         const db = client.db("webdb");
         var query;
-        console.log(req.body);
         if(req.body.OLC){
           query = {OLC:{$regex:'.*' + escapeRegExp(req.body.OLC) + '.*'}};
         }
@@ -627,7 +626,6 @@ exports.find_pref = async(req) =>{
           items = await db.collection('preferences').find().project({_id:0}).toArray();
 
         client.close();
-        console.log(items);
         return items;
     }
     catch(err){

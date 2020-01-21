@@ -4,6 +4,7 @@ var pathList = [];
 var markerPlaces = [];
 var markerClips = [];
 var markerCluster;
+var timeout;
 
 class Mappa extends google.maps.Map{
   constructor() {
@@ -88,7 +89,6 @@ class Mappa extends google.maps.Map{
 
   addClips(olc){
     getClips(olc).then((clips) => {
-      console.log(places);
       var filter = filterClips(clips, preferences.language, preferences.category, preferences.audience);
 
       var array = [];
@@ -114,5 +114,14 @@ class Mappa extends google.maps.Map{
         pathList.push(response[i]);
       }
     });
+  }
+
+  updateAfterTimeOut(){
+    var timer = (preferences.refreshTime*60)*1000;
+    timeout = setTimeout(function(){
+      map.updateMap(map.position.marker.position);
+      clearTimeout(timeout);
+      map.updateAfterTimeOut(timer);
+    }, timer);
   }
 }

@@ -1,7 +1,6 @@
 class Position {
   constructor(position, draggable){
 
-    console.log(position);
     var icon = {
       url: "content/confusedTravolta.svg",
       anchor: new google.maps.Point(25,50),
@@ -28,13 +27,14 @@ class Position {
     var addClip = new IconButton('mic');
 
     this.infoWindow = new google.maps.InfoWindow({
-        content: new Card(yourPlace.title, null, yourPlace.description, null, [addPlace.root_, addClip.root_]).root_,
+        content: new Card(yourPlace.title, null, yourPlace.description, null, [addPlace.root_, addClip.root_], null, 'infoWindow-card').root_,
         maxWidth: 600
     });
 
     this.circle.bindTo("position", this.marker, "center");
 
     map.updateMap(this.marker.position);
+    map.updateAfterTimeOut();
 
     this.marker.addListener("click", () => {
       this.infoWindow.open(map,this.marker);
@@ -43,7 +43,7 @@ class Position {
     addPlace.listen('click', () => {
       if(profile){
         var latLng = new google.maps.LatLng({lat: this.marker.getPosition().lat(), lng: this.marker.getPosition().lng()});
-        selectPlace(latLng);      
+        selectPlace(latLng);
       }else{
         var snackbar = new SnackBar('You must be logged to use this function');
         snackbar.open();

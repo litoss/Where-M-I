@@ -1,5 +1,4 @@
 function openSettings(){
-
   var content = document.createElement('div');
 
   var addButton = new FloatingActionButton('edit', 'drawer-fab');
@@ -26,6 +25,31 @@ function openSettings(){
   catSel.setValue(preferences.category);
   content.appendChild(catSel.root_);
 
+  //refreshTime
+
+  var listRefresh = new List();
+  for (var i in refreshTime) listRefresh.add(new SelectList(refreshTime[i].name,refreshTime[i].id));
+  var listRefresh = new Select("Refresh",listRefresh.root_,'form-field refresh-select');
+  listRefresh.setValue(preferences.refreshTime);
+
+  content.appendChild(listRefresh.root_);
+
+  var div = document.createElement('div');
+
+  var timer = document.createElement('p');
+  timer.className = 'timer';
+
+  var refresh = new IconButton('sync', 'mdc-button--raised mdc-image__circular refresh-button');
+  div.appendChild(refresh.root_);
+
+  content.appendChild(div);
+
+  refresh.listen('click', () => {
+    map.updateMap(map.position.marker.position);
+    clearTimeout(timeout);
+    map.updateAfterTimeOut();
+  })
+
   map.pageDrawer = new PageDrawer('Settings', content);
   map.pageDrawer.open = true;
 
@@ -35,7 +59,8 @@ function openSettings(){
       token: token,
       language: lang.value,
       audience: aud.value,
-      category: catSel.value
+      category: catSel.value,
+      refreshTime: listRefresh.value
     };
 
     map.pageDrawer.open = false;
@@ -45,13 +70,16 @@ function openSettings(){
       xhr.open('POST', '/add_preference');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = function() {
-          if (xhr.status !== 200) {
-            var snackbar = new SnackBar('Something went wrong please try again');
-            snackbar.open();
-          }else{
-            var snackbar = new SnackBar('Preferences updated successfully');
-            snackbar.open();
-          }
+        map.updateMap(map.position.marker.position);
+        clearTimeout(timeout);
+        map.updateAfterTimeOut();
+        if (xhr.status !== 200) {
+          var snackbar = new SnackBar('Something went wrong please try again');
+          snackbar.open();
+        }else{
+          var snackbar = new SnackBar('Preferences updated successfully');
+          snackbar.open();
+        }
       };
       xhr.send(JSON.stringify(preferences));
     };

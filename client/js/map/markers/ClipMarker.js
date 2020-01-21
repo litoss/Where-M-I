@@ -15,6 +15,7 @@ class ClipMarker {
     this.marker = new google.maps.Marker({
       position: latLng,
       map: map,
+      title: videos[0].olc,
       icon: {
         url: 'content/music.svg',
         scaledSize: new google.maps.Size(24, 24),
