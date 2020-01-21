@@ -48,7 +48,8 @@ function route(origin, destination){
 
 function stopNavigation(){
   map.player.navigation.root_.disabled = true;
-  map.player.setTitle('Press play to start navigation');
+  if(map.player.forward.root_.disabled == false) map.player.setTitle('Press &rarr; to navigate to next place');
+  else map.player.setTitle('Press Here to select navigation mode');
   map.player.setImg("content/favicon.ico");
   clearInterval(interval);
   interval = false;

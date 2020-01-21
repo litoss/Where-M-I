@@ -12,7 +12,7 @@ class Player{
     nav.appendChild(this.img);
 
     this.title = document.createElement('h3');
-    this.title.innerHTML = 'Press play to start navigation';
+    this.title.innerHTML = 'Press Here to select navigation mode';
     nav.appendChild(this.title);
 
     this.root_.appendChild(nav);

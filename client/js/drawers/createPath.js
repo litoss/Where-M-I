@@ -98,6 +98,7 @@ function verifyRoute(route, name){
     var response = JSON.parse(xhr.responseText);
     if(!response[0]) {
       submitRoute(route, name);
+      pathList.push({namer: name, route: route});
       map.pageDrawer.open = false;
     }else {
       var edit = new ActionButton('edit');
@@ -106,6 +107,9 @@ function verifyRoute(route, name){
       snackbar.open();
       edit.listen('click', () => {
         submitRoute(route, name);
+        pathList = [];
+        var olc = OpenLocationCode.encode(map.position.marker.position.lat(), map.position.marker.position.lng(), 6);
+        map.addPaths(olc)
         map.pageDrawer.open = false;
       })
     }
@@ -118,8 +122,6 @@ function submitRoute(route, name){
   xhr.open('POST', '/new_route');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function(){
-    //se cerco di aggiungere un nuovo percorso con la stessa partenza equivale alla modifica del percorso
-    //DEVE CHIEDERE CONFERMA!!!
     var snackbar = new SnackBar('Your Path is correctly Added');
     snackbar.open();
   }

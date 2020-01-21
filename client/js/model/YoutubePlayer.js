@@ -35,7 +35,7 @@ class YoutubePlayer{
     li.appendChild(button.root_);
 
 
-    getRating(video.id.videoId).then((rating) => {
+    if(profile) getRating(video.id.videoId).then((rating) => {
 
       var like = new IconButton('thumb_up', 'mdc-image__circular');
       var dislike = new IconButton('thumb_down', 'mdc-image__circular');

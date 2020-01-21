@@ -25,7 +25,10 @@ async function openSelectPaths() {
       playlist = pathList[event.detail.index - 1].route;
     }
     dialog.close();
-    start();
+
+    map.player.forward.root_.disabled = false;
+    place = -1;
+    next();
   });
 
   document.getElementById('map').appendChild(dialog.root_);

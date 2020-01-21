@@ -163,7 +163,8 @@ async function insertClip(title, description, privacyStatus, readStream){
     metadata: metadata,
     method: 'POST',
     success:function(data) {
-      alert("Il video è stato inserito sul tuo canale Youtube!!!");
+      var snackbar = new SnackBar('Video Added succesfully on youtube');
+      snackbar.open();
     }
   });
 }

@@ -68,7 +68,8 @@ function next(){
     if(location.marker){
       playlist.push(location.olc);
     }else{
-      alert('Non ci sono luoghi da visitare in modalità libera');
+      var snackbar = new SnackBar('There are no places nearby');
+      snackbar.open();
     }
   }
 
@@ -80,7 +81,6 @@ function next(){
   if(place == playlist.length-1 && !free){
     map.player.forward.root_.disabled = true;
   }
-
   drivingDirections(map.position, getMarkerByOlc(playlist[place]));
 }
 
@@ -115,7 +115,8 @@ function wheremi(button){
       playPause();
     }
   }else{
-    alert("terrore");
+    var snackbar = new SnackBar('There are no clips nearby.');
+    snackbar.open();
   }
 }
 
