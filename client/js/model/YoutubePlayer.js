@@ -25,7 +25,13 @@ class YoutubePlayer{
     secondaryText.innerHTML = "Created by : " +video.snippet.channelTitle;
     span.appendChild(secondaryText);
 
-    var button = new IconButton('play_arrow', 'mdc-list-item__meta mdc-theme--primary-bg mdc-theme--on-secondary mdc-image__circular');
+    var button;
+    if(getCurrentPlayer() != video.id.videoId){
+      button = new IconButton('play_arrow', 'mdc-list-item__meta mdc-theme--primary-bg mdc-theme--on-secondary mdc-image__circular');
+    }else{
+      button = new IconButton('pause', 'mdc-list-item__meta mdc-theme--primary-bg mdc-theme--on-secondary mdc-image__circular');
+      addButton(button);
+    }
     li.appendChild(button.root_);
 
 
@@ -61,7 +67,9 @@ class YoutubePlayer{
 
     button.listen('click', () => {
       if(getCurrentPlayer() != video.id.videoId){
-        newPlayer(video.id.videoId, button);
+        newPlayer(video.id.videoId);
+        addButton(button);
+        addButton(map.player.playButton);
       }else{
         playPause();
       }
