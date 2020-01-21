@@ -134,7 +134,12 @@ async function getTopClips(div){
       if(clip) clips.push(await getVideo(places[i][j].id.videoId));
     }
   }
-  var orderedClips = await orderClips(clips);
+
+  var compare = function(a,b){
+    return a.statistics.likeCount - b.statistics.likeCount;
+  }
+
+  var orderedClips = await orderClips(clips, compare);
   var listclips = new List("mdc-list--two-line");
   for(var i in orderedClips) listclips.add(new ElementList(orderedClips[i].snippet.title, orderedClips[i].statistics.likeCount + " likes", 'music_note'));
 

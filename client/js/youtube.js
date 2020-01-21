@@ -29,6 +29,13 @@ async function youtubeSearch(part, q, maxResults){
     items = items.concat(request.result.items);
   }
 
+  // var hiddenElement = document.createElement('a');
+  //
+  // console.log(JSON.stringify(items));
+  // hiddenElement.href = "data:text/json;charset=utf-8," + encodeURI(JSON.stringify(items));
+  // hiddenElement.target = '_blank';
+  // hiddenElement.download = q + '.json';
+  // hiddenElement.click();
   return items;
 }
 

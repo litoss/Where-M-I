@@ -1,5 +1,5 @@
 var playlist = [];
-var place = -1;
+var place;
 var free = false;
 var clipList = [];
 var clip;
@@ -54,8 +54,9 @@ function findClosestMarker(position){
 }
 
 function start(){
-  map.player.playButton.root_.disabled = false;
   map.player.forward.root_.disabled = false;
+  playlist = [];
+  place = -1;
   next();
 }
 
@@ -65,9 +66,9 @@ function next(){
   if(!playlist[place] && free){
     var location = searchNextPlace(map.position);
     if(location.marker){
-      playlist[place].add(search());
+      playlist.push(location.olc);
     }else{
-      alert('Non ci sono luoghi nelle vicinanze con clip inerenti alle tue preferenze');
+      alert('Non ci sono luoghi da visitare in modalità libera');
     }
   }
 
@@ -76,7 +77,7 @@ function next(){
   }else{
     map.player.back.root_.disabled = false;
   }
-  if(place == playlist.length-1){
+  if(place == playlist.length-1 && !free){
     map.player.forward.root_.disabled = true;
   }
 

@@ -17,11 +17,8 @@ async function getClips(area){
   return clips;
 }
 
-function orderClips(clips){
-  var compare = function(a,b){
-    return a.statistics.likeCount - b.statistics.likeCount;
-  }
-  console.log(clips);
+function orderClips(clips, compare){
+
   clips.sort(compare);
   clips.reverse();
 
