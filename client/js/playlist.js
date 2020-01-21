@@ -109,7 +109,8 @@ function wheremi(button){
     }
 
     if(getCurrentPlayer() != clipList[clip].id.videoId){
-      newPlayer(clipList[clip].id.videoId, button);
+      newPlayer(clipList[clip].id.videoId);
+      addButton(button);
     }else{
       playPause();
     }
