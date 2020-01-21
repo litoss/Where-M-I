@@ -88,6 +88,13 @@ async function getTopPaths(div){
 
 async function getTopVlogger(div){
 
+  var clips = [];
+  for(var i in places){
+    for(var j in places[i]){
+      clips.push(places[i][j]);
+    }
+  }
+
   var channels = [];
   for(var i in clips){
     var index;
@@ -120,8 +127,14 @@ async function getTopVlogger(div){
 }
 
 async function getTopClips(div){
-
-  var orderedClips = await orderClips();
+  clips = [];
+  for(var i in places){
+    for(var j in places[i]){
+      var clip = await getVideo(places[i][j].id.videoId);
+      if(clip) clips.push(await getVideo(places[i][j].id.videoId));
+    }
+  }
+  var orderedClips = await orderClips(clips);
   var listclips = new List("mdc-list--two-line");
   for(var i in orderedClips) listclips.add(new ElementList(orderedClips[i].snippet.title, orderedClips[i].statistics.likeCount + " likes", 'music_note'));
 

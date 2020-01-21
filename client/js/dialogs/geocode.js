@@ -14,7 +14,6 @@ function openGeocode() {
   var back = new ActionButton('Back');
   var add = new ActionButton('Search', 'mdc-button--raised');
 
-
   footer.appendChild(back.root_);
   footer.appendChild(add.root_);
   footer.appendChild(selectOnMap.root_);

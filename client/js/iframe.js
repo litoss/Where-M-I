@@ -36,9 +36,8 @@ function getCurrentPlayer(){
 }
 
 function onPlayerStateChange(event) {
-  console.log(event);
   if(event.data === 0) {
-    currentButton.setIcon('replay');
+    currentButton.setIcon('play_arrow');
   }
   else if(event.data === 1) {
     currentButton.setIcon('pause');

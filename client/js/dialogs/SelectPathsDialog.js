@@ -21,13 +21,11 @@ async function openSelectPaths() {
   list.listen('MDCList:action', (event) => {
     if(event.detail.index == 0){
       free = true;
-      next();
-      dialog.close();
     }else{
       playlist = pathList[event.detail.index - 1].route;
-      next();
-      dialog.close();
     }
+    dialog.close();
+    start();
   });
 
   document.getElementById('map').appendChild(dialog.root_);

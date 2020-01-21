@@ -21,7 +21,7 @@ function orderClips(clips){
   var compare = function(a,b){
     return a.statistics.likeCount - b.statistics.likeCount;
   }
-
+  console.log(clips);
   clips.sort(compare);
   clips.reverse();
 

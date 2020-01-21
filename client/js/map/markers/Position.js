@@ -41,13 +41,13 @@ class Position {
     })
 
     addPlace.listen('click', () => {
-      // if(profile){
-      //   var olc = OpenLocationCode.encode(this.marker.getPosition().lat(), this.marker.getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
-      //
-      // }else{
-      //   var snackbar = new SnackBar('You must be logged to use this function');
-      //   snackbar.open();
-      // }
+      if(profile){
+        var latLng = new google.maps.LatLng({lat: this.marker.getPosition().lat(), lng: this.marker.getPosition().lng()});
+        selectPlace(latLng);      
+      }else{
+        var snackbar = new SnackBar('You must be logged to use this function');
+        snackbar.open();
+      }
     });
 
     addClip.listen('click', () => {

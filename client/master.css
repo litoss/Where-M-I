@@ -19,9 +19,9 @@ body {
   height: 100%;
 }
 
-/* #player {
+#player {
   display: none;
-} */
+}
 
 .mdc-top-app-bar--dense .mdc-top-app-bar__title {
   font-family: 'where-m-i';

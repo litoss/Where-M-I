@@ -3,9 +3,6 @@ var places = [];
 var pathList = [];
 var markerPlaces = [];
 var markerClips = [];
-
-var array = [];
-
 var markerCluster;
 
 class Mappa extends google.maps.Map{
@@ -33,8 +30,8 @@ class Mappa extends google.maps.Map{
     this.pageDrawer;
 
     this.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(this.player.root_);
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new Zoom(-1).root_);
-    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new Zoom(1).root_);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new ZoomL().root_);
+    this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(new ZoomP().root_);
     this.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.geolocation.root_);
     this.controls[google.maps.ControlPosition.TOP_LEFT].push(this.topBar.topBar.root_);
 
@@ -81,10 +78,8 @@ class Mappa extends google.maps.Map{
   addPlace(olc){
     getPlaces(olc.substring(0,6)).then((response) => {
       for(var i in response){
-        places.push(response[i]);
         places[response[i].OLC] = [];
         markerPlaces.push(new Place(response[i]));
-        array.push(response[i].OLC);
       }
       this.addPaths(olc);
       this.addClips(olc);
@@ -93,21 +88,22 @@ class Mappa extends google.maps.Map{
 
   addClips(olc){
     getClips(olc).then((clips) => {
-
-      for(var i in clips){
-        if(!places[clips[i].olc]){
-          places[clips[i].olc] = [];
-        }
-        places[clips[i].olc].push(clips[i]);
-      }
-
+      console.log(places);
       var filter = filterClips(clips, preferences.language, preferences.category, preferences.audience);
 
-      for(var i in filter)
-        if(!array.includes(filter[i].olc)){
-          markerClips.push(new ClipMarker(places[filter[i].olc]));
+      var array = [];
+      for(var i in filter){
+        if(!places[filter[i].olc]){
+          places[filter[i].olc] = [];
           array.push(filter[i].olc);
         }
+        places[filter[i].olc].push(filter[i]);
+      }
+
+      for(var i in array){
+        markerClips.push(new ClipMarker(places[array[i]]));
+      }
+
       markerCluster = new MarkerClusterer(this, markerClips.concat(markerPlaces));
     });
   }

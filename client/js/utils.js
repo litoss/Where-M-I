@@ -85,7 +85,7 @@ function getMarkerByOlc(olc1){
   for(var i in markerPlaces){
     var olc2 = OpenLocationCode.encode(markerPlaces[i].getPosition().lat(), markerPlaces[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL)
     if(olc1 == olc2){
-      return markerPlaces[i];
+      return markerPlaces[i].marker;
     }
   }
 }

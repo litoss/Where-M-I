@@ -5,22 +5,25 @@ var interval = false;
 
 function drivingDirections(origin, destination){
 
-  if(!interval){
-    route(origin, destination);
-    console.log(map.player)
-    map.player.navigation.root_.style.display = 'inline';
-    interval = setInterval(function(){
-      var distance = getDistance(origin.getPosition(), destination.getPosition());
-
-      if(distance < 0.0002){
-        stopNavigation();
-        var snackbar = new SnackBar('You have arrived at your destination');
-        snackbar.open();
-      }else{
-        route(origin, destination);
-      }
-    }, 3000);
+  if(interval){
+    stopNavigation();
   }
+
+  route(origin, destination);
+
+  map.player.navigation.root_.disabled = false;
+  interval = setInterval(function(){
+    var distance = getDistance(origin.getPosition(), destination.getPosition());
+
+    if(distance < 0.0002){
+      stopNavigation();
+      var snackbar = new SnackBar('You have arrived at your destination');
+      snackbar.open();
+    }else{
+      route(origin, destination);
+    }
+  }, 3000);
+
 }
 
 function route(origin, destination){
@@ -31,9 +34,8 @@ function route(origin, destination){
   }, function(response, status) {
 
     if (status === 'OK') {
-      console.log(destination);
-      map.player.setTitle('you are walking to : ' + destination.marker.title);
-      map.player.setImg(destination.marker.icon.url);
+      map.player.setTitle('you are walking to : ' + destination.title);
+      map.player.setImg(destination.icon.url);
       map.directionsRenderer.setDirections(response);
       map.directionsRenderer.setMap(map);
     } else {
@@ -45,12 +47,12 @@ function route(origin, destination){
 }
 
 function stopNavigation(){
+  map.player.navigation.root_.disabled = true;
   map.player.setTitle('Press play to start navigation');
   map.player.setImg("content/favicon.ico");
   clearInterval(interval);
   interval = false;
   map.directionsRenderer.setMap(null);
-  map.player.navigation.root_.style.display = 'none';
 }
 
 function isNavigating(){

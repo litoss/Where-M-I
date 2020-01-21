@@ -17,46 +17,44 @@ class Player{
 
     this.root_.appendChild(nav);
 
-    var back = new IconButton('arrow_back');
-    var playButton = new IconButton('play_arrow');
+    this.back = new IconButton('arrow_back');
+    this.back.root_.disabled = true;
+    this.playButton = new IconButton('play_arrow');
     this.navigation = new IconButton('explore_off');
-    this.navigation.root_.style.display = "none";
-    var nextButton = new IconButton('chevron_right');
-    var forward = new IconButton('arrow_forward');
+    this.navigation.root_.disabled = true;
+    this.nextButton = new IconButton('chevron_right');
+    this.nextButton.root_.disabled = true;
+    this.forward = new IconButton('arrow_forward');
+    this.forward.root_.disabled = true;
 
-    this.root_.appendChild(back.root_)
-    this.root_.appendChild(playButton.root_);
+    this.root_.appendChild(this.back.root_)
     this.root_.appendChild(this.navigation.root_);
-    this.root_.appendChild(nextButton.root_);
-    this.root_.appendChild(forward.root_)
+    this.root_.appendChild(this.playButton.root_);
+    this.root_.appendChild(this.nextButton.root_);
+    this.root_.appendChild(this.forward.root_)
 
-    forward.listen('click', () => {
-      console.log("ciao");
+    nav.addEventListener('click', () => {
+      openSelectPaths();
+    });
+
+    this.forward.listen('click', () => {
       next();
     });
 
     this.navigation.listen('click', () => {
       stopNavigation();
-    })
+    });
 
-    back.listen('click', () => {
+    this.back.listen('click', () => {
       previous();
-    })
+    });
 
-    nextButton.listen('click', () => {
-      more();
-    })
+    this.nextButton.listen('click', () => {
+      more(this.playButton);
+    });
 
-    playButton.listen('click', (event) => {
-      if(playButton.getIcon() == 'play_arrow' && (!playlist.length && !free)){
-        start();
-      }else if (playButton.getIcon() == 'play_arrow'){
-        play(playButton);
-      }else if(playButton.getIcon() == 'pause'){
-        pauseVideo();
-      }else if(playButton.getIcon() == 'replay'){
-        playVideo();
-      }
+    this.playButton.listen('click', () => {
+      wheremi(this.playButton);
     });
   }
 
