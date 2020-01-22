@@ -20,7 +20,8 @@ const url = 'mongodb://localhost:27017';
 //const url = 'mongodb://site181927:Aeho3ael@mongo_site181927';
 
 //le prossime tre righe plus la funzione verify sono per fare la richiesta a Google per l'autenticazione dato il token dell'utente
-var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
+//var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
+var CLIENT_ID = '911339680377-e233gk58u8rnhgvaui26r9jg6r0fjvv1.apps.googleusercontent.com'
 const {OAuth2Client} = require('google-auth-library');
 const client_user = new OAuth2Client(CLIENT_ID);
 
@@ -124,7 +125,6 @@ la richiesta di trovare il luogo prima di farela richiesta di creazione.
                 }
             var new_values = {$set: object2};
             var ret_update = await db.collection('place').updateOne(query, new_values); //update with the parameter that are passed trought the body
-            //console.log(ret_update.result);
             client.close();
             up_star(req);
             count_star(req);
@@ -194,7 +194,6 @@ exports.find_place = async(req) => { //ritorna il documento ricercato
             expression.push({opening:{$lte:req.body.time}});
             expression.push({closing:{$gt:req.body.time}});
         }
-        //console.log(expression);
         var query;
             if(expression.length >  1){query = {$and:expression};}
             if(expression.length == 1){query = expression[0]}
@@ -226,9 +225,6 @@ exports.showdb_place = async () => {
 
 //aggiunge una review alla collezione review
 exports.add_review = async (req) => {
-
-    //console.log("richiesta di aggiunta review:x " + JSON.stringify(req.body));
-    //console.log('\n');
 
     try{
         let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });

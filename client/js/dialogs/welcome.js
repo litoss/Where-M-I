@@ -29,7 +29,7 @@ function openWelcome() {
       welcomeDialog.close();
       openGeocode();
     }else{
-      var snackbar = new SnackBar('Wait while page is loaded');
+      var snackbar = new SnackBar('Wait until page is loaded');
       snackbar.open();
     }
   });

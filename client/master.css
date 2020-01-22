@@ -40,6 +40,10 @@ body {
     .mdc-drawer--dismissible{
       width: 100%;
     }
+    .about-card {
+      margin:10px;
+      width: 95%;
+    }
 }
 
 @media all and (min-width:481px) {
@@ -49,11 +53,10 @@ body {
     .mdc-drawer--dismissible{
       width: 480px;
     }
-}
-
-.about-card {
-  margin:20px;
-  width: 430px;
+    .about-card {
+      margin:20px;
+      width: 430px;
+    }
 }
 
 .mdc-top-app-bar--relative{

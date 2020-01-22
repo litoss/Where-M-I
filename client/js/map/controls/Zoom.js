@@ -3,8 +3,7 @@ class ZoomP extends IconButton{
     super('zoom_in','mdc-button--raised mdc-image__circular');
     this.unbounded = true;
     this.listen('click', () => {
-      console.log(getZoom())
-      if(getZoom() < 21) setZoom(getZoom()+1);
+      if(map.getZoom() < 21) map.setZoom(map.getZoom()+1);
     });
   }
 }
@@ -14,7 +13,7 @@ class ZoomL extends IconButton{
     super('zoom_out','mdc-button--raised mdc-image__circular');
     this.unbounded = true;
     this.listen('click', () => {
-      if(getZoom() > 0) setZoom(getZoom()-1);
+      if(map.getZoom() > 0) map.setZoom(map.getZoom()-1);
     });
   }
 }

@@ -202,8 +202,11 @@ function submit(place){
 
       markerPlaces.push(new Place(place));
 
-      markerCluster.clearMarkers();
-      markerCluster = new MarkerClusterer(map, markerClips.concat(markerPlaces));
+      clusterClip.clearMarkers();
+      clusterPlace.clearMarkers();
+      
+      clusterClip = new MarkerClusterer(map, markerClips);
+      clusterPlace = new MarkerClusterer(map, markerPlaces);
 
       var snackbar = new SnackBar('Place added Successfully');
       snackbar.open();

@@ -1,7 +1,9 @@
 // Google API
 
-var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
-var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
+//var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
+//var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
+var CLIENT_ID = '911339680377-e233gk58u8rnhgvaui26r9jg6r0fjvv1.apps.googleusercontent.com';
+var API_KEY = 'AIzaSyC_HAdEdl46kdK0QzvqvZ_eVGNxas5tIV0';
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
 var profile, token, preferences;
@@ -64,7 +66,7 @@ function updateSigninStatus(isSignedIn) {
 }
 
 function handleAuthClick(event) {
-  gapi.auth2.getAuthInstance().signIn();
+  gapi.auth2.getAuthInstance().signIn().catch((response) => {});
 }
 
 function handleSignoutClick(event) {

@@ -12,7 +12,10 @@ async function selectedPath(path){
   content.appendChild(navigationButton.root_);
 
   navigationButton.listen('click', () => {
-    playlist = path.route;
+    free = false;
+    player.forward.root_.disabled = false;
+    playlist = path.route.slice();
+    place = -1;
     next();
     pageDrawer.open = false;
   })

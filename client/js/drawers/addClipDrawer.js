@@ -152,26 +152,6 @@ function addClipDrawer(openLocationCode) {
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = async function () {
           var url = await decode64(this.responseText, "video/webm");
-          var link = document.createElement("a");
-          link.href = url;
-          link.download = titolo.value + ".webm";
-          link.click();
-
-          var buttonContainer = document.createElement('div');
-          var text = document.createElement('p');
-          text.innerHTML = description;
-          var close = new ActionButton('close');
-          buttonContainer.appendChild(close.root_);
-
-          var dialog = new Dialog(text, buttonContainer, "Description");
-          dialog.open();
-          close.listen('click', () => {
-            dialog.close();
-          })
-          document.getElementById('map').appendChild(dialog.root_);
-          dialog.listen('MDCDialog:closing', function() {
-            document.getElementById('map').removeChild(dialog.root_);
-          });
           var blob = await getimageBlob(url);
           insertClip(titolo.value, description, privacyStatus, blob).then((video) => {
             if(places[olc]){

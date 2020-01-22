@@ -131,87 +131,17 @@ function openSearch(){
         searchText.required = true;
 
         var search = new IconButton('search');
-        var settingsClips = new IconButton('settings');
         var searchHeader = document.createElement('div');
         var searchDiv = document.createElement('div');
 
         searchHeader.appendChild(searchText.root_);
         searchHeader.appendChild(search.root_);
-        searchHeader.appendChild(settingsClips.root_);
 
         container.appendChild(searchHeader);
         container.appendChild(searchDiv);
 
         searchText.input.focus();
-
-        var settings = document.createElement('div');
-
-        settingsClips.listen('click', () => {
-
-          if(!isOpen){
-
-            var div1 = document.createElement('hr');
-            div1.className = 'mdc-list-divider';
-            settings.appendChild(div1);
-
-            var purpose = new List();
-            purpose.add(new SelectList('What', 'what'));
-            purpose.add(new SelectList('How', 'how'));
-            purpose.add(new SelectList('Why', 'why'));
-            var pur = new Select('Purpose',purpose.root_,'form-field');
-            settings.appendChild(pur.root_);
-
-            //audience
-            var listAud = new List();
-            for (var i in audience) listAud.add(new SelectList(audience[i].name,audience[i].id));
-            var aud = new Select("Audience",listAud.root_,'form-field');
-            aud.setValue(searchSettings.audience);
-            settings.appendChild(aud.root_);
-
-            //languages
-            var listEl = new List();
-            for (var i in languages) listEl.add(new SelectList(languages[i].name,languages[i].tag));
-            var lang = new Select("Language",listEl.root_,'form-field');
-            lang.setValue(searchSettings.language);
-            settings.appendChild(lang.root_);
-
-
-            var listCat = new List();
-            for (var i in categories) listCat.add(new SelectList(categories[i].name,categories[i].id));
-            var catSel = new Select("category",listCat.root_,'form-field');
-            catSel.setValue(searchSettings.category);
-            settings.appendChild(catSel.root_);
-
-
-            var div2 = document.createElement('hr');
-            div2.className = 'mdc-list-divider';
-            settings.appendChild(div2);
-
-            settingsClips.root_.after(settings);
-
-            pur.listen('MDCSelect:change',(event) => {
-              searchSettings.purpose = pur.value;
-            })
-
-            catSel.listen('MDCSelect:change',(event) => {
-              searchSettings.category = catSel.value;
-            })
-            lang.listen('MDCSelect:change',(event) => {
-              searchSettings.language = lang.value;
-            })
-
-            aud.listen('MDCSelect:change',(event) => {
-              searchSettings.audience = aud.value;
-            })
-
-
-            isOpen = true;
-          }else{
-            settings.innerHTML = '';
-            isOpen = false;
-          }
-        });
-
+        
         search.listen('click', async() => {
           geocoder_geocode(searchText.value).then((result) => {
             updateMap(result);

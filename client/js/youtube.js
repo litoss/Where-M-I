@@ -7,36 +7,16 @@ async function youtubeSearch(part, q, maxResults){
   query.type = "video";
   query.q = q;
   if(maxResults) query.maxResults = maxResults;
+  
+  let request = await gapi.client.youtube.search.list(query);
 
-  if(q == '8FPHF800+-'){
-    return new Promise((resolve, reject) => {
-      var request = new XMLHttpRequest();
-      request.open("GET", "js/youtube.json");
-      request.onload = function(){
-        resolve(JSON.parse(request.responseText).s);
-      }
-      request.send();
-    });
-  }else{
-    return null;
+  var items = request.result.items;
+  while(request.result.nextPageToken){
+    query.pageToken = request.result.nextPageToken;
+    request = await gapi.client.youtube.search.list(query);
+    items = items.concat(request.result.items);
   }
 
-  // let request = await gapi.client.youtube.search.list(query);
-  //
-  // var items = request.result.items;
-  // while(request.result.nextPageToken){
-  //   query.pageToken = request.result.nextPageToken;
-  //   request = await gapi.client.youtube.search.list(query);
-  //   items = items.concat(request.result.items);
-  // }
-
-  // var hiddenElement = document.createElement('a');
-  //
-  // console.log(JSON.stringify(items));
-  // hiddenElement.href = "data:text/json;charset=utf-8," + encodeURI(JSON.stringify(items));
-  // hiddenElement.target = '_blank';
-  // hiddenElement.download = q + '.json';
-  // hiddenElement.click();
   return items;
 }
 
@@ -73,7 +53,8 @@ async function removeVideo(videoId){
   return gapi.client.youtube.videos.delete({
     "id": videoId
   }).then(()=>{
-    console.log('Il tuo video è stato correttamente rimosso')
+    var snackbar = new SnackBar('Your clip was successfully removed');
+    snackbar.open();
   });
 }
 
@@ -100,7 +81,8 @@ async function updateVideo(videoId){
              privacyStatus: 'public'
            }
      }).then(()=>{
-       console.log('Il tuo video è stato correttamente pubblicato')
+       var snackbar = new SnackBar('Your clip is siccessfully published');
+       snackbar.open();
      });
 }
 
@@ -116,24 +98,6 @@ function createPlaylist(name){
         }
       }
     });
-}
-
-function insertClipInPlaylist(playlistId,clipId){
-  return gapi.client.youtube.playlistItems.insert({
-     "part": "snippet",
-     "resource": {
-       "snippet": {
-         "playlistId": playlistId,
-         "position": 0,
-         "resourceId": {
-           "kind": "youtube#video",
-           "videoId": clipId
-         }
-       }
-     }
-   }).then((response)=>{
-     console.log(response)
-   });
 }
 
 async function insertClip(title, description, privacyStatus, readStream){

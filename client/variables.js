@@ -167,8 +167,8 @@ var simone = {
   var otherElements = [
     {name:"Checklist",icon:"check_circle"},
     {name:"About Us",icon:"emoji_people"},
-    {name:"Settings",icon:"settings_applications"},
-    {name:"Privacy Policy",icon:"policy"}
+    {name:"Settings",icon:"settings_applications"}
+
   ]
 
   var defaultPrefs = { language:'it',audience:"gen",category:"all", refreshTime:"120"}

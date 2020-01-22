@@ -8,8 +8,6 @@ function geocoder_init(){
 }
 
 function geocoder_geocode(address){
-  console.log(address)
-
   return new Promise((resolve,reject) =>{
     geocoder.geocode({'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {

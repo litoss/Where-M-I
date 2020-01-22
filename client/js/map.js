@@ -3,7 +3,8 @@ var places = [];
 var pathList = [];
 var markerPlaces = [];
 var markerClips = [];
-var markerCluster;
+var clusterClip;
+var clusterPlace;
 var timeout;
 var map;
 
@@ -97,8 +98,9 @@ function addClips(olc){
     for(var i in array){
       markerClips.push(new ClipMarker(places[array[i]]));
     }
-
-    markerCluster = new MarkerClusterer(map, markerClips.concat(markerPlaces));
+    
+    clusterClip = new MarkerClusterer(map, markerClips);
+    clusterPlace = new MarkerClusterer(map, markerPlaces);
   });
 }
 
@@ -123,7 +125,6 @@ function updateAfterTimeOut(){
 function clear(){
   area = [];
   places = [];
-
   for(var i in markerPlaces){
     markerPlaces[i].setMap(null);
   }
@@ -135,5 +136,6 @@ function clear(){
   markerClips = [];
   pathList = [];
 
-  markerCluster.clearMarkers();
+  clusterClip.clearMarkers();
+  clusterPlace.clearMarkers();
 }
