@@ -136,7 +136,6 @@ async function createEditDialog(place){
       place.description = descrForm.value;
 
       if(input.files[0]) {
-        console.log(input.files[0]);
         place.image = await encode64(input.files[0]);
       }else{
         place.image = img64;
@@ -181,9 +180,9 @@ function verify(place){
 
 function submit(place){
 
-  map.closeAllWindow();
+  closeAllWindow();
   dialog.close();
-  map.pageDrawer.open = false;
+  pageDrawer.open = false;
 
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/new_place');

@@ -1,4 +1,4 @@
-function clipDrawer(clips){
+function clipDrawer(olc, clips){
 
   var content = document.createElement('div');
 
@@ -6,7 +6,7 @@ function clipDrawer(clips){
   content.appendChild(addButton.root_);
 
   addButton.listen('click', () => {
-    addClipDrawer(clips[0].olc);
+    addClipDrawer(olc);
   });
 
   var whatClips = [];
@@ -66,7 +66,7 @@ function clipDrawer(clips){
     why.insertAdjacentElement('afterend',empty);
   }
 
-  map.pageDrawer  = new PageDrawer('Clips', content);
-  map.pageDrawer.open = true;
+  pageDrawer  = new PageDrawer('Clips', content);
+  pageDrawer.open = true;
 
 }

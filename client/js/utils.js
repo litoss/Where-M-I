@@ -75,6 +75,9 @@ function decode64BLOB(string, type){
   return blob;
 }
 
+function encodeOlc(latLng){
+    return OpenLocationCode.encode(latLng.lat(), latLng.lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
+}
 
 function decodeOlc(olc){
   var decode = OpenLocationCode.decode(olc);

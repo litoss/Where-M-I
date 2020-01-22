@@ -33,9 +33,6 @@ function createPath(){
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = async function(){
         var response = JSON.parse(xhr.response);
-        if(!response[0]){
-          console.log('no response');
-        }
 
         var listEl = new List();
 
@@ -86,8 +83,8 @@ function createPath(){
 
     })
 
-    map.pageDrawer = new PageDrawer('Create new Path', content);
-    map.pageDrawer.open = true;
+    pageDrawer = new PageDrawer('Create new Path', content);
+    pageDrawer.open = true;
 }
 
 function verifyRoute(route, name){
@@ -99,7 +96,7 @@ function verifyRoute(route, name){
     if(!response[0]) {
       submitRoute(route, name);
       pathList.push({namer: name, route: route});
-      map.pageDrawer.open = false;
+      pageDrawer.open = false;
     }else {
       var edit = new ActionButton('edit');
       var close = new IconButton('close');
@@ -108,23 +105,11 @@ function verifyRoute(route, name){
       edit.listen('click', () => {
         submitRoute(route, name);
         pathList = [];
-        var olc = OpenLocationCode.encode(map.position.marker.position.lat(), map.position.marker.position.lng(), 6);
-        map.addPaths(olc)
-        map.pageDrawer.open = false;
+        var olc = OpenLocationCode.encode(position.marker.position.lat(), position.marker.position.lng(), 6);
+        addPaths(olc)
+        pageDrawer.open = false;
       })
     }
   }
   xhr.send(JSON.stringify({OLC: route[0]}));
-}
-
-function submitRoute(route, name){
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/new_route');
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = function(){
-    var snackbar = new SnackBar('Your Path is correctly Added');
-    snackbar.open();
-  }
-  xhr.send(JSON.stringify({namer: name, route: route, token: token}));
-
 }

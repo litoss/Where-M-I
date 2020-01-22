@@ -40,8 +40,8 @@ async function openCharts(){
   tabBar.activateTab(0);
 
 
-  map.pageDrawer = new PageDrawer('Charts', content);
-  map.pageDrawer.open = true;
+  pageDrawer = new PageDrawer('Charts', content);
+  pageDrawer.open = true;
 }
 
 async function getTopPaths(div){
@@ -77,7 +77,7 @@ async function getTopPaths(div){
     for(var i in path) paths.add(new ImageList(path[i].route.namer, "Media Rating: " + path[i].rating, path[i].image ));
 
     paths.listen('MDCList:action', (event) => {
-      map.pageDrawer.open = false;
+      pageDrawer.open = false;
       selectedPath(path[event.detail.index].route);
     });
 

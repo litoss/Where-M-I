@@ -21,7 +21,7 @@ function openPlaces(){
           var addListener = function(index){
             var place = response[index];
             card.primaryAction.addEventListener("click", () => {
-              map.pageDrawer.open = false;
+              pageDrawer.open = false;
               selectedPlace(place);
             });
             editButton.listen('click', (event) => {
@@ -34,7 +34,7 @@ function openPlaces(){
               snackbar.open();
               edit.listen('click', () => {
                 deletePlace(place);
-                map.pageDrawer.open = false;
+                pageDrawer.open = false;
               })
             });
           }
@@ -44,8 +44,8 @@ function openPlaces(){
 
     xhr.send(JSON.stringify({token: token}));
 
-    map.pageDrawer = new PageDrawer('Your Places', content);
-    map.pageDrawer.open = true;
+    pageDrawer = new PageDrawer('Your Places', content);
+    pageDrawer.open = true;
 }
 
 function deletePlace(place){

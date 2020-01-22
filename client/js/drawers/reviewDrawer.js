@@ -2,8 +2,14 @@ async function reviewDrawer(olc){
 
   var content = document.createElement('div');
 
-  var addButton = new FloatingActionButton('add', 'drawer-fab');
-  content.appendChild(addButton.root_);
+  if(profile){
+    var addButton = new FloatingActionButton('add', 'drawer-fab');
+    content.appendChild(addButton.root_);
+
+    addButton.listen('click', () => {
+      reviewDialog(olc);
+    });
+  }
 
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/find_review');
@@ -14,26 +20,21 @@ async function reviewDrawer(olc){
       var noReview = document.createElement('h3');
       noReview.innerHTML = 'No reviews for this place.';
       content.appendChild(noReview);
-      return;
-    }
-    var reviews = [];
-    var review = new List("mdc-list--two-line mdc-list--avatar-list");
+    }else{
+      var review = new List("mdc-list--two-line mdc-list--avatar-list");
 
-    for(var i in response){
-      if(response[i].rating_place){
+      for(var i in response){
+        if(response[i].rating_place){
 
-        var user = await findUser(response[i].user);
+          var user = await findUser(response[i].user);
 
-        reviews[i] = user;
-        var div = document.createElement('div');
-
-        for(var i in reviews){
           var separator1 = document.createElement('hr');
           separator1.className = 'mdc-list-divider';
           review.add(separator1);
 
-          review.add(new ImageList(reviews[i].name, reviews[i].email, reviews[i].picture ));
+          review.add(new ImageList(user.name, user.email, user.picture));
 
+          var div = document.createElement('div');
           var star = setStar(response[i].rating_place, div);
           review.add(star);
 
@@ -52,12 +53,8 @@ async function reviewDrawer(olc){
   }
   xhr.send(JSON.stringify({OLC: olc}));
 
-  map.pageDrawer  = new PageDrawer('Reviews', content);
-  map.pageDrawer.open = true;
-
-  addButton.listen('click', () => {
-    reviewDialog(olc);
-  });
+  pageDrawer  = new PageDrawer('Reviews', content);
+  pageDrawer.open = true;
 }
 
 function setStar(rating){
@@ -84,15 +81,4 @@ function setStar(rating){
     }
   }
   return div;
-}
-
-function findUser(id){
-  return new Promise((resolve,reject) =>{
-    xhr.open('POST', '/find_preference');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function(){
-      resolve(JSON.parse(xhr.response)[0]);
-    }
-    xhr.send(JSON.stringify({id: id}));
-  })
 }

@@ -45,13 +45,14 @@ function openSettings(){
   content.appendChild(div);
 
   refresh.listen('click', () => {
-    map.updateMap(map.position.marker.position);
+    clear();
+    updateMap(position.marker.position);
     clearTimeout(timeout);
-    map.updateAfterTimeOut();
+    updateAfterTimeOut();
   })
 
-  map.pageDrawer = new PageDrawer('Settings', content);
-  map.pageDrawer.open = true;
+  pageDrawer = new PageDrawer('Settings', content);
+  pageDrawer.open = true;
 
   addButton.listen("click", () => {
 
@@ -63,16 +64,17 @@ function openSettings(){
       refreshTime: listRefresh.value
     };
 
-    map.pageDrawer.open = false;
+    pageDrawer.open = false;
 
     if(profile){
       xhr = new XMLHttpRequest();
       xhr.open('POST', '/add_preference');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = function() {
-        map.updateMap(map.position.marker.position);
+        clear();
+        updateMap(position.marker.position);
         clearTimeout(timeout);
-        map.updateAfterTimeOut();
+        updateAfterTimeOut();
         if (xhr.status !== 200) {
           var snackbar = new SnackBar('Something went wrong please try again');
           snackbar.open();

@@ -6,36 +6,36 @@ async function localize(){
   //welcomeDialog.close();
 }
 
-async function watch(position){
-  var latLng = new google.maps.LatLng({lat: position.coords.latitude, lng: position.coords.longitude});
-  if(!map.position){
-    map.position = new Position(latLng, false);
+async function watch(pos){
+  var latLng = new google.maps.LatLng({lat: pos.coords.latitude, lng: pos.coords.longitude});
+  if(!position){
+    position = new Position(latLng, false);
     map.setCenter(latLng);
-  }else if(position.coords.accuracy){
-    map.position.setPosition(latLng);
-    map.position.setAccuracy(position.coords.accuracy);
+  }else if(pos.coords.accuracy){
+    position.setPosition(latLng);
+    position.setAccuracy(pos.coords.accuracy);
     welcomeDialog.close();
   }else error();
 }
 
 function clear(){
   geolocator = navigator.geolocation.clearWatch(geolocator);
-  if(map.position){
-    map.position.remove();
-    map.position = null;
+  if(position){
+    position.remove();
+    position = null;
   }
 }
 
 function error(err) {
   if(geolocator != null) clear();
   //rimuove marker se cambio metodo di localizzazione
-  if(map.draggableMarker){
-    map.draggableMarker.marker.setMap(null);
-    map.draggableMarker = null;
+  if(draggableMarker){
+    draggableMarker.marker.setMap(null);
+    draggableMarker = null;
   }
   var snackbar = new SnackBar('Geolocation error, please try again or use another method');
   snackbar.open();
 
-  map.menuDrawer.open = false;
-  openWelcome();
+  menuDrawer.open = false;
+  openGeocode();
 }

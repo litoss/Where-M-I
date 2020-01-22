@@ -1,13 +1,13 @@
 // Iframe Player API
 // https://developers.google.com/youtube/iframe_api_reference
 
-var player;
+var frame;
 var currentId;
 var buttons;
 var state;
 
 function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player', {
+  frame = new YT.Player('player', {
     events: {
       'onStateChange': onPlayerStateChange
     }
@@ -20,10 +20,10 @@ function newPlayer(vid){
   }
   currentId = vid;
   buttons = [];
-  player.loadVideoById({
+  frame.loadVideoById({
     'videoId': vid,
   });
-  player.setVolume(50);
+  frame.setVolume(50);
 }
 
 function addButton(button){
@@ -32,10 +32,10 @@ function addButton(button){
 
 function playPause() {
   if(state != 1){
-    player.playVideo();
+    frame.playVideo();
   }
   else{
-    player.pauseVideo();
+    frame.pauseVideo();
   }
 }
 

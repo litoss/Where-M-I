@@ -26,7 +26,7 @@ class TopBar {
     })
 
     this.topBar.listen('MDCTopAppBar:nav', () => {
-      map.menuDrawer.open = true;
+      menuDrawer.open = true;
     });
 
     settingsButton.listen('click',openSettings);

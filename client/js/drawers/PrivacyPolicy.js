@@ -10,6 +10,6 @@ function openPrivacy(){
   var description = document.createElement("p")
   content.appendChild(list.root_);
 
-  map.pageDrawer = new PageDrawer('Browser - Check List', content);
-  map.pageDrawer.open = true;
+  pageDrawer = new PageDrawer('Browser - Check List', content);
+  pageDrawer.open = true;
 }

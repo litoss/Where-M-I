@@ -33,8 +33,8 @@ class Position {
 
     this.circle.bindTo("position", this.marker, "center");
 
-    map.updateMap(this.marker.position);
-    map.updateAfterTimeOut();
+    updateMap(this.marker.position);
+    updateAfterTimeOut();
 
     this.marker.addListener("click", () => {
       this.infoWindow.open(map,this.marker);
@@ -62,7 +62,7 @@ class Position {
 
     google.maps.event.addListener(this.marker, 'dragend', function(marker) {
       map.setCenter(marker.latLng);
-      map.updateMap(marker.latLng);
+      updateMap(marker.latLng);
     });
   }
 
@@ -86,7 +86,7 @@ class Position {
   setPosition(latLng){
     this.marker.setMap(map);
     this.marker.setPosition(latLng);
-    map.updateMap(latLng);
+    updateMap(latLng);
   }
 
   remove(){

@@ -1,62 +1,5 @@
 function addClipDrawer(openLocationCode) {
 
-    //  var audios = [];
-        async function saveVideo(privacyStatus) {
-            if (titolo.value && testo.value && (what.input.checked || how.input.checked || why.input.checked) && lang.value && selectE1.value && selectE2.value && audio.src) {
-                var geoloc = olc.value.substring(0, 6) + "00+-" + olc.value.substring(0, 9) + "-" + olc.value;
-                var purpose = what.input.checked ? "who" : how.input.checked ? "how" : "why";
-                var language = lang.value;
-                var content = selectE1.value;
-                var audience = selectE2.value;
-                var description = geoloc + ":" + purpose + ":" + language + ":" + content + ":A" + audience;//+ ":P" + detail;
-                if (why.input.checked && selectE3.value) {
-                    var detail = selectE3.value;
-                    console.log(selectE3);
-                    description = description + detail;
-                };
-                description = description + '#' + testo.value;
-                var blob = await getimageBlob(audio.src);
-                var base64 = await convertBlobToBase64(blob);
-
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/audio_to_video');
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onload = async function () {
-                    var url = await decode64(this.responseText, "video/webm");
-                    var link = document.createElement("a");
-                    link.href = url;
-                    link.download = titolo.value + ".webm";
-                    link.click();
-
-                    var buttonContainer = document.createElement('div');
-                    var text = document.createElement('p');
-                    text.innerHTML = description;
-                    var close = new ActionButton('close');
-                    buttonContainer.appendChild(close.root_);
-
-                    var dialog = new Dialog(text, buttonContainer, "Description");
-                    dialog.open();
-                    close.listen('click', () => {
-                      dialog.close();
-                    })
-                    document.getElementById('map').appendChild(dialog.root_);
-                    dialog.listen('MDCDialog:closing', function() {
-                      document.getElementById('map').removeChild(dialog.root_);
-                    });
-                    //var blob = await getimageBlob(url);
-                    //insertClip(titolo.value, description, privacyStatus, blob).then()
-                };
-                xhr.send(JSON.stringify({ chunks: base64 }));
-            }
-            else {
-                var snackbar = new SnackBar('Missing data');
-                snackbar.open();
-                snackbar.listen("MDCSnackbar:closed", () => {
-                    document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-                });
-            }
-        }
-
     var div = document.createElement('div');
 
     var newClip = document.createElement('h2');
@@ -139,16 +82,8 @@ function addClipDrawer(openLocationCode) {
     audiodiv.appendChild(cancel.root_);
 
     var privacy = document.createElement('h2');
-    //  privacy.innerHTML = 'Privacy Status';
     div.appendChild(privacy);
 
-    /*  var listE3 = new List();
-      listE3.add(new SelectList('Private', 'private'));
-      listE3.add(new SelectList('Public', 'public'));
-
-      var selectE3 = new Select("Privacy", listE3.root_);
-      div.appendChild(selectE3.root_);
-    */
     var salva = new ActionButton('Salva Clip');
     div.appendChild(salva.root_);
 
@@ -169,8 +104,6 @@ function addClipDrawer(openLocationCode) {
     what.listen('click', () => {
         selectE3.root_.style.display = 'none';
     });
-
-
 
     register.listen('MDCIconButtonToggle:change', async () => {
         function incrementSeconds() {
@@ -198,6 +131,66 @@ function addClipDrawer(openLocationCode) {
         audiodiv.style.display = "none";
     });
 
+    async function saveVideo(privacyStatus){
+      if (titolo.value && testo.value && (what.input.checked || how.input.checked || why.input.checked) && lang.value && selectE1.value && selectE2.value && audio.src) {
+        var geoloc = olc.value.substring(0, 6) + "00+-" + olc.value.substring(0, 9) + "-" + olc.value;
+        var purpose = what.input.checked ? "who" : how.input.checked ? "how" : "why";
+        var language = lang.value;
+        var content = selectE1.value;
+        var audience = selectE2.value;
+        var description = geoloc + ":" + purpose + ":" + language + ":" + content + ":A" + audience;
+        if (why.input.checked && selectE3.value) {
+          var detail = selectE3.value;
+          description = description + detail;
+        }
+        description = description + '#' + testo.value;
+        var blob = await getimageBlob(audio.src);
+        var base64 = await convertBlobToBase64(blob);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/audio_to_video');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = async function () {
+          var url = await decode64(this.responseText, "video/webm");
+          var link = document.createElement("a");
+          link.href = url;
+          link.download = titolo.value + ".webm";
+          link.click();
+
+          var buttonContainer = document.createElement('div');
+          var text = document.createElement('p');
+          text.innerHTML = description;
+          var close = new ActionButton('close');
+          buttonContainer.appendChild(close.root_);
+
+          var dialog = new Dialog(text, buttonContainer, "Description");
+          dialog.open();
+          close.listen('click', () => {
+            dialog.close();
+          })
+          document.getElementById('map').appendChild(dialog.root_);
+          dialog.listen('MDCDialog:closing', function() {
+            document.getElementById('map').removeChild(dialog.root_);
+          });
+          var blob = await getimageBlob(url);
+          insertClip(titolo.value, description, privacyStatus, blob).then((video) => {
+            if(places[olc]){
+              places[olc].push(video);
+              updateMap(olc);
+            }else{
+              places[olc] = [video];
+              markerClips.push(new ClipMarker(places[olc]))
+            }
+            markerClips.push()
+          });
+        }
+        xhr.send(JSON.stringify({ chunks: base64 }));
+      }else{
+        var snackbar = new SnackBar('Missing data');
+        snackbar.open();
+      }
+    }
+
     salva.listen('click', async () => {
         saveVideo('public');
     });
@@ -207,21 +200,16 @@ function addClipDrawer(openLocationCode) {
     });
 
     modifica.listen('click', () => {
-        if (audio.src) {
-            openVideoDialog(audio.src).then((response) => {
-                audio.src = response;
-            });
-        } else {
-            var snackbar = new SnackBar('Please record an audio.');
-            snackbar.open();
-            snackbar.listen("MDCSnackbar:closed", () => {
-                document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
-        }
+      if (audio.src) {
+        openVideoDialog(audio.src).then((response) => {
+            audio.src = response;
+        });
+      }else{
+        var snackbar = new SnackBar('Please record an audio.');
+        snackbar.open();
+      }
     });
 
-    map.pageDrawer = new PageDrawer('New Clip', div);
-    map.pageDrawer.open = true;
-
-
+    pageDrawer = new PageDrawer('New Clip', div);
+    pageDrawer.open = true;
 };

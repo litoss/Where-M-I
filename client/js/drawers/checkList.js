@@ -21,6 +21,6 @@ function openCheckList(){
 
   content.appendChild(list.root_);
 
-  map.pageDrawer = new PageDrawer('Check List', content);
-  map.pageDrawer.open = true;
+  pageDrawer = new PageDrawer('Check List', content);
+  pageDrawer.open = true;
 }

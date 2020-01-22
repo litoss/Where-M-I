@@ -69,7 +69,7 @@ class YoutubePlayer{
       if(getCurrentPlayer() != video.id.videoId){
         newPlayer(video.id.videoId);
         addButton(button);
-        addButton(map.player.playButton);
+        addButton(player.playButton);
       }else{
         playPause();
       }

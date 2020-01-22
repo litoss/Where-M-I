@@ -39,8 +39,9 @@ class Place {
     }});
 
     directionButton.listen('click', () => {
-      if(map.position.getPosition()){
-        drivingDirections(map.position, this.marker);
+      this.infoWindow.close();
+      if(position.getPosition()){
+        drivingDirections(position, this.marker);
       }else{
         var snackbar = new SnackBar('Geolocalization is not active');
         snackbar.open();

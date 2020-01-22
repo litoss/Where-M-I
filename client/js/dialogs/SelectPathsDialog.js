@@ -6,8 +6,6 @@ async function openSelectPaths() {
 
   content.appendChild(list.root_);
 
-  var position = map.position.getPosition();
-
   for(var i  in pathList){
     list.add(new ImageList(pathList[i].namer, "Number of steps :" + pathList[i].route.length));
   }
@@ -22,11 +20,11 @@ async function openSelectPaths() {
     if(event.detail.index == 0){
       free = true;
     }else{
-      playlist = pathList[event.detail.index - 1].route;
+      free = false;
+      playlist = pathList[event.detail.index - 1].route.slice();
     }
     dialog.close();
-
-    map.player.forward.root_.disabled = false;
+    player.forward.root_.disabled = false;
     place = -1;
     next();
   });
@@ -40,16 +38,5 @@ async function openSelectPaths() {
 
   dialog.listen('MDCDialog:closing', function() {
     document.getElementById('map').removeChild(dialog.root_);
-  });
-}
-function getPaths(olc){
-  return new Promise((resolve,reject) => {
-    xhr = new XMLHttpRequest();
-    xhr.open('POST', '/find_route');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function(){
-      resolve(JSON.parse(xhr.response));
-    }
-    xhr.send(JSON.stringify({OLC: olc}));
   });
 }

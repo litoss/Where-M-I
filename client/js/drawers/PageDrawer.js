@@ -9,7 +9,7 @@ class PageDrawer extends Drawer{
 
     menu.listen('click', () => {
       this.open = false;
-      map.menuDrawer.open = true;
+      menuDrawer.open = true;
     })
 
     clear.listen('click', () => {
@@ -25,7 +25,7 @@ class PageDrawer extends Drawer{
 
   this.listen('MDCDrawer:closed', () => {
     document.querySelector('.mdc-drawer--dismissible').remove();
-    //map.pageDrawer = null;
+    //pageDrawer = null;
   });
   }
 

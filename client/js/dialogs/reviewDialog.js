@@ -40,7 +40,7 @@ async function reviewDialog(olc){
     }else {
       addReview(olc, countStar, reviewForm.value);
       dialog.close();
-      map.pageDrawer.open = false;
+      pageDrawer.open = false;
     }
   });
 }

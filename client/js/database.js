@@ -18,10 +18,10 @@ function addReview(olc, value, comment){
   xhr.open('POST', '/new_review');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = async function(){
-    for(var i in map.places){
-      var olcR = OpenLocationCode.encode(map.places[i].getPosition().lat(), map.places[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
+    for(var i in places){
+      var olcR = OpenLocationCode.encode(places[i].getPosition().lat(), places[i].getPosition().lng(), OpenLocationCode.CODE_PRECISION_NORMAL);
       if (olcR == olc){
-        map.places[i].place.media_rating = await getRating(olc);
+        places[i].place.media_rating = await getRating(olc);
       }
     }
     var snackbar = new SnackBar('Review Added succesfully');
@@ -41,7 +41,6 @@ function getPlaces(area){
     xhr.send(JSON.stringify({OLC: area}));
   });
 }
-
 
 function getPreferences() {
   var xhr = new XMLHttpRequest();
@@ -66,7 +65,6 @@ function setPreferences() {
   xhr.open('POST', '/add_preference');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
-    console.log(xhr.response);
   };
   xhr.send(JSON.stringify({token: token, category: defaultPrefs.category, audience: defaultPrefs.audience, language:defaultPrefs.language}));
 }
@@ -81,4 +79,26 @@ function getPaths(area) {
     };
     xhr.send(JSON.stringify({OLC: area}));
   });
+}
+
+function findUser(id){
+  return new Promise((resolve,reject) =>{
+    xhr.open('POST', '/find_preference');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function(){
+      resolve(JSON.parse(xhr.response)[0]);
+    }
+    xhr.send(JSON.stringify({id: id}));
+  })
+}
+
+function submitRoute(route, name){
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/new_route');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function(){
+    var snackbar = new SnackBar('Your Path is correctly Added');
+    snackbar.open();
+  }
+  xhr.send(JSON.stringify({namer: name, route: route, token: token}));
 }

@@ -34,6 +34,6 @@ function openAbout() {
   });
   aboutBar.activateTab(0);
 
-  map.pageDrawer = new PageDrawer('About Us',content);
-  map.pageDrawer.open = true;
+  pageDrawer = new PageDrawer('About Us',content);
+  pageDrawer.open = true;
 }

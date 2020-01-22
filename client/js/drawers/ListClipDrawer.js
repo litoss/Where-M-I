@@ -90,9 +90,6 @@ function openClips(){
           else{
             var snackbar = new SnackBar('Select a draft video');
             snackbar.open();
-            snackbar.listen("MDCSnackbar:closed",() => {
-              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-            });
           }
         }
       }
@@ -213,7 +210,7 @@ function openClips(){
       }
     })
 
-    map.pageDrawer = new PageDrawer('Your Clips', content);
-    map.pageDrawer.open = true;
+    pageDrawer = new PageDrawer('Your Clips', content);
+    pageDrawer.open = true;
   });
 }

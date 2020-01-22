@@ -112,7 +112,7 @@ function openSearch(){
               var addListener = function(index){
                 card.primaryAction.addEventListener("click", () => {
                   var place = response[index];
-                  map.pageDrawer.open = false;
+                  pageDrawer.open = false;
                   selectedPlace(place);
                 });
               }
@@ -127,9 +127,8 @@ function openSearch(){
         container.innerHTML = '';
         isOpen = false;
 
-        var searchText= new TextField("OLC", "search");
+        var searchText= new TextField("Insert a location", "search");
         searchText.required = true;
-        searchText.input.value = "8FPH";
 
         var search = new IconButton('search');
         var settingsClips = new IconButton('settings');
@@ -214,13 +213,14 @@ function openSearch(){
         });
 
         search.listen('click', async() => {
-
-          searchDiv.innerHTML = '';
-          var clips = await searchClips(searchText.value, searchSettings.purpose, searchSettings.language, searchSettings.category, searchSettings.audience);
-          var listclips = new List("mdc-list--two-line");
-          for(var i in clips) listclips.add(new ElementList(clips[i].snippet.title, clips[i].snippet.description, 'music_note'));
-          searchDiv.appendChild(listclips.root_);
-
+          geocoder_geocode(searchText.value).then((result) => {
+            updateMap(result);
+            map.setCenter(result);
+            pageDrawer.open = false;
+          }).catch(() => {
+            var snackbar = new SnackBar('Scrivi qualcosa di sensato');
+            clearInterval(interval);
+          })
         });
         break;
 
@@ -269,7 +269,7 @@ function openSearch(){
               var addListener = function(index){
                 card.primaryAction.addEventListener("click", () => {
                   var route = response[index];
-                  map.pageDrawer.open = false;
+                  pageDrawer.open = false;
                   selectedPath(route);
                 });
               }
@@ -285,8 +285,8 @@ function openSearch(){
   tabBar.activateTab(0);
   activated = 0;
 
-  map.pageDrawer = new PageDrawer('Search', content);
-  map.pageDrawer.open = true;
+  pageDrawer = new PageDrawer('Search', content);
+  pageDrawer.open = true;
 }
 
 function searchVideo(){

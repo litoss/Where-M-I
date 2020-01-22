@@ -29,8 +29,8 @@ class ClipMarker {
 
     directionButton.listen('click', () => {
       this.infoWindow.close();
-      if(map.position.getPosition()){
-        drivingDirections(map.position, this.marker);
+      if(position.getPosition()){
+        drivingDirections(position, this.marker);
       }else{
         var snackbar = new SnackBar('Geolocalization is not active');
         snackbar.open();
@@ -47,7 +47,7 @@ class ClipMarker {
     });
 
     card.primaryAction.addEventListener('click',() => {
-      clipDrawer(videos);
+      clipDrawer(video[0].olc, videos);
     });
   }
 

@@ -54,7 +54,7 @@ function findClosestMarker(position){
 }
 
 function start(){
-  map.player.forward.root_.disabled = false;
+  player.forward.root_.disabled = false;
   playlist = [];
   place = -1;
   next();
@@ -64,48 +64,50 @@ function next(){
   place++;
 
   if(!playlist[place] && free){
-    var location = searchNextPlace(map.position);
+    var location = searchNextPlace(position);
     if(location.marker){
       playlist.push(location.olc);
     }else{
+      place--;
       var snackbar = new SnackBar('There are no places nearby');
       snackbar.open();
+      return;
     }
   }
 
   if(place == 0){
-    map.player.back.root_.disabled = true;
+    player.back.root_.disabled = true;
   }else{
-    map.player.back.root_.disabled = false;
+    player.back.root_.disabled = false;
   }
   if(place == playlist.length-1 && !free){
-    map.player.forward.root_.disabled = true;
+    player.forward.root_.disabled = true;
   }
-  drivingDirections(map.position, getMarkerByOlc(playlist[place]));
+  drivingDirections(position, getMarkerByOlc(playlist[place]));
 }
 
 
 function previous(){
   place--;
-  map.player.forward.root_.disabled = false;
+  player.forward.root_.disabled = false;
   if(place == 0){
-    map.player.back.root_.disabled = true;
+    player.back.root_.disabled = true;
   }
-  drivingDirections(map.position, getMarkerByOlc(playlist[place]));
+  drivingDirections(position, getMarkerByOlc(playlist[place]));
 }
 
 function wheremi(button){
-  var marker = findClosestMarker(map.position);
-  if(marker && places[marker.olc]){
+  var marker = findClosestMarker(position);
+  if(marker.olc && places[marker.olc].length){
     clipList = places[marker.olc];
-    //clipList = orderClips(places[location.olc])
+
     if(marker.olc != currentPlace){
       clip = 0;
       currentPlace = marker.olc;
     }
 
     if(clip != clipList.length-1){
-      map.player.nextButton.root_.disabled = false;
+      player.nextButton.root_.disabled = false;
     }
 
     if(getCurrentPlayer() != clipList[clip].id.videoId){
@@ -123,7 +125,7 @@ function wheremi(button){
 function more(button){
   clip++;
   if(clip == clipList.length-1){
-    map.player.nextButton.root_.disabled = true;
+    player.nextButton.root_.disabled = true;
   }
   newPlayer(clipList[clip].id.videoId, button);
 }

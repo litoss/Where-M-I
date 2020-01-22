@@ -22,8 +22,8 @@ function initClient() {
 
     // Handle the initial sign-in state.
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-    map.topBar.authorizeButton.listen('click', handleAuthClick);
-    map.topBar.signoutButton.listen('click', handleSignoutClick);
+    topBar.authorizeButton.listen('click', handleAuthClick);
+    topBar.signoutButton.listen('click', handleSignoutClick);
   });
 
   gapi.client.load('youtube', 'v3');
@@ -38,27 +38,27 @@ function updateSigninStatus(isSignedIn) {
     profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
     getPreferences();
 
-    map.topBar.authorizeButton.root_.style.display = "none";
-    map.topBar.signoutButton.root_.style.display = "block";
-    map.topBar.icon.setImage(profile.getImageUrl());
-    map.topBar.loginCard.setTitle(profile.getName());
-    map.topBar.loginCard.setImage(profile.getImageUrl());
+    topBar.authorizeButton.root_.style.display = "none";
+    topBar.signoutButton.root_.style.display = "block";
+    topBar.icon.setImage(profile.getImageUrl());
+    topBar.loginCard.setTitle(profile.getName());
+    topBar.loginCard.setImage(profile.getImageUrl());
 
     for(var i=6; i<9; i++) {
-      map.menuDrawer.elements[i].className = "mdc-list-item";
+      menuDrawer.elements[i].className = "mdc-list-item";
     }
   } else {
 
     preferences = defaultPrefs;
 
-    map.topBar.authorizeButton.root_.style.display = "block";
-    map.topBar.signoutButton.root_.style.display = "none";
-    map.topBar.icon.setImage("content/photo.png");
-    map.topBar.loginCard.setTitle("Guest");
-    map.topBar.loginCard.setImage("content/photo.png");
+    topBar.authorizeButton.root_.style.display = "block";
+    topBar.signoutButton.root_.style.display = "none";
+    topBar.icon.setImage("content/photo.png");
+    topBar.loginCard.setTitle("Guest");
+    topBar.loginCard.setImage("content/photo.png");
 
     for(var i=6; i<9; i++) {
-      map.menuDrawer.elements[i].className += " mdc-list-item--disabled";
+      menuDrawer.elements[i].className += " mdc-list-item--disabled";
     }
   }
 }

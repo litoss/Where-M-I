@@ -6,38 +6,35 @@ function openWelcome() {
   img.src = '../../content/menuheader.svg';
   img.id = 'welcome-img';
 
-  var descr = document.createElement('h3');
-  descr.innerHTML = 'Select the localization method';
+  var descr = document.createElement('p');
+  descr.innerHTML = 'The audio guide of the future: navigate, listen and record the clips of your favourite places in the world';
 
   content.appendChild(img);
   content.appendChild(descr);
 
   var buttonContainer = document.createElement('div');
-  var geolocate = new ActionButton('geolocate', 'mdc-button--raised');
-  var insert = new ActionButton('search');
+  var start = new ActionButton('start', 'mdc-button--raised');
 
-  buttonContainer.appendChild(geolocate.root_);
-  buttonContainer.appendChild(insert.root_);
+  buttonContainer.appendChild(start.root_);
 
-  welcomeDialog = new Dialog(content, buttonContainer, "");
+  welcomeDialog = new Dialog(content, buttonContainer, "Where Am I");
 
   document.getElementById('map').appendChild(welcomeDialog.root_);
   welcomeDialog.open();
   welcomeDialog.scrimClickAction = '';
   welcomeDialog.escapeKeyAction = '';
 
-  geolocate.listen('click',() => {
-    //welcomeDialog.close();
-    localize();
-  });
-
-  insert.listen('click', () => {
-    welcomeDialog.close();
-    openGeocode();
+  start.listen('click',() => {
+    if(preferences){
+      welcomeDialog.close();
+      openGeocode();
+    }else{
+      var snackbar = new SnackBar('Wait while page is loaded');
+      snackbar.open();
+    }
   });
 
   welcomeDialog.listen('MDCDialog:closing', function() {
     document.getElementById('map').removeChild(welcomeDialog.root_);
   });
-
 }

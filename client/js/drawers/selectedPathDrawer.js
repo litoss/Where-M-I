@@ -14,12 +14,11 @@ async function selectedPath(path){
   navigationButton.listen('click', () => {
     playlist = path.route;
     next();
-    map.pageDrawer.open = false;
+    pageDrawer.open = false;
   })
 
-
-  map.pageDrawer  = new PageDrawer(path.namer, content);
-  map.pageDrawer.open = true;
+  pageDrawer  = new PageDrawer(path.namer, content);
+  pageDrawer.open = true;
 }
 
 function searchPlace(olc){

@@ -11,10 +11,7 @@ function openMarker() {
   content.appendChild(alert);
 
   var buttonContainer = document.createElement('div');
-  var geolocate = new ActionButton('Insert Marker', 'mdc-button--raised');
-  var back = new ActionButton('back');
-
-  buttonContainer.appendChild(back.root_);
+  var geolocate = new ActionButton('Agree', 'mdc-button--raised');
   buttonContainer.appendChild(geolocate.root_);
 
   var markerDialog = new Dialog(content, buttonContainer, "Attention!");
@@ -26,13 +23,8 @@ function openMarker() {
 
   geolocate.listen('click',() => {
     markerDialog.close();
-    map.position = new Position({lat: 44.494201, lng: 11.346477}, true);
+    position = new Position({lat: 44.494201, lng: 11.346477}, true);
     map.setCenter({lat: 44.494201, lng: 11.346477});
-  });
-
-  back.listen('click', () => {
-    markerDialog.close();
-    openGeocode();
   });
 
   markerDialog.listen('MDCDialog:closing', function() {

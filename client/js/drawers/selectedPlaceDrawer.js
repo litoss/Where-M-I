@@ -2,7 +2,7 @@ var visited = false;
 
 async function selectedPlace(place){
 
-  if(map.pageDrawer) map.pageDrawer.open = false;
+  if(pageDrawer) pageDrawer.open = false;
 
   var review = [];
 
@@ -14,8 +14,7 @@ async function selectedPlace(place){
   content.appendChild(clipButton.root_);
 
   clipButton.listen('click', () => {
-    clipDrawer(places[place.OLC]);
-    //addClipDrawer(place.OLC);
+    clipDrawer(place.OLC, places[place.OLC]);
   });
 
   var imgContainer = document.createElement('div');
@@ -27,41 +26,34 @@ async function selectedPlace(place){
   img.className = 'selected-place-img'
   imgContainer.appendChild(img);
 
-
   var infoContainer =  document.createElement('div');
   content.appendChild(infoContainer);
 
+  var openingHours = document.createElement('h4');
+  openingHours.innerHTML = 'Opening hours: ' + place.opening + ":00/" + place.closing + ":00";
+  infoContainer.appendChild(openingHours);
 
   getMediaRating(place.OLC).then( function(mediaRating){
     var stars = setStar(mediaRating, infoContainer);
     infoContainer.appendChild(stars);
   });
 
-
-
-//var stars = setStar(place.media_rating, infoContainer);
-  var reviewButton = new IconButton('rate_review','mdc-button--raised mdc-image__circular');
-
-
-  var openingHours = document.createElement('h4');
-  openingHours.innerHTML = 'Opening hours: ' + place.opening + ":00/" + place.closing + ":00";
-  infoContainer.appendChild(openingHours);
-
-
-
-
   var buttonDiv =  document.createElement('div');
-  var visited = new IconButton('check_circle_outline', 'mdc-button--raised mdc-image__circular');
   content.appendChild(buttonDiv);
+
+  var reviewButton = new IconButton('rate_review','mdc-button--raised mdc-image__circular');
   buttonDiv.appendChild(reviewButton.root_);
 
-  buttonDiv.appendChild(visited.root_);
-  checkVisited(place.OLC, visited);
+  if(profile){
+    var visited = new IconButton('check_circle_outline', 'mdc-button--raised mdc-image__circular');
 
-  visited.listen('click', () => {
-    setVisited(place.OLC, visited);
-  })
+    buttonDiv.appendChild(visited.root_);
+    checkVisited(place.OLC, visited);
 
+    visited.listen('click', () => {
+      setVisited(place.OLC, visited);
+    });
+  }
 
   var separator1 = document.createElement('hr');
   separator1.className = 'mdc-list-divider';
@@ -104,7 +96,7 @@ async function selectedPlace(place){
   });
 
   reviewButton.listen("click", () => {
-    map.pageDrawer.open = false;
+    pageDrawer.open = false;
     reviewDrawer(place.OLC);
   })
 
@@ -118,10 +110,10 @@ async function selectedPlace(place){
     separator3.insertAdjacentElement('afterend',creatorList.root_);
   })
 
-  map.pageDrawer  = new PageDrawer(place.name, content);
-  map.pageDrawer.open = true;
+  pageDrawer  = new PageDrawer(place.name, content);
+  pageDrawer.open = true;
 
-  map.pageDrawer.listen('MDCDrawer:closed', () => {
+  pageDrawer.listen('MDCDrawer:closed', () => {
     if(audio){
       audio.pause();
       audio = null;

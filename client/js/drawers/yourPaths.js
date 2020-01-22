@@ -8,7 +8,7 @@ function openPaths(){
     content.appendChild(pathDiv);
 
     createButton.listen('click', () => {
-      map.pageDrawer.open = false;
+      pageDrawer.open = false;
       createPath();
     })
 
@@ -39,7 +39,7 @@ function openPaths(){
         var addListener = function(index){
           card.primaryAction.addEventListener("click", () => {
             var path =  response[index];
-            map.pageDrawer.open = false;
+            pageDrawer.open = false;
             selectedPath(path);
           });
           deleteButton.listen('click', () => {
@@ -50,7 +50,7 @@ function openPaths(){
             snackbar.open();
             edit.listen('click', () => {
               deletePath(path.namer);
-              map.pageDrawer.open = false;
+              pageDrawer.open = false;
             });
           })
         }
@@ -59,8 +59,8 @@ function openPaths(){
     }
     xhr.send(JSON.stringify({token: token}));
 
-    map.pageDrawer = new PageDrawer('Your Paths', content);
-    map.pageDrawer.open = true;
+    pageDrawer = new PageDrawer('Your Paths', content);
+    pageDrawer.open = true;
 }
 
 function firstPlace(olc){

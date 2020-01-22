@@ -138,33 +138,36 @@ function insertClipInPlaylist(playlistId,clipId){
 
 async function insertClip(title, description, privacyStatus, readStream){
 
-  var metadata = {
-    kind: 'youtube#video',
-    snippet: {
-    title: title,
-    description : description,
-    },
-    status: {
-    privacyStatus: privacyStatus
+  return new Promise((resolve,reject) => {
+    var metadata = {
+      kind: 'youtube#video',
+      snippet: {
+      title: title,
+      description : description,
+      },
+      status: {
+      privacyStatus: privacyStatus
+      }
     }
-  }
 
-  var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
-  var form = new FormData();
-  form.append('dati', meta)
-  form.append('video',readStream);
+    var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
+    var form = new FormData();
+    form.append('dati', meta)
+    form.append('video',readStream);
 
-  $.ajax({
-    url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token=' + encodeURIComponent(auth) + '&part=snippet,status',
-    data: form,
-    cache: false,
-    contentType: false,
-    processData: false,
-    metadata: metadata,
-    method: 'POST',
-    success:function(data) {
-      var snackbar = new SnackBar('Video Added succesfully on youtube');
-      snackbar.open();
-    }
+    $.ajax({
+      url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token=' + encodeURIComponent(auth) + '&part=snippet,status',
+      data: form,
+      cache: false,
+      contentType: false,
+      processData: false,
+      metadata: metadata,
+      method: 'POST',
+      success: function(data) {
+        var snackbar = new SnackBar('Video Added succesfully on youtube');
+        snackbar.open();
+        resolve(data);
+      }
+    });
   });
 }

@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <meta name="theme-color" content="#000000">
+  <meta name="title" content="Where Am I">
+  <meta name="description" content="The audio guide of the future: navigate, listen and record the clips of your favourite places in the world">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   <link rel="stylesheet" href="master.css">
   <link rel="preconnect" href="https://maps.gstatic.com">
 
-  <title>Where M I</title>
+
+  <title>Where Am I</title>
 
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
   <script src="https://kit.fontawesome.com/d7f0d59dc2.js" crossorigin="anonymous" async defer></script>
@@ -55,18 +58,25 @@
   <script src="js/model/YoutubePlayer.js"></script>
   <script src="js/model/ImageList.js"></script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.3/openlocationcode.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
 
   <!-- Controller -->
   <script src="js/audio.js"></script>
   <script src="js/geolocation.js"></script>
+  <script src="js/geocoder.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/playlist.js"></script>
   <script src="js/iframe.js"></script>
-  <script src="js/clips.js" async defer></script>
-  <script src="js/directions.js" async defer></script>
+  <script src="js/clips.js"></script>
+  <script src="js/directions.js"></script>
+  <script src="js/database.js"></script>
+  <script src="js/dbpedia.js"></script>
+  <script src="js/gapi.js"></script>
+  <script src="js/youtube.js"></script>
+  <script src="js/translation.js"></script>
+  <script src="js/texttospeech.js"></script>
+  <script src="js/map.js"></script>
 
   <!-- View -->
   <script src="js/drawers/charts.js"></script>
@@ -105,19 +115,13 @@
   <script src="js/map/markers/Position.js"></script>
   <script src="js/map/markers/Place.js"></script>
   <script src="js/map/markers/ClipMarker.js"></script>
-  <script src="js/map/Mappa.js"></script>
-  <script src="js/database.js"></script>
-  <script src="js/dbpedia.js"></script>
-  <script src="js/gapi.js"></script>
-  <script src="js/youtube.js"></script>
-  <script src="js/translation.js"></script>
-  <script src="js/texttospeech.js"></script>
-  <script src="https://apis.google.com/js/api.js?onload=handleClientLoad"></script>
-  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+
+  <script src="https://apis.google.com/js/api.js?onload=handleClientLoad" async defer></script>
+  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU&callback=initMap"></script>
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
   <!-- CDN -->
-  <script src="js/init.js" async defer></script>
 
 </body>
 

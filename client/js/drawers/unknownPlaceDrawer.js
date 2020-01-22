@@ -45,6 +45,6 @@ async function selectPlace(position) {
       });
     });
 
-    map.pageDrawer = new PageDrawer('Select your Place', div);
-    map.pageDrawer.open = true;
+    pageDrawer = new PageDrawer('Select your Place', div);
+    pageDrawer.open = true;
 }
