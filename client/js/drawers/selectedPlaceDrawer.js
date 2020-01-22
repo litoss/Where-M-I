@@ -80,7 +80,7 @@ async function selectedPlace(place){
   var texttospeechButton = new IconButton('audiotrack', 'mdc-button--raised mdc-image__circular');
   content.appendChild(texttospeechButton.root_);
   texttospeechButton.listen('click', async() => {
-    if(gapi.texttospeech){
+    if(gapi.client.texttospeech){
       if(!audio) {
         var speech = await texttospeech(document.querySelector('.descr').innerHTML, preferences.language);
         audio = new Audio("data:audio/mp3;base64," + speech);

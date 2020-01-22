@@ -109,7 +109,7 @@ function addClipDrawer(openLocationCode) {
         function incrementSeconds() {
             seconds++;
             var date = new Date(null);
-            date.setSeconds(seconds); // specify value for SECONDS here
+            date.setSeconds(seconds); 
             label.innerHTML = date.toISOString().substr(11, 8);
         }
         if (event.detail.isOn) {

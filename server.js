@@ -295,7 +295,6 @@ app.post('/modify_video', async (req,res)=>{
 //inoltre tramite l'ausilio di fluent-ffmpeg questo viene convertito in formato webm
   app.post('/audio_from_yt', async (req,res)=>{
     var id = req.body.id;
-     console.log(id);
     res.setHeader('Content-disposition', 'attachment; filename=test.pdf');
     res.set('Content-Type', 'application/json');
     var yta = ytdl('https://www.youtube.com/watch?v='+id,{filter:"audioonly"});
