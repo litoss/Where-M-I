@@ -16,19 +16,22 @@ async function stopRecord(){
 }
 
 async function startRecord(){
-  navigator.mediaDevices.getUserMedia({
-    audio: true,
-    video: false
-  }).then(function(stream){
+  return new Promise((resolve,reject) => {
+    navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: false
+    }).then(function(stream){
 
-    mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
-    mediaRecorder.addEventListener('dataavailable', function(e) {
-      if (e.data.size > 0) {
-        recordedChunks.push(e.data);
-      }
+      mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
+      mediaRecorder.addEventListener('dataavailable', function(e) {
+        if (e.data.size > 0) {
+          recordedChunks.push(e.data);
+        }
+      });
+
+      recordedChunks = [];
+      mediaRecorder.start();
+      resolve();
     });
-
-    recordedChunks = [];
-    mediaRecorder.start();
   });
 }

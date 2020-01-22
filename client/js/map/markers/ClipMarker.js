@@ -47,7 +47,7 @@ class ClipMarker {
     });
 
     card.primaryAction.addEventListener('click',() => {
-      clipDrawer(video[0].olc, videos);
+      clipDrawer(videos[0].olc, videos);
     });
   }
 

@@ -113,8 +113,9 @@ function addClipDrawer(openLocationCode) {
             label.innerHTML = date.toISOString().substr(11, 8);
         }
         if (event.detail.isOn) {
-            startRecord();
-            interval = setInterval(incrementSeconds, 1000);
+            startRecord().then(() => {
+              interval = setInterval(incrementSeconds, 1000);
+            })
         } else {
             audio.src = await stopRecord();
             clearInterval(interval);
@@ -134,7 +135,7 @@ function addClipDrawer(openLocationCode) {
     async function saveVideo(privacyStatus){
       if (titolo.value && testo.value && (what.input.checked || how.input.checked || why.input.checked) && lang.value && selectE1.value && selectE2.value && audio.src) {
         var geoloc = olc.value.substring(0, 6) + "00+-" + olc.value.substring(0, 9) + "-" + olc.value;
-        var purpose = what.input.checked ? "who" : how.input.checked ? "how" : "why";
+        var purpose = what.input.checked ? "what" : how.input.checked ? "how" : "why";
         var language = lang.value;
         var content = selectE1.value;
         var audience = selectE2.value;
@@ -153,16 +154,7 @@ function addClipDrawer(openLocationCode) {
         xhr.onload = async function () {
           var url = await decode64(this.responseText, "video/webm");
           var blob = await getimageBlob(url);
-          insertClip(titolo.value, description, privacyStatus, blob).then((video) => {
-            if(places[olc]){
-              places[olc].push(video);
-              updateMap(olc);
-            }else{
-              places[olc] = [video];
-              markerClips.push(new ClipMarker(places[olc]))
-            }
-            markerClips.push()
-          });
+          insertClip(titolo.value, description, privacyStatus, blob);
         }
         xhr.send(JSON.stringify({ chunks: base64 }));
       }else{

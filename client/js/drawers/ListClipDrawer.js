@@ -8,7 +8,6 @@ function openClips(){
 
   var clips = [];
 
-
   listVideos().then(async function(response){
 
     for(var i in response){
@@ -67,8 +66,8 @@ function openClips(){
     remove.listen('click',()=>{
       for(var i in clips){
         if(checkboxes[i].checked){
-        removeVideo(clips[i].id);
-        list.listElements[i].style.display = 'none';
+          removeVideo(clips[i].id);
+          list.listElements[i].style.display = 'none';
         }
       }
     });
@@ -94,7 +93,6 @@ function openClips(){
         }
       }
       if(count == 1){
-      //for(var i in clips){
         clips.forEach((e, i) => {
           if(checkboxes[i].checked){
             var id = e.id;
@@ -117,16 +115,12 @@ function openClips(){
                     insertClip(clips[i].snippet.title+ '',clips[i].snippet.description,'public',blob);
                   }
                   req.send(JSON.stringify({ chunks: base644 }));
-                /// insertClip(clips[i].snippet.title+ 'a' ,clips[i].snippet.description,'public',blob);
               })
             }
             xhr.send(JSON.stringify({id:id}));
           }else{
             var snackbar = new SnackBar('Select draft video please');
             snackbar.open();
-            snackbar.listen("MDCSnackbar:closed",() => {
-              document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-              });
           }
         }
         });
@@ -134,9 +128,6 @@ function openClips(){
       }else{
         var snackbar = new SnackBar('Select only one video please');
         snackbar.open();
-        snackbar.listen("MDCSnackbar:closed",() => {
-          document.querySelector('.main-content').removeChild(document.querySelector('.mdc-snackbar'));
-        });
       }
     })
 

@@ -2,8 +2,8 @@
 
 //var CLIENT_ID = '588726918570-3tfcmo8nh5al0mupr29rsjmlop8jm9ce.apps.googleusercontent.com';
 //var API_KEY = 'AIzaSyDIMZTc-elycsk2nn3gM-q3_FU5188fsDU';
-var CLIENT_ID = '911339680377-e233gk58u8rnhgvaui26r9jg6r0fjvv1.apps.googleusercontent.com';
-var API_KEY = 'AIzaSyC_HAdEdl46kdK0QzvqvZ_eVGNxas5tIV0';
+var CLIENT_ID = '1032883837628-5kdrv46hovrk8sa14v31kektcocrl92t.apps.googleusercontent.com'
+var API_KEY = 'AIzaSyC_5mB9L4_u80SO0tezsJuIpj6h67kGR7E';
 var SCOPES = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/cloud-platform profile';
 
 var profile, token, preferences;

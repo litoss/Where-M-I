@@ -1,5 +1,5 @@
 function clipDrawer(olc, clips){
-
+  console.log(clips);
   var content = document.createElement('div');
 
   var addButton = new FloatingActionButton('keyboard_voice', 'drawer-fab');
