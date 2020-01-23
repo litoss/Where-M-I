@@ -42,11 +42,6 @@ function initMap(){
   directions_init();
 }
 
-function clickOnMap(event){
-  if(!closeAllWindow()) {
-  }
-}
-
 function updateMap(position){
   var approx = 0.04;
   for(var i=-1;i<=1;i++){
@@ -98,7 +93,7 @@ function addClips(olc){
     for(var i in array){
       markerClips.push(new ClipMarker(places[array[i]]));
     }
-    
+
     clusterClip = new MarkerClusterer(map, markerClips);
     clusterPlace = new MarkerClusterer(map, markerPlaces);
   });
@@ -115,14 +110,14 @@ function addPaths(olc){
 function updateAfterTimeOut(){
   var timer = (preferences.refreshTime*60)*1000;
   timeout = setTimeout(function(){
-    clear();
+    clearMap();
     updateMap(position.marker.position);
     clearTimeout(timeout);
     updateAfterTimeOut();
   }, timer);
 }
 
-function clear(){
+function clearMap(){
   area = [];
   places = [];
   for(var i in markerPlaces){

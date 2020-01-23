@@ -45,7 +45,7 @@ function openSettings(){
   content.appendChild(div);
 
   refresh.listen('click', () => {
-    clear();
+    clearMap();
     updateMap(position.marker.position);
     clearTimeout(timeout);
     updateAfterTimeOut();
@@ -71,7 +71,7 @@ function openSettings(){
       xhr.open('POST', '/add_preference');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = function() {
-        clear();
+        clearMap();
         updateMap(position.marker.position);
         clearTimeout(timeout);
         updateAfterTimeOut();

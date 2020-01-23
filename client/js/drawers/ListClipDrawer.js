@@ -7,16 +7,15 @@ function openClips(){
   content.appendChild(title);
 
   var clips = [];
-
+  var list = new List("mdc-list--two-line");
+  content.appendChild(list.root_);
+  
   listVideos().then(async function(response){
 
     for(var i in response){
       var clip = await getVideo(response[i].id.videoId);
       clips.push(clip);
     }
-
-    var list = new List("mdc-list--two-line");
-    content.appendChild(list.root_);
 
     var checkboxes = [];
     for(var i in clips){
@@ -53,85 +52,83 @@ function openClips(){
 
       list.add(li);
     }
-
-    var modify = new ActionButton('Modifica Clip');
-    content.appendChild(modify.root_);
-
-    var remove = new ActionButton('Rimuovi Clip');
-    content.appendChild(remove.root_);
-
-    var public = new ActionButton('Pubblica bozza');
-    content.appendChild(public.root_);
-
-    remove.listen('click',()=>{
-      for(var i in clips){
-        if(checkboxes[i].checked){
-          removeVideo(clips[i].id);
-          list.listElements[i].style.display = 'none';
-        }
-      }
-    });
-
-    public.listen('click',()=>{
-
-      for(var i in clips){
-        if(checkboxes[i].checked){
-          if(clips[i].status.privacyStatus != 'public') updateVideo(clips[i].id);
-          else{
-            var snackbar = new SnackBar('Select a draft video');
-            snackbar.open();
-          }
-        }
-      }
-    });
-
-    modify.listen('click',()=>{
-      var count = 0;
-      for(var c in clips){
-        if(checkboxes[c].checked){
-          count++;
-        }
-      }
-      if(count == 1){
-        clips.forEach((e, i) => {
-          if(checkboxes[i].checked){
-            var id = e.id;
-            if(e.status.privacyStatus == 'unlisted'){
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST','/audio_from_yt',false);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = async function(){
-              var url = await decode64(this.responseText, "video/webm");
-            openVideoDialog(url).then(async (response) => {
-                  var blob = await getimageBlob(response);
-                  var base644 = await convertBlobToBase64(blob);
-                  var req = new XMLHttpRequest();
-                  req.open('POST','/audio_to_video');
-                  req.setRequestHeader('Content-Type', 'application/json');
-                  req.onload = async function(){
-                    var base64 = await this.responseText;
-                    var url = await decode64(this.responseText,"video/webm")
-                    var blob = await decode64BLOB(base64);
-                    insertClip(clips[i].snippet.title+ '',clips[i].snippet.description,'public',blob);
-                  }
-                  req.send(JSON.stringify({ chunks: base644 }));
-              })
-            }
-            xhr.send(JSON.stringify({id:id}));
-          }else{
-            var snackbar = new SnackBar('Select draft video please');
-            snackbar.open();
-          }
-        }
-        });
-
-      }else{
-        var snackbar = new SnackBar('Select only one video please');
-        snackbar.open();
-      }
-    })
-
-    pageDrawer = new PageDrawer('Your Clips', content);
-    pageDrawer.open = true;
   });
+
+  var modify = new ActionButton('Modifica Clip');
+  content.appendChild(modify.root_);
+
+  var remove = new ActionButton('Rimuovi Clip');
+  content.appendChild(remove.root_);
+
+  var public = new ActionButton('Pubblica bozza');
+  content.appendChild(public.root_);
+
+  remove.listen('click',()=>{
+    for(var i in clips){
+      if(checkboxes[i].checked){
+        removeVideo(clips[i].id);
+        list.listElements[i].style.display = 'none';
+      }
+    }
+  });
+
+  public.listen('click',()=>{
+    for(var i in clips){
+      if(checkboxes[i].checked){
+        if(clips[i].status.privacyStatus != 'public') updateVideo(clips[i].id);
+        else{
+          var snackbar = new SnackBar('Select a draft video');
+          snackbar.open();
+        }
+      }
+    }
+  });
+
+  modify.listen('click',()=>{
+    var count = 0;
+    for(var i in clips){
+      if(checkboxes[i].checked){
+        count++;
+      }
+    }
+    if(count == 1){
+      clips.forEach((e, i) => {
+        if(checkboxes[i].checked){
+          var id = e.id;
+          if(e.status.privacyStatus == 'unlisted'){
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST','/audio_from_yt',false);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.onload = async function(){
+            var url = await decode64(this.responseText, "video/webm");
+          openVideoDialog(url).then(async (response) => {
+                var blob = await getimageBlob(response);
+                var base644 = await convertBlobToBase64(blob);
+                var req = new XMLHttpRequest();
+                req.open('POST','/audio_to_video');
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.onload = async function(){
+                  var base64 = await this.responseText;
+                  var url = await decode64(this.responseText,"video/webm")
+                  var blob = await decode64BLOB(base64);
+                  insertClip(clips[i].snippet.title+ '',clips[i].snippet.description,'public',blob);
+                }
+                req.send(JSON.stringify({ chunks: base644 }));
+            })
+          }
+          xhr.send(JSON.stringify({id:id}));
+        }else{
+          var snackbar = new SnackBar('Select draft video please');
+          snackbar.open();
+        }
+      }
+      });
+    }else{
+      var snackbar = new SnackBar('Select only one video please');
+      snackbar.open();
+    }
+  });
+
+  pageDrawer = new PageDrawer('Your Clips', content);
+  pageDrawer.open = true;
 }
