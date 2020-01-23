@@ -8,7 +8,7 @@ class Player{
 
     this.img = document.createElement('img');
     this.img.className = 'mdc-list-item__graphic';
-    this.img.src = 'content/favicon.ico';
+    this.img.src = 'favicon.ico';
     nav.appendChild(this.img);
 
     this.title = document.createElement('h3');

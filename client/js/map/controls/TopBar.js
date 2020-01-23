@@ -19,7 +19,7 @@ class TopBar {
     anchor.appendChild(this.icon.root_);
     anchor.appendChild(this.menus.root_);
 
-    this.topBar = new TopAppBar('Where M I ?', this.menu.root_, anchor, "mdc-top-app-bar--relative mdc-top-app-bar--dense main-topbar");
+    this.topBar = new TopAppBar('Where Am I', this.menu.root_, anchor, "mdc-top-app-bar--relative mdc-top-app-bar--dense main-topbar");
 
     this.icon.listen('click', () => {
       this.menus.open = !this.menus.open;

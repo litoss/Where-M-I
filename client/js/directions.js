@@ -58,7 +58,7 @@ function stopNavigation(){
   player.navigation.root_.disabled = true;
   if(player.forward.root_.disabled == false) player.setTitle('Press &rarr; to navigate to next place');
   else player.setTitle('Press Here to select navigation mode');
-  player.setImg("content/favicon.ico");
+  player.setImg("favicon.ico");
   clearInterval(interval);
   interval = false;
   renderer.setMap(null);
